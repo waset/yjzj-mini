@@ -1,9 +1,10 @@
 import { defineManifestConfig } from '@uni-helper/vite-plugin-uni-manifest'
 
 export default defineManifestConfig({
-  'name': 'vitesse-uni-app',
-  'appid': '',
-  'description': '',
+  'name': 'yjzj-mini',
+  'appid': '__UNI__50FCEF9',
+  'description': '一剑装机小程序',
+  'locale': 'zh-Hans',
   'versionName': '1.0.0',
   'versionCode': '100',
   'transformPx': false,
@@ -52,11 +53,14 @@ export default defineManifestConfig({
   'quickapp': {},
   /* 小程序特有相关 */
   'mp-weixin': {
-    appid: '',
+    appid: 'wx6401ddb855fac4aa',
+    usingComponents: true,
+    lazyCodeLoading: 'requiredComponents',
     setting: {
       urlCheck: false,
+      compileHotReLoad: true,
+      minified: true,
     },
-    usingComponents: true,
     darkmode: true,
     themeLocation: 'theme.json',
   },
@@ -72,6 +76,11 @@ export default defineManifestConfig({
   'h5': {
     darkmode: true,
     themeLocation: 'theme.json',
+    optimization: {
+      treeShaking: {
+        enable: true,
+      },
+    },
   },
   'uniStatistics': {
     enable: false,
