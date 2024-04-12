@@ -66,6 +66,7 @@
     "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*, *.env, .env.*"
   },
   "conventionalCommits.scopes": [
-    "config"
+    "config",
+    "github"
   ]
 }
