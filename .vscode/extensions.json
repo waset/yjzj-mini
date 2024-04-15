@@ -5,6 +5,7 @@
     "vue.volar",
     "dbaeumer.vscode-eslint",
     "editorConfig.editorConfig",
-    "uni-helper.uni-helper-vscode"
+    "uni-helper.uni-helper-vscode",
+    "jock.svg"
   ]
 }
