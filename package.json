@@ -12,7 +12,8 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "postinstall": "npx simple-git-hooks"
+    "postinstall": "npx simple-git-hooks",
+    "reset-manifest": "npx -y @waset/uni-reset-manifest"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-4000020240111001",

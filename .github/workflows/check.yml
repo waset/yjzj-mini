@@ -21,7 +21,10 @@ jobs:
           cache: pnpm
 
       - name: Install
-        run: pnpm i && pnpm run dev:mp-weixin
+        run: pnpm i
+
+      - name: Reset
+        run: pnpm run reset-manifest
 
       - name: Lint
         run: pnpm run lint
@@ -37,7 +40,10 @@ jobs:
           cache: pnpm
 
       - name: Install
-        run: pnpm i && pnpm run dev:mp-weixin
+        run: pnpm i
+
+      - name: Reset
+        run: pnpm run reset-manifest
 
       - name: TypeCheck
         run: pnpm run type-check
@@ -66,6 +72,9 @@ jobs:
 
       - name: Install
         run: pnpm i
+
+      - name: Reset
+        run: pnpm run reset-manifest
 
       - name: Build
         run: pnpm run ${{ matrix.build_cmd }}
