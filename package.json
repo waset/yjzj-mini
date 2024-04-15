@@ -7,11 +7,14 @@
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
     "dev:h5": "uni",
+
     "build:mp-weixin": "uni build -p mp-weixin",
     "build:h5": "uni build",
+
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+
     "postinstall": "npx simple-git-hooks",
     "reset-manifest": "npx -y @waset/uni-reset-manifest"
   },

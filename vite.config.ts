@@ -14,20 +14,20 @@ export default defineConfig({
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages
     UniHelperPages({
-      dts: 'src/uni-pages.d.ts',
+      dts: 'runtime/uni-pages.d.ts',
     }),
     // https://github.com/uni-helper/vite-plugin-uni-layouts
     UniHelperLayouts(),
     // https://github.com/uni-helper/vite-plugin-uni-components
     UniHelperComponents({
-      dts: 'src/components.d.ts',
+      dts: 'runtime/components.d.ts',
       directoryAsNamespace: true,
     }),
     Uni(),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: ['vue', '@vueuse/core', 'uni-app'],
-      dts: 'src/auto-imports.d.ts',
+      dts: 'runtime/auto-imports.d.ts',
       dirs: ['src/composables', 'src/stores', 'src/utils'],
       vueTemplate: true,
     }),
