@@ -68,5 +68,8 @@
   "conventionalCommits.scopes": [
     "config",
     "github"
+  ],
+  "iconify.customCollectionJsonPaths": [
+    "runtime/icon.json"
   ]
 }

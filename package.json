@@ -7,14 +7,11 @@
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
     "dev:h5": "uni",
-
     "build:mp-weixin": "uni build -p mp-weixin",
     "build:h5": "uni build",
-
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-
     "postinstall": "npx simple-git-hooks",
     "reset-manifest": "npx -y @waset/uni-reset-manifest"
   },
@@ -45,6 +42,7 @@
     "@dcloudio/uni-vue-devtools": "3.0.0-alpha-4000020240111001",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-4000020240111001",
     "@iconify-json/carbon": "^1.1.27",
+    "@iconify/tools": "^4.0.4",
     "@types/node": "^20.11.4",
     "@uni-helper/eslint-config": "^0.0.6",
     "@uni-helper/uni-app-types": "^0.5.12",
@@ -65,6 +63,7 @@
     "unocss": "^0.58.3",
     "unplugin-auto-import": "^0.17.3",
     "vite": "^5.0.11",
+    "vite-plugin-vue-devtools": "^7.0.27",
     "vue-tsc": "^1.8.27"
   },
   "simple-git-hooks": {
