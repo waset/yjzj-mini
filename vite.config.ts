@@ -8,6 +8,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import { uniuseAutoImports } from '@uni-helper/uni-use'
+import Modules from 'vite-plugin-use-modules'
 import { uniPolyfill } from './bin/uni-polyfill'
 
 // https://vitejs.dev/config/
@@ -27,12 +28,17 @@ export default defineConfig({
       dts: 'runtime/components.d.ts',
       directoryAsNamespace: true,
     }),
+    // https://github.com/dishait/vite-plugin-use-modules
+    Modules({
+      target: 'src/plugins',
+    }),
     Uni(),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: [
         'vue',
         'uni-app',
+        'pinia',
         uniuseAutoImports(),
       ],
       dts: 'runtime/auto-imports.d.ts',
