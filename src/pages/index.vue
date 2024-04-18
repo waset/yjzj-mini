@@ -1,8 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <AppLogos />
-  <InputEntry />
+  <view>home</view>
 </template>
 
 <style></style>
