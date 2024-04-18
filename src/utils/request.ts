@@ -170,18 +170,6 @@ interface RequestSuccessCallbackResult {
 }
 
 /**
- * 请求结果（业务规范）
- */
-interface NormalResult<T = any, E = any, P = any> {
-  code: number
-  message: string
-  data: T
-  extra?: E
-  page?: P
-  error: string
-};
-
-/**
  * 请求结果（业务通用）
  */
 type Result<T> = NormalResult<T> & { [K in keyof T]: T[K] }
