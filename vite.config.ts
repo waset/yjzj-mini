@@ -47,6 +47,6 @@ export default defineConfig({
     // see unocss.config.ts for config
     UnoCSS(),
     // https://github.com/vuejs/devtools-next
-    // VueDevTools(),
+    VueDevTools(),
   ],
 })
