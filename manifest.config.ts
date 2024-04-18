@@ -53,7 +53,7 @@ export default defineManifestConfig({
   'quickapp': {},
   /* 小程序特有相关 */
   'mp-weixin': {
-    appid: 'wx6401ddb855fac4aa',
+    appid: 'wxb04cde97e3bbe8ad',
     usingComponents: true,
     lazyCodeLoading: 'requiredComponents',
     setting: {

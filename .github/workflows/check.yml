@@ -59,7 +59,7 @@ jobs:
     strategy:
       matrix:
         node_version: [18.x]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         build_cmd: ['build:h5', 'build:mp-weixin']
       fail-fast: false
 

@@ -18,7 +18,8 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "runtime/**/*.d.ts"
+    "runtime/**/*.d.ts",
+    "types/**/*.d.ts"
   ],
   "vueCompilerOptions": {
     "nativeTags": ["block", "component", "template", "slot"]
