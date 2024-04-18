@@ -30,6 +30,7 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-4000020240111001",
     "@dcloudio/uni-mp-xhs": "3.0.0-alpha-4000020240111001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4000020240111001",
+    "@uni-helper/uni-use": "^0.19.10",
     "@vueuse/core": "^10.7.2",
     "vue": "^3.3.8",
     "vue-i18n": "^9.6.5"

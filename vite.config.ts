@@ -7,10 +7,13 @@ import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import { uniuseAutoImports } from '@uni-helper/uni-use'
+import { uniPolyfill } from './bin/uni-polyfill'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    uniPolyfill(),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages
@@ -27,9 +30,17 @@ export default defineConfig({
     Uni(),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
-      imports: ['vue', '@vueuse/core', 'uni-app'],
+      imports: [
+        'vue',
+        'uni-app',
+        uniuseAutoImports(),
+      ],
       dts: 'runtime/auto-imports.d.ts',
-      dirs: ['src/composables', 'src/stores', 'src/utils'],
+      dirs: [
+        'src/composables',
+        'src/stores',
+        'src/utils',
+      ],
       vueTemplate: true,
     }),
     // https://github.com/antfu/unocss
