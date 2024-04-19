@@ -70,9 +70,6 @@
     "github",
     "utils"
   ],
-  "iconify.customCollectionJsonPaths": [
-    "runtime/icon.json"
-  ],
   "iconify.inplace": false,
   "iconify.position": "after"
 }

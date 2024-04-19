@@ -1,5 +1,8 @@
 import type { Plugin } from 'vite'
 
+/**
+ * @see https://github.com/dcloudio/uni-app/issues/4604
+ */
 export function uniPolyfill(): Plugin {
   return {
     name: 'vite-plugin-uni-polyfill',

@@ -1,20 +1,23 @@
-import { promises as fs } from 'node:fs'
+import { promises as fs, readFileSync, readdirSync } from 'node:fs'
 import { importDirectory } from '@iconify/tools/lib/import/directory'
 import { cleanupSVG } from '@iconify/tools/lib/svg/cleanup'
 import { runSVGO } from '@iconify/tools/lib/optimise/svgo'
 import { isEmptyColor, parseColors } from '@iconify/tools/lib/colors/parse'
+import type { Plugin } from 'vite'
+
+//  @see https://github.com/iconify/tools
 
 // 图片目录
 export const iconPath = 'src/static'
 // 图片文件夹
 export const iconDir = 'icon'
 // 输出目录
-export const outDir = 'runtime'
+export const outDir = 'runtime/icons/'
 
-export async function Convert(path: string = iconPath, dir: string = iconDir, out: string = outDir) {
+export async function Generated(path = iconPath, prefix = iconDir, out = outDir) {
   // Import icons
   const iconSet = await importDirectory(path, {
-    prefix: dir,
+    prefix,
   })
 
   // Validate, clean up, fix palette and optimise
@@ -31,8 +34,8 @@ export async function Convert(path: string = iconPath, dir: string = iconDir, ou
 
     // Clean up and optimise icons
     try {
-      await cleanupSVG(svg)
-      await parseColors(svg, {
+      cleanupSVG(svg)
+      parseColors(svg, {
         defaultColor: 'currentColor',
         callback: (attr, colorStr, color) => {
           return !color || isEmptyColor(color)
@@ -40,7 +43,7 @@ export async function Convert(path: string = iconPath, dir: string = iconDir, ou
             : 'currentColor'
         },
       })
-      await runSVGO(svg)
+      runSVGO(svg)
     }
     catch (err) {
       // Invalid icon
@@ -56,9 +59,41 @@ export async function Convert(path: string = iconPath, dir: string = iconDir, ou
   // Export as IconifyJSON
   const exported = `${JSON.stringify(iconSet.export(), null, '\t')}\n`
 
+  // Create output directory
+  await fs.mkdir(out, { recursive: true })
   // Save to file
   await fs.writeFile(`${out}/${iconSet.prefix}.json`, exported, 'utf8')
 
   // eslint-disable-next-line no-console
-  console.log(`\x1B[32m Imported \x1B[0m\x1B[3m\x1B[31m${Object.keys(iconSet.entries).length}\x1B[0m\x1B[0m\x1B[32m icons \x1B[0m`)
+  console.log(`\x1B[32m Imported icons: \x1B[0m \x1B[31m ${Object.keys(iconSet.entries).length} \x1B[0m`)
+}
+
+// vite 转换插件
+export function Convert(path = iconPath, prefix = iconDir, out = outDir): Plugin {
+  return {
+    name: 'convert-icon',
+    buildStart: async () => {
+      await Generated(path, prefix, out)
+    },
+  }
+}
+
+type Awaitable<T> = T | PromiseLike<T>
+type CustomIconLoader = (name: string) => Awaitable<string | undefined>
+
+/**
+ * 图标加载器
+ * @param dir 加载目录
+ */
+export function IconDirLoader(dir = outDir): Record<string, CustomIconLoader> {
+  const icons: Record<string, CustomIconLoader> = {}
+
+  const files = readdirSync(dir).filter(file => file.endsWith('.json'))
+
+  files.forEach((file) => {
+    const name = file.replace('.json', '')
+    icons[name] = () => JSON.parse(readFileSync(`${dir}/${file}`, 'utf-8'))
+  })
+
+  return icons
 }

@@ -10,8 +10,9 @@ import { presetUni } from '@uni-helper/unocss-preset-uni'
 
 // convert-icon
 // https://github.com/iconify/tools
-import { Convert, iconDir, outDir } from './bin/convert-icon'
+import { IconDirLoader } from './bin/convert-icon'
 
+// https://unocss.dev
 export default defineConfig({
   presets: [
     presetUni(),
@@ -22,12 +23,8 @@ export default defineConfig({
         'display': 'inline-block',
         'vertical-align': 'middle',
       },
-      autoInstall: false,
       collections: {
-        icon: async () => {
-          await Convert('src/assets')
-          return import(`./${outDir}/${iconDir}.json`).then(i => i.default)
-        },
+        ...IconDirLoader(),
       },
     }),
   ],

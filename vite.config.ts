@@ -10,10 +10,14 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import { uniuseAutoImports } from '@uni-helper/uni-use'
 import Modules from 'vite-plugin-use-modules'
 import { uniPolyfill } from './bin/uni-polyfill'
+import { Convert } from './bin/convert-icon'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    // 转换图标
+    Convert('src/assets/icons', 'assets'),
+    // https://github.com/dcloudio/uni-app/issues/4604
     uniPolyfill(),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
