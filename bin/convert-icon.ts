@@ -1,4 +1,4 @@
-import { promises as fs, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, promises as fs, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { importDirectory } from '@iconify/tools/lib/import/directory'
 import { cleanupSVG } from '@iconify/tools/lib/svg/cleanup'
 import { runSVGO } from '@iconify/tools/lib/optimise/svgo'
@@ -59,10 +59,11 @@ export async function Generated(path = iconPath, prefix = iconDir, out = outDir)
   // Export as IconifyJSON
   const exported = `${JSON.stringify(iconSet.export(), null, '\t')}\n`
 
-  // Create output directory
-  await fs.mkdir(out, { recursive: true })
+  // Check output directory
+  if (!existsSync(out))
+    mkdirSync(out, { recursive: true })
   // Save to file
-  await fs.writeFile(`${out}/${iconSet.prefix}.json`, exported, 'utf8')
+  writeFileSync(`${out}/${iconSet.prefix}.json`, exported, 'utf8')
 
   // eslint-disable-next-line no-console
   console.log(`\x1B[32m Imported icons: \x1B[0m \x1B[31m ${Object.keys(iconSet.entries).length} \x1B[0m`)
