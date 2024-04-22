@@ -7,28 +7,28 @@ onShow(() => {
 
 const tabbars = ref<tabbar[]>([
   {
-    icon: 'i-assets-home',
-    activeIcon: 'i-assets-home-active',
+    icon: 'i-icons-home',
+    activeIcon: 'i-icons-home-active',
     path: 'pages/index',
   },
   {
-    icon: 'i-assets-menu',
-    activeIcon: 'i-assets-menu-active',
+    icon: 'i-icons-menu',
+    activeIcon: 'i-icons-menu-active',
     path: 'pages/menu',
   },
   {
-    icon: 'i-assets-rocket',
-    activeIcon: 'i-assets-rocket-active',
+    icon: 'i-icons-rocket',
+    activeIcon: 'i-icons-rocket-active',
     path: 'pages/custom',
   },
   {
-    icon: 'i-assets-buy',
-    activeIcon: 'i-assets-buy-active',
+    icon: 'i-icons-buy',
+    activeIcon: 'i-icons-buy-active',
     path: 'pages/buy',
   },
   {
-    icon: 'i-assets-me',
-    activeIcon: 'i-assets-me-active',
+    icon: 'i-icons-me',
+    activeIcon: 'i-icons-me-active',
     path: 'pages/me',
   },
 ])

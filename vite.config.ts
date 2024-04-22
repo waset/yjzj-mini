@@ -16,7 +16,8 @@ import { Convert } from './bin/convert-icon'
 export default defineConfig({
   plugins: [
     // 转换图标
-    Convert('src/assets/icons', 'assets'),
+    Convert('src/assets/icons', 'icons', 'temp/icons/'),
+    Convert('src/assets/svg', 'svg', 'temp/icons/', false),
     // https://github.com/dcloudio/uni-app/issues/4604
     uniPolyfill(),
     // https://github.com/uni-helper/vite-plugin-uni-manifest

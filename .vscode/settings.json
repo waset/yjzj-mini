@@ -72,5 +72,9 @@
   ],
   "iconify.inplace": false,
   "iconify.position": "after",
+  "iconify.customCollectionJsonPaths": [
+    "temp/icons/icons.json",
+    "temp/icons/svg.json"
+  ],
   "miniprogram.miniprogramPath": "dist/dev/mp-weixin"
 }

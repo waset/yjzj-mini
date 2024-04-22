@@ -16,7 +16,7 @@ export const iconDir = 'icon'
 // 输出目录
 export const outDir = 'temp/icons/'
 
-export async function Generated(path = iconPath, prefix = iconDir, out = outDir) {
+export async function Generated(path = iconPath, prefix = iconDir, out = outDir, noColor = true) {
   // Import icons
   const iconSet = await importDirectory(path, {
     prefix,
@@ -37,7 +37,7 @@ export async function Generated(path = iconPath, prefix = iconDir, out = outDir)
     // Clean up and optimise icons
     try {
       cleanupSVG(svg)
-      parseColors(svg, {
+      noColor && parseColors(svg, {
         defaultColor: 'currentColor',
         callback: (attr, colorStr, color) => {
           return !color || isEmptyColor(color)
@@ -76,11 +76,11 @@ export async function Generated(path = iconPath, prefix = iconDir, out = outDir)
 }
 
 // vite 转换插件
-export function Convert(path = iconPath, prefix = iconDir, out = outDir): Plugin {
+export function Convert(path = iconPath, prefix = iconDir, out = outDir, noColor = true): Plugin {
   return {
     name: 'convert-icon',
     buildStart: async () => {
-      await Generated(path, prefix, out)
+      await Generated(path, prefix, out, noColor)
     },
   }
 }

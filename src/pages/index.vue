@@ -5,7 +5,9 @@ getWindows(1, 10)
 </script>
 
 <template>
-  <view>home</view>
+  <view>
+    <index-navbar />
+  </view>
 </template>
 
 <style></style>
