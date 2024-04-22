@@ -71,5 +71,6 @@
     "utils"
   ],
   "iconify.inplace": false,
-  "iconify.position": "after"
+  "iconify.position": "after",
+  "miniprogram.miniprogramPath": "dist/dev/mp-weixin"
 }

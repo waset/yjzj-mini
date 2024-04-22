@@ -23,13 +23,13 @@ export default defineConfig({
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages
     UniHelperPages({
-      dts: 'runtime/uni-pages.d.ts',
+      dts: 'temp/types/uni-pages.d.ts',
     }),
     // https://github.com/uni-helper/vite-plugin-uni-layouts
     UniHelperLayouts(),
     // https://github.com/uni-helper/vite-plugin-uni-components
     UniHelperComponents({
-      dts: 'runtime/components.d.ts',
+      dts: 'temp/types/components.d.ts',
       directoryAsNamespace: true,
     }),
     // https://github.com/dishait/vite-plugin-use-modules
@@ -45,7 +45,7 @@ export default defineConfig({
         'pinia',
         uniuseAutoImports(),
       ],
-      dts: 'runtime/auto-imports.d.ts',
+      dts: 'temp/types/auto-imports.d.ts',
       dirs: [
         'src/composables',
         'src/stores',

@@ -1,4 +1,6 @@
-import { existsSync, promises as fs, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { cwd } from 'node:process'
+import { join } from 'node:path'
 import { importDirectory } from '@iconify/tools/lib/import/directory'
 import { cleanupSVG } from '@iconify/tools/lib/svg/cleanup'
 import { runSVGO } from '@iconify/tools/lib/optimise/svgo'
@@ -12,7 +14,7 @@ export const iconPath = 'src/static'
 // 图片文件夹
 export const iconDir = 'icon'
 // 输出目录
-export const outDir = 'runtime/icons/'
+export const outDir = 'temp/icons/'
 
 export async function Generated(path = iconPath, prefix = iconDir, out = outDir) {
   // Import icons
@@ -60,9 +62,13 @@ export async function Generated(path = iconPath, prefix = iconDir, out = outDir)
   const exported = `${JSON.stringify(iconSet.export(), null, '\t')}\n`
 
   // Check output directory
-  if (!existsSync(out))
-    mkdirSync(out, { recursive: true })
-  // Save to file
+
+  // 构建 manifest 文件路径
+  const srcDir = join(cwd(), out)
+
+  if (!existsSync(srcDir))
+    mkdirSync(srcDir)
+    // Save to file
   writeFileSync(`${out}/${iconSet.prefix}.json`, exported, 'utf8')
 
   // eslint-disable-next-line no-console
@@ -88,8 +94,15 @@ type CustomIconLoader = (name: string) => Awaitable<string | undefined>
  */
 export function IconDirLoader(dir = outDir): Record<string, CustomIconLoader> {
   const icons: Record<string, CustomIconLoader> = {}
+  // 构建 manifest 文件路径
+  const srcDir = join(cwd(), dir)
 
-  const files = readdirSync(dir).filter(file => file.endsWith('.json'))
+  if (!existsSync(srcDir)) {
+    console.error(`\x1B[31m IconDirLoader: ${srcDir} not exists! \x1B[0m`)
+    return icons
+  }
+
+  const files = readdirSync(srcDir).filter(file => file.endsWith('.json'))
 
   files.forEach((file) => {
     const name = file.replace('.json', '')

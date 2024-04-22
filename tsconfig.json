@@ -20,7 +20,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "runtime/**/*.d.ts",
+    "temp/**/*.d.ts",
     "types/**/*.d.ts"
   ],
   "vueCompilerOptions": {
