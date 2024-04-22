@@ -1,7 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
     "paths": {
@@ -9,8 +8,11 @@
     },
     "types": [
       "@dcloudio/types",
+      "vite-plugin-use-modules/client.d.ts",
       "@uni-helper/uni-app-types"
     ],
+    "allowJs": true,
+    "ignoreDeprecations": "5.0",
     "sourceMap": true
   },
   "include": [
@@ -18,7 +20,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "runtime/**/*.d.ts",
+    "temp/**/*.d.ts",
     "types/**/*.d.ts"
   ],
   "vueCompilerOptions": {

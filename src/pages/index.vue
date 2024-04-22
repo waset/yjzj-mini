@@ -1,8 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { getWindows } = windowsStore()
+
+getWindows(1, 10)
+</script>
 
 <template>
-  <AppLogos />
-  <InputEntry />
+  <view>home</view>
 </template>
 
 <style></style>
