@@ -1,11 +1,11 @@
 export const windowsStore = defineStore('windows', {
   state: () => ({
     // 这里存放数据
-    windows: [] as Window[],
+    windows: [] as WindowsRes[],
   }),
   actions: {
     async getWindows(page: number, pageSize: number) {
-      const { data, code } = await http.post<Window[]>('/web/windowShow/list', {
+      const { data, code } = await http.post<WindowsRes[]>('/web/windowShow/list', {
         page,
         pageSize,
       }, { auth: false })

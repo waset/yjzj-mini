@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <view>Buy</view>
+  <div>Buy</div>
 </template>
 
 <route lang="json">

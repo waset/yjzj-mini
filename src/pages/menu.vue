@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <view>menu</view>
+  <div>menu</div>
 </template>
 
 <route lang="json">

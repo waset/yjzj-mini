@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <view>custom</view>
+  <div>custom</div>
 </template>
 
 <route lang="json">

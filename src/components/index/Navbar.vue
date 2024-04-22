@@ -3,26 +3,26 @@
 </script>
 
 <template>
-  <view>
+  <div>
     <common-navbar>
       <template #left="{ menu }">
-        <view
+        <div
           class="search" :style="{
             width: `${menu.width}px`,
             height: `${menu.height}px`,
           }"
         >
-          <view class="i-icons-search" />
-          <view class="text">
+          <div class="i-icons-search" />
+          <div class="text">
             搜索
-          </view>
-        </view>
+          </div>
+        </div>
       </template>
       <template #center>
-        <view class="i-svg-logo text-7xl" />
+        <div class="i-svg-logo text-7xl" />
       </template>
     </common-navbar>
-  </view>
+  </div>
 </template>
 
 <style lang="scss" scoped>

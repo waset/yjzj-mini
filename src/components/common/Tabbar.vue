@@ -12,34 +12,34 @@ const safeAreaInsets = ref(uni.getSystemInfoSync().safeAreaInsets?.bottom || 0)
 </script>
 
 <template>
-  <view
+  <div
     class="tabbar"
   >
-    <view
+    <div
       class="lists grid grid-cols-5 grid-rows-1 gap-2" :style="{
         paddingBottom: `${safeAreaInsets}px`,
       }"
     >
       <template v-for="(item, index) in props.tabbars" :key="index">
-        <view
+        <div
           class="item flex items-center justify-center"
           @click="(item.path === props.url) ? '' : emit('jump', item.path)"
         >
-          <view
+          <div
             class="rounded-12 p-2" :class="{
               interme: ((index + 1) === 3),
             }"
           >
-            <view
+            <div
               class="text-6" :class="[
                 item.path === props.url ? item.activeIcon : item.icon,
               ]"
             />
-          </view>
-        </view>
+          </div>
+        </div>
       </template>
-    </view>
-  </view>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">

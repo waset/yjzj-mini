@@ -1,13 +1,17 @@
 <script setup lang="ts">
+const { windows } = storeToRefs(windowsStore())
 const { getWindows } = windowsStore()
-
-getWindows(1, 10)
+onShow(() => {
+  getWindows(1, 10)
+  console.log(windows.value[0].name)
+})
 </script>
 
 <template>
-  <view>
+  <div class="index">
     <index-navbar />
-  </view>
+    <index-banner :list="windows" />
+  </div>
 </template>
 
 <style></style>

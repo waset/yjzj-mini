@@ -17,7 +17,7 @@ console.log(menu.value)
 </script>
 
 <template>
-  <view
+  <div
     class="navbar" :style="{
       '--nav-top': `${menu.top}px`,
       '--nav-width': `${menu.width}px`,
@@ -26,16 +26,16 @@ console.log(menu.value)
       '--nav-right': `${menu.right}px`,
     }"
   >
-    <view class="box flex items-center justify-between">
-      <view class="left">
+    <div class="box flex items-center justify-between">
+      <div class="left">
         <slot name="left" :menu="menu" />
-      </view>
-      <view class="center">
+      </div>
+      <div class="center">
         <slot name="center" :menu="menu" />
-      </view>
-      <view class="right" />
-    </view>
-  </view>
+      </div>
+      <div class="right" />
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -42,11 +42,11 @@ function jump(path: string) {
 </script>
 
 <template>
-  <view class="px-10 py-20 text-center">
+  <div class="px-10 py-20 text-center">
     <slot />
-    <view class="mx-auto mt-5 text-center text-sm c-white opacity-25">
+    <div class="mx-auto mt-5 text-center text-sm c-white opacity-25">
       [Home Layout]
-    </view>
+    </div>
     <common-tabbar :tabbars="tabbars" :url="currentUrl" @jump="jump" />
-  </view>
+  </div>
 </template>
