@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+const menu = useMenuButtonBounding()
 </script>
 
 <template>
   <div>
     <common-navbar>
-      <template #left="{ menu }">
+      <template #left>
         <div
           class="search" :style="{
             width: `${menu.width}px`,
@@ -27,9 +27,8 @@
 
 <style lang="scss" scoped>
     .search {
-        box-sizing: border-box;
         height: inherit;
-        font-size: 24rpx;
+        font-size: 28rpx;
         color: #fff;
         border-radius: 60rpx;
         border: 1rpx solid rgba($color: #fff, $alpha: .2);

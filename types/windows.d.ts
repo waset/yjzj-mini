@@ -12,13 +12,12 @@ interface WindowsRes {
   type: number
   updatedAt: string
 }
-
 interface ContentObject {
-  images: Image[] | null
+  images: WindowsImage[] | null
   products: Product[]
 }
 
-interface Image {
+interface WindowsImage {
   imageUrl: string
   src: string
   title: string

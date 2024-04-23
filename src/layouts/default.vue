@@ -1,8 +1,8 @@
 <template>
-  <div class="px-10 py-20 text-center">
+  <common-layout>
     <slot />
-    <div class="mx-auto mt-5 text-center text-sm opacity-25">
+    <div class="mx-auto mt-5 text-center text-sm c-white opacity-25">
       [Default Layout]
     </div>
-  </div>
+  </common-layout>
 </template>

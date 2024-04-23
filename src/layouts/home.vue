@@ -1,52 +1,23 @@
 <script setup lang="ts">
-const currentUrl = ref(useRouter().currentUrl.value)
-
+// 获取tabbar数据
+const { lists } = useTabbarStore()
+// 获取当前路由
+const currentUrl = ref('')
+// 刷新路由变化
 onShow(() => {
   currentUrl.value = useRouter().currentUrl.value
 })
-
-const tabbars = ref<tabbar[]>([
-  {
-    icon: 'i-icons-home',
-    activeIcon: 'i-icons-home-active',
-    path: 'pages/index',
-  },
-  {
-    icon: 'i-icons-menu',
-    activeIcon: 'i-icons-menu-active',
-    path: 'pages/menu',
-  },
-  {
-    icon: 'i-icons-rocket',
-    activeIcon: 'i-icons-rocket-active',
-    path: 'pages/custom',
-  },
-  {
-    icon: 'i-icons-buy',
-    activeIcon: 'i-icons-buy-active',
-    path: 'pages/buy',
-  },
-  {
-    icon: 'i-icons-me',
-    activeIcon: 'i-icons-me-active',
-    path: 'pages/me',
-  },
-])
-
-function jump(path: string) {
-  path = path.replace('pages/', '')
-  useRouter().switchTab({
-    url: path,
-  })
-}
 </script>
 
 <template>
-  <div class="px-10 py-20 text-center">
+  <common-layout>
     <slot />
     <div class="mx-auto mt-5 text-center text-sm c-white opacity-25">
       [Home Layout]
     </div>
-    <common-tabbar :tabbars="tabbars" :url="currentUrl" @jump="jump" />
-  </div>
+    <common-tabbar :tabbars="lists" :url="currentUrl" @jump="jump" />
+  </common-layout>
 </template>
+
+<style lang="scss" scoped>
+</style>

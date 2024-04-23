@@ -61,6 +61,7 @@
     "jsonc",
     "yaml"
   ],
+  "css.customData": [".vscode/unocss.json"],
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*, *.env, .env.*"
@@ -76,5 +77,8 @@
     "temp/icons/icons.json",
     "temp/icons/svg.json"
   ],
-  "miniprogram.miniprogramPath": "dist/dev/mp-weixin"
+  "miniprogram.miniprogramPath": "dist/dev/mp-weixin",
+  "files.exclude": {
+    "src/assets/css/background.scss": true
+  }
 }
