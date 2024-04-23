@@ -1,30 +1,55 @@
 <script setup lang="ts">
 const props = defineProps<{
   url: string
-  tabbars: tabbar[]
 }>()
-
 const emit = defineEmits<{
   jump: [path: string]
 }>()
-
+// tabbar数据
+const lists = reactive([
+  {
+    icon: 'i-icons-home',
+    activeIcon: 'i-icons-home-active',
+    path: 'pages/index',
+  },
+  {
+    icon: 'i-icons-menu',
+    activeIcon: 'i-icons-menu-active',
+    path: 'pages/menu',
+  },
+  {
+    icon: 'i-icons-rocket',
+    activeIcon: 'i-icons-rocket-active',
+    path: 'pages/custom',
+  },
+  {
+    icon: 'i-icons-buy',
+    activeIcon: 'i-icons-buy-active',
+    path: 'pages/buy',
+  },
+  {
+    icon: 'i-icons-me',
+    activeIcon: 'i-icons-me-active',
+    path: 'pages/me',
+  },
+])
 /**
  * 是否居中
  *
  * @param index 当前下标
  */
 function isCenter(index: number) {
-  if (props.tabbars.length % 2 === 0)
+  if (lists.length % 2 === 0)
     return false
 
-  return (index + 1) === Math.ceil(props.tabbars.length / 2)
+  return (index + 1) === Math.ceil(lists.length / 2)
 }
 </script>
 
 <template>
   <div class="tabbar">
     <div class="lists">
-      <template v-for="(item, index) in props.tabbars" :key="index">
+      <template v-for="(item, index) in lists" :key="index">
         <div class="item" @click="(item.path === props.url) ? '' : emit('jump', item.path)">
           <div class="rounded-12 p-2" :class="{ interme: isCenter(index) }">
             <div
