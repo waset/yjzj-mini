@@ -9,7 +9,6 @@ onLaunch(() => { })
     @import "@/assets/css/background.scss";
 
     page {
-        min-height: 100vh;
         color: #fff;
         background-color: #111;
         background-image: var(--bg-img);
