@@ -59,7 +59,7 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
 
     <index-product-switch-type v-model:current="notebook_type" :list="notebook_type_list" />
 
-    <index-about @click="jump('/me')" />
+    <index-about src="/static/images/about_us.png" @click="jump('/me')" />
   </div>
 </template>
 

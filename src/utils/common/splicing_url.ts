@@ -6,12 +6,7 @@
  */
 export function ImageUrl(path: string) {
   const imageUrl = import.meta.env.VITE_IMAGE_URL || ''
-
-  if (path.startsWith('/'))
-    return `${imageUrl}${path}`
-
-  if (imageUrl.endsWith('/'))
-    return `${imageUrl}${path}`
-
-  return `${imageUrl}/${path}`
+  const trailingSlash = imageUrl.endsWith('/') ? '' : '/'
+  const leadingSlash = path.startsWith('/') ? path.slice(1) : path
+  return `${imageUrl}${trailingSlash}${leadingSlash}`
 }

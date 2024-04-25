@@ -1,6 +1,8 @@
 <!-- eslint-disable -->
 <script setup lang="ts">
-
+const props = defineProps<{
+  src: string
+}>()
 const emit = defineEmits<{
   click: []
 }>()
@@ -8,8 +10,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="about">
-    <img class="image" src="@/static/images/about_us.png" mode="widthFix" alt="关于我们" @click="emit('click')">
-    <!-- <wd-img src="@/assets/images/about_us.png" @click="emit('click')" /> -->
+    <img class="image" :src="props.src" mode="widthFix" alt="关于我们" @click="emit('click')">
   </div>
 </template>
 
