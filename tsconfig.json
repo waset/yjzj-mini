@@ -23,6 +23,8 @@
     "temp/**/*.d.ts",
     "types/**/*.d.ts"
   ],
+  "exclude": ["node_modules", "dist"],
+  "allowSyntheticDefaultImports": true,
   "vueCompilerOptions": {
     "nativeTags": ["block", "component", "template", "slot"]
   }

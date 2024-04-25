@@ -32,4 +32,14 @@ export default defineConfig({
     transformerDirectives(),
     transformerVariantGroup(),
   ],
+  rules: [
+    ['green', { color: '#A7F522' }],
+    ['bg-green', { color: '#A7F522' }],
+  ],
+  shortcuts: {
+    'flex-start': 'flex items-center justify-start',
+    'flex-center': 'flex items-center justify-center',
+    'flex-between': 'flex items-center justify-between',
+    'flex-around': 'flex items-center justify-around',
+  },
 })
