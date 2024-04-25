@@ -69,7 +69,8 @@
   "conventionalCommits.scopes": [
     "config",
     "github",
-    "utils"
+    "utils",
+    "deps"
   ],
   "iconify.inplace": false,
   "iconify.position": "after",
