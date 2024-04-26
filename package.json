@@ -56,6 +56,8 @@
     "@unocss/eslint-config": "^0.58.3",
     "@vue/runtime-core": "^3.4.23",
     "@vue/tsconfig": "^0.5.1",
+    "clipboard": "^2.0.11",
+    "dayjs": "^1.11.10",
     "eslint": "^8.56.0",
     "lint-staged": "^15.2.0",
     "pinia": "^2.0.36",
@@ -66,6 +68,7 @@
     "typescript": "^5.3.3",
     "unocss": "^0.58.3",
     "unplugin-auto-import": "^0.17.3",
+    "uview-plus": "^3.2.14",
     "vite": "^5.2.8",
     "vite-plugin-use-modules": "^1.4.8",
     "vue-tsc": "^1.8.27"

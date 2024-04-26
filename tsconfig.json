@@ -8,6 +8,7 @@
     },
     "types": [
       "@dcloudio/types",
+      "uview-plus/types",
       "vite-plugin-use-modules/client.d.ts"
     ],
     "allowJs": true,

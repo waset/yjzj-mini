@@ -11,9 +11,16 @@ const emits = defineEmits<{
 
 <template>
   <div class="banner">
-    <wd-swiper
-      :list="props.list" :height="600" :display-multiple-items="0" :autoplay="false"
-      :indicator="{ type: 'dots-bar' }" image-mode="aspectFill" @click="({ index }) => emits('click', index)"
+    <up-swiper
+      :list="props.list"
+      indicator
+      indicator-mode="dot"
+      :display-multiple-items="0"
+      radius="0"
+      bg-color="none"
+      height="600"
+      circular
+      @click="(index) => emits('click', index)"
     />
   </div>
 </template>
