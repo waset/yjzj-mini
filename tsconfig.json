@@ -8,7 +8,6 @@
     },
     "types": [
       "@dcloudio/types",
-      "@uni-helper/uni-app-types",
       "vite-plugin-use-modules/client.d.ts"
     ],
     "allowJs": true,
