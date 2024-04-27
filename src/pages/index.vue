@@ -14,8 +14,6 @@ onShow(async () => {
   pushs.value = getWindowsByKeyValue('name', '热门产品')?.content.products || []
 })
 
-const banner_images = computed<string[]>(() => banners.value.map(item => ImageUrl(item.imageUrl)))
-
 const notebook_type = ref(0)
 const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工作站'])
 </script>
@@ -23,7 +21,7 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
 <template>
   <div class="index">
     <index-navbar />
-    <index-banners :list="banner_images" @click="(index) => jump(banners[index].src)" />
+    <index-carousel-banner :list="banners" />
     <index-product-title @click="jump('/menu')">
       <template #left>
         <div class="i-svg-hot-products" />
