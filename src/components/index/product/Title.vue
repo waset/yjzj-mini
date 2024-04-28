@@ -19,7 +19,7 @@ const emit = defineEmits<{
 
 <style lang="scss" scoped>
     .title {
-        @apply px-[32rpx] py-[80rpx];
+        @apply px-[32rpx] py-[40rpx];
 
         .left {
             @apply pr-[48rpx] text-8xl flex-center;

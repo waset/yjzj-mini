@@ -13,6 +13,17 @@ function skip(index: number) {
 
 <template>
   <div class="banner">
-    <carousel v-model:current="current" :list="banner_images" indicator :height="600" @click="skip" />
+    <carousel
+      v-model:current="current" :loop="true" autoplay :list="banner_images" indicator :height="1200"
+      easing-function="linear"
+      :scale-step="1"
+      @click="skip"
+    />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.banner{
+    padding-bottom: 20rpx;
+}
+</style>

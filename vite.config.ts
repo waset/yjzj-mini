@@ -31,6 +31,7 @@ export default defineConfig({
     UniHelperComponents({
       dts: 'temp/types/components.d.ts',
       directoryAsNamespace: true,
+      deep: true,
     }),
     // https://github.com/dishait/vite-plugin-use-modules
     Modules({

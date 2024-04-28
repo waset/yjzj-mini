@@ -14,6 +14,8 @@ onShow(async () => {
   pushs.value = getWindowsByKeyValue('name', '热门产品')?.content.products || []
 })
 
+const hots_current = ref(0)
+
 const notebook_type = ref(0)
 const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工作站'])
 </script>
@@ -28,12 +30,13 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
       </template>
       <template #right>
         <div>
-          <span class="green">01</span>
+          <span class="green">{{ hots_current < 10 ? `0${hots_current + 1}` : hots_current + 1 }}</span>
           <span class="green">/</span>
-          <span class="text-[28rpx]">20</span>
+          <span class="text-[28rpx]">{{ hots.length < 10 ? `0${hots.length}` : hots.length }}</span>
         </div>
       </template>
     </index-product-title>
+    <index-carousel-hot v-model:current="hots_current" :list="hots" />
     <index-product-title @click="jump('/menu')">
       <template #left>
         <div class="i-svg-diy-products" />
