@@ -1,21 +1,31 @@
 <script setup lang="ts">
 const { getWindows, getWindowsByKeyValue } = useWindowsStore()
+const { getCategorys, getProducts } = useProductStore()
+const { types, products } = storeToRefs(useProductStore())
 
 const banners = ref<WindowsImage[]>([])
 const hots = ref<Product[]>([])
 const pushs = ref<Product[]>([])
+
+const hots_current = ref(0)
+
+const notebook_type = ref(0)
 
 onShow(async () => {
   await getWindows(1, 20)
   banners.value = getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
   hots.value = getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
   pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
+
+  await getCategorys('laptop', 1, 3)
+  notebook_type.value = types.value[0].id
+
+  await getProductsByType(notebook_type.value)
 })
 
-const hots_current = ref(0)
-
-const notebook_type = ref(0)
-const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工作站'])
+async function getProductsByType(type: number) {
+  getProducts(type, 1, 4)
+}
 </script>
 
 <template>
@@ -47,7 +57,8 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
     </index-product-title>
     <index-carousel-push :list="pushs" />
 
-    <index-product-switch-type v-model:current="notebook_type" :list="notebook_type_list" />
+    <index-product-switch-type v-model:current="notebook_type" :list="types" @change="async (id) => await getProductsByType(id)" />
+    <index-product-list :list="products" />
 
     <index-about src="/static/images/about_us.png" @click="jump('/me')" />
   </div>

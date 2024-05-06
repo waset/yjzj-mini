@@ -1,18 +1,26 @@
 <script setup lang="ts">
 const props = defineProps<{
-  list: string[]
+  list: ProductType[]
   current: number
 }>()
-const emit = defineEmits(['update:current'])
+const emits = defineEmits<{
+  'update:current': [id: number]
+  'change': [id: number]
+}>()
+// 点击切换
+function handleClick(id: number) {
+  emits('update:current', id)
+  emits('change', id)
+}
 </script>
 
 <template>
   <div class="switch-type">
     <div class="content">
-      <template v-for="(item, index) in props.list" :key="index">
-        <div class="item" :class="{ active: index === props.current }" @click="emit('update:current', index)">
+      <template v-for="item in props.list" :key="item.id">
+        <div class="item" :class="{ active: item.id === props.current }" @click="handleClick(item.id)">
           <div class="btn">
-            {{ item }}
+            {{ item.name }}
           </div>
         </div>
       </template>
