@@ -10,11 +10,10 @@ export function uniPolyfill(): Plugin {
       if (!id.endsWith('@dcloudio/uni-mp-vue/dist/vue.runtime.esm.js'))
         return
       code += `
-// polyfill for @vueuse/core
-export const render = () => {}
-export const TransitionGroup = {}
-
-`
+            // polyfill for @vueuse/core
+            export const render = () => {}
+            export const TransitionGroup = {}
+        `
       return code
     },
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import type { StyleValue } from 'vue'
+import type { CSSProperties, StyleValue } from 'vue'
 
 // 轮播配置
 interface CarouselProps<T> {
@@ -54,6 +54,18 @@ interface CarouselProps<T> {
    */
   indicator?: boolean
   /**
+   * 指示器样式
+   * indicator 为 true 时生效
+   * @default {}
+   */
+  indicatorStyle?: StyleValue
+  /**
+   * 切换按钮样式
+   * switch 为 true 时生效
+   * @default {}
+   */
+  switchStyle?: StyleValue
+  /**
    * 是否显示切换按钮
    * @default false
    */
@@ -79,15 +91,25 @@ interface CarouselProps<T> {
    */
   easingFunction?: string | 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out'
   /**
-   * 滑块X轴偏移量，单位为 rpx
-   * @default 0
+   * 滑块X轴偏移量
+   * @default 100
    */
   offsetXStep?: number
   /**
-   * 滑块Y轴偏移量，单位为 rpx
+   * 滑块X轴偏移量单位
+   * @default %
+   */
+  offsetXStepUnits?: string
+  /**
+   * 滑块Y轴偏移量
    * @default 0
    */
   offsetYStep?: number
+  /**
+   * 滑块Y轴偏移量单位
+   * @default %
+   */
+  offsetYStepUnits?: string
   /**
    * 滑块的缩放比例
    * @default 1
@@ -104,6 +126,11 @@ interface CarouselProps<T> {
    * @default 0
    */
   rotateStep?: number
+  /**
+   * 是否自然滚动
+   * @default false
+   */
+  naturalDirection?: boolean
 }
 // 接口
 const props = withDefaults(defineProps<CarouselProps<T>>(), {
@@ -113,17 +140,20 @@ const props = withDefaults(defineProps<CarouselProps<T>>(), {
   direction: 'horizontal',
   overflow: 'hidden',
   interval: 3000,
-  duration: 200,
+  duration: 1000,
   displayMultipleItems: 0,
   indicator: false,
   bgColor: 'transparent',
   radius: 4,
   easingFunction: 'ease',
-  offsetXStep: 200,
+  offsetXStep: 50,
+  offsetXStepUnits: '%',
   offsetYStep: 0,
-  scaleStep: 0.6,
-  opacityStep: 0.5,
+  offsetYStepUnits: '%',
+  scaleStep: 1,
+  opacityStep: 1,
   rotateStep: 0,
+  naturalDirection: false,
 })
 // 事件
 const emits = defineEmits<{
@@ -142,8 +172,6 @@ defineSlots<{
   // 下一个
   next: (props: { current: number, click: Function }) => any
 }>()
-// 计时器
-let timer: NodeJS.Timeout | null = null
 // 挂载时
 onMounted(() => {
   play()
@@ -152,57 +180,74 @@ onMounted(() => {
 onUnmounted(() => {
   clear()
 })
+// 当前索引
+const current = useVModel(props, 'current', emits)
+// 计时器
+let timer: NodeJS.Timeout | null = null
 // 是否可以自动播放
-const canAutoplay = ref(props.autoplay)
-// 监听 current 变化
-watch(() => props.current, () => {
-  // 自动播放
-  play()
-})
-function upCurrent(value: number) {
-  // current 超大
-  if (value > props.list.length - 1) {
+const canAutoplay = ref(props.autoplay || false)
+function prev() {
+  if (current.value === 0) {
     if (props.loop)
-      emits('update:current', 0)
+      current.value = props.list.length - 1
     else
-      emits('update:current', props.list.length - 1)
-  }
-  // current 超小
-  else if (value < 0) {
-    if (props.loop)
-      emits('update:current', props.list.length - 1)
-    else
-      emits('update:current', 0)
+      current.value = 0
   }
   else {
-    emits('update:current', value)
+    current.value--
   }
   // 触发change事件
-  emits('change', { current: value, source: 'change' })
+  emits('change', { current: current.value, source: 'change' })
+  // 自动播放
+  play()
 }
+function next() {
+  if (current.value === props.list.length - 1) {
+    if (props.loop)
+      current.value = 0
+    else
+      current.value = props.list.length - 1
+  }
+  else {
+    current.value++
+  }
+  // 触发change事件
+  emits('change', { current: current.value, source: 'change' })
+  // 自动播放
+  play()
+}
+// 滑动距离
+const axis = ref(0)
+// 是否正在滑动
+const isSliding = ref(false)
 // 自动播放
 function play() {
   // 自动播放
-  if (!canAutoplay.value)
+  if (!canAutoplay.value || isSliding.value)
     return
   // 重置计时器
   clear()
   timer = setInterval(() => {
-    if (props.current === props.list.length - 1)
-      upCurrent(0)
-    else
-      upCurrent(props.current + 1)
+    next()
     // 触发change事件
-    emits('change', { current: props.current, source: 'autoplay' })
+    emits('change', { current: current.value, source: 'autoplay' })
   }, props.interval)
 }
 // 清除
 function clear() {
-  timer && clearInterval(timer); timer = null
+  timer && clearInterval(timer)
+  timer = null
 }
-const axis = ref(0)
 // 滑动开始
+const useStart = useThrottleFn(start, 800)
 function start(e: TouchEvent) {
+  e.preventDefault()
+  // 判断是否正在滑动
+  if (isSliding.value)
+    return
+  // 滑动开始
+  isSliding.value = true
+  // 获取滑动距离
   const { clientX, clientY } = e.touches[0]
   switch (props.direction) {
     case 'horizontal':
@@ -217,7 +262,15 @@ function start(e: TouchEvent) {
   }
 }
 // 滑动结束
+const useEnd = useThrottleFn(end, 800)
 function end(e: TouchEvent) {
+  e.preventDefault()
+  // 判断是否正在滑动
+  if (!isSliding.value)
+    return
+  // 滑动结束
+  isSliding.value = false
+  // 获取滑动距离
   let size = 0
   const { clientX, clientY } = e.changedTouches[0]
   switch (props.direction) {
@@ -232,55 +285,73 @@ function end(e: TouchEvent) {
       break
   }
   // 判断滑动距离
-  if (size > 0)
-    upCurrent(props.current - 1)
-  else if (size < 0)
-    upCurrent(props.current + 1)
+  if (size > 0) {
+    if (props.naturalDirection)
+      prev()
+    else
+      next()
+  }
+  else if (size < 0) {
+    if (props.naturalDirection)
+      next()
+    else
+      prev()
+  }
 }
 // 点击事件
-function clickHandler(e: any, index: number) {
+function clickHandler(index: number) {
   emits('click', index)
+}
+// css 变量
+interface CustomStyle extends CSSProperties {
+  // 滑块距离
+  '--offsetX': string
+  '--offsetY': string
+  // 滑块缩放比例
+  '--scale': number
+  // 旋转角度
+  '--rotate': string
+  // 设置层级
+  '--zIndex': number
+  // 设置透明度
+  '--opacity': number
 }
 // 滑块样式
 function addStyle(index: number) {
+  // 滑块样式
+  const style = {} as CustomStyle
   // 滑块距离
-  const dis = index - props.current
+  const dis = index - current.value
+  // 滑块正负
+  const sign = Math.sign(dis)
   // 绝对值
   const abs = Math.abs(dis)
-  // 滑块正负
-  const sign = Math.sign(abs)
-  // 滑块样式
-  const style: StyleValue = {}
   // 滑块偏移量
   let offsetX = abs * props.offsetXStep
   let offsetY = abs * props.offsetYStep
-
-  if (index !== props.current) {
+  if (index !== current.value) {
     offsetX = (offsetX + props.offsetXStep) * sign
     offsetY = (offsetY + props.offsetYStep) * sign
   }
+  // 添加单位
+  style['--offsetX'] = addUnit(offsetX, props.offsetXStepUnits)
+  style['--offsetY'] = addUnit(offsetY, props.offsetXStepUnits)
   // 滑块缩放比例
-  const scale = props.scaleStep ** abs
+  style['--scale'] = props.scaleStep ** abs
   // 旋转角度
-  const rotate = props.rotateStep ? props.rotateStep * -sign : 0
-  // 设置样式
-  style.transform = `translateX(${offsetX}rpx) translateY(${offsetY}rpx) scale(${scale}) rotateY(${rotate}deg)`
+  style['--rotate'] = addUnit(props.rotateStep * -sign, 'deg')
   // 设置层级
-  style.zIndex = props.list.length - abs
+  style['--zIndex'] = props.list.length - abs
   // 设置透明度
-  style.opacity = props.opacityStep ** abs
-  // 设置过渡效果
-  style.transition = `transform ${props.duration}ms ${props.easingFunction},`
-  style.transition += `opacity ${props.duration}ms ${props.easingFunction},`
-  style.transition += `z-index ${props.duration}ms ${props.easingFunction}`
+  style['--opacity'] = props.opacityStep ** abs
 
   return style
 }
 // 添加单位
-function addUnit(value: number | string) {
+function addUnit(value: number | string, unit = 'rpx'): string {
   if (/^[\+-]?(\d+\.?\d*|\.\d+|\d\.\d+e\+\d+)$/.test(String(value)))
-    return `${value}rpx`
-  return value
+    return `${value}${unit}`
+  return `${value}`
 }
 </script>
 
@@ -295,38 +366,39 @@ function addUnit(value: number | string) {
       '--carousel-interval': `${props.interval}`,
       '--carousel-duration': `${props.duration}`,
       '--carousel-display-multiple-items': `${props.displayMultipleItems}`,
+      '--transition': `${props.duration}ms ${props.easingFunction}`,
     }"
   >
     <template v-if="props.switch">
-      <div class="switch">
-        <div class="item" @click="upCurrent(props.current - 1)">
-          <slot name="prev" :current="props.current" :click="upCurrent">
+      <div class="switch" :style="props.switchStyle">
+        <div class="item" @click="prev">
+          <slot name="prev" :current="current" :click="prev">
             <div class="left" />
           </slot>
         </div>
-        <div class="item" @click="upCurrent(props.current + 1)">
-          <slot name="next" :current="props.current" :click="upCurrent">
+        <div class="item" @click="next">
+          <slot name="next" :current="current" :click="next">
             <div class="right" />
           </slot>
         </div>
       </div>
     </template>
     <template v-if="props.indicator">
-      <slot name="indicator" :current="props.current" :length="props.list.length">
-        <view class="indicator">
+      <slot name="indicator" :current="current" :length="props.list.length">
+        <view class="indicator" :style="props.indicatorStyle">
           <template v-for="(_, index) in props.list" :key="index">
             <view
               class="item" :class="{
-                active: index === props.current,
-              }" @click="upCurrent(index)"
+                active: index === current,
+              }" @click="current = index"
             />
           </template>
         </view>
       </slot>
     </template>
-    <div class="wrapper" @touchstart="start" @touchend="end">
+    <div class="wrapper" @touchstart.capture="useStart" @touchend.capture="useEnd">
       <template v-for="(item, index) in props.list" :key="index">
-        <view class="item" :style="addStyle(index)" @click="(e) => clickHandler(e, index)">
+        <view class="item" :style="addStyle(index)" @click="clickHandler(index)">
           <slot name="item" :item="item" :index="index">
             <image
               class="image" :style="{
@@ -334,7 +406,6 @@ function addUnit(value: number | string) {
                 height: 'var(--carousel-height)',
                 borderRadius: 'var(--carousel-border-radius)',
               }" :src="item" mode="aspectFill" :draggable="false" lazy-load :fade-show="false"
-              @click="clickHandler(index)"
             />
           </slot>
         </view>
@@ -346,9 +417,7 @@ function addUnit(value: number | string) {
 <style lang="scss" scoped>
     .carousel {
         position: relative;
-        overflow: var(--carousel-overflow);
-        cursor: pointer;
-
+        width: 100%;
         height: var(--carousel-height);
         background: var(--carousel-bg-color);
         border-radius: var(--carousel-border-radius);
@@ -364,9 +433,14 @@ function addUnit(value: number | string) {
             }
 
             .item {
-                max-width: 100%;
+                width: 100%;
                 height: var(--carousel-height);
                 position: absolute;
+
+                z-index: var(--zIndex);
+                opacity: var(--opacity);
+                transform: translate(var(--offsetX), var(--offsetY)) scale(var(--scale)) rotate(var(--rotate));
+                transition: scale var(--transition), opacity var(--transition), transform var(--transition);
             }
         }
 

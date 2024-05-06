@@ -3,15 +3,13 @@ const { getWindows, getWindowsByKeyValue } = useWindowsStore()
 
 const banners = ref<WindowsImage[]>([])
 const hots = ref<Product[]>([])
-const diys = ref<Product[]>([])
 const pushs = ref<Product[]>([])
 
 onShow(async () => {
-  await getWindows(1, 10)
+  await getWindows(1, 20)
   banners.value = getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
-  hots.value = getWindowsByKeyValue('name', '热门产品')?.content.products || []
-  diys.value = getWindowsByKeyValue('name', '热门产品')?.content.products || []
-  pushs.value = getWindowsByKeyValue('name', '热门产品')?.content.products || []
+  hots.value = getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
+  pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
 })
 
 const hots_current = ref(0)
@@ -29,24 +27,14 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
         <div class="i-svg-hot-products" />
       </template>
       <template #right>
-        <div>
-          <span class="green">{{ hots_current < 10 ? `0${hots_current + 1}` : hots_current + 1 }}</span>
-          <span class="green">/</span>
-          <span class="text-[28rpx]">{{ hots.length < 10 ? `0${hots.length}` : hots.length }}</span>
+        <div class="mt-[-8rpx] pr-[8rpx] text-[52rpx] lh-[50rpx]">
+          <span class="text-green">{{ hots_current < 10 ? `0${hots_current + 1}` : hots_current + 1 }}</span>
+          <span class="text-[40rpx] text-green">/</span>
+          <span class="text-[40rpx]">{{ hots.length < 10 ? `0${hots.length}` : hots.length }}</span>
         </div>
       </template>
     </index-product-title>
     <index-carousel-hot v-model:current="hots_current" :list="hots" />
-    <index-product-title @click="jump('/menu')">
-      <template #left>
-        <div class="i-svg-diy-products" />
-      </template>
-      <template #right>
-        <div class="underline underline-offset-3">
-          查看更多>>
-        </div>
-      </template>
-    </index-product-title>
     <index-product-title @click="jump('/menu')">
       <template #left>
         <div class="i-svg-push-products" />
@@ -57,6 +45,7 @@ const notebook_type_list = ref(['轻薄笔记本', '游戏笔记本', '移动工
         </div>
       </template>
     </index-product-title>
+    <index-carousel-push :list="pushs" />
 
     <index-product-switch-type v-model:current="notebook_type" :list="notebook_type_list" />
 

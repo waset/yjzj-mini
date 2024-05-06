@@ -33,7 +33,7 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   rules: [
-    ['green', { color: '#A7F522' }],
+    ['text-green', { color: '#A7F522' }],
     ['bg-green', { color: '#A7F522' }],
   ],
   shortcuts: {

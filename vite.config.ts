@@ -46,6 +46,26 @@ export default defineConfig({
         'pinia',
         uniuseAutoImports(),
       ],
+      packagePresets: [
+        {
+          package: '@vueuse/core',
+          ignore: [
+            // vueuse core 默认禁用
+            'toRef',
+            'toRefs',
+            'toValue',
+            'utils',
+            // 解决 uni-use 冲突
+            'tryOnScopeDispose',
+            'useNetwork',
+            'useOnline',
+            'usePreferredDark',
+            'useStorage',
+            'useStorageAsync',
+          ],
+          cache: false,
+        },
+      ],
       dts: 'temp/types/auto-imports.d.ts',
       dirs: [
         'src/composables/**',
