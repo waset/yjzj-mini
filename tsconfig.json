@@ -4,12 +4,12 @@
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
     "types": [
       "@dcloudio/types",
-      "vite-plugin-use-modules/client.d.ts",
-      "@uni-helper/uni-app-types"
+      "uview-plus/types",
+      "vite-plugin-use-modules/client.d.ts"
     ],
     "allowJs": true,
     "ignoreDeprecations": "5.0",
@@ -23,6 +23,8 @@
     "temp/**/*.d.ts",
     "types/**/*.d.ts"
   ],
+  "exclude": ["node_modules/**", "dist/**"],
+  "allowSyntheticDefaultImports": true,
   "vueCompilerOptions": {
     "nativeTags": ["block", "component", "template", "slot"]
   }

@@ -2,7 +2,9 @@
 </script>
 
 <template>
-  <view>menu</view>
+  <div class="text-center">
+    menu
+  </div>
 </template>
 
 <route lang="json">

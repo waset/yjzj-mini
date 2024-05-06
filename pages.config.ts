@@ -24,4 +24,12 @@ export default defineUniPages({
     color: '#999999',
     selectedColor: '#333333',
   },
+  easycom: {
+    autoscan: true,
+    custom: {
+      '^u--(.*)': 'uview-plus/components/u-$1/u-$1.vue',
+      '^up-(.*)': 'uview-plus/components/u-$1/u-$1.vue',
+      '^u-([^-].*)': 'uview-plus/components/u-$1/u-$1.vue',
+    },
+  },
 })
