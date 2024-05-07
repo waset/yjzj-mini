@@ -60,7 +60,7 @@ async function getProductsByType(type: number) {
     <index-product-switch-type v-model:current="notebook_type" :list="types" @change="async (id) => await getProductsByType(id)" />
     <index-product-list :list="products" />
 
-    <index-about src="/static/images/about_us.png" @click="jump('/me')" />
+    <index-about :src="StaticUrl('/images/about_us.png')" @click="jump('/me')" />
   </div>
 </template>
 

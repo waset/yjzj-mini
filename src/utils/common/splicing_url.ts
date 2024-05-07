@@ -10,3 +10,13 @@ export function ImageUrl(path: string) {
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
   return `${imageUrl}${trailingSlash}${leadingSlash}`
 }
+
+/**
+ * 将资源地址转换为线上地址
+ */
+export function StaticUrl(path: string, https: boolean = false) {
+  const staticUrl = import.meta.env.VITE_STATIC_URL || ''
+  const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
+  const leadingSlash = path.startsWith('/') ? path.slice(1) : path
+  return `${staticUrl}${trailingSlash}${leadingSlash}`
+}
