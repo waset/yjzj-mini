@@ -16,7 +16,14 @@ export const iconDir = 'icon'
 // 输出目录
 export const outDir = 'temp/icons/'
 
-export async function Generated(path = iconPath, prefix = iconDir, out = outDir, noColor = true) {
+export interface ConvertOption {
+  path?: string
+  prefix?: string
+  out?: string
+  noColor?: boolean
+}
+
+export async function Generated({ path = iconPath, prefix = iconDir, out = outDir, noColor = true }: ConvertOption) {
   // Import icons
   const iconSet = await importDirectory(path, {
     prefix,
@@ -68,19 +75,39 @@ export async function Generated(path = iconPath, prefix = iconDir, out = outDir,
 
   if (!existsSync(srcDir))
     mkdirSync(srcDir)
-    // Save to file
+  // Save to file
   writeFileSync(`${out}/${iconSet.prefix}.json`, exported, 'utf8')
 
   // eslint-disable-next-line no-console
   console.log(`\x1B[32m Imported icons: \x1B[0m \x1B[31m ${Object.keys(iconSet.entries).length} \x1B[0m`)
 }
 
+// 转换
+export async function Convert(option: ConvertOption = { path: iconPath, prefix: iconDir, out: outDir, noColor: true }) {
+  await Generated(option)
+}
+
+// 多转换
+export async function Converts(options: ConvertOption[]) {
+  for (const option of options)
+    await Convert(option)
+}
+
 // vite 转换插件
-export function Convert(path = iconPath, prefix = iconDir, out = outDir, noColor = true): Plugin {
+export function ViteConvert(option: ConvertOption): Plugin {
   return {
     name: 'convert-icon',
     buildStart: async () => {
-      await Generated(path, prefix, out, noColor)
+      await Convert(option)
+    },
+  }
+}
+// vite 多转换插件
+export function ViteConverts(options: ConvertOption[]): Plugin {
+  return {
+    name: 'convert-icons',
+    buildStart: async () => {
+      await Converts(options)
     },
   }
 }

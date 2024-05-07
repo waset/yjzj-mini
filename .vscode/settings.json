@@ -61,10 +61,14 @@
     "jsonc",
     "yaml"
   ],
-  "css.customData": [".vscode/unocss.json"],
+  "css.customData": [
+    ".vscode/unocss.json"
+  ],
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*, *.env, .env.*"
+    "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*",
+    "package.json": ".npmrc, package.json, package-lock.json, yarn.lock, pnpm-lock.yaml",
+    "project.config.*": ".editorconfig, eslint.config.*, renovate.*, *.env, .env.*"
   },
   "conventionalCommits.scopes": [
     "config",
