@@ -3,26 +3,24 @@ const menu = useMenuButtonBounding()
 </script>
 
 <template>
-  <div>
-    <common-navbar>
-      <template #left>
-        <div
-          class="search" :style="{
-            width: `${menu.width}px`,
-            height: `${menu.height}px`,
-          }"
-        >
-          <div class="i-icons-search" />
-          <div class="text">
-            搜索
-          </div>
+  <navbar-base>
+    <template #left>
+      <div
+        class="search" :style="{
+          width: `${menu.width}px`,
+          height: `${menu.height}px`,
+        }"
+      >
+        <div class="i-icons-search" />
+        <div class="text">
+          搜索
         </div>
-      </template>
-      <template #center>
-        <div class="i-svg-logo text-7xl" />
-      </template>
-    </common-navbar>
-  </div>
+      </div>
+    </template>
+    <template #center>
+      <div class="i-svg-logo text-7xl" />
+    </template>
+  </navbar-base>
 </template>
 
 <style lang="scss" scoped>

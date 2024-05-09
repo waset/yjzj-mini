@@ -1,10 +1,14 @@
+/**
+ * navbar 胶囊边界
+ * 单位：px
+ */
 const bounding = ref<UniApp.GetMenuButtonBoundingClientRectRes>({
   width: 80,
   height: 32,
-  left: 0,
+  left: 16,
+  right: 16,
   top: 12,
   bottom: 0,
-  right: 410,
 })
 
 // #ifdef MP

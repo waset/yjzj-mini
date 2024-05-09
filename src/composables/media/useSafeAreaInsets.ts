@@ -1,4 +1,7 @@
-// 获取小程序安全区
+/**
+ * 小程序安全区
+ * 单位：px
+ */
 const safe_area = ref<UniApp.SafeAreaInsets>({
   left: 0,
   top: 0,

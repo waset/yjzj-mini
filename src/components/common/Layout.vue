@@ -4,7 +4,11 @@ const menu = useMenuButtonBounding()
 // 获取小程序状态栏高度
 // const statusBarHeight = useStatusBarHeight()
 // 获取小程序底部安全区距离
-const safeAreaInsets = useSafeAreaInsets()
+const safe_area = useSafeAreaInsets()
+// 获取 tabbar 尺寸
+const tabbar_size = useTabbarSize()
+// 获取 navbar 尺寸
+const navbar_size = useNavbarSize()
 </script>
 
 <template>
@@ -14,10 +18,14 @@ const safeAreaInsets = useSafeAreaInsets()
       '--navbar-top': `${menu.top}px`,
       '--navbar-width': `${menu.width}px`,
       '--navbar-height': `${menu.height}px`,
-      '--navbar-left': `${menu.left}px`,
-      '--navbar-right': `${menu.right}px`,
+      '--navbar-left': `${navbar_size.left}px`,
+      '--navbar-right': `${navbar_size.right}px`,
+      '--navbar-bottom': `${navbar_size.bottom}px`,
       // tabbar
-      '--tabbar-buttom': `${safeAreaInsets.bottom}`,
+      '--tabbar-safe': `${safe_area.bottom}px`,
+      '--tabbar-height': `${tabbar_size.height}rpx`,
+      '--tabbar-top': `${tabbar_size.top}rpx`,
+      '--tabbar-bottom': `${tabbar_size.bottom}rpx`,
     }"
   >
     <div class="navbar" />
@@ -28,17 +36,15 @@ const safeAreaInsets = useSafeAreaInsets()
 <style lang="scss" scoped>
   .body {
     // navbar
-    --navbar-padding-left: calc(100vw - var(--navbar-right));
-    --navbar-padding-right: var(--navbar-padding-left);
+    --navbar-padding-left: var(--navbar-left);
+    --navbar-padding-right: var(--navbar-right);
     --navbar-padding-bottom: 20rpx;
-    --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-padding-bottom));
+    --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-bottom));
     // tabbar
-    --tabbar-padding-top: 16rpx;
-    --tabbar-padding-bottom: calc(var(--tabbar-padding-top) + env(safe-area-inset-bottom));
-    --tab-bar-height: 100rpx;
-    --tabbar-heigth: calc(var(--tab-bar-height) + var(--tabbar-padding-top) + var(--tabbar-padding-bottom));
-
-    padding-bottom: var(--tabbar-heigth);
+    --tabbar-padding-top: var(--tabbar-top);
+    --tabbar-padding-bottom: calc(var(--tabbar-bottom) + env(safe-area-inset-bottom));
+    --tabbar-height-all: calc(var(--tabbar-height) + var(--tabbar-top) + var(--tabbar-bottom));
+    padding-bottom: var(--tabbar-height-all);
 
     .navbar {
       padding-top: var(--navbar-heigth-all);

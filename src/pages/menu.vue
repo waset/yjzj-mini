@@ -76,7 +76,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 
 <template>
   <div class="menu">
-    <menu-index-navbar />
+    <navbar-home text="菜单" />
     <div class="search">
       <div class="input">
         <div class="text">
