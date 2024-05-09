@@ -30,6 +30,7 @@ const navbar_size = useNavbarSize()
   >
     <div class="navbar" />
     <slot />
+    <div class="tabbar" />
   </div>
 </template>
 
@@ -43,11 +44,14 @@ const navbar_size = useNavbarSize()
     // tabbar
     --tabbar-padding-top: var(--tabbar-top);
     --tabbar-padding-bottom: calc(var(--tabbar-bottom) + env(safe-area-inset-bottom));
-    --tabbar-height-all: calc(var(--tabbar-height) + var(--tabbar-top) + var(--tabbar-bottom));
-    padding-bottom: var(--tabbar-height-all);
+    --tabbar-height-all: calc(var(--tabbar-height) + var(--tabbar-top) + var(--tabbar-bottom) + env(safe-area-inset-bottom));
 
     .navbar {
-      padding-top: var(--navbar-heigth-all);
+      height: var(--navbar-heigth-all);
+    }
+
+    .tabbar {
+      height: var(--tabbar-height-all);
     }
   }
 </style>
