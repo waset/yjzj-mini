@@ -34,99 +34,111 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-    .lists {
-        @apply px-[32rpx];
+  .lists {
+    @apply px-[32rpx];
 
-        .body {
-            @apply py-[60rpx] grid grid-cols-2 grid-rows-2 gap-[16rpx];
+    .body {
+      @apply py-[60rpx] grid grid-cols-2 grid-rows-2 gap-[16rpx];
 
-            .item {
-                position: relative;
-                background: #000000;
-                border-radius: 32rpx;
-                border: 2rpx solid;
+      .item {
+        position: relative;
+        background: #000000;
+        border-radius: 32rpx;
+        z-index: 0;
+        transition: all 3s;
+        @apply p-[16rpx];
 
-                @apply p-[16rpx];
-
-                transition: all 3s;
-
-                &::after {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    left: 0;
-                    top: 0;
-                    background: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
-                    border-radius: 32rpx;
-                    z-index: -1;
-                }
-
-                .image {
-                    width: 296rpx;
-                    height: 296rpx;
-                    max-width: 100%;
-                    border-radius: 28rpx;
-                }
-
-                .info {
-                    padding: 16rpx 0;
-
-                    .name {
-                        font-weight: 600;
-                        font-size: 28rpx;
-                        color: #FFFFFF;
-                        line-height: 40rpx;
-                        text-align: left;
-                        font-style: normal;
-                        text-transform: none;
-                        display: -webkit-box;
-                        -webkit-box-orient: vertical;
-                        -webkit-line-clamp: 2;
-                        overflow: hidden;
-                    }
-
-                }
-
-                .buy {
-                    @apply flex-between;
-
-                    .price {
-                        flex: 1;
-                        background: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
-                        border-radius: 0rpx 4rpx 4rpx 0rpx;
-                        font-weight: 600;
-                        font-size: 28rpx;
-                        color: #FFFFFF;
-                        line-height: 40rpx;
-                        text-align: left;
-                        font-style: normal;
-                        text-transform: none;
-                        padding: 20rpx 8rpx;
-                    }
-
-                    .icon {
-                        @apply flex-center;
-
-                        width: 80rpx;
-                        height: 80rpx;
-                        background: #A7F522;
-                        border-radius: 48rpx 48rpx 48rpx 48rpx;
-                    }
-                }
-            }
+        &::before {
+          $boder : 2rpx;
+          box-sizing: content-box;
+          content: '';
+          position: absolute;
+          left: $boder;
+          top: $boder;
+          width: calc(100% - $boder * 2);
+          height: calc(100% - $boder * 2);
+          background: #000000;
+          border-radius: 32rpx;
+          z-index: -1;
         }
 
-        .more {
+        &::after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          background-image: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
+          border-radius: 32rpx;
+          z-index: -2;
+        }
+
+        .image {
+          width: 296rpx;
+          height: 296rpx;
+          max-width: 100%;
+          border-radius: 28rpx;
+        }
+
+        .info {
+          padding: 16rpx 0;
+
+          .name {
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #FFFFFF;
+            line-height: 40rpx;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+          }
+
+        }
+
+        .buy {
+          @apply flex-between;
+
+          .price {
+            flex: 1;
+            background: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
+            border-radius: 0rpx 4rpx 4rpx 0rpx;
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #FFFFFF;
+            line-height: 40rpx;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
+            padding: 20rpx 8rpx;
+          }
+
+          .icon {
             @apply flex-center;
 
-            .btn {
-                @apply underline underline-offset-3;
-
-                background: linear-gradient(98.8deg, rgba(190, 190, 190, 0) 5.58%, rgba(190, 190, 190, 0.4) 35.3%, rgba(190, 190, 190, 0.4) 65.93%, rgba(190, 190, 190, 0) 92.04%);
-                border-radius: 0rpx 4rpx 4rpx 0rpx;
-                padding: 16rpx 110rpx;
-            }
+            width: 80rpx;
+            height: 80rpx;
+            background: #A7F522;
+            border-radius: 48rpx 48rpx 48rpx 48rpx;
+          }
         }
+      }
     }
+
+    .more {
+      @apply flex-center;
+
+      .btn {
+        @apply underline underline-offset-3;
+
+        background: linear-gradient(98.8deg, rgba(190, 190, 190, 0) 5.58%, rgba(190, 190, 190, 0.4) 35.3%, rgba(190, 190, 190, 0.4) 65.93%, rgba(190, 190, 190, 0) 92.04%);
+        border-radius: 0rpx 4rpx 4rpx 0rpx;
+        padding: 16rpx 110rpx;
+      }
+    }
+  }
 </style>
