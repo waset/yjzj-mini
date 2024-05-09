@@ -14,6 +14,13 @@ import { IconDirLoader } from './bin/convert-icon'
 
 // https://unocss.dev
 export default defineConfig({
+  content: {
+    pipeline: {
+      include: [
+        'src/**/*.{vue,ts}',
+      ],
+    },
+  },
   presets: [
     presetUni(),
     presetIcons({

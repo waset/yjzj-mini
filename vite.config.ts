@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import Uni from '@dcloudio/vite-plugin-uni'
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
 import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
@@ -11,17 +11,20 @@ import Modules from 'vite-plugin-use-modules'
 import { uniPolyfill } from './bin/uni-polyfill'
 
 // convert-icon
-import { Converts } from './bin/convert-icon'
+import { Converts, ViteConverts } from './bin/convert-icon'
 import { icons as ConvertsOptions } from './project.config'
 
 // https://vitejs.dev/config/
-export default async () => {
+export default defineConfig(async ({ mode }) => {
   // convert-icon
   await Converts(ConvertsOptions)
+  // eslint-disable-next-line node/prefer-global/process
+  const env = loadEnv(mode, process.cwd())
 
   // https://unocss.dev
-  return defineConfig({
+  return {
     plugins: [
+      ViteConverts(ConvertsOptions),
       // https://github.com/dcloudio/uni-app/issues/4604
       uniPolyfill(),
       // https://github.com/uni-helper/vite-plugin-uni-manifest
@@ -81,7 +84,24 @@ export default async () => {
       }),
       // https://github.com/antfu/unocss
       // see unocss.config.ts for config
-      UnoCSS(),
+      UnoCSS({
+        preflights: [
+          {
+            getCSS: () => `
+              page {
+                color: #fff;
+                height: 100%;
+                background-color: #111;
+                background-image: url('${env.VITE_STATIC_URL}/images/allbg.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+              }
+            `,
+          },
+        ],
+      }),
     ],
-  })
-}
+  }
+})

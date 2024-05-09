@@ -1,31 +1,16 @@
 // 产品类目
-enum Category {
-  computer = 2,
-  laptop = 3,
-  components = 4,
-  peripherals = 5,
-  diy = 6,
-  diyGoods = 7,
-}
-// 产品类目
-type Categorys = {
-  [key in keyof typeof Category]: {
-    label: string
-    value: number
-  }
-}
+const categorys = {
+  diy: { label: 'DIY主机', value: 6, icon: 'i-icons-diy' },
+  laptop: { label: '笔记本', value: 3, icon: 'i-icons-laptop' },
+  components: { label: '组件', value: 4, icon: 'i-icons-components' },
+  peripherals: { label: '外设', value: 5, icon: 'i-icons-peripherals' },
+  diyGoods: { label: 'DIY配件', value: 7, icon: 'i-icons-diy' },
+} as Categorys
 
 export const useProductStore = defineStore('product', {
   state: () => ({
     // 产品类目
-    categorys: {
-      computer: { label: '整机', value: 2 },
-      laptop: { label: '笔记本', value: 3 },
-      components: { label: '组件', value: 4 },
-      peripherals: { label: '外设', value: 5 },
-      diy: { label: 'DIY', value: 6 },
-      diyGoods: { label: 'DIY', value: 6 },
-    } as Categorys,
+    categorys,
     // 产品分类
     types: [] as ProductType[],
     // 这里存放数据
@@ -33,7 +18,7 @@ export const useProductStore = defineStore('product', {
   }),
   actions: {
     // 获取产品分类
-    async getCategorys(category: keyof Categorys, page: number, pageSize: number) {
+    async getCategorys(category: CategoryKey, page: number, pageSize: number) {
       const { data, code } = await http.post<ProductType[]>('/web/product/type/list', {
         parentID: this.categorys[category].value,
         page,
@@ -44,9 +29,9 @@ export const useProductStore = defineStore('product', {
         this.types = data
     },
     // 获取产品列表
-    async getProducts(typeID: number, page: number, pageSize: number) {
+    async getProducts(params: GetProductParams, page: number, pageSize: number) {
       const { data, code } = await http.post<Product[]>('/web/product/list', {
-        typeID,
+        ...params,
         page,
         pageSize,
       }, { auth: false })

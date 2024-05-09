@@ -26,22 +26,22 @@ const safeAreaInsets = useSafeAreaInsets()
 </template>
 
 <style lang="scss" scoped>
-    .body {
-        // navbar
-        --navbar-padding-left: calc(100vw - var(--navbar-right));
-        --navbar-padding-right: var(--navbar-padding-left);
-        --navbar-padding-bottom: 20rpx;
-        --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-padding-bottom));
-        // tabbar
-        --tabbar-padding-top: 16rpx;
-        --tabbar-padding-bottom: calc(var(--tabbar-padding-top) + env(safe-area-inset-bottom));
-        --tab-bar-height: 100rpx;
-        --tabbar-heigth: calc(var(--tab-bar-height) + var(--tabbar-padding-top) + var(--tabbar-padding-bottom));
+  .body {
+    // navbar
+    --navbar-padding-left: calc(100vw - var(--navbar-right));
+    --navbar-padding-right: var(--navbar-padding-left);
+    --navbar-padding-bottom: 20rpx;
+    --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-padding-bottom));
+    // tabbar
+    --tabbar-padding-top: 16rpx;
+    --tabbar-padding-bottom: calc(var(--tabbar-padding-top) + env(safe-area-inset-bottom));
+    --tab-bar-height: 100rpx;
+    --tabbar-heigth: calc(var(--tab-bar-height) + var(--tabbar-padding-top) + var(--tabbar-padding-bottom));
 
-        padding-bottom: var(--tabbar-heigth);
+    padding-bottom: var(--tabbar-heigth);
 
-        .navbar {
-            padding-top: var(--navbar-heigth-all);
-        }
+    .navbar {
+      padding-top: var(--navbar-heigth-all);
     }
+  }
 </style>
