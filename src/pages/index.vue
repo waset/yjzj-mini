@@ -18,13 +18,13 @@ onShow(async () => {
   pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
 
   await getCategorys('laptop', 1, 3)
-  notebook_type.value = types.value[0].id
+  notebook_type.value = types.value[0]?.id || 0
 
   await getProductsByType(notebook_type.value)
 })
 
 async function getProductsByType(type: number) {
-  getProducts(type, 1, 4)
+  getProducts({ typeID: type }, 1, 4)
 }
 </script>
 

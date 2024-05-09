@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  onLaunch(() => { })
+onLaunch(() => { })
 </script>
 
 <style lang="scss">

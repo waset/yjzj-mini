@@ -14,4 +14,8 @@ interface ImportMeta {
 interface ImportMetaEnv {
   // 接口地址
   readonly VITE_API_URL: string
+  // 图片地址
+  readonly VITE_IMAGE_URL: string
+  // 资源地址
+  readonly VITE_STATIC_URL: string
 }
