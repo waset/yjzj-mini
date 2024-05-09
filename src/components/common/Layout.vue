@@ -1,23 +1,25 @@
 <script setup lang="ts">
-  // 获取小程序胶囊尺寸
-  const menu = useMenuButtonBounding()
-  // 获取小程序状态栏高度
-  // const statusBarHeight = useStatusBarHeight()
-  // 获取小程序底部安全区距离
-  const safeAreaInsets = useSafeAreaInsets()
+// 获取小程序胶囊尺寸
+const menu = useMenuButtonBounding()
+// 获取小程序状态栏高度
+// const statusBarHeight = useStatusBarHeight()
+// 获取小程序底部安全区距离
+const safeAreaInsets = useSafeAreaInsets()
 </script>
 
 <template>
-  <div class="body" :style="{
-    // navbar
-    '--navbar-top': `${menu.top}px`,
-    '--navbar-width': `${menu.width}px`,
-    '--navbar-height': `${menu.height}px`,
-    '--navbar-left': `${menu.left}px`,
-    '--navbar-right': `${menu.right}px`,
-    // tabbar
-    '--tabbar-buttom': `${safeAreaInsets.bottom}`,
-  }">
+  <div
+    class="body" :style="{
+      // navbar
+      '--navbar-top': `${menu.top}px`,
+      '--navbar-width': `${menu.width}px`,
+      '--navbar-height': `${menu.height}px`,
+      '--navbar-left': `${menu.left}px`,
+      '--navbar-right': `${menu.right}px`,
+      // tabbar
+      '--tabbar-buttom': `${safeAreaInsets.bottom}`,
+    }"
+  >
     <div class="navbar" />
     <slot />
   </div>

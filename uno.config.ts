@@ -12,10 +12,15 @@ import { presetUni } from '@uni-helper/unocss-preset-uni'
 // https://github.com/iconify/tools
 import { IconDirLoader } from './bin/convert-icon'
 
-import { StaticUrl } from './src/utils/common/splicing_url'
-
 // https://unocss.dev
 export default defineConfig({
+  content: {
+    pipeline: {
+      include: [
+        'src/**/*.{vue,ts}',
+      ],
+    },
+  },
   presets: [
     presetUni(),
     presetIcons({
@@ -44,20 +49,4 @@ export default defineConfig({
     'flex-between': 'flex items-center justify-between',
     'flex-around': 'flex items-center justify-around',
   },
-  preflights: [
-    {
-      getCSS: () => `
-        page {
-          color: #fff;
-          height: 100%;
-          background-color: #111;
-          background-image: url('${StaticUrl('/images/allbg.png',true)}');
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-        }
-      `,
-    }
-  ]
 })

@@ -14,7 +14,7 @@ export function ImageUrl(path: string) {
 /**
  * 将资源地址转换为线上地址
  */
-export function StaticUrl(path: string, https: boolean = false) {
+export function StaticUrl(path: string) {
   const staticUrl = import.meta.env.VITE_STATIC_URL || ''
   const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path

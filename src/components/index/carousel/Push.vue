@@ -32,7 +32,7 @@ const carouselHeight = ref(840)
             <div class="body">
               <div class="banner">
                 <div class="background">
-                  <div class="i-icons-push-bg" />
+                  <div class="i-icons-push-bg icon" />
                 </div>
                 <div class="image">
                   <image
@@ -114,7 +114,7 @@ const carouselHeight = ref(840)
                             border-radius: 64rpx;
                             overflow: hidden;
 
-                            .i-icons-push-bg {
+                            .icon {
                                 width: 100%;
                                 height: 100%;
                             }
