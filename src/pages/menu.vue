@@ -147,7 +147,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
   .menu {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--navbar-heigth-all) - var(--tabbar-height-all));
+    height: var(--body-min-height);
 
     .search {
       padding: 48rpx 32rpx;

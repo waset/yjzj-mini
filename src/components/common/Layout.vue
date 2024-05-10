@@ -41,10 +41,14 @@ const navbar_size = useNavbarSize()
     --navbar-padding-right: var(--navbar-right);
     --navbar-padding-bottom: 20rpx;
     --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-bottom));
+
     // tabbar
     --tabbar-padding-top: var(--tabbar-top);
     --tabbar-padding-bottom: calc(var(--tabbar-bottom) + env(safe-area-inset-bottom));
     --tabbar-height-all: calc(var(--tabbar-height) + var(--tabbar-top) + var(--tabbar-bottom) + env(safe-area-inset-bottom));
+
+    // body
+    --body-min-height: calc(100vh - var(--navbar-heigth-all) - var(--tabbar-height-all));
 
     .navbar {
       height: var(--navbar-heigth-all);
