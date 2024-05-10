@@ -65,7 +65,7 @@
           .item {
             left: 0;
             top: 32%;
-            z-index: 0;
+            z-index: 2;
 
             &.movein {
               opacity: 1;
@@ -94,7 +94,7 @@
           .item {
             right: 0;
             bottom: 32%;
-            z-index: -1;
+            z-index: 1;
 
             &.movein {
               opacity: 1;
