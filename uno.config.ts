@@ -41,7 +41,7 @@ export default defineConfig({
   ],
   rules: [
     ['text-green', { color: '#A7F522' }],
-    ['bg-green', { color: '#A7F522' }],
+    ['bg-green', { 'background-color': '#A7F522' }],
   ],
   shortcuts: {
     'flex-start': 'flex items-center justify-start',

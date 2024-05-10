@@ -28,9 +28,9 @@ const navbar_size = useNavbarSize()
       '--tabbar-bottom': `${tabbar_size.bottom}rpx`,
     }"
   >
-    <div class="navbar" />
+    <div class="navbar-wrap" />
     <slot />
-    <div class="tabbar" />
+    <div class="tabbar-wrap" />
   </div>
 </template>
 
@@ -50,11 +50,11 @@ const navbar_size = useNavbarSize()
     // body
     --body-min-height: calc(100vh - var(--navbar-heigth-all) - var(--tabbar-height-all));
 
-    .navbar {
+    .navbar-wrap {
       height: var(--navbar-heigth-all);
     }
 
-    .tabbar {
+    .tabbar-wrap {
       height: var(--tabbar-height-all);
     }
   }
