@@ -1,4 +1,7 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
+import useTabbarSize from './src/composables/constant/useTabbarSize'
+
+const { height, top, bottom } = useTabbarSize()
 
 export default defineUniPages({
   pages: [],
@@ -23,6 +26,7 @@ export default defineUniPages({
     ],
     color: '#999999',
     selectedColor: '#333333',
+    height: `${(height + top + bottom) || 132}rpx`,
   },
   easycom: {
     autoscan: true,

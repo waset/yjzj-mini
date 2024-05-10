@@ -30,7 +30,7 @@ async function getProductsByType(type: number) {
 
 <template>
   <div class="index">
-    <index-navbar />
+    <navbar-logo-search />
     <index-carousel-banner :list="banners" />
     <index-product-title @click="jump('/menu')">
       <template #left>
@@ -57,21 +57,34 @@ async function getProductsByType(type: number) {
     </index-product-title>
     <index-carousel-push :list="pushs" />
 
-    <index-product-switch-type v-model:current="notebook_type" :list="types" @change="async (id) => await getProductsByType(id)" />
+    <index-product-switch-type
+      v-model:current="notebook_type" :list="types"
+      @change="async (id) => await getProductsByType(id)"
+    />
     <index-product-list :list="products" />
 
-    <index-about :src="StaticUrl('/images/about_us.png')" @click="jump('/me')" />
+    <div class="about">
+      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="jump('/me')" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-    .index {
-        margin-top: calc((var(--navbar-heigth-all) - var(--navbar-top)) * -1);
+  .index {
+    margin-top: calc((var(--navbar-heigth-all) - var(--navbar-top)) * -1);
+
+    .about {
+      @apply flex-center;
+
+      .image {
+        @apply w-full;
+      }
     }
+  }
 </style>
 
 <route type="home" lang="json">
 {
-    "layout": "home"
+  "layout": "home"
 }
 </route>

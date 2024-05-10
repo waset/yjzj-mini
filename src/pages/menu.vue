@@ -76,7 +76,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 
 <template>
   <div class="menu">
-    <menu-index-navbar />
+    <navbar-home text="菜单" />
     <div class="search">
       <div class="input">
         <div class="text">
@@ -147,7 +147,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
   .menu {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--navbar-heigth-all) - var(--tabbar-heigth));
+    height: var(--body-min-height);
 
     .search {
       padding: 48rpx 32rpx;

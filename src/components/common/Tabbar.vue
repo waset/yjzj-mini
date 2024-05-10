@@ -76,7 +76,7 @@ function isCenter(index: number) {
         backdrop-filter: blur(48rpx);
 
         .lists {
-            height: var(--tab-bar-height);
+            height: var(--tabbar-height);
 
             @apply: flex items-center justify-around;
 

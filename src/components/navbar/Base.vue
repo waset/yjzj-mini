@@ -24,7 +24,7 @@
 
         @apply fixed left-0 top-0 w-full z-100;
 
-        padding: var(--navbar-top) var(--navbar-padding-left) var(--navbar-padding-bottom) var(--navbar-padding-left);
+        padding: var(--navbar-top) var(--navbar-padding-left) var(--navbar-padding-bottom) var(--navbar-padding-right);
 
         .box {
             @apply flex items-center justify-between;
