@@ -1,13 +1,5 @@
 <script lang="ts" setup>
-const animation = ref(false)
-onShow(() => {
-  setTimeout(() => {
-    animation.value = true
-  }, 100)
-})
-onHide(() => {
-  animation.value = false
-})
+//
 </script>
 
 <template>
