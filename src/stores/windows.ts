@@ -1,7 +1,9 @@
 export const useWindowsStore = defineStore('windows', {
-  state: () => ({
+  state: (): {
+    windows: WindowsRes[]
+  } => ({
     // 这里存放数据
-    windows: [] as WindowsRes[],
+    windows: [],
   }),
   actions: {
     // 通过接口获取橱窗数据

@@ -3,8 +3,9 @@ const { getProducts: useGetProduct } = useProductStore()
 const { categorys, products } = storeToRefs(useProductStore())
 // 菜单数据
 const categorysArray = computed(() => {
-  const result: CategorysArray[] = []
-  Object.keys(categorys.value).map((key) => {
+  const result: Array<CategorysItem & { name: string }> = []
+  const keys = Object.keys(categorys.value) as Array<keyof typeof categorys.value>
+  keys.map((key) => {
     if (key === 'diyGoods')
       return false
 
