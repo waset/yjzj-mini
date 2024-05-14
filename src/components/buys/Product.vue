@@ -12,6 +12,7 @@ const emits = defineEmits<{
   'update:product': [product: BuyProduct]
   'del': [id: BuyProduct['id']]
   'sliding': [sliding: boolean]
+  'showDetail': [product: BuyProduct]
 }>()
 // 接收产品信息
 const info = ref(props.product)
@@ -52,11 +53,11 @@ const useStart = useThrottleFn((e: TouchEvent) => {
 // 滑动结束
 const useEnd = useThrottleFn((e: TouchEvent) => {
   e.preventDefault()
-  if (e.changedTouches[0].clientX > slidingX.value + 20) {
+  if (e.changedTouches[0].clientX > slidingX.value + 80) {
     emits('sliding', false)
     return
   }
-  if (slidingX.value - e.changedTouches[0].clientX > 20)
+  if (slidingX.value - e.changedTouches[0].clientX > 80)
     emits('sliding', true)
 }, 100)
 // 减购条件
@@ -79,6 +80,9 @@ function add() {
     return
   info.value.quantity++
 }
+function showInfo() {
+  emits('showDetail', info.value)
+}
 </script>
 
 <template>
@@ -86,7 +90,7 @@ function add() {
     class="product" :class="{
       sliding: props.sliding,
     }" :style="{
-      '--sliding': `-${func?.clientWidth ?? 73}px`,
+      '--sliding': `-${func?.clientWidth || 60}px`,
     }" @touchstart.capture="useStart" @touchend.capture="useEnd"
   >
     <div class="wraps">
@@ -101,10 +105,8 @@ function add() {
           <div class="details">
             <div class="name">
               {{ info.name }}
-              {{ info.name }}
-              {{ info.name }}
             </div>
-            <div class="goview">
+            <div class="goview" @click.stop.prevent="showInfo">
               <div class="text">
                 配置详情
               </div>
@@ -204,7 +206,7 @@ function add() {
           }
 
           .details {
-            max-width: 65%;
+            flex:1;
             overflow: hidden;
 
             .name {

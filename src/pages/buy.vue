@@ -20,10 +20,46 @@ onShow(() => {
   management.value = false
   slidIdx.value = null
 })
+// 要显示的详情
+const showConfigs = ref<BuyProduct | null>(null)
+// 是否显示详情
+const showConfigsSwitch = ref(false)
+// 显示详情方法
+function showConfigsFn(product: BuyProduct) {
+  showConfigs.value = product
+  showConfigsSwitch.value = true
+}
 </script>
 
 <template>
   <navbar-home text="购物车" />
+  <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+    <div class="configs">
+      <div v-if="showConfigs" class="wrap">
+        <template v-for="(item, index) in showConfigs.params" :key="index">
+          <div class="item">
+            <div v-if="item.banner" class="image">
+              <product-image :src="item.banner[0]" width="60rpx" height="60rpx" />
+            </div>
+            <div class="info">
+              <div class="top">
+                <div class="type">
+                  {{ item.desc }}
+                </div>
+                <div v-if="item.number" class="num">
+                  <span>x</span>
+                  <span>{{ item.number }}</span>
+                </div>
+              </div>
+              <div class="desc">
+                {{ item.name || item.paramValue }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </common-popup>
   <div class="buy">
     <div class="top">
       <div class="wrap">
@@ -41,22 +77,22 @@ onShow(() => {
       </div>
     </div>
     <div class="body">
-      <div class="top-wrap" />
-      <template v-if="products.length > 0">
-        <template v-for="(item, index) in products" :key="index">
-          <buys-product
-            v-model:product="products[index]"
-            :sliding="slidIdx === index"
-            :is-management="management"
-            @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null"
-            @del="deleteProduct([item.id])"
-          />
+      <div class="body-wrap">
+        <div class="top-wrap" />
+        <template v-if="products.length > 0">
+          <template v-for="(item, index) in products" :key="index">
+            <buys-product
+              v-model:product="products[index]" :sliding="slidIdx === index" :is-management="management"
+              @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="deleteProduct([item.id])"
+              @show-detail="showConfigsFn"
+            />
+          </template>
         </template>
-      </template>
-      <template v-else>
-        <common-empty text="您的购物车空空如也" />
-      </template>
-      <div class="bottom-wrap" />
+        <template v-else>
+          <common-empty text="您的购物车空空如也" />
+        </template>
+        <div class="bottom-wrap" />
+      </div>
     </div>
     <div class="bottom">
       <div class="wrap">
@@ -102,9 +138,10 @@ onShow(() => {
 <style lang="scss" scoped>
   .buy {
     position: relative;
-    min-height: var(--body-min-height);
+    height: var(--body-min-height);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     $top-height: 112rpx;
     $bottom-height: 156rpx;
@@ -157,12 +194,16 @@ onShow(() => {
     .body {
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
+      flex: 1;
+      overflow: hidden;
 
       .top-wrap {
         height: $top-height;
       }
-
+      .body-wrap{
+        flex: 1;
+        overflow: scroll;
+      }
       .bottom-wrap {
         height: $bottom-height;
       }
@@ -241,6 +282,54 @@ onShow(() => {
             font-weight: bold;
             line-height: 40rpx;
             color: #333;
+          }
+        }
+      }
+    }
+  }
+
+  .configs {
+    .wrap {
+      .item {
+        @apply flex-between;
+        background: rgba(132, 132, 132, 0.2);
+        border-radius: 8rpx 8rpx 8rpx 8rpx;
+        margin-bottom: 32rpx;
+        padding: 22rpx 24rpx;
+
+        .image {
+          margin-right: 20rpx;
+        }
+
+        .info {
+          flex: 1;
+
+          .top {
+            @apply flex-between;
+
+            .type {
+              flex: 1;
+              font-size: 32rpx;
+              font-weight: 400;
+              line-height: 40rpx;
+              color: rgba(167, 245, 34, 1);
+            }
+
+            .num {
+              font-family: PingFang SC;
+              font-size: 28rpx;
+              font-weight: 400;
+              line-height: 40rpx;
+              color: rgba(190, 190, 190, 1);
+            }
+          }
+
+          .desc {
+            padding-top: 16rpx;
+            font-size: 28rpx;
+            font-weight: 400;
+            line-height: 40rpx;
+            color: rgba(190, 190, 190, 1);
           }
         }
       }
