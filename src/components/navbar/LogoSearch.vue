@@ -3,7 +3,7 @@ const menu = useMenuButtonBounding()
 </script>
 
 <template>
-  <navbar-base>
+  <common-navbar>
     <template #left>
       <div
         class="search" :style="{
@@ -20,7 +20,7 @@ const menu = useMenuButtonBounding()
     <template #center>
       <div class="i-svg-logo text-7xl" />
     </template>
-  </navbar-base>
+  </common-navbar>
 </template>
 
 <style lang="scss" scoped>

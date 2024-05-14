@@ -6,7 +6,7 @@ const menu = useMenuButtonBounding()
 </script>
 
 <template>
-  <navbar-base>
+  <common-navbar>
     <template #left>
       <div
         class="home" :style="{
@@ -23,7 +23,7 @@ const menu = useMenuButtonBounding()
         {{ props.text }}
       </div>
     </template>
-  </navbar-base>
+  </common-navbar>
 </template>
 
 <style lang="scss" scoped>
