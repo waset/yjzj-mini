@@ -1,20 +1,27 @@
 <script lang="ts" setup>
-const { products, isSelectdAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
+const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
 const { selectAll, deleteProduct } = useBuyStore()
 // TODO: test 测试方法，后续删除
 const { windows, getWindows } = useWindowsStore()
 onShow(async () => {
   await getWindows(1, 20)
   const wproducts = windows.length ? windows[4].content.products : []
+  const pros = ref<BuyProduct[]>([])
   wproducts.forEach((item) => {
-    products.value.push({ ...item, quantity: 1, select: false, delete: false })
+    pros.value.push({ ...item, quantity: 1, select: false, delete: false })
   })
+  products.value = pros.value
 })
 // test end
-// 管理模式
-const management = ref<boolean>(false)
 // 当前滑块索引
 const slidIdx = ref<number | null>(null)
+// 管理模式
+const management = ref<boolean>(false)
+// 切换管理模式
+function managementSwitch() {
+  management.value = !management.value
+  slidIdx.value = null
+}
 // 页面刷新时
 onShow(() => {
   management.value = false
@@ -67,7 +74,7 @@ function showConfigsFn(product: BuyProduct) {
           共 {{ products.length }} 件商品
         </div>
         <div class="right">
-          <div class="manage" @click="management = !management">
+          <div class="manage" @click="managementSwitch">
             <div class="i-icons-screen icon" />
             <text class="text">
               {{ !management ? '管理' : '退出管理' }}
@@ -82,9 +89,10 @@ function showConfigsFn(product: BuyProduct) {
         <template v-if="products.length > 0">
           <template v-for="(item, index) in products" :key="index">
             <buys-product
-              v-model:product="products[index]" :sliding="slidIdx === index" :is-management="management"
+              :product="item" :sliding="slidIdx === index" :is-management="management"
               @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="deleteProduct([item.id])"
               @show-detail="showConfigsFn"
+              @update:product="(product) => products[index] = product"
             />
           </template>
         </template>
@@ -96,9 +104,9 @@ function showConfigsFn(product: BuyProduct) {
     </div>
     <div class="bottom">
       <div class="wrap">
-        <div class="selectAll" @click="selectAll(!isSelectdAll(management), management)">
-          <div class="select" :class="{ all: isSelectdAll(management) }">
-            <div v-if="isSelectdAll(management)" class="i-icons-correct" />
+        <div class="selectAll" @click="selectAll(!isSelectedAll(management), management)">
+          <div class="select" :class="{ all: isSelectedAll(management) }">
+            <div v-if="isSelectedAll(management)" class="i-icons-correct" />
           </div>
           <div class="text">
             全选
@@ -107,10 +115,6 @@ function showConfigsFn(product: BuyProduct) {
         <div v-if="!management" class="info">
           <div class="details">
             <span class="text-[#BEBEBE]">已选 {{ selectedNum(management) }} 件</span>
-            <!-- <span class="p-1">|</span>
-            <span>优惠：</span>
-            <span class="text-[28rpx] text-[#EDA522FF]">￥</span>
-            <span class="text-[28rpx] text-[#EDA522FF]">{{ 4399.00 }}</span> -->
           </div>
           <div class="total">
             <span>合计：</span>
@@ -200,10 +204,12 @@ function showConfigsFn(product: BuyProduct) {
       .top-wrap {
         height: $top-height;
       }
-      .body-wrap{
+
+      .body-wrap {
         flex: 1;
         overflow: scroll;
       }
+
       .bottom-wrap {
         height: $bottom-height;
       }

@@ -5,6 +5,7 @@ export const useBuyStore = defineStore('buy', {
     products: [],
   }),
   getters: {
+    // 选中数量
     selectedNum(state) {
       return (isDelete: boolean) => {
         if (state.products.length === 0)
@@ -18,7 +19,8 @@ export const useBuyStore = defineStore('buy', {
         }).length
       }
     },
-    isSelectdAll(state) {
+    // 是否全选
+    isSelectedAll(state) {
       return (isDelete: boolean) => {
         if (state.products.length === 0)
           return false
@@ -31,6 +33,7 @@ export const useBuyStore = defineStore('buy', {
         })
       }
     },
+    // 选中的所有商品id
     selectedProductIds(state) {
       return (isDelete: boolean) => {
         if (state.products.length === 0)
@@ -49,6 +52,7 @@ export const useBuyStore = defineStore('buy', {
     }, 0).toFixed(2),
   },
   actions: {
+    // 选中全部
     selectAll(value: boolean, isDelete: boolean) {
       this.products.forEach((item) => {
         if (!isDelete)
@@ -57,13 +61,9 @@ export const useBuyStore = defineStore('buy', {
           item.delete = value
       })
     },
-
+    // 删除商品
     deleteProduct(ids: BuyProduct['id'][]) {
-      ids.forEach((id) => {
-        const index = this.products.findIndex(item => item.id === id)
-        if (index !== -1)
-          this.products.splice(index, 1)
-      })
+      this.products = this.products.filter(item => !ids.includes(item.id))
     },
   },
   // persist: true,

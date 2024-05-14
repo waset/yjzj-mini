@@ -14,32 +14,25 @@ const emits = defineEmits<{
   'sliding': [sliding: boolean]
   'showDetail': [product: BuyProduct]
 }>()
-// 接收产品信息
-const info = ref(props.product)
-// 监听产品信息
-watch(info, (newVal) => {
-  info.value = newVal
-  emits('update:product', newVal)
-}, { deep: true })
 // 选择状态
 const selected = computed({
   get: () => {
     if (!props.isManagement)
-      return info.value?.select
+      return props.product?.select
     else
-      return info.value?.delete
+      return props.product?.delete
   },
   set: (val) => {
     if (!props.isManagement)
-      info.value.select = val
+      emits('update:product', { ...props.product, select: val })
 
     else
-      info.value.delete = val
+      emits('update:product', { ...props.product, delete: val })
   },
 })
 // 删除产品
 function del() {
-  emits('del', info.value.id)
+  emits('del', props.product.id)
 }
 // 功能区
 const func = ref<HTMLElement | null>(null)
@@ -47,11 +40,17 @@ const func = ref<HTMLElement | null>(null)
 const slidingX = ref(0)
 // 滑动开始
 const useStart = useThrottleFn((e: TouchEvent) => {
+  if (!props.isManagement)
+    return
+
   e.preventDefault()
   slidingX.value = e.touches[0].clientX
 }, 100)
 // 滑动结束
 const useEnd = useThrottleFn((e: TouchEvent) => {
+  if (!props.isManagement)
+    return
+
   e.preventDefault()
   if (e.changedTouches[0].clientX > slidingX.value + 80) {
     emits('sliding', false)
@@ -62,26 +61,26 @@ const useEnd = useThrottleFn((e: TouchEvent) => {
 }, 100)
 // 减购条件
 const conditionsMinus = computed(() => {
-  return info.value.quantity <= 1
+  return props.product.quantity <= 1
 })
 // 加购条件
 const conditionsAdd = computed(() => {
-  return info.value.quantity >= info.value.maxBuyNumber && info.value.quantity >= info.value.stockNumber
+  return props.product.quantity >= props.product.maxBuyNumber && props.product.quantity >= props.product.stockNumber
 })
 // 减购
 function minus() {
   if (conditionsMinus.value)
     return
-  info.value.quantity--
+  emits('update:product', { ...props.product, quantity: props.product.quantity - 1 })
 }
 // 加购
 function add() {
   if (conditionsAdd.value)
     return
-  info.value.quantity++
+  emits('update:product', { ...props.product, quantity: props.product.quantity + 1 })
 }
 function showInfo() {
-  emits('showDetail', info.value)
+  emits('showDetail', props.product)
 }
 </script>
 
@@ -100,11 +99,11 @@ function showInfo() {
         </div>
         <div class="info">
           <div class="image">
-            <product-image :src="info.banner[0]" width="200rpx" height="200rpx" />
+            <product-image :src="props.product.banner[0]" width="200rpx" height="200rpx" />
           </div>
           <div class="details">
             <div class="name">
-              {{ info.name }}
+              {{ props.product.name }}
             </div>
             <div class="goview" @click.stop.prevent="showInfo">
               <div class="text">
@@ -116,14 +115,14 @@ function showInfo() {
               <div class="price">
                 <div class="original">
                   <span>￥</span>
-                  <span>{{ info.costPrice }}</span>
+                  <span>{{ props.product.costPrice }}</span>
                 </div>
                 <div class="current">
                   <span>￥</span>
-                  <span>{{ info.tagPrice }}</span>
+                  <span>{{ props.product.tagPrice }}</span>
                 </div>
               </div>
-              <div class="num">
+              <div v-if="!isManagement" class="num">
                 <div
                   class="fun" :class="{
                     disabled: conditionsMinus,
@@ -132,7 +131,7 @@ function showInfo() {
                   <div class="i-icons-minus" />
                 </div>
                 <div class="number">
-                  {{ info.quantity ?? 1 }}
+                  {{ props.product.quantity }}
                 </div>
                 <div
                   class="fun" :class="{
