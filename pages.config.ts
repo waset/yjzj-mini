@@ -6,11 +6,11 @@ const { height, top, bottom } = useTabbarSize()
 export default defineUniPages({
   pages: [],
   globalStyle: {
-    backgroundColor: '@bgColor',
-    backgroundColorBottom: '@bgColorBottom',
-    backgroundColorTop: '@bgColorTop',
+    backgroundColor: '#111111',
+    backgroundColorBottom: '#111111',
+    backgroundColorTop: '#111111',
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#000000',
+    navigationBarBackgroundColor: '#111111',
     navigationBarTextStyle: 'white',
     navigationBarTitleText: '一剑装机',
     navigationStyle: 'custom',
@@ -26,6 +26,7 @@ export default defineUniPages({
     ],
     color: '#999999',
     selectedColor: '#333333',
+    backgroundColor: '#111111',
     height: `${(height + top + bottom) || 132}rpx`,
   },
   easycom: {

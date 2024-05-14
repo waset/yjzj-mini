@@ -120,21 +120,23 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
             scroll-y scroll-with-animation class="scroll" :scroll-top="rightScrollTop"
             @scroll="(detail: any) => { rightScrollTop = detail.scrollTop }"
           >
-            <div class="list">
-              <template v-for="(item, index) in products" :key="index">
-                <div
-                  class="item" :class="{
-                    last: index === productLength - 1,
-                  }"
-                >
-                  <div class="image" data-text="查看更多>>">
-                    <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
+            <div class="gradientBorder">
+              <div class="list">
+                <template v-for="(item, index) in products" :key="index">
+                  <div
+                    class="item" :class="{
+                      last: index === productLength - 1,
+                    }"
+                  >
+                    <div class="image" data-text="查看更多>>">
+                      <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
+                    </div>
+                    <div class="name">
+                      {{ item.name }}
+                    </div>
                   </div>
-                  <div class="name">
-                    {{ item.name }}
-                  </div>
-                </div>
-              </template>
+                </template>
+              </div>
             </div>
             <div class="py-2" />
           </scroll-view>
@@ -278,89 +280,69 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 
           .scroll {
             height: 100%;
-            border-radius: 32rpx;
 
-            .list {
-              position: relative;
-              @apply grid grid-cols-3 gap-[22rpx];
+            .gradientBorder {
               border-radius: 32rpx;
-              padding: 16rpx;
-              z-index: 0;
+              padding: 2rpx;
+              background-image: linear-gradient(to right bottom, rgba(#BEBEBE, 1) 0%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 0.1) 80%, rgba(#BEBEBE, 1) 100%);
 
-              .item {
-                @apply flex-center flex-col;
+              .list {
+                @apply grid grid-cols-3 gap-[22rpx];
+                border-radius: 32rpx;
+                padding: 16rpx;
+                background-color: #000;
 
-                .image {
-                  width: 100%;
-                }
+                .item {
+                  @apply flex-center flex-col ;
+                  justify-content: start;
 
-                .name {
-                  font-weight: 400;
-                  font-size: 24rpx;
-                  color: #FFFFFF;
-                  line-height: 40rpx;
-                  text-align: left;
-                  font-style: normal;
-                  text-transform: none;
-
-                  display: -webkit-box;
-                  -webkit-box-orient: vertical;
-                  -webkit-line-clamp: 2;
-                  overflow: hidden;
-
-                  @apply hyphens-manual whitespace-normal break-all;
-                }
-
-                &.last {
                   .image {
-                    position: relative;
-                    z-index: 1;
-
-                    &::after {
-                      content: attr(data-text);
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      width: 100%;
-                      height: 100%;
-                      background-color: rgba(0, 0, 0, 0.5);
-                      z-index: 2;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      font-size: 24rpx;
-                    }
+                    width: 100%;
                   }
 
                   .name {
-                    color: rgba(#fff, 0.5);
+                    font-weight: 400;
+                    font-size: 24rpx;
+                    color: #FFFFFF;
+                    line-height: 40rpx;
+                    text-align: left;
+                    font-style: normal;
+                    text-transform: none;
+
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+
+                    @apply hyphens-manual whitespace-normal break-all;
+                  }
+
+                  &.last {
+                    .image {
+                      position: relative;
+                      z-index: 1;
+
+                      &::after {
+                        content: attr(data-text);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        z-index: 2;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24rpx;
+                      }
+                    }
+
+                    .name {
+                      color: rgba(#fff, 0.5);
+                    }
                   }
                 }
-              }
-
-              &::before {
-                $border : 2rpx;
-                content: '';
-                position: absolute;
-                top: $border;
-                left: $border;
-                width: calc(100% - $border * 2);
-                height: calc(100% - $border * 2);
-                background-color: #000;
-                border-radius: 32rpx;
-                z-index: -1;
-              }
-
-              &::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image: linear-gradient(to right bottom, rgba(#BEBEBE, 1) 0%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 0.1) 80%, rgba(#BEBEBE, 1) 100%);
-                border-radius: 32rpx;
-                z-index: -2;
               }
             }
           }
