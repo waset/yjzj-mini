@@ -25,6 +25,11 @@ interface ProductType {
   [property: string]: any
 }
 
+interface GetProductParams {
+  typeID?: number
+  typeParentID?: number
+  name?: string
+}
 interface Product {
   banner: string[]
   brand: Brand
@@ -117,10 +122,4 @@ interface CategorysItem {
   label: string
   value: number
   icon: string
-}
-
-interface GetProductParams {
-  typeID?: number
-  typeParentID?: number
-  name?: string
 }

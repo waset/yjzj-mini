@@ -1,7 +1,25 @@
 <script lang="ts" setup>
-const product = ref([])
-const management = ref(false)
-const selectAll = ref(false)
+const { products, isSelectdAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
+const { selectAll, deleteProduct } = useBuyStore()
+// TODO: test 测试方法，后续删除
+const { windows, getWindows } = useWindowsStore()
+onShow(async () => {
+  await getWindows(1, 20)
+  const wproducts = windows.length ? windows[4].content.products : []
+  wproducts.forEach((item) => {
+    products.value.push({ ...item, quantity: 1, select: false, delete: false })
+  })
+})
+// test end
+// 管理模式
+const management = ref<boolean>(false)
+// 当前滑块索引
+const slidIdx = ref<number | null>(null)
+// 页面刷新时
+onShow(() => {
+  management.value = false
+  slidIdx.value = null
+})
 </script>
 
 <template>
@@ -10,7 +28,7 @@ const selectAll = ref(false)
     <div class="top">
       <div class="wrap">
         <div class="left">
-          共 {{ product.length }} 件商品
+          共 {{ products.length }} 件商品
         </div>
         <div class="right">
           <div class="manage" @click="management = !management">
@@ -24,8 +42,16 @@ const selectAll = ref(false)
     </div>
     <div class="body">
       <div class="top-wrap" />
-      <template v-if="product.length > 0">
-        123
+      <template v-if="products.length > 0">
+        <template v-for="(item, index) in products" :key="index">
+          <buys-product
+            v-model:product="products[index]"
+            :sliding="slidIdx === index"
+            :is-management="management"
+            @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null"
+            @del="deleteProduct([item.id])"
+          />
+        </template>
       </template>
       <template v-else>
         <common-empty text="您的购物车空空如也" />
@@ -34,9 +60,9 @@ const selectAll = ref(false)
     </div>
     <div class="bottom">
       <div class="wrap">
-        <div class="selectAll" @click="selectAll = !selectAll">
-          <div class="select" :class="{ all: selectAll }">
-            <div v-if="selectAll" class="i-icons-correct" />
+        <div class="selectAll" @click="selectAll(!isSelectdAll(management), management)">
+          <div class="select" :class="{ all: isSelectdAll(management) }">
+            <div v-if="isSelectdAll(management)" class="i-icons-correct" />
           </div>
           <div class="text">
             全选
@@ -44,16 +70,16 @@ const selectAll = ref(false)
         </div>
         <div v-if="!management" class="info">
           <div class="details">
-            <span class="text-[#BEBEBE]">已选 {{ product.length }} 件</span>
-            <span class="p-1">|</span>
+            <span class="text-[#BEBEBE]">已选 {{ selectedNum(management) }} 件</span>
+            <!-- <span class="p-1">|</span>
             <span>优惠：</span>
             <span class="text-[28rpx] text-[#EDA522FF]">￥</span>
-            <span class="text-[28rpx] text-[#EDA522FF]">{{ 4399.00 }}</span>
+            <span class="text-[28rpx] text-[#EDA522FF]">{{ 4399.00 }}</span> -->
           </div>
           <div class="total">
             <span>合计：</span>
             <span class="text-[32rpx] text-green">￥</span>
-            <span class="text-[32rpx] text-green">{{ 4399.00 }}</span>
+            <span class="text-[32rpx] text-green">{{ total }}</span>
           </div>
         </div>
         <div class="btns">
@@ -63,7 +89,7 @@ const selectAll = ref(false)
             </div>
           </template>
           <template v-else>
-            <div class="btn bg-white">
+            <div class="btn bg-white" @click="deleteProduct(selectedProductIds(management))">
               删除
             </div>
           </template>
@@ -91,8 +117,9 @@ const selectAll = ref(false)
       left: 0;
       right: 0;
       height: $top-height;
-        background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
+      background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
       backdrop-filter: blur(48rpx);
+      z-index: 1;
 
       .wrap {
         padding: 16rpx 32rpx;
@@ -210,7 +237,8 @@ const selectAll = ref(false)
           .btn {
             padding: 20rpx 68rpx;
             border-radius: 8rpx;
-            font-size: 28rpx;
+            font-size: 32rpx;
+            font-weight: bold;
             line-height: 40rpx;
             color: #333;
           }
