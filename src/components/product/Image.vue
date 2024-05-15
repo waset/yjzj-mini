@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   src: string
-  mode: string
+  mode?: string
   width?: string
   height?: string
   borderRadius?: string
@@ -34,10 +34,14 @@ const props = withDefaults(defineProps<{
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 0;
 
     .image {
         max-width: 100%;
-      z-index: 2;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
       .img {
         will-change: transform;

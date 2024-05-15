@@ -8,18 +8,20 @@ const props = defineProps<{
   <div class="lists">
     <div class="body">
       <template v-for="(product, index) in props.list" :key="index">
-        <div class="item">
-          <image :src="ImageUrl(product.banner[0])" class="image" mode="aspectFit" />
-          <div class="info">
-            <span class="name">{{ product.name }}</span>
-          </div>
-          <div class="buy">
-            <div class="price">
-              <span>￥</span>
-              <span>{{ product.tagPrice }}</span>
+        <div class="wrap">
+          <div class="item">
+            <image :src="ImageUrl(product.banner[0])" class="image" mode="aspectFit" />
+            <div class="info">
+              <span class="name">{{ product.name }}</span>
             </div>
-            <div class="icon">
-              <div class="i-icons-buy" />
+            <div class="buy">
+              <div class="price">
+                <span>￥</span>
+                <span>{{ product.tagPrice }}</span>
+              </div>
+              <div class="icon">
+                <div class="i-icons-buy" />
+              </div>
             </div>
           </div>
         </div>
@@ -40,90 +42,70 @@ const props = defineProps<{
     .body {
       @apply py-[60rpx] grid grid-cols-2 grid-rows-2 gap-[16rpx];
 
-      .item {
-        position: relative;
-        background: #000000;
+      .wrap {
+        padding: 2rpx;
         border-radius: 32rpx;
-        z-index: 0;
-        transition: all 3s;
-        @apply p-[16rpx];
+        background-image: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
 
-        &::before {
-          $boder : 2rpx;
-          box-sizing: content-box;
-          content: '';
-          position: absolute;
-          left: $boder;
-          top: $boder;
-          width: calc(100% - $boder * 2);
-          height: calc(100% - $boder * 2);
+        .item {
           background: #000000;
           border-radius: 32rpx;
-          z-index: -1;
-        }
+          transition: all 3s;
+          @apply p-[16rpx];
 
-        &::after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top: 0;
-          background-image: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
-          border-radius: 32rpx;
-          z-index: -2;
-        }
-
-        .image {
-          width: 296rpx;
-          height: 296rpx;
-          max-width: 100%;
-          border-radius: 28rpx;
-        }
-
-        .info {
-          padding: 16rpx 0;
-
-          .name {
-            font-weight: 600;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+          .image {
+            width: 296rpx;
+            height: 296rpx;
+            max-width: 100%;
+            border-radius: 28rpx;
           }
 
-        }
+          .info {
+            padding: 16rpx 0;
 
-        .buy {
-          @apply flex-between;
+            .name {
+              font-weight: 600;
+              font-size: 28rpx;
+              color: #FFFFFF;
+              line-height: 40rpx;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              overflow: hidden;
+            }
 
-          .price {
-            flex: 1;
-            background: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
-            border-radius: 0rpx 4rpx 4rpx 0rpx;
-            font-weight: 600;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-            padding: 20rpx 8rpx;
           }
 
-          .icon {
-            @apply flex-center;
+          .buy {
+            @apply flex-between;
 
-            width: 80rpx;
-            height: 80rpx;
-            background: #A7F522;
-            border-radius: 48rpx 48rpx 48rpx 48rpx;
+            .price {
+              flex: 1;
+              background: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
+              border-radius: 0rpx 4rpx 4rpx 0rpx;
+              font-weight: 600;
+              font-size: 28rpx;
+              color: #FFFFFF;
+              line-height: 40rpx;
+              text-align: left;
+              font-style: normal;
+              text-transform: none;
+              padding: 20rpx 8rpx;
+            }
+
+            .icon {
+              @apply flex-center;
+
+              width: 80rpx;
+              height: 80rpx;
+              font-size: 40rpx;
+              color: #333;
+              background: #A7F522;
+              border-radius: 48rpx 48rpx 48rpx 48rpx;
+            }
           }
         }
       }

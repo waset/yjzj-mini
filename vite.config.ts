@@ -103,5 +103,21 @@ export default defineConfig(async ({ mode }) => {
         ],
       }),
     ],
+    // 配置服务器相关的选项
+    server: {
+      // 反向代理的配置
+      proxy: {
+        // 匹配所有以'/web'开头的请求
+        '/api': {
+          // 代理目标的基础路径
+          target: 'https://dev-api.yjzj.com',
+          // 如果是HTTPS服务，需要设置为true
+          secure: false,
+          // 路径重写
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
   }
 })

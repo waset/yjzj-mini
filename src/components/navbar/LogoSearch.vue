@@ -3,11 +3,11 @@ const menu = useMenuButtonBounding()
 </script>
 
 <template>
-  <navbar-base>
+  <common-navbar>
     <template #left>
       <div
         class="search" :style="{
-          width: `${menu.width}px`,
+          minWidth: `${menu.width}px`,
           height: `${menu.height}px`,
         }"
       >
@@ -20,7 +20,7 @@ const menu = useMenuButtonBounding()
     <template #center>
       <div class="i-svg-logo text-7xl" />
     </template>
-  </navbar-base>
+  </common-navbar>
 </template>
 
 <style lang="scss" scoped>
@@ -33,6 +33,7 @@ const menu = useMenuButtonBounding()
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 4rpx;
 
         .text {
             margin-left: 10rpx;

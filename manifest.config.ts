@@ -64,6 +64,8 @@ export default defineManifestConfig({
       minified: true,
       urlCheck: false,
       compileHotReLoad: true,
+      ignoreDevUnusedFiles: false,
+      ignoreUploadUnusedFiles: false,
     },
     darkmode: true,
     themeLocation: 'theme.json',

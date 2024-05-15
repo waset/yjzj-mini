@@ -25,6 +25,11 @@ interface ProductType {
   [property: string]: any
 }
 
+interface GetProductParams {
+  typeID?: number
+  typeParentID?: number
+  name?: string
+}
 interface Product {
   banner: string[]
   brand: Brand
@@ -110,22 +115,11 @@ enum Category {
 // 产品类目键
 type CategoryKey = keyof typeof Category
 
+// 产品类目类型
+type Categorys = { [key in CategoryKey]: CategorysItem }
+
 interface CategorysItem {
   label: string
   value: number
   icon: string
-}
-// 产品类目类型
-interface Categorys {
-  [key: CategoryKey | string]: CategorysItem
-}
-
-interface CategorysArray extends CategorysItem {
-  name: string
-}
-
-interface GetProductParams {
-  typeID?: number
-  typeParentID?: number
-  name?: string
 }
