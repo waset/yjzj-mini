@@ -62,7 +62,7 @@ export const useBuyStore = defineStore('buy', {
       })
     },
     // 删除商品
-    deleteProduct(ids: BuyProduct['id'][]) {
+    deletes(ids: BuyProduct['id'][]) {
       this.products = this.products.filter(item => !ids.includes(item.id))
     },
   },

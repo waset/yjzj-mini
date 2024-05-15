@@ -90,14 +90,17 @@ function showInfo() {
       sliding: props.sliding,
     }" :style="{
       '--sliding': `-${func?.clientWidth || 60}px`,
-    }" @touchstart.capture="useStart" @touchend.capture="useEnd"
+    }"
   >
     <div class="wraps">
-      <div class="wrap" @click.stop.prevent="selected = !selected">
+      <div class="wrap" @click="selected = !selected">
         <div class="select" :class="{ selected }">
           <div v-if="selected" class="i-icons-correct" />
         </div>
-        <div class="info">
+        <div
+          class="info" @touchstart.capture="useStart"
+          @touchend.capture="useEnd"
+        >
           <div class="image">
             <product-image :src="props.product.banner[0]" width="200rpx" height="200rpx" />
           </div>
@@ -105,7 +108,7 @@ function showInfo() {
             <div class="name">
               {{ props.product.name }}
             </div>
-            <div class="goview" @click.stop.prevent="showInfo">
+            <div class="goview" @click="showInfo">
               <div class="text">
                 配置详情
               </div>
@@ -147,7 +150,7 @@ function showInfo() {
       </div>
     </div>
     <div class="func">
-      <div class="item del" @click="del">
+      <div class="item del" @click.stop.prevent="del">
         <div class="i-icons-del" />
       </div>
     </div>
@@ -205,7 +208,7 @@ function showInfo() {
           }
 
           .details {
-            flex:1;
+            flex: 1;
             overflow: hidden;
 
             .name {

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
-const { selectAll, deleteProduct } = useBuyStore()
+const { selectAll, deletes } = useBuyStore()
 // TODO: test 测试方法，后续删除
 const { windows, getWindows } = useWindowsStore()
 onShow(async () => {
@@ -36,6 +36,23 @@ function showConfigsFn(product: BuyProduct) {
   showConfigs.value = product
   showConfigsSwitch.value = true
 }
+// 是否显示确认框
+const showModel = ref(false)
+const del_ids = ref<BuyProduct['id'][]>([])
+// 删除弹窗
+function delModel(ids: BuyProduct['id'][]) {
+  del_ids.value = ids
+  showModel.value = true
+}
+//
+function deleteProduct() {
+  deletes(del_ids.value)
+  showModel.value = false
+  slidIdx.value = null
+  if (del_ids.value.length > 1 || products.value.length === 0)
+    management.value = false
+  del_ids.value = []
+}
 </script>
 
 <template>
@@ -67,6 +84,7 @@ function showConfigsFn(product: BuyProduct) {
       </div>
     </div>
   </common-popup>
+  <common-model v-model:show="showModel" msg="是否删除" icon="i-svg-warn" @ok="deleteProduct" @cancel="del_ids = []" />
   <div class="buy">
     <div class="top">
       <div class="wrap">
@@ -90,9 +108,8 @@ function showConfigsFn(product: BuyProduct) {
           <template v-for="(item, index) in products" :key="index">
             <buys-product
               :product="item" :sliding="slidIdx === index" :is-management="management"
-              @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="deleteProduct([item.id])"
-              @show-detail="showConfigsFn"
-              @update:product="(product) => products[index] = product"
+              @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="delModel([item.id])"
+              @show-detail="showConfigsFn" @update:product="(product) => products[index] = product"
             />
           </template>
         </template>
@@ -129,7 +146,7 @@ function showConfigsFn(product: BuyProduct) {
             </div>
           </template>
           <template v-else>
-            <div class="btn bg-white" @click="deleteProduct(selectedProductIds(management))">
+            <div class="btn bg-white" @click="delModel(selectedProductIds(management))">
               删除
             </div>
           </template>
