@@ -40,7 +40,7 @@ const navbar_size = useNavbarSize()
     --navbar-padding-left: var(--navbar-left);
     --navbar-padding-right: var(--navbar-right);
     --navbar-padding-bottom: 20rpx;
-    --navbar-heigth-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-bottom));
+    --navbar-height-all: calc(var(--navbar-height) + var(--navbar-top) + var(--navbar-bottom));
 
     // tabbar
     --tabbar-padding-top: var(--tabbar-top);
@@ -48,10 +48,10 @@ const navbar_size = useNavbarSize()
     --tabbar-height-all: calc(var(--tabbar-height) + var(--tabbar-top) + var(--tabbar-bottom) + env(safe-area-inset-bottom));
 
     // body
-    --body-min-height: calc(100vh - var(--navbar-heigth-all) - var(--tabbar-height-all));
+    --body-min-height: calc(100vh - var(--navbar-height-all) - var(--tabbar-height-all));
 
     .navbar-wrap {
-      height: var(--navbar-heigth-all);
+      height: var(--navbar-height-all);
     }
 
     .tabbar-wrap {

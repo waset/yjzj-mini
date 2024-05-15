@@ -71,7 +71,7 @@ async function getProductsByType(type: number) {
 
 <style lang="scss" scoped>
   .index {
-    margin-top: calc((var(--navbar-heigth-all) - var(--navbar-top)) * -1);
+    margin-top: calc((var(--navbar-height-all) - var(--navbar-top)) * -1);
 
     .about {
       @apply flex-center;
