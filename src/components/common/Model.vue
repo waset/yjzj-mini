@@ -2,7 +2,7 @@
 interface Props {
   show: boolean
   msg: string
-  icon?: 'i-svg-success' | 'i-svg-error' | 'i-svg-warn'
+  icon?: 'i-svg-info' | 'i-svg-success' | 'i-svg-error' | 'i-svg-warn'
   closeBtn?: boolean
   mask?: boolean
   maskClosable?: boolean
