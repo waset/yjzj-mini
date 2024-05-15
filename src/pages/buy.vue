@@ -1,18 +1,6 @@
 <script lang="ts" setup>
 const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
 const { selectAll, deletes } = useBuyStore()
-// TODO: test 测试方法，后续删除
-const { windows, getWindows } = useWindowsStore()
-onShow(async () => {
-  await getWindows(1, 20)
-  const wproducts = windows.length ? windows[4].content.products : []
-  const pros = ref<BuyProduct[]>([])
-  wproducts.forEach((item) => {
-    pros.value.push({ ...item, quantity: 1, select: false, delete: false })
-  })
-  products.value = pros.value
-})
-// test end
 // 当前滑块索引
 const slidIdx = ref<number | null>(null)
 // 管理模式
