@@ -45,7 +45,11 @@ export default defineConfig(async ({ mode }) => {
       Modules({
         target: 'src/plugins',
       }),
-      Uni(),
+      /**
+       * https://github.com/dcloudio/uni-app/issues/4815
+       */
+      // @ts-expect-error eslint-disable-next-line ts/ban-ts-comment
+      Uni.default(),
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
         imports: [

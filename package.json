@@ -1,5 +1,6 @@
 {
   "name": "yjzj-mini",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@9.1.1",
