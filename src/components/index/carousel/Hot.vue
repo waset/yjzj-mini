@@ -22,9 +22,9 @@ const carouselHeight = ref(900)
 <template>
   <div class="hots">
     <carousel
-      v-model:current="pcurrent" switch loop :list="props.list" :height="carouselHeight"
+      v-model:current="pcurrent" :list="props.list" :height="carouselHeight"
       direction="vertical" :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="48"
-      offset-y-step-units="rpx" :scale-step="0.8" :opacity-step="0.99" overflow="visible" natural-direction
+      offset-y-step-units="rpx" :scale-step="0.8" :opacity-step="0.99" overflow="visible" loop switch natural-direction
     >
       <template #item="{ item, index }">
         <div

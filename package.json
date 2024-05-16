@@ -1,8 +1,9 @@
 {
   "name": "yjzj-mini",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "pnpm@9.1.1",
   "license": "MIT",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
@@ -53,7 +54,7 @@
     "@uni-helper/vite-plugin-uni-manifest": "^0.2.3",
     "@uni-helper/vite-plugin-uni-pages": "^0.2.14",
     "@uni-helper/volar-service-uni-pages": "^0.2.14",
-    "@unocss/eslint-config": "^0.58.0",
+    "@unocss/eslint-config": "^0.60.0",
     "@vue/runtime-core": "^3.4.25",
     "@vue/tsconfig": "^0.5.1",
     "clipboard": "^2.0.11",
@@ -66,7 +67,7 @@
     "sass-loader": "^14.2.0",
     "simple-git-hooks": "^2.9.0",
     "typescript": "^5.3.3",
-    "unocss": "^0.58.0",
+    "unocss": "^0.60.0",
     "unplugin-auto-import": "^0.17.3",
     "uview-plus": "^3.2.14",
     "vite": "^5.2.8",
