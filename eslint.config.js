@@ -1,11 +1,12 @@
-const uni = require('@uni-helper/eslint-config')
-const unocss = require('@unocss/eslint-plugin')
+import uni from '@uni-helper/eslint-config'
+import unocss from '@unocss/eslint-plugin'
 
-module.exports = uni(
+export default uni(
   unocss.configs.flat,
   {
     rules: {
       'no-console': 'warn',
+      'unocss/order': 'off',
     },
   },
 )
