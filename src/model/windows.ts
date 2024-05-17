@@ -2,7 +2,6 @@ export const useWindowsStore = defineStore('windows', {
   state: (): {
     windows: WindowsRes[]
   } => ({
-    // 这里存放数据
     windows: [],
   }),
   actions: {

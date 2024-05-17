@@ -11,7 +11,7 @@ import Modules from 'vite-plugin-use-modules'
 import { uniPolyfill } from './bin/uni-polyfill'
 
 // convert-icon
-import { Converts, ViteConverts } from './bin/convert-icon'
+import { Converts } from './bin/convert-icon'
 import { icons as ConvertsOptions } from './project.config'
 
 // https://vitejs.dev/config/
@@ -24,7 +24,6 @@ export default defineConfig(async ({ mode }) => {
   // https://unocss.dev
   return {
     plugins: [
-      ViteConverts(ConvertsOptions),
       // https://github.com/dcloudio/uni-app/issues/4604
       uniPolyfill(),
       // https://github.com/uni-helper/vite-plugin-uni-manifest
@@ -81,7 +80,7 @@ export default defineConfig(async ({ mode }) => {
         dts: 'temp/types/auto-imports.d.ts',
         dirs: [
           'src/composables/**',
-          'src/stores/**',
+          'src/model/**',
           'src/utils/**',
         ],
         vueTemplate: true,
