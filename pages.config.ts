@@ -1,5 +1,5 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
-import useTabbarSize from './src/composables/constant/useTabbarSize'
+import useTabbarSize from './src/composables/const/useTabbarSize'
 
 const { height, top, bottom } = useTabbarSize()
 

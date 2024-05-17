@@ -181,7 +181,7 @@ type Result<T> = NormalResult<T> & { [K in keyof T]: T[K] }
  * @returns 是否登录
  */
 function auth(options: Options | undefined): Options | undefined {
-  const token = ''
+  const token = useUserStore().$state.token
   if (!token)
     return undefined
 

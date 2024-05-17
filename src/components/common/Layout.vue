@@ -1,4 +1,10 @@
 <script setup lang="ts">
+const props = withDefaults(defineProps<{
+  // 是否全屏
+  isFull?: boolean
+}>(), {
+  isFull: false,
+})
 // 获取小程序胶囊尺寸
 const menu = useMenuButtonBounding()
 // 获取小程序状态栏高度
@@ -28,9 +34,9 @@ const navbar_size = useNavbarSize()
       '--tabbar-bottom': `${tabbar_size.bottom}rpx`,
     }"
   >
-    <div class="navbar-wrap" />
+    <div v-if="!props.isFull" class="navbar-wrap" />
     <slot />
-    <div class="tabbar-wrap" />
+    <div v-if="!props.isFull" class="tabbar-wrap" />
   </div>
 </template>
 
