@@ -293,7 +293,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                 background-color: #000;
 
                 .item {
-                  @apply flex-center flex-col ;
+                  @apply flex-center flex-col;
                   justify-content: start;
 
                   .image {

@@ -24,19 +24,19 @@ const menu = useMenuButtonBounding()
 </template>
 
 <style lang="scss" scoped>
-    .search {
-        height: inherit;
-        font-size: 28rpx;
-        color: #fff;
-        border-radius: 60rpx;
-        border: 1rpx solid rgba($color: #fff, $alpha: .2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 4rpx;
+  .search {
+    height: inherit;
+    font-size: 28rpx;
+    color: #fff;
+    border-radius: 60rpx;
+    border: 1rpx solid rgba($color: #fff, $alpha: .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rpx;
 
-        .text {
-            margin-left: 10rpx;
-        }
+    .text {
+      margin-left: 10rpx;
     }
+  }
 </style>

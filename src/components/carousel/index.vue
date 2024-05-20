@@ -225,7 +225,7 @@ function play() {
   // 自动播放
   if (!canAutoplay.value || isSliding.value)
     return
-  // 重置计时器
+    // 重置计时器
   clear()
   timer = setInterval(() => {
     next()
@@ -245,7 +245,7 @@ function start(e: TouchEvent) {
   // 判断是否正在滑动
   if (isSliding.value)
     return
-  // 滑动开始
+    // 滑动开始
   isSliding.value = true
   // 获取滑动距离
   const { clientX, clientY } = e.touches[0]
@@ -268,7 +268,7 @@ function end(e: TouchEvent) {
   // 判断是否正在滑动
   if (!isSliding.value)
     return
-  // 滑动结束
+    // 滑动结束
   isSliding.value = false
   // 获取滑动距离
   let size = 0
@@ -415,95 +415,95 @@ function addUnit(value: number | string, unit = 'rpx'): string {
 </template>
 
 <style lang="scss" scoped>
-    .carousel {
-        position: relative;
+  .carousel {
+    position: relative;
+    width: 100%;
+    height: var(--carousel-height);
+    background: var(--carousel-bg-color);
+    border-radius: var(--carousel-border-radius);
+
+    .wrapper {
+      position: absolute;
+      width: 100%;
+      overflow: var(--carousel-overflow);
+      height: 100%;
+
+      &:hover {
+        background: none;
+      }
+
+      .item {
         width: 100%;
         height: var(--carousel-height);
-        background: var(--carousel-bg-color);
-        border-radius: var(--carousel-border-radius);
+        position: absolute;
 
-        .wrapper {
-            position: absolute;
-            width: 100%;
-            overflow: var(--carousel-overflow);
-            height: 100%;
-
-            &:hover {
-                background: none;
-            }
-
-            .item {
-                width: 100%;
-                height: var(--carousel-height);
-                position: absolute;
-
-                z-index: var(--zIndex);
-                opacity: var(--opacity);
-                transform: translate(var(--offsetX), var(--offsetY)) scale(var(--scale)) rotate(var(--rotate));
-                transition: scale var(--transition), opacity var(--transition), transform var(--transition);
-            }
-        }
-
-        .switch {
-            .item {
-
-                .left,
-                .right {
-                    position: absolute;
-                    top: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 50px;
-                    height: 100%;
-                    font-size: 40px;
-                    color: #fff;
-                    background: rgba(0, 0, 0, 0.2);
-                    z-index: calc(var(--carousel-length) + 1);
-                }
-
-                .left {
-                    left: 0;
-
-                    &::after {
-                        content: '<';
-                    }
-                }
-
-                .right {
-                    right: 0;
-
-                    &::after {
-                        content: '>';
-                    }
-                }
-            }
-        }
-
-        .indicator {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: calc(var(--carousel-length) + 1);
-
-            .item {
-                width: 16rpx;
-                height: 16rpx;
-                border-radius: 32rpx;
-                background: rgba(255, 255, 255, 0.2);
-                margin: 0 10rpx;
-                cursor: pointer;
-                transition: width 0.3s ease-in-out;
-
-                &.active {
-                    width: 48rpx;
-                    background: rgba(255, 255, 255, 0.8);
-                }
-            }
-        }
+        z-index: var(--zIndex);
+        opacity: var(--opacity);
+        transform: translate(var(--offsetX), var(--offsetY)) scale(var(--scale)) rotate(var(--rotate));
+        transition: scale var(--transition), opacity var(--transition), transform var(--transition);
+      }
     }
+
+    .switch {
+      .item {
+
+        .left,
+        .right {
+          position: absolute;
+          top: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          height: 100%;
+          font-size: 40px;
+          color: #fff;
+          background: rgba(0, 0, 0, 0.2);
+          z-index: calc(var(--carousel-length) + 1);
+        }
+
+        .left {
+          left: 0;
+
+          &::after {
+            content: '<';
+          }
+        }
+
+        .right {
+          right: 0;
+
+          &::after {
+            content: '>';
+          }
+        }
+      }
+    }
+
+    .indicator {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: calc(var(--carousel-length) + 1);
+
+      .item {
+        width: 16rpx;
+        height: 16rpx;
+        border-radius: 32rpx;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0 10rpx;
+        cursor: pointer;
+        transition: width 0.3s ease-in-out;
+
+        &.active {
+          width: 48rpx;
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+  }
 </style>

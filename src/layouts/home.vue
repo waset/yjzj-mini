@@ -14,5 +14,4 @@ onShow(() => {
   </common-layout>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

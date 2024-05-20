@@ -97,10 +97,7 @@ function showInfo() {
         <div class="select" :class="{ selected }">
           <div v-if="selected" class="i-icons-correct" />
         </div>
-        <div
-          class="info" @touchstart.capture="useStart"
-          @touchend.capture="useEnd"
-        >
+        <div class="info" @touchstart.capture="useStart" @touchend.capture="useEnd">
           <div class="image">
             <product-image :src="props.product.banner[0]" width="200rpx" height="200rpx" />
           </div>

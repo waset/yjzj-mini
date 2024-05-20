@@ -12,8 +12,7 @@ const menu = useMenuButtonBounding()
         class="home" :style="{
           width: `${menu.width / 2}px`,
           height: `${menu.height}px`,
-        }"
-        @click="jump('/index')"
+        }" @click="jump('/index')"
       >
         <div class="i-icons-home-active" />
       </div>

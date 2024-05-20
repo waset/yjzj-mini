@@ -21,7 +21,7 @@ function skip(index: number) {
 </template>
 
 <style lang="scss" scoped>
-    .banner {
-        padding-bottom: 20rpx;
-    }
+  .banner {
+    padding-bottom: 20rpx;
+  }
 </style>

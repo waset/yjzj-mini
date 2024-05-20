@@ -62,7 +62,7 @@ function close() {
       padding: 16rpx;
       padding-right: 8%;
       // background: rgba(245, 245, 245, 0.2);
-      background: rgba($color: green, $alpha:  1);
+      background: rgba($color: green, $alpha: 1);
       backdrop-filter: blur(48rpx);
       // clip-path: polygon(0% 100%, 0% 0%, 83.656% 0%, 100% 69.388%, 100% 100%, 0% 100%);
 

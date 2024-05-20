@@ -292,6 +292,7 @@ const menus = [
 
           .body {
             padding-top: 32rpx;
+
             .items {
               @apply flex-around;
 
