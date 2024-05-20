@@ -9,7 +9,7 @@ const colors: string[] = [
   '#52FFE2',
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
-const carouselHeight = ref(840)
+const carouselHeight = ref(900)
 </script>
 
 <template>
@@ -140,7 +140,7 @@ const carouselHeight = ref(840)
 
                             display: -webkit-box;
                             -webkit-box-orient: vertical;
-                            -webkit-line-clamp: 2;
+                            -webkit-line-clamp: 1;
                             overflow: hidden;
                         }
 
@@ -153,6 +153,7 @@ const carouselHeight = ref(840)
                             -webkit-box-orient: vertical;
                             -webkit-line-clamp: 2;
                             overflow: hidden;
+                            word-break: break-all;
                         }
 
                         .price {

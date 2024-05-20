@@ -90,7 +90,11 @@ function deleteProduct() {
       </div>
     </div>
     <div class="body">
-      <div class="body-wrap">
+      <div
+        class="body-wrap" :style="{
+          overflow: products.length ? 'scroll' : 'hidden',
+        }"
+      >
         <div class="top-wrap" />
         <template v-if="products.length > 0">
           <template v-for="(item, index) in products" :key="index">
@@ -145,15 +149,14 @@ function deleteProduct() {
 </template>
 
 <style lang="scss" scoped>
+    $top-height: 112rpx;
+    $bottom-height: 156rpx;
   .buy {
     position: relative;
-    height: var(--body-min-height);
+    height: calc(var(--body-min-height) - $top-height - $bottom-height);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
-    $top-height: 112rpx;
-    $bottom-height: 156rpx;
 
     .top {
       padding: 32rpx;
@@ -212,7 +215,6 @@ function deleteProduct() {
 
       .body-wrap {
         flex: 1;
-        overflow: scroll;
       }
 
       .bottom-wrap {
