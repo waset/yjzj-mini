@@ -212,7 +212,7 @@ function success<T>(res: RequestSuccessCallbackResult): T {
   if (res.data.code === 401) {
     Toast('请登录', 'none', () => {
       uni.reLaunch({
-        url: '/pages/login/login',
+        url: '/pages/me/login',
       })
     }, 1500)
   }
@@ -229,7 +229,7 @@ function fail<T>(err: NormalResult): T {
   if (err.code === 401) {
     Toast('请登录', 'none', () => {
       uni.reLaunch({
-        url: '/pages/login/login',
+        url: '/pages/me/login',
       })
     }, 1500)
   }

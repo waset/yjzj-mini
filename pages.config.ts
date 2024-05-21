@@ -18,11 +18,11 @@ export default defineUniPages({
   tabBar: {
     custom: true,
     list: [
-      { pagePath: 'pages/index' },
-      { pagePath: 'pages/menu' },
-      { pagePath: 'pages/custom' },
-      { pagePath: 'pages/buy' },
-      { pagePath: 'pages/me' },
+      { pagePath: 'pages/index/index' },
+      { pagePath: 'pages/menu/menu' },
+      { pagePath: 'pages/custom/custom' },
+      { pagePath: 'pages/buy/buy' },
+      { pagePath: 'pages/me/me' },
     ],
     color: '#999999',
     selectedColor: '#333333',
