@@ -6,33 +6,7 @@ const emit = defineEmits<{
   jump: [path: string]
 }>()
 // tabbar数据
-const lists = reactive([
-  {
-    icon: 'i-icons-home',
-    activeIcon: 'i-icons-home-active',
-    path: 'pages/index',
-  },
-  {
-    icon: 'i-icons-menu',
-    activeIcon: 'i-icons-menu-active',
-    path: 'pages/menu',
-  },
-  {
-    icon: 'i-icons-rocket',
-    activeIcon: 'i-icons-rocket-active',
-    path: 'pages/custom',
-  },
-  {
-    icon: 'i-icons-buy',
-    activeIcon: 'i-icons-buy-active',
-    path: 'pages/buy',
-  },
-  {
-    icon: 'i-icons-me',
-    activeIcon: 'i-icons-me-active',
-    path: 'pages/me',
-  },
-])
+const lists = useTabbarList()
 /**
  * 是否居中
  *
@@ -50,11 +24,11 @@ function isCenter(index: number) {
   <div class="tabbar">
     <div class="lists">
       <template v-for="(item, index) in lists" :key="index">
-        <div class="item" @click="(item.path === props.url) ? '' : emit('jump', item.path)">
+        <div class="item" @click="(item?.pagePath === props.url) ? '' : emit('jump', item?.pagePath || '')">
           <div class="rounded-12 p-2" :class="{ interme: isCenter(index) }">
             <div
               class="text-6" :class="[
-                item.path === props.url ? item.activeIcon : item.icon,
+                item?.pagePath === props.url ? item.activeIcon : item?.icon,
               ]"
             />
           </div>

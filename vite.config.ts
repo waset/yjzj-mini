@@ -113,7 +113,7 @@ export default defineConfig(async ({ mode }) => {
         // 匹配所有以'/web'开头的请求
         '/api': {
           // 代理目标的基础路径
-          target: 'https://dev-api.yjzj.com',
+          target: env.VITE_API_URL,
           // 如果是HTTPS服务，需要设置为true
           secure: false,
           // 路径重写

@@ -1,12 +1,15 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  src: string
+  src?: string | null
   mode?: string
   width?: string
   height?: string
   radius?: string
 }>(), {
   mode: 'aspectFill',
+  width: '160rpx',
+  height: '',
+  radius: '50%',
 })
 </script>
 

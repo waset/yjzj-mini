@@ -1,7 +1,13 @@
-import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
+import { type TabBar, type TabBarItem, defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
 import useTabbarSize from './src/composables/const/useTabbarSize'
+import useTabbarList from './src/composables/const/useTabbarList'
 
 const { height, top, bottom } = useTabbarSize()
+const pages = useTabbarList().map((item) => {
+  return {
+    pagePath: item.pagePath,
+  } as TabBarItem
+}) as TabBar['list']
 
 export default defineUniPages({
   pages: [],
@@ -17,13 +23,7 @@ export default defineUniPages({
   },
   tabBar: {
     custom: true,
-    list: [
-      { pagePath: 'pages/index/index' },
-      { pagePath: 'pages/menu/menu' },
-      { pagePath: 'pages/custom/custom' },
-      { pagePath: 'pages/buy/buy' },
-      { pagePath: 'pages/me/me' },
-    ],
+    list: pages,
     color: '#999999',
     selectedColor: '#333333',
     backgroundColor: '#111111',
