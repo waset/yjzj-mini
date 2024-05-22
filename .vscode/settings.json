@@ -85,5 +85,6 @@
   "miniprogram.miniprogramPath": "dist/dev/mp-weixin",
   "files.exclude": {
     "src/assets/css/background.scss": true
-  }
+  },
+  "image-manager.appearance.language": "zh-CN"
 }

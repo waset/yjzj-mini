@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-const { user, userDesc } = storeToRefs(useUserStore())
-const { login, getUserInfo } = useUserStore()
-onShow(() => {
-  if (user.value) {
-    login()
-    getUserInfo()
+const { getUserInfo } = useUserStore()
+const { userDesc, isRegister, token } = storeToRefs(useUserStore())
+
+onShow(async () => {
+  if (token.value) {
+    await getUserInfo()
   }
 })
+
+/**
+ * 订单类型
+ */
 const orderTypes = [
   {
     icon: 'i-icons-payment',
@@ -24,6 +28,9 @@ const orderTypes = [
     num: 9999,
   },
 ]
+/**
+ * 菜单
+ */
 const menus = [
   {
     icon: 'i-icons-setting',
@@ -41,33 +48,49 @@ const menus = [
     path: '',
   },
 ]
+/**
+ * 跳转登录
+ */
+function goLogin() {
+  if (token.value)
+    return
+
+  jump('/me/login')
+}
 </script>
 
 <template>
   <div class="personal">
     <navbar-home text="个人中心" />
     <div class="user">
-      <div class="wrap">
+      <div class="wrap" @click="goLogin">
         <div class="avatar">
-          <avatar :src="userDesc.avatar" width="160rpx" radius="50%" />
-          <div class="edit">
+          <avatar :src="ImageUrl(userDesc?.avatar || '')" />
+          <div v-if="isRegister" class="edit" @click="jump('/me/info')">
             <div class="btn">
               <div class="i-icons-edit" />
             </div>
           </div>
         </div>
-        <div class="info">
-          <div class="name">
-            {{ userDesc.nickname }}
+        <template v-if="isRegister">
+          <div class="info">
+            <div class="name">
+              {{ userDesc.nickname }}
+            </div>
+            <div class="phone">
+              {{ userDesc.phoneDesc }}
+            </div>
+            <div class="public">
+              <span> 公众号 </span>
+              <span>{{ userDesc.isSubDesc }}</span>
+            </div>
           </div>
-          <div class="phone">
-            {{ userDesc.phoneDesc }}
+        </template>
+        <template v-else>
+          <div class="info">
+            登录/注册
           </div>
-          <div class="public">
-            <span> 公众号 </span>
-            <span>{{ userDesc.isSubDesc }}</span>
-          </div>
-        </div>
+        </template>
       </div>
       <div class="line" />
     </div>
@@ -292,6 +315,7 @@ const menus = [
 
           .body {
             padding-top: 32rpx;
+
             .items {
               @apply flex-around;
 

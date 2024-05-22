@@ -149,8 +149,9 @@ function deleteProduct() {
 </template>
 
 <style lang="scss" scoped>
-    $top-height: 112rpx;
-    $bottom-height: 156rpx;
+  $top-height: 112rpx;
+  $bottom-height: 156rpx;
+
   .buy {
     position: relative;
     height: calc(var(--body-min-height) - $top-height - $bottom-height);

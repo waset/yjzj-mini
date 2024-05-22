@@ -37,27 +37,54 @@ interface Product {
   configNO: string
   configUniqueCode: string
   content: string[]
+  /**
+   * 原价
+   */
   costPrice: string
   createAdmin: CreateAdmin
   createAdminID: number
   createdAt: string
   deletedAt: null
+  /**
+   * 描述
+   */
   description: string
   freezeNumber: number
   id: number
   maxBuyNumber: number
   mergeProductIDs: number[] | null
+  /**
+   * 名称
+   */
   name: string
+  /**
+   * 编号
+   */
   no: string
+  /**
+   * 单次最大购买数量
+   */
   onceMaxNumber: number
+  /**
+   * 单次最小购买数量
+   */
   onceMinNumber: number
+  /**
+   * 产品参数
+   */
   params: Param[]
   priceType: number
   sellNumber: number
+  /**
+   * 原价
+   */
   sellPrice: string
   sort: number
   status: number
   stockNumber: number
+  /**
+   * 现价
+   */
   tagPrice: string
   tags: number[]
   tags2: number[] | null

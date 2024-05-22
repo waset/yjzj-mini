@@ -88,7 +88,7 @@ function request<T>(method: Options['method'], api: string, data?: any, options?
   })
 }
 
-function uploads<T>(api: string, files: UniApp.UploadFileOptionFiles[], data: any, options?: Options): Promise<T> {
+function upload<T>(api: string, filePath: UniApp.UploadFileOption['filePath'], data: any, options?: Options): Promise<T> {
   return new Promise((resolve) => {
     /**
      * 加载提示
@@ -110,7 +110,7 @@ function uploads<T>(api: string, files: UniApp.UploadFileOptionFiles[], data: an
      * 公共配置
      */
     const config = <Config>{
-      baseUrl: api.includes('://') ? '' : import.meta.env.VITE_BASE_URL,
+      baseUrl: api.includes('://') ? '' : import.meta.env.VITE_API_URL,
       headers: {
 
       },
@@ -124,8 +124,9 @@ function uploads<T>(api: string, files: UniApp.UploadFileOptionFiles[], data: an
 
     const upload = uni.uploadFile({
       url: config.baseUrl + api,
-      files,
+      filePath,
       formData: data,
+      name: 'file',
       header: { ...config?.headers, ...options?.header },
       success: (res: any) => {
         if (typeof res.data == 'string')
@@ -212,7 +213,7 @@ function success<T>(res: RequestSuccessCallbackResult): T {
   if (res.data.code === 401) {
     Toast('请登录', 'none', () => {
       uni.reLaunch({
-        url: '/pages/login/login',
+        url: '/pages/me/login',
       })
     }, 1500)
   }
@@ -229,7 +230,7 @@ function fail<T>(err: NormalResult): T {
   if (err.code === 401) {
     Toast('请登录', 'none', () => {
       uni.reLaunch({
-        url: '/pages/login/login',
+        url: '/pages/me/login',
       })
     }, 1500)
   }
@@ -253,7 +254,7 @@ export const http = {
   delete<T = any>(api: string, config?: Options): Promise<Result<T>> {
     return request('DELETE', api, {}, config)
   },
-  uploads<T = any>(api: string, files: UniApp.UploadFileOptionFiles[], data?: any, config?: Options): Promise<Result<T>> {
-    return uploads(api, files, data, config)
+  upload<T = any>(api: string, files: UniApp.UploadFileOption['filePath'], data?: any, config?: Options): Promise<Result<T>> {
+    return upload(api, files, data, config)
   },
 }

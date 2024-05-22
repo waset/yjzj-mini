@@ -7,6 +7,8 @@ export default uni(
     rules: {
       'no-console': 'warn',
       'unocss/order': 'off',
+      'curly': 'off',
+      'antfu/top-level-function': 'off',
     },
   },
 )
