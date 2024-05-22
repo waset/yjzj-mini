@@ -1,5 +1,30 @@
 <script setup lang="ts">
+const { isRegister } = storeToRefs(useUserStore())
+const { getToken, getUserInfo } = useUserStore()
 const agreementChecked = ref(false)
+
+async function gologin() {
+  uni.login({
+    provider: 'weixin', // 使用微信登录
+    success: async ({ code }) => {
+      await getToken(code)
+      await getUserInfo()
+      if (!isRegister.value) {
+        jump('/me/info')
+      }
+      else {
+        if (useRoute.length > 1) {
+          uni.navigateBack({
+            delta: 1,
+          })
+        }
+        else {
+          jump('/me/me')
+        }
+      }
+    },
+  })
+}
 </script>
 
 <template>
@@ -13,6 +38,7 @@ const agreementChecked = ref(false)
         class="gologin" :class="{
           disable: !agreementChecked,
         }"
+        @click="gologin"
       >
         点击登录
       </div>

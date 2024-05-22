@@ -1,5 +1,8 @@
 <script setup lang="ts">
-onLaunch(() => { })
+const { getKey } = useUserStore()
+onLaunch(async () => {
+  await getKey()
+})
 </script>
 
 <style lang="scss">

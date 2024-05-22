@@ -5,18 +5,15 @@
 function jump(path: string) {
   const prefix = 'pages'
 
-  if (path.startsWith('/')) {
-    if (!path.startsWith(prefix))
-      path = `${prefix}${path}`
-  }
-  else {
-    if (!path.startsWith(prefix))
-      path = `${prefix}/${path}`
-  }
-  path = path.replace(`${prefix}/`, '')
+  let url = path
+  if (!url.startsWith('/'))
+    url = `/${url}`
+
+  if (!url.startsWith(`/${prefix}`))
+    url = `/${prefix}${url}`
 
   useRouter().navigate({
-    url: path,
+    url,
   })
 }
 
