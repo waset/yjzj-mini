@@ -210,13 +210,8 @@ function success<T>(res: RequestSuccessCallbackResult): T {
    * 关闭加载提示
    */
   uni.hideLoading()
-  if (res.data.code === 401) {
-    Toast('请登录', 'none', () => {
-      uni.reLaunch({
-        url: '/pages/me/login',
-      })
-    }, 1500)
-  }
+  if (login(res.data.code))
+    return {} as T
 
   return (res.data ?? res) as T
 }
@@ -227,18 +222,47 @@ function success<T>(res: RequestSuccessCallbackResult): T {
  * @param err 失败信息
  */
 function fail<T>(err: NormalResult): T {
-  if (err.code === 401) {
-    Toast('请登录', 'none', () => {
-      uni.reLaunch({
-        url: '/pages/me/login',
-      })
-    }, 1500)
-  }
   /**
    * 关闭加载提示
    */
   uni.hideLoading()
+  if (login(err.code))
+    return {} as T
+
   return { error: err, code: err.code } as T
+}
+
+/**
+ * 登录地址
+ */
+const loginUrl = '/pages/me/login'
+
+/**
+ * 是否需要登录
+ * @param code 状态码
+ */
+function login(code: number) {
+  if (code === 401) {
+    loginFunc('请登录')
+    return true
+  }
+  if (code === 20001) {
+    loginFunc('请重新登录')
+    return true
+  }
+  return false
+}
+
+/**
+ * 登录方法
+ * @param msg 提示信息
+ */
+function loginFunc(msg: string) {
+  Toast(msg, 'none', () => {
+    uni.reLaunch({
+      url: loginUrl,
+    })
+  }, 2000)
 }
 
 export const http = {
