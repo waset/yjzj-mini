@@ -78,14 +78,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 <template>
   <div class="menu">
     <navbar-home text="菜单" />
-    <div class="search">
-      <div class="input">
-        <div class="text">
-          输入关键字搜索想要的商品
-        </div>
-        <div class="i-icons-search" />
-      </div>
-    </div>
+    <common-search />
     <div class="wrap">
       <div class="left">
         <scroll-view scroll-y scroll-with-animation class="menu-scroll scroll" :scroll-top="leftScrollTop">
@@ -111,7 +104,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
           <div class="title" :data-text="categorysArray[current].label">
             {{ categorysArray[current].label }}
           </div>
-          <div class="more">
+          <div class="more" @click="jump('/product/category', { key: categorysArray[current].name })">
             查看更多>>
           </div>
         </div>
@@ -151,22 +144,6 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
     display: flex;
     flex-direction: column;
     height: var(--body-min-height);
-
-    .search {
-      padding: 48rpx 32rpx;
-
-      .input {
-        @apply flex-between;
-
-        font-size: 28rpx;
-        line-height: 40rpx;
-        font-weight: 400;
-        padding: 24rpx;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1rpx solid rgba(167, 245, 34, .6);
-        border-radius: 160rpx;
-      }
-    }
 
     .wrap {
       flex: 1;
