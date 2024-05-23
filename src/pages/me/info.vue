@@ -83,9 +83,7 @@ const goRegister = async () => {
     })
     setTimeout(() => {
       isRegister.value = true
-      uni.navigateBack({
-        delta: 2,
-      })
+      Back(2)
     }, 1000)
   }
 }

@@ -100,11 +100,11 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
         </scroll-view>
       </div>
       <div class="right">
-        <div class="top">
+        <div class="top" @click="Jump('/pages/product/category', { key: categorysArray[current].name })">
           <div class="title" :data-text="categorysArray[current].label">
             {{ categorysArray[current].label }}
           </div>
-          <div class="more" @click="jump('/product/category', { key: categorysArray[current].name })">
+          <div class="more">
             查看更多>>
           </div>
         </div>

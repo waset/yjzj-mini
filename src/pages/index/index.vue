@@ -32,7 +32,7 @@ async function getProductsByType(type: number) {
   <div class="index">
     <navbar-logo-search />
     <index-carousel-banner :list="banners" />
-    <index-product-title @click="jump('/menu')">
+    <index-product-title @click="Jump('/pages/menu/menu')">
       <template #left>
         <div class="i-svg-hot-products" />
       </template>
@@ -45,7 +45,7 @@ async function getProductsByType(type: number) {
       </template>
     </index-product-title>
     <index-carousel-hot v-model:current="hots_current" :list="hots" />
-    <index-product-title @click="jump('/menu')">
+    <index-product-title @click="Jump('/pages/menu/menu')">
       <template #left>
         <div class="i-svg-push-products" />
       </template>
@@ -64,7 +64,7 @@ async function getProductsByType(type: number) {
     <index-product-list :list="products" />
 
     <div class="about">
-      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="jump('/me')" />
+      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="Jump('/pages/me/me')" />
     </div>
   </div>
 </template>

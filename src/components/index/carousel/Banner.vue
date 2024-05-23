@@ -7,7 +7,8 @@ const current = ref(0)
 const banner_images = computed<string[]>(() => props.list.map(item => ImageUrl(item.imageUrl)))
 
 function skip(index: number) {
-  jump(props.list[index].src)
+  const path = props.list[index].src as any
+  Jump(path)
 }
 </script>
 
