@@ -1,21 +1,44 @@
 <script setup lang="ts">
+const { types, products } = storeToRefs(useProductStore())
+const { categorys, getCategorys, getProducts } = useProductStore()
+/**
+ * 当前产品类目
+ */
+const category = ref<CategorysItem>({} as CategorysItem)
 /**
  * 页面参数
  */
 interface PageReq {
   key: CategoryKey
 }
-const { categorys } = useProductStore()
-/**
- * 当前产品类目
- */
-const category = ref<CategorysItem>({} as CategorysItem)
+const Params = ref({} as PageReq)
 /**
  * 页面加载获取数据
  */
 onLoad((params) => {
-  const { key } = params as PageReq
-  category.value = categorys[key]
+  Params.value = params as PageReq
+  category.value = categorys[Params.value.key]
+})
+/**
+ * 当前类目索引
+ */
+const classIndex = ref(0)
+const layout = ref(true)
+/**
+ * 获取当前类目产品
+ */
+const getProduct = async () => {
+  await getProducts({
+    typeID: types.value[classIndex.value].id,
+    typeParentID: categorys[Params.value.key].value,
+  }, 1, 20)
+}
+/**
+ * 页面显示获取数据
+ */
+onShow(async () => {
+  await getCategorys(Params.value.key, 1, 20)
+  await getProduct()
 })
 const fns = ref({
   index: 0,
@@ -41,13 +64,16 @@ const fns = ref({
       label: '',
       icons: ['i-icons-switch-square', 'i-icons-menu'],
       value: 0,
-      switch: true,
+      click: (index: number) => {
+        layout.value = !layout.value
+        fns.value.right[index].value = Number(!layout.value)
+      },
     },
     {
       label: '',
       icons: ['i-icons-screen'],
       value: 0,
-      switch: false,
+      click: () => {},
     },
   ],
 })
@@ -57,6 +83,27 @@ const fns = ref({
   <div class="category">
     <navbar-back :text="category.label" />
     <common-search />
+    <div class="classify">
+      <div class="items">
+        <template v-for="(item, index) in types" :key="index">
+          <div
+            class="item" :class="{
+              active: classIndex === index,
+            }" @click=" async () => {
+              classIndex = index
+              await getProduct()
+            }"
+          >
+            <div class="logo">
+              <product-image :src="item.logo" width="160rpx" :background="classIndex === index" />
+            </div>
+            <div class="name">
+              {{ item.name }}
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
     <div class="func">
       <div class="warp">
         <div class="bg">
@@ -66,7 +113,15 @@ const fns = ref({
                 <div
                   class="item" :style="{
                     '--show': fns.index === index ? 1 : 0,
-                  }" @click="fns.index === index ? fns.left[index].value = Number(!fns.left[index].value) : fns.index = index"
+                  }"
+                  @click="() => {
+                    if (fns.index === index) {
+                      fns.left[index].value = Number(!fns.left[index].value)
+                    }
+                    else {
+                      fns.index = index
+                    }
+                  }"
                 >
                   <div class="label">
                     {{ item.label }}
@@ -79,7 +134,7 @@ const fns = ref({
             </div>
             <div class="right">
               <template v-for="(item, index) in fns.right" :key="index">
-                <div class="item" @click="item.switch ? fns.right[index].value = Number(!fns.right[index].value) : ''">
+                <div class="item" @click="item.click(index)">
                   <div class="icons">
                     <div :class="[item.icons[item.value]]" />
                   </div>
@@ -90,11 +145,56 @@ const fns = ref({
         </div>
       </div>
     </div>
+    <div class="list">
+      <product-list :list="products" :layout="layout ? 'grids' : 'rows'" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" soped>
   .category {
+    .classify {
+      padding-bottom: 32rpx;
+
+      .items {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+
+        .item {
+          @apply flex-center;
+          flex-direction: column;
+          padding: 0 16rpx;
+
+          scroll-snap-align: center;
+          scroll-snap-stop: always;
+
+          &:first-child {
+            padding-left: 64rpx;
+          }
+
+          &:last-child {
+            padding-right: 64rpx;
+          }
+
+          .name {
+            font-size: 24rpx;
+            font-weight: 400;
+            line-height: 34rpx;
+            padding: 16rpx 0;
+            color: #BEBEBE;
+          }
+
+          &.active {
+            .name {
+              color: #FFFFFF;
+            }
+          }
+        }
+      }
+    }
+
     .func {
       padding: 0 32rpx;
 
