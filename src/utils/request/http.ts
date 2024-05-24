@@ -211,7 +211,7 @@ function success<T>(res: RequestSuccessCallbackResult): T {
    */
   uni.hideLoading()
   if (login(res.data.code))
-    return {} as T
+    return (res.data ?? res) as T
 
   return (res.data ?? res) as T
 }
@@ -227,7 +227,7 @@ function fail<T>(err: NormalResult): T {
    */
   uni.hideLoading()
   if (login(err.code))
-    return {} as T
+    return { error: '登录失败，请重试', code: err.code } as T
 
   return { error: err, code: err.code } as T
 }
@@ -257,10 +257,10 @@ function login(code: number) {
  * 登录方法
  * @param msg 提示信息
  */
-function loginFunc(msg: string) {
+function loginFunc(msg: string, url: string = loginUrl) {
   Toast(msg, 'none', () => {
     uni.reLaunch({
-      url: loginUrl,
+      url,
     })
   }, 2000)
 }
