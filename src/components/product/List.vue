@@ -39,11 +39,12 @@ const props = withDefaults(defineProps<{
               </div>
               <div class="more">
                 <div class="price">
-                  {{ item.tagPrice }}
+                  <span>￥</span>
+                  <span>{{ item.tagPrice }}</span>
                 </div>
                 <div class="btns">
                   <div class="btn">
-                    <div class="i-icons-buy" />
+                    <div class="i-icons-buy" style="color: #000;" />
                   </div>
                 </div>
               </div>
@@ -113,6 +114,64 @@ const props = withDefaults(defineProps<{
               font-size: 24rpx;
               line-height: 40rpx;
               clip-path: polygon( 0% 34%,0% 34%,0.159% 27.926%,0.618% 22.797%,1.353% 18.015%,2.339% 13.647%,3.55% 9.763%,4.963% 6.431%,6.551% 3.721%,8.29% 1.699%,10.155% 0.436%,12.121% 0%,100% 0%,100% 0%,99.65% 0.436%,98.7% 1.771%,97.3% 4.05%,95.6% 7.314%,93.75% 11.607%,91.9% 16.971%,90.2% 23.45%,88.8% 31.086%,87.85% 39.921%,87.5% 50%,87.5% 50%,87.129% 63.55%,86.124% 74.4%,84.641% 82.85%,82.841% 89.2%,80.882% 93.75%,78.924% 96.8%,77.124% 98.65%,75.641% 99.6%,74.635% 99.95%,74.265% 100%,0% 100%,0% 33.333% );
+            }
+          }
+
+          .info {
+            display: flex;
+            flex-direction: column;
+            gap: 16rpx;
+
+            .title {
+              align-items: flex-start;
+              color: #fff;
+              font-size: 28rpx;
+              line-height: 40rpx;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              word-break: break-all;
+              overflow-wrap: break-word;
+
+            }
+
+            .desc {
+              font-size: 24rpx;
+              color: #BEBEBE;
+              text-align: left;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+
+            .more {
+              // background: red;
+              width: 100%;
+              display: flex;
+              gap: 16rpx;
+
+              .price {
+                background-image: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
+                font-size: 28rpx;
+                font-weight: bold;
+                flex:1;
+                text-align: left;
+                padding: 20rpx 36rpx 20rpx 24rpx;
+              }
+
+              .btns {
+                width: 80rpx;
+                height: 80rpx;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #A7f522;
+                border-radius: 60rpx;
+              }
             }
           }
         }
