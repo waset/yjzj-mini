@@ -120,8 +120,16 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                     class="item" :class="{
                       last: index === productLength - 1,
                     }"
+                    @click="() => {
+                      if (index === productLength - 1){
+                        Jump('/pages/product/category', { key: categorysArray[current].name })
+                      }
+                      else {
+                        Jump('/pages/product/detail', { id: item.id })
+                      }
+                    }"
                   >
-                    <div class="image" data-text="查看更多>>">
+                    <div class="image" data-last-text="查看更多>>">
                       <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
                     </div>
                     <div class="name">
@@ -300,7 +308,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                       z-index: 1;
 
                       &::after {
-                        content: attr(data-text);
+                        content: attr(data-last-text);
                         position: absolute;
                         top: 0;
                         left: 0;

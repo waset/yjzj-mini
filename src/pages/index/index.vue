@@ -44,7 +44,7 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-hot v-model:current="hots_current" :list="hots" />
+    <index-carousel-hot v-model:current="hots_current" :list="hots" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
     <index-product-title @click="Jump('/pages/menu/menu')">
       <template #left>
         <div class="i-svg-push-products" />
@@ -55,7 +55,7 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-push :list="pushs" />
+    <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
 
     <index-product-switch-type
       v-model:current="notebook_type" :list="types"

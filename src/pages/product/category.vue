@@ -146,7 +146,11 @@ const fns = ref({
       </div>
     </div>
     <div class="list">
-      <product-list :list="products" :layout="layout ? 'grids' : 'rows'" />
+      <product-list
+        :list="products" :layout="layout ? 'grids' : 'rows'" @click="(item) => {
+          Jump('/pages/product/detail', { id: item.id })
+        }"
+      />
     </div>
   </div>
 </template>

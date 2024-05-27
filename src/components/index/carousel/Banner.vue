@@ -15,7 +15,7 @@ function skip(index: number) {
 <template>
   <div class="banner">
     <carousel
-      v-model:current="current" :list="banner_images" indicator autoplay loop :height="1200"
+      v-model:current="current" :list="banner_images" autoplay loop indicator :height="1200"
       easing-function="linear" :duration="500" @click="skip"
     />
   </div>

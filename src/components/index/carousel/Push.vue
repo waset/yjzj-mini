@@ -2,6 +2,9 @@
 const props = defineProps<{
   list: Product[]
 }>()
+const emit = defineEmits<{
+  click: [item: Product, index: number]
+}>()
 const current = ref(0)
 const colors: string[] = [
   '#A7F522',
@@ -26,6 +29,7 @@ const carouselHeight = ref(900)
             '--carousel-length': props.list.length,
             '--carousel-heigit': `${carouselHeight}rpx`,
           }"
+          @click="emit('click', item, index)"
         >
           <div class="box">
             <div class="body">

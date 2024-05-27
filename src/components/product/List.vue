@@ -6,6 +6,13 @@ const props = withDefaults(defineProps<{
 }>(), {
   layout: 'grids',
 })
+const emits = defineEmits<{
+  (e: 'click', item: Product): void
+}>()
+
+const handleClick = (item: Product) => {
+  emits('click', item)
+}
 </script>
 
 <template>
@@ -23,6 +30,7 @@ const props = withDefaults(defineProps<{
               col: layout === 'grids',
               row: layout === 'rows',
             }"
+            @click="handleClick(item)"
           >
             <div class="image">
               <product-image :src="item.banner[0]" width="300rpx" radius="16rpx" />
