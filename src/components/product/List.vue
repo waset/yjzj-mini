@@ -78,6 +78,7 @@ const props = withDefaults(defineProps<{
         background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
         padding: 2rpx;
         border-radius: 16rpx;
+        width: 100%;
 
         .box {
           border-radius: 16rpx;
@@ -86,11 +87,17 @@ const props = withDefaults(defineProps<{
 
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: space-between;
           gap: 32rpx;
 
           &.col {
             flex-direction: column;
+            height: 100%;
+
+            .info{
+              width: 100%;
+              justify-content: space-between;
+            }
           }
 
           &.row {
@@ -121,6 +128,8 @@ const props = withDefaults(defineProps<{
             display: flex;
             flex-direction: column;
             gap: 16rpx;
+            flex: 1;
+            height: 100%;
 
             .title {
               align-items: flex-start;
@@ -134,7 +143,6 @@ const props = withDefaults(defineProps<{
               overflow: hidden;
               word-break: break-all;
               overflow-wrap: break-word;
-
             }
 
             .desc {
@@ -146,6 +154,7 @@ const props = withDefaults(defineProps<{
               -webkit-line-clamp: 1;
               text-overflow: ellipsis;
               overflow: hidden;
+              word-break: break-all;
             }
 
             .more {
