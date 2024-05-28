@@ -26,35 +26,47 @@ const banner_images = computed<string[]>(() => {
         </div>
       </div>
       <div class="body">
-        <div class="indicator">
-          <template v-for="(item, index) in banner_images" :key="index">
-            <div
-              class="item" :class="{
-                active: current === index,
-              }"
-            >
-              <image
-                class="img" :style="{
-                  width: '120rpx',
-                  height: '120rpx',
-                  borderRadius: '16rpx',
-                }" :src="ImageUrl(item)" mode="aspectFill" :draggable="false" @click="() => { current = index }"
-              />
-              <div class="left">
-                <div class="i-icons-play" />
+        <template v-if="props.list && props.list.length">
+          <div class="indicator">
+            <template v-for="(item, index) in banner_images" :key="index">
+              <div
+                class="item" :class="{
+                  active: current === index,
+                }"
+              >
+                <image
+                  class="img" :style="{
+                    width: '120rpx',
+                    height: '120rpx',
+                    borderRadius: '16rpx',
+                  }" :src="ImageUrl(item)" mode="aspectFill" :draggable="false" @click="() => { current = index }"
+                />
+                <div class="left">
+                  <div class="i-icons-play" />
+                </div>
               </div>
-            </div>
-          </template>
-        </div>
-        <div class="carousel">
-          <carousel
-            v-model:current="current" :list="banner_images" autoplay loop :height="500" easing-function="linear"
-            :duration="500"
-          />
-          <div class="statement">
-            *实际效果图以订单为准
+            </template>
           </div>
-        </div>
+          <div class="carousel">
+            <carousel
+              v-model:current="current" :list="banner_images" autoplay loop :height="500"
+              easing-function="linear" :duration="500"
+            />
+            <div class="statement">
+              *实际效果图以订单为准
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <image
+              src="@/assets/background/product-detail.svg" :style="{
+                width: '100%',
+              }"
+              mode="scaleToFill"
+            />
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -170,6 +182,11 @@ const banner_images = computed<string[]>(() => {
               }
             }
           }
+        }
+
+        .empty{
+          width: 100%;
+          @apply flex-center;
         }
       }
     }
