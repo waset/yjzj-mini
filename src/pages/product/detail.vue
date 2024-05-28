@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { detail } = storeToRefs(useProductStore())
+const { detail, isDiy } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
 const productId = ref<Product['id']>()
 
@@ -8,28 +8,29 @@ interface PageReq {
 }
 onLoad(async (params) => {
   const req = params as PageReq
-
-  productId.value = Number(req.id)
+  if (req.id) {
+    productId.value = Number(req.id)
+  }
 })
 onShow(async () => {
-  await getProductDetail(productId.value)
-})
-
-const uReadMoreRef = ref<any>(null)// 定义方法
-function load() {
-  if (uReadMoreRef.value) {
-    uReadMoreRef.value?.init()
+  if (productId.value) {
+    await getProductDetail(productId.value)
   }
-}
+  else {
+    detail.value = {
+      typeID: 6,
+    } as Product
+  }
+})
 </script>
 
 <template>
   <div class="detail">
     <navbar-back text="商品详情" />
     <div class="banner">
-      <product-banner :list="detail.banner" @load="load" />
+      <product-banner :list="detail.banner" />
     </div>
-    <div class="info">
+    <div class="top">
       <div class="wrap">
         <div class="title">
           {{ detail.name }}
@@ -50,6 +51,14 @@ function load() {
         </div>
       </div>
     </div>
+    <div class="info">
+      <template v-if="isDiy">
+        <product-diy />
+      </template>
+      <template v-else>
+        <product-info />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -61,7 +70,7 @@ function load() {
       padding: 0 32rpx;
     }
 
-    .info {
+    .top {
       padding: 32rpx;
 
       .wrap {
@@ -84,12 +93,12 @@ function load() {
           padding: 16rpx 0;
         }
 
-        .more{
+        .more {
           @apply flex-between;
           font-size: 48rpx;
           line-height: 56rpx;
 
-          .price{
+          .price {
             @apply text-green;
           }
         }

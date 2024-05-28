@@ -19,6 +19,13 @@ export const useProductStore = defineStore('product', {
     products: [],
     detail: {} as Product,
   }),
+  getters: {
+    isDiy: (state) => {
+      if (!state.detail)
+        return false
+      return state.detail.typeParentID === 6
+    },
+  },
   actions: {
     // 获取产品分类
     async getCategorys(category: CategoryKey, page: number, pageSize: number) {
