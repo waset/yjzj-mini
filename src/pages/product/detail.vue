@@ -2,6 +2,7 @@
 const { detail, isDiy } = storeToRefs(useProductStore())
 const { products } = storeToRefs(useBuyStore())
 const { getProductDetail } = useProductStore()
+const { addProduct } = useBuyStore()
 const productId = ref<Product['id']>()
 
 interface PageReq {
@@ -23,6 +24,18 @@ onShow(async () => {
     } as Product
   }
 })
+const addBuyCar = () => {
+  addProduct({
+    ...detail.value,
+    quantity: 1,
+    select: false,
+    delete: false,
+  })
+  uni.showToast({
+    title: '添加成功',
+    icon: 'success',
+  })
+}
 </script>
 
 <template>
@@ -71,7 +84,7 @@ onShow(async () => {
               分享
             </div>
           </div>
-          <div class="item">
+          <div class="item" @click="() => Jump('/pages/buy/buy')">
             <div class="icon">
               <div class="i-icons-buy" />
               <div v-if="products && products.length" class="num">
@@ -85,7 +98,7 @@ onShow(async () => {
         </div>
         <div class="right">
           <div class="item">
-            <div class="btn">
+            <div class="btn" @click="addBuyCar">
               加入购物车
             </div>
           </div>
