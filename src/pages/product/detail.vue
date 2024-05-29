@@ -56,7 +56,7 @@ onShow(async () => {
         <product-diy />
       </template>
       <template v-else>
-        <product-info />
+        <product-info :info="detail" />
       </template>
     </div>
   </div>
