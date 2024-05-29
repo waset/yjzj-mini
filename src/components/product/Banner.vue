@@ -141,11 +141,13 @@ const banner_images = computed<string[]>(() => {
 
         .indicator {
           flex: 0 0 25%;
-          @apply flex-around;
+          @apply flex-start;
           flex-direction: column;
+          overflow: hidden;
+          overflow-y: scroll;
 
           padding: 16rpx;
-          min-height: 456rpx;
+          height: 456rpx;
 
           border-radius: 16rpx;
           background: linear-gradient(180deg, rgba(48, 48, 48, 1) 26%, rgba(94, 94, 94, 1) 48%, rgba(94, 94, 94, 1) 51%, rgba(48, 48, 48, 1) 77%);
@@ -174,7 +176,7 @@ const banner_images = computed<string[]>(() => {
 
             &.active {
               .img {
-                border-color: #a7f522;
+                border-color: rgba(#a7f522, 0.5);
               }
 
               .left {
