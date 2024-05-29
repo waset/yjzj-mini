@@ -194,7 +194,7 @@ function goLogin() {
                 <div class="i-icons-right" />
               </div>
             </div>
-            <div class="line" />
+            <div v-if="menus.length !== index + 1" class="line" />
           </template>
         </div>
       </div>
@@ -453,7 +453,6 @@ function goLogin() {
 
         .items {
           padding: 32rpx;
-          padding-bottom: 56rpx;
           border-radius: 32rpx;
           background-color: #000;
 
