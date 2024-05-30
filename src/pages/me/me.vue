@@ -57,6 +57,10 @@ function goLogin() {
 
   Jump('/pages/me/login')
 }
+// 跳转全部订单
+function goAllOrders() {
+  Jump('/pages/order/allorder')
+}
 </script>
 
 <template>
@@ -99,7 +103,7 @@ function goLogin() {
         <div class="text">
           我的订单
         </div>
-        <div class="more">
+        <div class="more" @click="goAllOrders">
           <span>全部订单</span>
           <span class="num">{{ 2 }}</span>
           <div class="i-icons-right" />
