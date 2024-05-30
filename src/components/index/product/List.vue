@@ -9,7 +9,7 @@ const props = defineProps<{
     <div class="body">
       <template v-for="(product, index) in props.list" :key="index">
         <div class="wrap">
-          <div class="item">
+          <div class="item" @click="() => Jump('/pages/product/detail', { id: product.id })">
             <image :src="ImageUrl(product.banner[0])" class="image" mode="aspectFit" />
             <div class="info">
               <span class="name">{{ product.name }}</span>
@@ -28,7 +28,7 @@ const props = defineProps<{
       </template>
     </div>
     <div class="more">
-      <div class="btn">
+      <div class="btn" @click="() => Jump('/pages/product/category', { key: 'laptop' })">
         查看更多>>
       </div>
     </div>

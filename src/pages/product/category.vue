@@ -171,7 +171,7 @@ const fns = ref({
           flex-direction: column;
           padding: 0 16rpx;
 
-          scroll-snap-align: center;
+          scroll-snap-align: left;
           scroll-snap-stop: always;
 
           &:first-child {
