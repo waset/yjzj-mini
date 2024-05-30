@@ -13,6 +13,7 @@ const emits = defineEmits<{
   'del': [id: BuyProduct['id']]
   'sliding': [sliding: boolean]
   'showDetail': [product: BuyProduct]
+  'click': [product: BuyProduct]
 }>()
 // 选择状态
 const selected = computed({
@@ -82,6 +83,9 @@ function add() {
 function showInfo() {
   emits('showDetail', props.product)
 }
+function onClick() {
+  emits('click', props.product)
+}
 </script>
 
 <template>
@@ -98,14 +102,14 @@ function showInfo() {
           <div v-if="selected" class="i-icons-correct" />
         </div>
         <div class="info" @touchstart.capture="useStart" @touchend.capture="useEnd">
-          <div class="image">
+          <div class="image" @click.stop.prevent="onClick">
             <product-image :src="props.product.banner[0]" width="200rpx" height="200rpx" />
           </div>
           <div class="details">
-            <div class="name">
+            <div class="name" @click.stop.prevent="onClick">
               {{ props.product.name }}
             </div>
-            <div class="goview" @click="showInfo">
+            <div class="goview" @click.stop.prevent="showInfo">
               <div class="text">
                 配置详情
               </div>
@@ -212,7 +216,7 @@ function showInfo() {
               font-weight: 500;
               font-size: 28rpx;
               color: #FFFFFF;
-              line-height: 40rpx;
+              line-height: 46rpx;
               text-align: left;
               font-style: normal;
               text-transform: none;

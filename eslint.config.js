@@ -9,6 +9,7 @@ export default uni(
       'unocss/order': 'off',
       'curly': 'off',
       'antfu/top-level-function': 'off',
+      'unocss/order-attributify': 'off',
     },
   },
 )

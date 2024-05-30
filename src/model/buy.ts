@@ -65,6 +65,21 @@ export const useBuyStore = defineStore('buy', {
     deletes(ids: BuyProduct['id'][]) {
       this.products = this.products.filter(item => !ids.includes(item.id))
     },
+    // 添加商品
+    addProduct(product: BuyProduct) {
+      if (product.id) {
+        // 判断购物车有没有该产品
+        const index = this.products.findIndex(item => item.id === product.id)
+        if (index === -1) {
+          // 没有该产品
+          this.products.push(product)
+        }
+        else {
+          // 有该产品
+          this.products[index].quantity += 1
+        }
+      }
+    },
   },
-  // persist: true,
+  persist: true,
 })

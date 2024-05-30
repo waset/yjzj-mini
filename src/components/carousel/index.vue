@@ -287,15 +287,15 @@ function end(e: TouchEvent) {
   // 判断滑动距离
   if (size > 0) {
     if (props.naturalDirection)
-      prev()
-    else
       next()
+    else
+      prev()
   }
   else if (size < 0) {
     if (props.naturalDirection)
-      next()
-    else
       prev()
+    else
+      next()
   }
 }
 // 点击事件
@@ -356,7 +356,7 @@ function addUnit(value: number | string, unit = 'rpx'): string {
 </script>
 
 <template>
-  <view
+  <div
     class="carousel" :style="{
       '--carousel-height': addUnit(props.height),
       '--carousel-bg-color': props.bgColor,
@@ -384,34 +384,34 @@ function addUnit(value: number | string, unit = 'rpx'): string {
       </div>
     </template>
     <template v-if="props.indicator">
-      <slot name="indicator" :current="current" :length="props.list.length">
-        <view class="indicator" :style="props.indicatorStyle">
+      <div class="indicator" :style="props.indicatorStyle">
+        <slot name="indicator" :current="current" :length="props.list.length">
           <template v-for="(_, index) in props.list" :key="index">
-            <view
+            <div
               class="item" :class="{
                 active: index === current,
               }" @click="current = index"
             />
           </template>
-        </view>
-      </slot>
+        </slot>
+      </div>
     </template>
     <div class="wrapper" @touchstart.capture="useStart" @touchend.capture="useEnd">
       <template v-for="(item, index) in props.list" :key="index">
-        <view class="item" :style="addStyle(index)" @click="clickHandler(index)">
+        <div class="item" :style="addStyle(index)" @click="clickHandler(index)">
           <slot name="item" :item="item" :index="index">
             <image
               class="image" :style="{
-                width: '100vw',
+                width: '100%',
                 height: 'var(--carousel-height)',
                 borderRadius: 'var(--carousel-border-radius)',
               }" :src="item" mode="aspectFill" :draggable="false" lazy-load :fade-show="false"
             />
           </slot>
-        </view>
+        </div>
       </template>
     </div>
-  </view>
+  </div>
 </template>
 
 <style lang="scss" scoped>

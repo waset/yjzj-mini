@@ -17,7 +17,7 @@ onShow(async () => {
   hots.value = getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
   pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
 
-  await getCategorys('laptop', 1, 3)
+  await getCategorys('laptop', 1, 4)
   notebook_type.value = types.value[0]?.id || 0
 
   await getProductsByType(notebook_type.value)
@@ -32,7 +32,7 @@ async function getProductsByType(type: number) {
   <div class="index">
     <navbar-logo-search />
     <index-carousel-banner :list="banners" />
-    <index-product-title @click="jump('/menu')">
+    <index-product-title @click="Jump('/pages/menu/menu')">
       <template #left>
         <div class="i-svg-hot-products" />
       </template>
@@ -44,8 +44,8 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-hot v-model:current="hots_current" :list="hots" />
-    <index-product-title @click="jump('/menu')">
+    <index-carousel-hot v-model:current="hots_current" :list="hots" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
+    <index-product-title @click="Jump('/pages/menu/menu')">
       <template #left>
         <div class="i-svg-push-products" />
       </template>
@@ -55,7 +55,7 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-push :list="pushs" />
+    <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
 
     <index-product-switch-type
       v-model:current="notebook_type" :list="types"
@@ -64,7 +64,7 @@ async function getProductsByType(type: number) {
     <index-product-list :list="products" />
 
     <div class="about">
-      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="jump('/me')" />
+      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="Jump('/pages/me/me')" />
     </div>
   </div>
 </template>

@@ -5,6 +5,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{
   'update:current': [id: number]
+  'click': [item: Product, index: number]
 }>()
 const pcurrent = ref(props.current)
 watch(pcurrent, (v) => {
@@ -34,6 +35,7 @@ const carouselHeight = ref(900)
             '--carousel-index': index,
             '--carousel-heigit': `${carouselHeight}rpx`,
           }"
+          @click="emit('click', item, index)"
         >
           <div class="box">
             <div class="body">

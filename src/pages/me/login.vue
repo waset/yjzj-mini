@@ -10,16 +10,14 @@ async function gologin() {
       await getToken(code)
       await getUserInfo()
       if (!isRegister.value) {
-        jump('/me/info')
+        Jump('/pages/me/info')
       }
       else {
         if (useRoute.length > 1) {
-          uni.navigateBack({
-            delta: 1,
-          })
+          Back(1)
         }
         else {
-          jump('/me/me')
+          Jump('/pages/me/me')
         }
       }
     },

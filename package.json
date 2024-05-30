@@ -43,7 +43,6 @@
     "@dcloudio/uni-stacktracey": "3.0.0-alpha-4010720240511003",
     "@dcloudio/uni-vue-devtools": "3.0.0-alpha-4010720240511003",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-4010720240511003",
-    "@iconify-json/carbon": "^1.1.27",
     "@iconify/tools": "^4.0.4",
     "@types/node": "^20.11.4",
     "@uni-helper/eslint-config": "^0.0.6",

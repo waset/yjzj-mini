@@ -3,6 +3,7 @@ export const useProductStore = defineStore('product', {
     categorys: Categorys
     types: ProductType[]
     products: Product[]
+    detail: Product
   } => ({
     // 产品类目
     categorys: {
@@ -16,7 +17,15 @@ export const useProductStore = defineStore('product', {
     types: [],
     // 这里存放数据
     products: [],
+    detail: {} as Product,
   }),
+  getters: {
+    isDiy: (state) => {
+      if (!state.detail)
+        return false
+      return state.detail.typeParentID === 6
+    },
+  },
   actions: {
     // 获取产品分类
     async getCategorys(category: CategoryKey, page: number, pageSize: number) {
@@ -39,6 +48,16 @@ export const useProductStore = defineStore('product', {
 
       if (code === 200)
         this.products = data
+    },
+    // 获取产品详情
+    async getProductDetail(id?: number) {
+      if (!id) {
+        return
+      }
+      const { data, code } = await http.post<Product>('/web/product/info', { id }, { auth: false })
+
+      if (code === 200)
+        this.detail = data
     },
   },
 })

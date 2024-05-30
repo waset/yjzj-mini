@@ -55,7 +55,7 @@ function goLogin() {
   if (token.value)
     return
 
-  jump('/me/login')
+  Jump('/pages/me/login')
 }
 </script>
 
@@ -66,7 +66,7 @@ function goLogin() {
       <div class="wrap" @click="goLogin">
         <div class="avatar">
           <avatar :src="ImageUrl(userDesc?.avatar || '')" />
-          <div v-if="isRegister" class="edit" @click="jump('/me/info')">
+          <div v-if="isRegister" class="edit" @click="Jump('/pages/me/info')">
             <div class="btn">
               <div class="i-icons-edit" />
             </div>
