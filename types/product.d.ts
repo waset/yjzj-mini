@@ -22,12 +22,21 @@ interface ProductType {
    * 跳转url
    */
   url: string
-  [property: string]: any
+  logo: string
 }
 
 interface GetProductParams {
+  /**
+   * 小分类 ID （比如组件的cpu）
+   */
   typeID?: number
+  /**
+   * 分类 ID （比如组件）
+   */
   typeParentID?: number
+  /**
+   * 分类名称
+   */
   name?: string
 }
 interface Product {

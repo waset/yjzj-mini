@@ -4,23 +4,28 @@ const props = withDefaults(defineProps<{
   mode?: string
   width?: string
   height?: string
-  borderRadius?: string
+  radius?: string
+  background?: boolean
 }>(), {
-  mode: 'aspectFit',
+  mode: 'aspectFill',
+  width: '160rpx',
+  height: '',
+  radius: '8rpx',
+  background: true,
 })
 </script>
 
 <template>
   <div class="product-image">
-    <div class="background">
+    <div v-if="props.background" class="background">
       <div class="i-svg-product-bg icon" />
     </div>
     <div class="image">
       <image
         class="img" :style="{
           width: props.width,
-          height: props.height,
-          borderRadius: props.borderRadius,
+          height: props.height || props.width,
+          borderRadius: props.radius,
         }" :src="ImageUrl(props.src)" :mode="props.mode" :draggable="false"
       />
     </div>

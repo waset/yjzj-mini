@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="wrap right">
-        <div class="item movein">
+        <div class="item movein" @click="() => { Jump('/pages/product/detail') }">
           <image class="image bounce" :src="StaticUrl('/images/custom_right.png')" mode="scaleToFill" />
         </div>
       </div>

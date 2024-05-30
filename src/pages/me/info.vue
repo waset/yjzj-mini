@@ -83,16 +83,14 @@ const goRegister = async () => {
     })
     setTimeout(() => {
       isRegister.value = true
-      uni.navigateBack({
-        delta: 2,
-      })
+      Back(2)
     }, 1000)
   }
 }
 </script>
 
 <template>
-  <navbar-home :text="isRegister ? '个人资料' : '注册'" />
+  <navbar-back :text="isRegister ? '个人资料' : '注册'" />
   <common-popup v-model:show="showAuthentication" name="实名认证" @close="getUserInfo">
     <div class="authentication">
       <div class="top">

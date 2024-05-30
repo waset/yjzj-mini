@@ -10,7 +10,7 @@ onShow(() => {
 <template>
   <common-layout>
     <slot />
-    <common-tabbar :url="currentUrl" @jump="jump" />
+    <common-tabbar :url="currentUrl" @jump="(path) => Jump(`/${path}` as any)" />
   </common-layout>
 </template>
 

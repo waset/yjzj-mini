@@ -7,14 +7,15 @@ const current = ref(0)
 const banner_images = computed<string[]>(() => props.list.map(item => ImageUrl(item.imageUrl)))
 
 function skip(index: number) {
-  jump(props.list[index].src)
+  const path = props.list[index].src as any
+  Jump(path)
 }
 </script>
 
 <template>
   <div class="banner">
     <carousel
-      v-model:current="current" :list="banner_images" indicator autoplay loop :height="1200"
+      v-model:current="current" :list="banner_images" autoplay loop indicator :height="1200"
       easing-function="linear" :duration="500" @click="skip"
     />
   </div>

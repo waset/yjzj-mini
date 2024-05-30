@@ -78,14 +78,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 <template>
   <div class="menu">
     <navbar-home text="菜单" />
-    <div class="search">
-      <div class="input">
-        <div class="text">
-          输入关键字搜索想要的商品
-        </div>
-        <div class="i-icons-search" />
-      </div>
-    </div>
+    <common-search />
     <div class="wrap">
       <div class="left">
         <scroll-view scroll-y scroll-with-animation class="menu-scroll scroll" :scroll-top="leftScrollTop">
@@ -107,7 +100,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
         </scroll-view>
       </div>
       <div class="right">
-        <div class="top">
+        <div class="top" @click="Jump('/pages/product/category', { key: categorysArray[current].name })">
           <div class="title" :data-text="categorysArray[current].label">
             {{ categorysArray[current].label }}
           </div>
@@ -127,8 +120,16 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                     class="item" :class="{
                       last: index === productLength - 1,
                     }"
+                    @click="() => {
+                      if (index === productLength - 1){
+                        Jump('/pages/product/category', { key: categorysArray[current].name })
+                      }
+                      else {
+                        Jump('/pages/product/detail', { id: item.id })
+                      }
+                    }"
                   >
-                    <div class="image" data-text="查看更多>>">
+                    <div class="image" data-last-text="查看更多>>">
                       <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
                     </div>
                     <div class="name">
@@ -151,22 +152,6 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
     display: flex;
     flex-direction: column;
     height: var(--body-min-height);
-
-    .search {
-      padding: 48rpx 32rpx;
-
-      .input {
-        @apply flex-between;
-
-        font-size: 28rpx;
-        line-height: 40rpx;
-        font-weight: 400;
-        padding: 24rpx;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1rpx solid rgba(167, 245, 34, .6);
-        border-radius: 160rpx;
-      }
-    }
 
     .wrap {
       flex: 1;
@@ -323,7 +308,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                       z-index: 1;
 
                       &::after {
-                        content: attr(data-text);
+                        content: attr(data-last-text);
                         position: absolute;
                         top: 0;
                         left: 0;
