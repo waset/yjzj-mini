@@ -14,10 +14,15 @@ onMounted(() => {
 <template>
   <div class="addressCard">
     <div class="center_info">
-      <div v-if="address?.username && address?.mobile">
-        <span style="font-size: 32rpx;">{{ address.username }} </span><span style="font-size: 28rpx;">{{ address.mobile
-        }}</span>
-        <div class="isdefault">
+      <div v-if="address?.username && address?.mobile" class="nameMobile">
+        <div style="font-size: 32rpx;">
+          {{ address.username }}
+        </div>
+        <div style="font-size: 28rpx;">
+          {{ address.mobile
+          }}
+        </div>
+        <div v-if="address.isDefault" class="isdefault">
           默认
         </div>
       </div>
@@ -60,18 +65,28 @@ $max-width: 686rpx;
     align-items: flex-start;
     justify-content: space-around;
 
-    .isdefault {
-      display: block;
-      width: 96rpx;
-      height: 48rpx;
-      border: 2rpx solid transparent;
-      border-radius: 8rpx;
+    .nameMobile {
       display: flex;
-      align-self: center;
-      justify-content: center;
-      background-clip: padding-box, border-box;
-      background-origin: padding-box, border-box;
-      background-image: linear-gradient(to right, #222, #222), linear-gradient(135deg, rgba(#fff, 0.8), rgba(#fff, 0.08), rgba(#fff, 0.8), );
+      align-items: center;
+
+      view {
+        margin-right: 16rpx;
+      }
+
+      .isdefault {
+        width: 96rpx;
+        height: 48rpx;
+        line-height: 48rpx;
+        font-size: 24rpx;
+        border: 2rpx solid transparent;
+        border-radius: 8rpx;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        background-image: linear-gradient(to right, #6F706E, #6F706E), linear-gradient(135deg, rgba(#fff, 1), rgba(#fff, 0.1), rgba(#fff, 1), );
+      }
     }
 
     .shadel {
