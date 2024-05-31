@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import addressCard from '../../components/buys/addressCard.vue'
 import settlementCard from '../../components/buys/settlementCard.vue'
 import bottomSubmit from '../../components/buys/bottomSubmit.vue'

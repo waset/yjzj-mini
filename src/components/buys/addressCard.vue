@@ -29,7 +29,7 @@ onMounted(() => {
       <div v-else>
         收货地址
       </div>
-      <div class="shadel" />
+      <div v-if="!address?.address || false" class="shadel" />
       <div v-if="address?.address">
         <span>{{ address.address }}{{ address.addressInfo }}</span>
       </div>
