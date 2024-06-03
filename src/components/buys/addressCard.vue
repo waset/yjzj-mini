@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { useStore } from '@/plugins/pinia'
 
+const props = defineProps<{
+  width: number
+}>()
 const state = useStore()
 onMounted(() => {
 })
@@ -8,28 +11,33 @@ onMounted(() => {
 
 <template>
   <div class="addressCard">
-    <div class="center_info">
+    <div class="center_info" :style="{ width: `${props.width}rpx` }">
       <div v-if="state.userInfo?.username && state.userInfo?.mobile" class="nameMobile">
-        <div style="font-size: 32rpx;">
-          <div class="i-icons-address" /> {{ state.userInfo.username }}
+        <div style="display: flex;align-items: center;">
+          <div class="usernameRow">
+            <div class="i-icons-address" /> {{ state.userInfo.username }}
+          </div>
+          <div style="font-size: 28rpx;">
+            {{ state.userInfo.mobile
+            }}
+          </div>
+          <div v-if="state.userInfo.isDefault" class="isdefault">
+            默认
+          </div>
         </div>
-        <div style="font-size: 28rpx;">
-          {{ state.userInfo.mobile
-          }}
-        </div>
-        <div v-if="state.userInfo.isDefault" class="isdefault">
-          默认
-        </div>
+        <div class="i-icons-right" />
       </div>
-      <div v-else>
-        <div class="i-icons-address" /> 收货地址
+      <div v-else class="addressInfoTips" style="width: 156rpx;">
+        <div class="i-icons-address" />
+        <div>收货地址</div>
       </div>
       <div v-if="!state.userInfo?.address || false" class="shadel" />
-      <div v-if="state.userInfo?.address">
+      <div v-if="state.userInfo?.address" style="font-size: 28rpx;padding-left: 57rpx">
         <span>{{ state.userInfo.address }}{{ state.userInfo.addressInfo }}</span>
       </div>
-      <div v-else>
-        请选择收货地址
+      <div v-else class="addressInfoTips">
+        <div> 请选择/添加收货地址</div>
+        <div class="i-icons-right" />
       </div>
     </div>
   </div>
@@ -39,15 +47,17 @@ onMounted(() => {
 $max-width: 686rpx;
 
 .addressCard {
-  width: $max-width;
+  width: 100%;
   height: 192rpx;
   position: relative;
   margin: 0 auto;
   border-radius: 8rpx;
   overflow: hidden;
+  padding: 32rpx;
+  box-sizing: border-box;
 
   .center_info {
-    width: 622rpx;
+
     height: 128rpx;
     // background-color: #fff;
     z-index: 2;
@@ -60,9 +70,25 @@ $max-width: 686rpx;
     align-items: flex-start;
     justify-content: space-around;
 
+    .addressInfoTips {
+      width: 100%;
+      font-size: 28rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .nameMobile {
+      width: 100%;
+
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      .usernameRow {
+        display: flex;
+        align-items: center;
+
+      }
 
       view {
         margin-right: 16rpx;

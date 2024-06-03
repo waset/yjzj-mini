@@ -6,7 +6,8 @@ import bottomSubmit from '../../components/buys/bottomSubmit.vue'
 import markpopup from '../../components/buys/popup/markpopup.vue'
 import goodsItemCard from '../../components/buys/goodsItemCard.vue'
 import addresspop from '../../components/buys/popup/address.vue'
-
+//  显示隐藏 卡片渐变边框
+const showborder = ref<boolean>(true)
 // 提交商品的列表
 const goodslist = ref<goodsListInfo[]>([
   {
@@ -47,10 +48,10 @@ const writeMarkFn = (data: string): void => {
 <template>
   <navbar-home text="提交订单" />
   <div class="body">
-    <div @click="AddressshowPop = true">
-      <addressCard />
+    <div class="addressBox" @click="AddressshowPop = true">
+      <addressCard :width="622" />
     </div>
-    <goodsItemCard :list="goodslist" />
+    <goodsItemCard :list="goodslist" :showborder="showborder" />
     <div class="CouponsAndNotes">
       <div class="counpons">
         <div>优惠券</div>
@@ -88,6 +89,11 @@ $Be: #BEBEBE;
   flex: 1;
   overflow: hidden;
 
+  .addressBox {
+    width: 686rpx;
+    margin: 32rpx auto
+  }
+
   .top-wrap {
     height: $top-height;
   }
@@ -106,7 +112,6 @@ $Be: #BEBEBE;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    // background-color: #fff;
     margin: 32rpx auto 0;
     font-size: 28rpx;
     box-sizing: border-box;

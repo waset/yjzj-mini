@@ -37,9 +37,7 @@ const saveAddress = () => {
   <div class="mask" :class="{ showmask: props.showpop, hiddenmask: !props.showpop }">
     <div :class="[props.showpop ? 'popup' : 'hiddenPop']">
       <div class="titlebgc">
-        <div style="font-size: 36rpx;">
-          新增地址
-        </div>
+        <div class="i-svg-newaddress" />
         <div style="font-size: 44rpx;" @click.stop="hiddenMask(false)">
           ×
         </div>
@@ -59,6 +57,7 @@ const saveAddress = () => {
           <picker mode="region" @change="bindPickerChange">
             <div class="input">
               {{ addressStr }}
+              <div class="i-icons-left" />
             </div>
           </picker>
         </div>
@@ -69,8 +68,10 @@ const saveAddress = () => {
         </div>
 
         <div class="check" @click="isDefault = !isDefault">
-          <div v-show="isDefault" class="default" />
-          <div v-show="!isDefault" class="not" />
+          <div v-if="isDefault" class="default">
+            <div class="i-icons-correct" style="color: #000;" />
+          </div>
+          <div v-if="!isDefault" class="not" />
           <div>设为默认地址</div>
         </div>
       </div>
@@ -176,13 +177,15 @@ const saveAddress = () => {
     background-image: linear-gradient(135deg, rgba(190, 190, 190, 0), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0));
   }
 
+  .i-svg-newaddress {
+    width: 134rpx;
+    height: 40rpx;
+  }
   .inputBox {
     width: 686rpx;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    // align-items: flex-end;
-
     .row {
       margin: 32rpx auto 0;
       display: flex;
@@ -203,6 +206,7 @@ const saveAddress = () => {
       }
 
       .input {
+        position: relative;
         border-radius: 10rpx;
         width: 542rpx;
         height: 80rpx;
@@ -212,6 +216,13 @@ const saveAddress = () => {
 
         background-color: #4C4C4C;
         padding-left: 24rpx;
+
+        .i-icons-left {
+          position: absolute;
+          right: 32rpx;
+          top: 24rpx;
+          transform: rotate(270deg);
+        }
       }
 
     }
@@ -254,6 +265,9 @@ const saveAddress = () => {
         border-radius: 50%;
         background-color: #A7F522;
         margin-right: 16rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
       }
 

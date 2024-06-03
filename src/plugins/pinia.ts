@@ -34,20 +34,15 @@ export const useStore = defineStore('defaultStore', {
       address: '',
       addressInfo: '',
       isDefault: false,
-
     },
   }),
   actions: {
-    // increment() {
-    //   this.count++
-    // },
     setUserInfo(data: address) {
       this.userInfo = data
     },
 
   },
   getters: {
-    // doubleCount: state => state.count * 2,
   },
   persist: true,
 })

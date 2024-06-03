@@ -6,32 +6,41 @@ interface optionsList {
 }
 const props = defineProps<{
   list: optionsList[]
+  showborder: boolean
 }>()
 </script>
 
 <template>
-  <div v-for="(item, index) in props.list" :key="index" class="goodsCard">
-    <div class="goodsInfo">
-      <div class="goodsImg">
-        <div class="i-svg-product-bg" />
-      </div>
-      <div class="goodsOptions">
-        <div class="goodsTitle">
-          {{ item.name }}
+  <div
+    v-for="(item, index) in props.list" :key="index"
+    :class="[props.showborder ? 'gradient-border goodsCard' : 'goodsCard']"
+    :style="{ margin: props.showborder ? '30rpx auto 0' : '0' }"
+  >
+    <div class="goodsInfo" :style="{ margin: props.showborder ? ' 32rpx auto' : '0' }">
+      <div class="goodsInfo-flex">
+        <div class="goodsImg">
+          <div class="i-svg-product-bg" />
         </div>
-        <div class="options">
-          配置详情   <div class="i-icons-right" />
-        </div>
+        <div class="goodsOptions">
+          <div class="goodsTitle">
+            {{ item.name }}
+          </div>
+          <div class="options">
+            配置详情
+            <div class="i-icons-right" />
+          </div>
 
-        <div class="priceAndNum">
-          <div class="price">
-            ￥{{ item.price }}
-          </div>
-          <div class="Number">
-            x {{ item.number }}
+          <div class="priceAndNum">
+            <div class="price">
+              ￥{{ item.price }}
+            </div>
+            <div class="Number">
+              x {{ item.number }}
+            </div>
           </div>
         </div>
       </div>
+      <div v-show="!props.showborder" class="borderBottomLine" />
     </div>
   </div>
 </template>
@@ -41,38 +50,61 @@ const props = defineProps<{
   width: 100%;
   height: 100%;
 }
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
+  border-radius: 32rpx;
+  padding: 2rpx;
+  inset: 0;
+  position: absolute;
+  background: linear-gradient(135deg, rgba(#FFFFFF, 0.8), rgba(#FFFFFF, 0.08), rgba(#FFFFFF, 0.8));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
 .goodsCard {
   width: 686rpx;
   height: 248rpx;
-  margin: 30rpx auto 0;
   border: 2rpx solid transparent;
   border-radius: 32rpx;
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  background-image: linear-gradient(to right, #222, #222), linear-gradient(135deg, rgba(#fff, 0.8), rgba(#fff, 0.08), rgba(#fff, 0.8), );
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  .borderBottomLine {
+    width: 100%;
+    margin-top: 12rpx;
+    height: 2rpx;
+    background: linear-gradient(to right, rgba(#fff, 0.1), rgba(#fff, 0.4), rgba(#fff, 0.4), rgba(#fff, 0.1));
+  }
+
   .goodsInfo {
     width: 622rpx;
-    height: 200rpx;
-    // background-color: #fff;
+
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
+
+    .goodsInfo-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .goodsImg {
       width: 200rpx;
       height: 200rpx;
-      // background-color: #fff;
 
     }
 
     .goodsOptions {
       width: 400rpx;
       height: 144rpx;
-      // background-color: antiquewhite;
 
       .goodsTitle {
         font-weight: 500;
@@ -87,7 +119,7 @@ const props = defineProps<{
         color: #BEBEBE;
         margin-bottom: 16rpx;
         display: flex;
-      align-items: center;
+        align-items: center;
       }
 
       .priceAndNum {
