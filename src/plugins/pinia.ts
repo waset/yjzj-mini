@@ -1,5 +1,13 @@
-import { createPinia } from 'pinia'
+import { createPinia, defineStore } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
+
+interface address {
+  username: string
+  mobile: string
+  address: string
+  addressInfo: string
+  isDefault: boolean
+}
 
 export default (app: any) => {
   /**
@@ -8,7 +16,6 @@ export default (app: any) => {
    * @see https://prazdevs.github.io/pinia-plugin-persistedstate/zh/
    */
   const pinia = createPinia()
-
   pinia.use(createPersistedState({
     storage: {
       getItem: key => uni.getStorageSync(key),
@@ -18,3 +25,30 @@ export default (app: any) => {
 
   return app.use(pinia)
 }
+
+export const useStore = defineStore('defaultStore', {
+  state: () => ({
+    userInfo: {
+      username: '',
+      mobile: '',
+      address: '',
+      addressInfo: '',
+      isDefault: false,
+
+    },
+  }),
+  actions: {
+    // increment() {
+    //   this.count++
+    // },
+    setUserInfo(data: address) {
+      this.userInfo = data
+      console.log(this.userInfo)
+    },
+
+  },
+  getters: {
+    // doubleCount: state => state.count * 2,
+  },
+  persist: true,
+})

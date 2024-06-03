@@ -45,7 +45,7 @@ const writeMarkFn = (data: string): void => {
 </script>
 
 <template>
-  <navbar-home text="123" />
+  <navbar-home text="提交订单" />
   <div class="body">
     <div @click="AddressshowPop = true">
       <addressCard />
@@ -56,12 +56,14 @@ const writeMarkFn = (data: string): void => {
         <div>优惠券</div>
         <div class="beColor">
           待使用
+          <div class="i-icons-right" />
         </div>
       </div>
       <div class="notes" @click="showPop = true">
         <div>备注</div>
         <div class="beColor mark">
           {{ mark || '无备注' }}
+          <div class="i-icons-right" />
         </div>
       </div>
     </div>
@@ -124,6 +126,7 @@ $Be: #BEBEBE;
       color: #BEBEBE;
 
     }
+
     .mark {
       max-width: 400rpx;
       max-height: 80rpx;

@@ -1,37 +1,32 @@
 <script lang="ts" setup>
-const address = ref<{
-  address: string
-  username: string
-  mobile: string
-  isDefault: boolean
-  addressInfo: string
-}>()
+import { useStore } from '@/plugins/pinia'
+
+const state = useStore()
 onMounted(() => {
-  address.value = uni.getStorageSync('defaultAddress')
 })
 </script>
 
 <template>
   <div class="addressCard">
     <div class="center_info">
-      <div v-if="address?.username && address?.mobile" class="nameMobile">
+      <div v-if="state.userInfo?.username && state.userInfo?.mobile" class="nameMobile">
         <div style="font-size: 32rpx;">
-          {{ address.username }}
+          <div class="i-icons-address" /> {{ state.userInfo.username }}
         </div>
         <div style="font-size: 28rpx;">
-          {{ address.mobile
+          {{ state.userInfo.mobile
           }}
         </div>
-        <div v-if="address.isDefault" class="isdefault">
+        <div v-if="state.userInfo.isDefault" class="isdefault">
           默认
         </div>
       </div>
       <div v-else>
-        收货地址
+        <div class="i-icons-address" /> 收货地址
       </div>
-      <div v-if="!address?.address || false" class="shadel" />
-      <div v-if="address?.address">
-        <span>{{ address.address }}{{ address.addressInfo }}</span>
+      <div v-if="!state.userInfo?.address || false" class="shadel" />
+      <div v-if="state.userInfo?.address">
+        <span>{{ state.userInfo.address }}{{ state.userInfo.addressInfo }}</span>
       </div>
       <div v-else>
         请选择收货地址
