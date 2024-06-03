@@ -43,7 +43,6 @@ export const useStore = defineStore('defaultStore', {
     // },
     setUserInfo(data: address) {
       this.userInfo = data
-      console.log(this.userInfo)
     },
 
   },
