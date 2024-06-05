@@ -16,7 +16,15 @@ export const useOrderStore = defineStore('orders', {
           name: '天选5PRo14代酷睿i9天选5PRo4代酷睿i9天选5PRo14代酷睿i9',
           tagPrice: '4399',
         },
+      }, {
+        id: 2,
+        productSnapshot: {
+          banner: ['./assets/svg/warn'],
+          name: '联想 ThinkBook14P R7-6800H 16G 512G 集成',
+          tagPrice: '3099',
+        },
       }],
+
     } as Order],
   }),
 

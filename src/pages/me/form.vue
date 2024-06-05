@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { it } from 'node:test'
-
 const { orders } = storeToRefs(useOrderStore())
 const { getOrderList } = useOrderStore()
 
@@ -14,15 +12,6 @@ const tabs = ref<{
   3: '待收货',
 })
 
-// 订单状态
-// const getStatus = reactive<{
-//   [index in Order['status']]?: string
-// }>({
-//   0: '',
-//   1: '',
-//   3: '',
-// })
-
 const userOrder = ref(orders.value)
 
 onShow(() => {
@@ -30,8 +19,15 @@ onShow(() => {
   console.log(orders.value)
 })
 
+// 复制订单号
 function copyText() {
-
+  uni.setClipboardData({
+    data: userOrder.value[0].no,
+    success: () => {},
+    fail: (error) => {
+      console.log('复制失败', error)
+    },
+  })
 }
 </script>
 
@@ -65,41 +61,51 @@ function copyText() {
                     <div class="id">
                       订单编号：{{ item.no }}
                     </div>
-                    <button style="background: none; color:#f5f5f5 ;font-size: 24rpx;" @click="copyText">
+                    <!-- <button style="background: none; color:#f5f5f5 ;font-size: 24rpx;width:auto" @click="copyText">
                       | 复制
-                    </button>
+                    </button> -->
+                    <div class="copy" @click="copyText">
+                      | 复制
+                    </div>
                   </div>
                   <div class="status">
                     <!-- 订单状态：{{ getStatus[item.status] }} -->
                   </div>
                 </div>
                 <div class="product">
-                  <div class="left">
-                    <div class="img">
-                      <product-image :src="item.details[0].productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
-                    </div>
-                    <div class="text">
-                      <div class="name">
-                        {{ item.details[0].productSnapshot.name }}
+                  <template v-for="(detail, index) in item.details" :key="index">
+                    <div class="proItem">
+                      <div class="content">
+                        <div class="left">
+                          <div class="img">
+                            <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
+                          </div>
+                          <div class="text">
+                            <div class="name">
+                              {{ detail.productSnapshot.name }}
+                            </div>
+                            <div class="info">
+                              <span>配置详情</span>
+                              <div class="i-icons-right" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="right">
+                          <div class="productPrice">
+                            <span>￥</span>
+                            <span>{{ detail.productSnapshot.tagPrice }}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div class="info">
-                        <span>配置详情</span>
-                        <div class="i-icons-right" />
-                      </div>
+                      <div v-if="index !== item.details.length - 1" class="line" />
                     </div>
-                  </div>
-                  <div class="right">
-                    <div class="productPrice">
-                      <span>￥</span>
-                      <span>{{ item.details[0].productSnapshot.tagPrice }}</span>
-                    </div>
-                  </div>
+                  </template>
                 </div>
               </div>
               <div class="func">
                 <div class="left">
                   <div class="more">
-                    <div class="i-icons-right" />
+                    <div class="i-icons-up" />
                     <span>更多</span>
                   </div>
                 </div>
@@ -170,7 +176,6 @@ function copyText() {
     }
 
     .list {
-      padding: 0 32rpx;
 
       .item {
         padding: 24rpx;
@@ -201,56 +206,77 @@ function copyText() {
                 font-size: 24rpx;
                 color: #bebebe;
               }
+
+              .copy {
+                font-size: 24rpx;
+                color: #ffffff;
+              }
             }
           }
 
           .product {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
 
-            padding: 32rpx 0;
-            gap: 16rpx;
-
-            .left {
+            .proItem {
               display: flex;
-              flex-direction: row;
-              gap: 16rpx;
+              flex-direction: column;
 
-              .text {
+              .content {
                 display: flex;
-                flex-direction: column;
-                justify-content: center;
+                flex-direction: row;
+                align-items: center;
                 gap: 16rpx;
 
-                .name {
-                  display: -webkit-box;
-                  -webkit-box-orient: vertical;
-                  -webkit-line-clamp: 2;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  word-break: break-all;
+                padding: 32rpx 0;
 
-                  font-size: 28rpx;
-                  font-weight: 550;
-                  line-height: 40rpx;
-                }
-
-                .info {
+                .left {
                   display: flex;
                   flex-direction: row;
-                  align-items: center;
+                  gap: 16rpx;
 
-                  font-size: 24rpx;
-                  color: #bebebe;
+                  .text {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 16rpx;
+
+                    .name {
+                      display: -webkit-box;
+                      -webkit-box-orient: vertical;
+                      -webkit-line-clamp: 2;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      word-break: break-all;
+
+                      font-size: 28rpx;
+                      font-weight: 550;
+                      line-height: 40rpx;
+                    }
+
+                    .info {
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+
+                      font-size: 24rpx;
+                      color: #bebebe;
+                    }
+                  }
+                }
+
+                .right {
+
+                  .productPrice {
+                    font-size: 28rpx;
+                  }
                 }
               }
-            }
 
-            .right {
-
-              .productPrice {
-                font-size: 28rpx;
+              .line {
+                width: 100%;
+                height: 2rpx;
+                background-image: linear-gradient(134deg, rgba(190, 190, 190, 0.2), rgba(190, 190, 190, 0.8), rgba(190, 190, 190, 0.8), rgba(190, 190, 190, 0.2));
               }
             }
           }
@@ -272,8 +298,8 @@ function copyText() {
             align-items: center;
 
             .text {
-               font-size: 24rpx;
-               color: #ffffff;
+              font-size: 24rpx;
+              color: #ffffff;
             }
 
             .totalPrice {
