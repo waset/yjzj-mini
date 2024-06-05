@@ -2,6 +2,10 @@
 const { getUserInfo } = useUserStore()
 const { userDesc, isRegister, token } = storeToRefs(useUserStore())
 
+const { orders } = storeToRefs(useOrderStore())
+
+const orderNum = ref(orders.value[0].totalNumber)
+
 onShow(async () => {
   if (token.value) {
     await getUserInfo()
@@ -101,7 +105,7 @@ function goLogin() {
         </div>
         <div class="more" @click="Jump('/pages/me/form')">
           <span>全部订单</span>
-          <span class="num">{{ 2 }}</span>
+          <span class="num">{{ orderNum }}</span>
           <div class="i-icons-right" />
         </div>
       </div>
