@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // const { userDesc } = storeToRefs(useUserStore())
-const tabIndex = ref(0)
+const tabIndex = ref(0) // tab下标弹出
 const showWIthdraw = ref(false) // 提现表单弹出
 const showWInvite = ref(false) // 邀请人填写弹出
 const showModel = ref(false) // 提现成功提示
