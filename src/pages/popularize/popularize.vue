@@ -124,7 +124,6 @@ function InviteEvent() {
         </div>
         <div class="money_view">
           <div class="wrap">
-            <!-- v-for="(item, index) in moneyObject" :key="index"  -->
             <div class="money_details">
               <div class="money_title">
                 {{ moneyObject.proportion.title }}
