@@ -5,20 +5,21 @@ const showWIthdraw = ref(false) // 提现表单弹出
 const showWInvite = ref(false) // 邀请人填写弹出
 const showModel = ref(false) // 提现成功提示
 // 账户信息
-const moneyArray = [
-  {
+const moneyObject = ref({
+  proportion: {
     title: '返利比例',
     value: '9',
   },
-  {
+  way: {
     title: '返利方式',
     value: '等级',
   },
-  {
+  balance: {
     title: '账号余额',
     value: '01.00',
   },
-]
+})
+
 // 邀请详情
 const messageArray = [
   {
@@ -46,7 +47,7 @@ const explainArray = [
 ]
 // 提现弹框
 function eventWithdraw() {
-  if (moneyArray[2].value !== '00.00') {
+  if (moneyObject.value.balance.value !== '00.00') {
     showWIthdraw.value = !showWIthdraw.value
   }
 }
@@ -123,23 +124,34 @@ function InviteEvent() {
         </div>
         <div class="money_view">
           <div class="wrap">
-            <div
-              v-for="(item, index) in moneyArray"
-              :key="index"
-              class="money_details"
-            >
+            <!-- v-for="(item, index) in moneyObject" :key="index"  -->
+            <div class="money_details">
               <div class="money_title">
-                {{ item.title }}
+                {{ moneyObject.proportion.title }}
               </div>
               <div class="subhead">
-                {{ index !== 2 ? item.value : `￥${item.value}` }}
+                {{ moneyObject.proportion.value }}
+              </div>
+            </div>
+            <div class="money_details">
+              <div class="money_title">
+                {{ moneyObject.way.title }}
+              </div>
+              <div class="subhead">
+                {{ moneyObject.way.value }}
+              </div>
+            </div>
+            <div class="money_details">
+              <div class="money_title">
+                {{ moneyObject.balance.title }}
+              </div>
+              <div class="subhead">
+                ￥{{ moneyObject.balance.value }}
               </div>
             </div>
           </div>
-          <div
-            :class="moneyArray[2].value !== '00.00' ? 'subheads ' : 'withdraw '"
-            @click="eventWithdraw"
-          >
+
+          <div :class="moneyObject.balance.value === '00.00' ? 'subheads ' : 'withdraw '" @click="eventWithdraw">
             立即提现
           </div>
         </div>
