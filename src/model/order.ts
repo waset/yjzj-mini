@@ -1,31 +1,30 @@
-import Product from '@/components/buys/Product.vue'
+const def = {
+  id: 1,
+  status: 1,
+  no: '202201010001',
+  sellPrice: '7999',
+  details: [{
+    id: 1,
+    productSnapshot: {
+      banner: [''],
+      name: '天选5PRo14代酷睿i9天选5PRo4代酷睿i9天选5PRo14代酷睿i9',
+      tagPrice: '4399',
+    },
+  }, {
+    id: 2,
+    productSnapshot: {
+      banner: [''],
+      name: '联想 ThinkBook14P R7-6800H 16G 512G 集成',
+      tagPrice: '3099',
+    },
+  }],
+} as Order
 
 export const useOrderStore = defineStore('orders', {
   state: (): {
     orders: Order[]
   } => ({
-    orders: [{
-      id: 1,
-      status: 1,
-      no: '202201010001',
-      sellPrice: '7999',
-      details: [{
-        id: 1,
-        productSnapshot: {
-          banner: ['./assets/svg/warn'],
-          name: '天选5PRo14代酷睿i9天选5PRo4代酷睿i9天选5PRo14代酷睿i9',
-          tagPrice: '4399',
-        },
-      }, {
-        id: 2,
-        productSnapshot: {
-          banner: ['./assets/svg/warn'],
-          name: '联想 ThinkBook14P R7-6800H 16G 512G 集成',
-          tagPrice: '3099',
-        },
-      }],
-
-    } as Order],
+    orders: [def as Order],
   }),
 
   actions: {
