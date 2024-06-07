@@ -249,12 +249,11 @@ const fns = ref({
       }
     }
   }
-  .commodity_list{
+  .commodity_list {
     padding: 0 32rpx;
     width: 100rpx;
     height: 100rpx;
     background-color: red;
   }
-
 }
 </style>
