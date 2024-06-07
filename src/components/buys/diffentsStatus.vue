@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import statusIcon from '@/components/icon/Status.vue'
-
 const props = defineProps<{
   status: 'success' | 'fail' | 'waiting'
 }>()
@@ -9,7 +7,7 @@ const props = defineProps<{
 <template>
   <div class="statusBox">
     <div class="leftIcon">
-      <statusIcon :type="props.status" />
+      <IconStatus :type="props.status" />
     </div>
 
     <div v-if="props.status === 'waiting'" class="rightbox">

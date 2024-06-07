@@ -1,11 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import addressCard from '../../components/buys/addressCard.vue'
-import settlementCard from '../../components/buys/settlementCard.vue'
-import bottomSubmit from '../../components/buys/bottomSubmit.vue'
-import markpopup from '../../components/buys/popup/markpopup.vue'
-import goodsItemCard from '../../components/buys/goodsItemCard.vue'
-import addresspop from '../../components/buys/popup/address.vue'
 //  显示隐藏 卡片渐变边框
 const showborder = ref<boolean>(true)
 // 提交商品的列表
@@ -49,9 +42,9 @@ const writeMarkFn = (data: string): void => {
   <navbar-home text="提交订单" />
   <div class="body">
     <div class="addressBox" @click="AddressshowPop = true">
-      <addressCard :width="622" />
+      <buys-addressCard :width="622" />
     </div>
-    <goodsItemCard :list="goodslist" :showborder="showborder" />
+    <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
     <div class="CouponsAndNotes">
       <div class="counpons">
         <div>优惠券</div>
@@ -68,12 +61,12 @@ const writeMarkFn = (data: string): void => {
         </div>
       </div>
     </div>
-    <settlementCard :number="totalNumber" :pay="payment" />
-    <bottomSubmit :number="totalNumber" :pay="payment" />
+    <buys-settlementCard :number="totalNumber" :pay="payment" />
+    <buys-bottomSubmit :number="totalNumber" :pay="payment" />
 
-    <markpopup :showpop="showPop" @set-show="setShowFn" @write-mark="writeMarkFn" />
+    <buys-popup-markpopup :showpop="showPop" @set-show="setShowFn" @write-mark="writeMarkFn" />
 
-    <addresspop :showpop="AddressshowPop" @set-show="AddressshowPop = false" />
+    <buys-popup-address :showpop="AddressshowPop" @set-show="AddressshowPop = false" />
   </div>
 </template>
 

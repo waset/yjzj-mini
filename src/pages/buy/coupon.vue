@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import search from '@/components/buys/coupon/search.vue'
-import couponItem from '@/components/buys/coupon/couponItem.vue'
 </script>
 
 <template>
   <navbar-home text="我的优惠券" />
   <div class="body">
-    <search />
-    <couponItem />
+    <buys-coupon-search />
+    <buys-coupon-couponItem />
   </div>
 </template>
 
@@ -26,7 +24,6 @@ $Be: #BEBEBE;
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-
 }
 </style>
 <!--

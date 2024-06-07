@@ -1,12 +1,6 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import addressCard from '../../components/buys/addressCard.vue'
-import goodsItemCard from '../../components/buys/goodsItemCard.vue'
-import bottomBtns from '@/components/buys/orderInfoBottom.vue'
-import diffentsStatus from '@/components/buys/diffentsStatus.vue'
 //  是否显示卡片边框
 const showborder = ref<boolean>(false)
-
 // 当前订单状态  待支付  已取消  支付成功
 const state = ref<'success' | 'fail' | 'waiting'>('waiting')
 
@@ -29,14 +23,14 @@ const goodslist = ref<goodsListInfo[]>([
   <div class="body">
     <div class="status">
       <div class="addressBox">
-        <diffentsStatus :status="state" />
-        <addressCard :width="558" />
+        <buys-diffentsStatus :status="state" />
+        <buys-addressCard :width="558" />
       </div>
     </div>
 
     <div class="box">
       <div class="gradient-border gradientbox">
-        <goodsItemCard :list="goodslist" :showborder="showborder" />
+        <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
         <div class="totalPrice">
           <span class="textFont">待支付：</span>
           <span class="priceFont">￥123213</span>
@@ -44,7 +38,7 @@ const goodslist = ref<goodsListInfo[]>([
       </div>
     </div>
 
-    <bottomBtns :status="state" />
+    <buys-orderInfoBottom :status="state" />
   </div>
 </template>
 
