@@ -11,6 +11,11 @@ const tabs = ref<{
   3: '待收货',
 })
 
+const handleTabClick = (index: Order['status']) => {
+  tabsIdx.value = index
+  getOrderList(index)
+}
+
 onShow(() => {
   getOrderList(tabsIdx.value)
 })
@@ -24,7 +29,7 @@ onShow(() => {
         <div
           class="item" :class="{
             active: Number(tabsIdx) === Number(index),
-          }" @click="() => tabsIdx = index"
+          }" @click="() => handleTabClick(index)"
         >
           {{ item }}
         </div>
