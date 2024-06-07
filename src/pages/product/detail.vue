@@ -19,9 +19,11 @@ onShow(async () => {
     await getProductDetail(productId.value)
   }
   else {
-    detail.value = {
-      typeID: 6,
-    } as Product
+    if (productId.value) {
+      detail.value = {
+        typeID: 6,
+      } as Product
+    }
   }
 })
 const addBuyCar = () => {
@@ -44,27 +46,30 @@ const addBuyCar = () => {
     <div class="banner">
       <product-banner :list="detail.banner" />
     </div>
-    <div class="top">
-      <div class="wrap">
-        <div class="title">
-          {{ detail.name }}
-        </div>
-        <div class="desc">
-          {{ detail.description }}
-        </div>
-        <div class="more">
-          <div class="price">
-            <span>￥</span>
-            <span>{{ detail.tagPrice }}</span>
+    <template v-if="isDiy">
+      <div class="top">
+        <div class="wrap">
+          <div class="title">
+            {{ detail.name }}
           </div>
-          <div class="btns">
-            <div class="btn">
-              <div class="i-icons-share" />
+          <div class="desc">
+            {{ detail.description }}
+          </div>
+          <div class="more">
+            <div class="price">
+              <span>￥</span>
+              <span>{{ detail.tagPrice }}</span>
+            </div>
+            <div class="btns">
+              <div class="btn">
+                <div class="i-icons-share" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
+
     <div class="info">
       <template v-if="isDiy">
         <product-diy />
@@ -127,7 +132,6 @@ const addBuyCar = () => {
       .wrap {
         padding: 32rpx;
         border-radius: 16rpx;
-
         background-color: #000;
         word-break: break-all;
 
