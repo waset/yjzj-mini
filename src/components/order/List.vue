@@ -16,6 +16,18 @@ const filterOrder = (status: Order['status']) => {
       desc: '已发货',
       color: '#a7f522',
     },
+    4: {
+      desc: '部分退款',
+      color: '#ffffff',
+    },
+    5: {
+      desc: '交易关闭',
+      color: '#ffffff',
+    },
+    6: {
+      desc: '取消支付',
+      color: '#ffffff',
+    },
   }
   return statusMap[status]
 }
@@ -23,7 +35,7 @@ const filterOrder = (status: Order['status']) => {
 // 复制订单号
 function copyText() {
   uni.setClipboardData({
-    data: orders.value[0].no,
+    data: orders.value[0].no && orders.value[0].no !== '' ? orders.value[0].no : '暂无订单号',
     success: () => {
       uni.showToast({ title: '复制成功' })
     },
@@ -31,9 +43,6 @@ function copyText() {
       uni.showToast({ title: '复制失败' })
     },
   })
-}
-
-function popup() {
 }
 </script>
 
@@ -74,7 +83,7 @@ function popup() {
                           <div class="name">
                             {{ detail.productSnapshot.name }}
                           </div>
-                          <div class="info" @click="popup">
+                          <div class="info">
                             <span>配置详情</span>
                             <div class="i-icons-right" />
                           </div>
@@ -102,16 +111,33 @@ function popup() {
                 </div>
               </div>
               <div class="right">
-                <div class="text">
-                  总计：
+                <div class="price">
+                  <div class="text">
+                    总计：
+                  </div>
+                  <div class="totalPrice">
+                    <span>￥</span>
+                    <span>{{ item.sellPrice }}</span>
+                  </div>
                 </div>
-                <div class="totalPrice">
-                  <span>￥</span>
-                  <span>{{ item.sellPrice }}</span>
+                <div class="btn">
+                  <div v-if="item.status === 1" class="wait">
+                    <div class="cancel">
+                      取消订单
+                    </div>
+                    <div class="pay">
+                      继续付款
+                    </div>
+                  </div>
+                  <div v-else-if="item.status === 2" class="sucess">
+                    <div class="refund">
+                      退款
+                    </div>
+                  </div>
+                  <div v-else-if="item.status === 4 || item.status === 5 || item.status === 6" class="btnSta">
+                    <button>确认收货</button>
+                  </div>
                 </div>
-              </div>
-              <div class="btn">
-                <slot />
               </div>
             </div>
           </template>
@@ -247,6 +273,9 @@ function popup() {
         justify-content: space-between;
 
         .left {
+          display: flex;
+          flex-direction: column-reverse;
+
           font-size: 28rpx;
           color: #ffffff;
 
@@ -264,18 +293,53 @@ function popup() {
 
         .right {
           display: flex;
-          flex-direction: row;
-          align-items: center;
+          flex-direction: column;
+          gap: 16rpx;
 
-          .text {
-            font-size: 24rpx;
-            color: #ffffff;
+          .price {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            padding: 0 8rpx;
+
+            .text {
+              font-size: 24rpx;
+              color: #ffffff;
+            }
+
+            .totalPrice {
+              font-size: 32rpx;
+              font-weight: 550;
+              color: #ffffff;
+            }
           }
 
-          .totalPrice {
-            font-size: 32rpx;
-            font-weight: 550;
-            color: #ffffff;
+          .btn {
+
+            .wait {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 16rpx;
+
+              .cancel {
+                padding: 12rpx 32rpx;
+                font-size: 28rpx;
+                color: #1d2129;
+                background-color: #ffffff;
+                border-radius: 4rpx;
+              }
+
+              .pay {
+                padding: 12rpx 32rpx;
+                font-size: 28rpx;
+                color: #1d2129;
+                background-color: #a7f522;
+                border-radius: 4rpx;
+              }
+            }
           }
         }
       }
