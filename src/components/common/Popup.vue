@@ -62,7 +62,7 @@ function maskClose() {
 
 <style lang="scss" scoped>
   .popup {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -81,6 +81,7 @@ function maskClose() {
       width: 100%;
       background: rgba($color: #000, $alpha: 0.5);
       backdrop-filter: blur(4rpx);
+      overflow: hidden;
     }
 
     .wrap {

@@ -1,34 +1,35 @@
 <script lang="ts" setup>
-import { useStore } from '@/plugins/pinia'
-
 const props = defineProps<{
   showpop: boolean
 }>()
-const emits = defineEmits<{
-  setShow: [showpop: boolean]
-}>()
-const state = useStore()
-// 隐藏mask
+// 声明自定义事件
+const emits = defineEmits(['setShow', 'newAddress'])
 const hiddenMask = (params: boolean) => {
   emits('setShow', params)
 }
 // 地址
 const addressStr = ref<string>('')
-// 用户名
-const userName = ref<string>('')
-// 手机号
-const mobile = ref<string>('')
-// 详细地址
-const addressInfo = ref<string>('')
-// 默认地址
-const isDefault = ref<boolean>(false)
+
+const addReqParams = ref<addressReq>({
+  address: '',
+  cityCode: '',
+  countryCode: '',
+  isDefault: 1, // 默认（1：是 2：否）
+  phone: '',
+  provinceCode: '',
+  username: '',
+})
 
 // 选择地址
 const bindPickerChange = (e: any) => {
   addressStr.value = e.detail.value.join(',')
+  addReqParams.value.provinceCode = e.detail.code[0]
+  addReqParams.value.cityCode = e.detail.code[1]
+  addReqParams.value.countryCode = e.detail.code[2]
 }
+
 const saveAddress = () => {
-  state.setUserInfo({ username: userName.value, mobile: mobile.value, address: addressStr.value, addressInfo: addressInfo.value, isDefault: isDefault.value })
+  emits('newAddress', { addReqParams: addReqParams.value, addressStr })
   hiddenMask(false)
 }
 </script>
@@ -46,11 +47,11 @@ const saveAddress = () => {
       <div class="inputBox">
         <div class="row">
           <div>收货人</div>
-          <input v-model="userName" type="text">
+          <input v-model="addReqParams.username" type="text">
         </div>
         <div class="row">
           <div>联系电话</div>
-          <input v-model="mobile" type="text">
+          <input v-model="addReqParams.phone" type="text">
         </div>
         <div class="row">
           <div>收获地址</div>
@@ -63,15 +64,15 @@ const saveAddress = () => {
         </div>
         <div class="textareaBox">
           <div class="textarea">
-            <textarea id="" v-model="addressInfo" name="" />
+            <textarea id="" v-model="addReqParams.address" name="" />
           </div>
         </div>
 
-        <div class="check" @click="isDefault = !isDefault">
-          <div v-if="isDefault" class="default">
+        <div class="check" @click="addReqParams.isDefault = addReqParams.isDefault === 1 ? 2 : 1">
+          <div v-if="addReqParams.isDefault === 1" class="default">
             <div class="i-icons-correct" style="color: #000;" />
           </div>
-          <div v-if="!isDefault" class="not" />
+          <div v-if="addReqParams.isDefault === 2" class="not" />
           <div>设为默认地址</div>
         </div>
       </div>
@@ -181,11 +182,13 @@ const saveAddress = () => {
     width: 134rpx;
     height: 40rpx;
   }
+
   .inputBox {
     width: 686rpx;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+
     .row {
       margin: 32rpx auto 0;
       display: flex;

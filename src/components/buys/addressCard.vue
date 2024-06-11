@@ -57,9 +57,7 @@ $max-width: 686rpx;
   box-sizing: border-box;
 
   .center_info {
-
     height: 128rpx;
-    // background-color: #fff;
     z-index: 2;
     position: absolute;
     top: 50%;
