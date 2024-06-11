@@ -11,6 +11,5 @@
 <style lang="scss" scoped>
   .select {
     height: 80rpx;
-    background-color: white;
   }
 </style>
