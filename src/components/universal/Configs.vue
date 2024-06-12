@@ -5,9 +5,6 @@ const props = defineProps<{
   product: BuyProduct | Product
 }>()
 
-const emits = defineEmits<{
-  showDetail: [product: BuyProduct | Product]
-}>()
 // 要显示的详情
 const showConfigs = ref<BuyProduct | Product | null>(null)
 // 是否显示详情
@@ -16,11 +13,6 @@ const showConfigsSwitch = ref(false)
 function showConfigsFn(product: BuyProduct | Product) {
   showConfigs.value = product
   showConfigsSwitch.value = true
-}
-
-function showInfo() {
-  emits('showDetail', props.product)
-  showConfigsFn(props.product)
 }
 </script>
 
@@ -52,7 +44,7 @@ function showInfo() {
       </div>
     </div>
   </common-popup>
-  <div v-if="props.product" class="info" @click="showInfo">
+  <div v-if="props.product" class="info" @click="showConfigsFn(props.product)">
     <span>配置详情</span>
     <div class="i-icons-right" />
   </div>
