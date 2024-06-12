@@ -12,6 +12,25 @@ const tabs = ref<{
   3: '待收货',
 })
 
+// 点击更多显示提示弹窗
+const more = ref([
+  {
+    text: '查看明细',
+    handleclick: () => { },
+  },
+  {
+    text: '再来一单',
+    handleclick: () => { },
+  },
+])
+
+// 是否显示详情
+const showDropSwitch = ref(false)
+// 显示详情方法
+function showDropFn() {
+  showDropSwitch.value = !showDropSwitch.value
+}
+
 // 订单状态描述及颜色
 const filterOrder = (status: Order['status']) => {
   const statusMap: any = {
@@ -67,8 +86,8 @@ function copyText() {
 </script>
 
 <template>
+  <navbar-back text="我的订单" />
   <div class="order">
-    <navbar-back text="我的订单" />
     <div class="head">
       <template v-for="(item, index) in tabs" :key="index">
         <div
@@ -112,12 +131,23 @@ function copyText() {
                   </div>
                   <div class="func">
                     <div class="left">
-                      <div class="more">
-                        <div class="icon">
-                          <div class="i-icons-more" />
-                        </div>
-                        <span>更多</span>
-                      </div>
+                      <common-drop v-model:show="showDropSwitch">
+                        <template #default>
+                          <div class="more" @click="showDropFn">
+                            <div class="icon">
+                              <div class="i-icons-more" />
+                            </div>
+                            <span>更多</span>
+                          </div>
+                        </template>
+                        <template #info>
+                          <template v-for="(i, idx) in more" :key="idx">
+                            <div class="item" @click="i.handleclick">
+                              {{ i.text }}
+                            </div>
+                          </template>
+                        </template>
+                      </common-drop>
                     </div>
                     <div class="right">
                       <div class="price">
@@ -265,6 +295,8 @@ function copyText() {
             color: #ffffff;
 
             .more {
+              position: relative;
+              display: inline-block;
               display: flex;
               flex-direction: row;
               align-items: center;
