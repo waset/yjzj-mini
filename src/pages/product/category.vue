@@ -44,7 +44,7 @@ const layout = ref(true)
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
   switch (name) {
     case 'layout':
-      layout.value = Boolean(value)
+      layout.value = !value
       break
 
     default:
