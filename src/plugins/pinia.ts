@@ -1,5 +1,6 @@
 import { createPinia, defineStore } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
+import type { App } from 'vue'
 
 interface address {
   username: string
@@ -9,7 +10,7 @@ interface address {
   isDefault: boolean
 }
 
-export default (app: any) => {
+export default (app: App) => {
   /**
    * Pinia 的持久化存储
    *

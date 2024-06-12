@@ -1,10 +1,10 @@
 export const useAddressStore = defineStore('address', {
   state: (): {
     addressList: addresslist[]
-    addressStrIng: addressStrs[]
+    addressString: addressStrs[]
   } => ({
     addressList: [], // 收货地址列表
-    addressStrIng: [], // 单独存储一个显示地址的列表
+    addressString: [], // 单独存储一个显示地址的列表
   }),
   getters: {
   },
@@ -20,24 +20,42 @@ export const useAddressStore = defineStore('address', {
       const { data, code } = await http.post<addresslist>('/web/user/address/add', { ...params }, { auth: true })
       if (code === 200)
         // 增加单独存储地址
-        this.addressStrIng.push({
+        this.addressString.push({
           id: data.id,
           str,
         })
+      if (code !== 200) {
+        return uni.showToast({
+          title: '新增地址失败，请重试',
+          icon: 'error',
+        })
+      }
     },
     // 删除地址
     async delAddress(id: number) {
       const { code } = await http.post<delReq>('/web/user/address/delete', { id }, { auth: true })
-      const indexs = this.addressStrIng.findIndex(obj => obj.id === id)
+      const indexs = this.addressString.findIndex(obj => obj.id === id)
       // 检查是否找到了元素
       if (indexs !== -1)
         // 从数组中删除元素
-        this.addressStrIng.splice(indexs, 1)
+        this.addressString.splice(indexs, 1)
       return code
     },
     // 修改地址
     async editAddress(params: editReq) {
-      await http.post<editReq>('/web/user/address/edit', { ...params }, { auth: true })
+      const { code } = await http.post<editReq>('/web/user/address/edit', { ...params }, { auth: true })
+      if (code === 200) {
+        return uni.showToast({
+          title: '保存地址成功',
+          icon: 'success',
+        })
+      }
+      if (code !== 200) {
+        return uni.showToast({
+          title: '保存地址失败,请重试',
+          icon: 'error',
+        })
+      }
     },
 
   },

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-const { addressList, addressStrIng } = storeToRefs(useAddressStore())
+const { addressList, addressString } = storeToRefs(useAddressStore())
 const { getAddressList, newAddress, delAddress, editAddress } = useAddressStore()
+
 // 当前页数
 const page = ref<number>(1)
 onShow(async () => {
@@ -26,9 +27,17 @@ const receiveId = async (id: number) => {
 // 执行删除  并 关闭弹窗  刷新列表
 const deleteAddressFn = async () => {
   const code = await delAddress(activeId.value)
-  if (code === 200)
+  if (code === 200) {
     showModel.value = false
-  await getAddressList(page.value, 10)
+    await getAddressList(page.value, 10)
+  }
+  if (code !== 200) {
+    // 这里写失败逻辑
+    return uni.showToast({
+      title: '删除失败',
+      icon: 'error',
+    })
+  }
 }
 
 // 修改默认地址
@@ -53,16 +62,15 @@ const addressStr = ref<string>('')
 const popupName = ref<string>('新增地址')
 // 当前编辑地址的code
 const nowAddressCode = ref<string[]>([])
+
 // 修改地址 打开弹窗
 const editAddressFn = (data: addresslist) => {
   popupName.value = '编辑地址'
   AddressshowPop.value = true
-  addReqParams.value = data
-
+  addReqParams.value = JSON.parse(JSON.stringify(data))
   nowAddressCode.value = [data.provinceCode, data.cityCode, data.countryCode]
-
   // 找出符合单前地址的对象
-  addressStr.value = addressStrIng.value.find(item => item.id === data.id)?.str ?? ''
+  addressStr.value = addressString.value.find(item => item.id === data.id)?.str ?? ''
 }
 //  新增地址 打开弹窗
 const newAdd = () => {
@@ -75,7 +83,6 @@ const newAdd = () => {
     phone: '',
     provinceCode: '',
     username: '',
-
   }
   nowAddressCode.value = []
   addressStr.value = ''
@@ -101,7 +108,7 @@ const saveAddress = async () => {
     AddressshowPop.value = false
   }
   else {
-  // 编辑保存地址
+    // 编辑保存地址
     await editAddress(addReqParams.value)
     await getAddressList(page.value, 10)
     AddressshowPop.value = false
@@ -115,7 +122,7 @@ const saveAddress = async () => {
     <common-model :show="showModel" msg="确认删除该地址吗？" :icon="icon" @ok="deleteAddressFn" @cancel="showModel = false" />
     <div class="myaddress">
       <address-item-card
-        :addressdata="addressList" :address-str="addressStrIng" @delete-address="receiveId"
+        :addressdata="addressList" :address-str="addressString" @delete-address="receiveId"
         @set-default="setDefaultFn" @edit-address="editAddressFn"
       />
       <div class="newAddress" @click="newAdd">

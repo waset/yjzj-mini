@@ -27,7 +27,7 @@ const editAddress = (item: addresslist) => {
   <div v-for="(item, index) in props.addressdata" :key="index" class="addressCard">
     <div class="name">
       <div class="i-icons-address" />
-      <span style="font-size: 32rpx;font-weight: 600;margin-right:16rpx;"> {{ item.username }}</span>
+      <span class="username"> {{ item.username }}</span>
       <span> {{ item.phone }}</span>
       <div v-if="item.isDefault === 1" class="isdefault">
         默认
@@ -81,6 +81,13 @@ $sp: space-between;
   .name {
     display: flex;
     align-items: center;
+
+    .username {
+
+      font-size: 32rpx;
+      font-weight: 600;
+      margin-right: 16rpx;
+    }
 
     .i-icons-address {
       width: $iconSize;
