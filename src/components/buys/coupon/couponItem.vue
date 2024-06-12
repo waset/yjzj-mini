@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+const props = defineProps<{
+  coupn: couponList
+}>()
 </script>
 
 <template>
@@ -22,21 +25,25 @@
                 <div class="row1">
                   <div class="l">
                     <span style="font-size: 32rpx;">￥</span>
-                    <span style="font-size: 64rpx;">15</span>
+                    <span style="font-size: 64rpx;">{{ props.coupn.ticketInfo.discountPrice }}</span>
                   </div>
                   <div class="r">
-                    <span style="color: #EDA522;">6</span>
+                    <span style="color: #EDA522;">
+                      <span v-if="props.coupn.ticketInfo.useTimeType === 1"> {{ props.coupn.ticketInfo.useTimeDays }}</span>
+                      <span v-if="props.coupn.ticketInfo.useTimeType === 2">当天内可用</span>
+                      <span v-if="props.coupn.ticketInfo.useTimeType === 3">{{ props.coupn.ticketInfo.useStartAt }}- {{ props.coupn.ticketInfo.useEndAt }}</span>
+                    </span>
                     <span>天内使用 | 立即使用 >></span>
                   </div>
                 </div>
                 <div class="row2">
-                  单笔满100元可用
+                  满{{ props.coupn.ticketInfo.overPrice }}元可用
                 </div>
                 <div class="row3">
                   规则>>
                 </div>
                 <div class="row4">
-                  ASSFADFGREGFFH
+                  {{ props.coupn.ticketInfo.no }}
                 </div>
               </div>
             </div>

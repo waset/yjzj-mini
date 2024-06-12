@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+// const { couponList } = storeToRefs(useSubmitOrderStore())
+const { getCouponList } = useSubmitOrderStore()
+const page = ref<number>(1)
+onShow(async () => {
+  await getCouponList(page.value, 15)
+})
 //  显示隐藏 卡片渐变边框
 const showborder = ref<boolean>(true)
 // 提交商品的列表
@@ -20,7 +26,6 @@ const mark = ref<string>('')
 const totalNumber = ref<number>(0)
 // 实付金额
 const payment = ref<number>(4399)
-
 // 控制备注弹出层显示
 const showPop = ref<boolean>(false)
 
@@ -41,12 +46,12 @@ const writeMarkFn = (data: string): void => {
 <template>
   <navbar-home text="提交订单" />
   <div class="body">
-    <div class="addressBox" @click="AddressshowPop = true">
+    <div class="addressBox" @click="Jump('/pages/me/address/myAddress')">
       <buys-addressCard :width="622" />
     </div>
     <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
     <div class="CouponsAndNotes">
-      <div class="counpons">
+      <div class="counpons" @click="Jump('/pages/buy/coupon')">
         <div>优惠券</div>
         <div class="beColor">
           待使用
@@ -56,7 +61,9 @@ const writeMarkFn = (data: string): void => {
       <div class="notes" @click="showPop = true">
         <div>备注</div>
         <div class="beColor mark">
-          {{ mark || '无备注' }}
+          <div class="text1">
+            {{ mark || '无备注' }}
+          </div>
           <div class="i-icons-right" />
         </div>
       </div>
@@ -65,7 +72,6 @@ const writeMarkFn = (data: string): void => {
     <buys-bottomSubmit :number="totalNumber" :pay="payment" />
 
     <buys-popup-markpopup :showpop="showPop" @set-show="setShowFn" @write-mark="writeMarkFn" />
-
     <buys-popup-address :showpop="AddressshowPop" @set-show="AddressshowPop = false" />
   </div>
 </template>
@@ -105,7 +111,7 @@ $Be: #BEBEBE;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 32rpx auto 0;
+    margin: 32rpx auto;
     font-size: 28rpx;
     box-sizing: border-box;
     padding-left: 32rpx;
@@ -116,21 +122,31 @@ $Be: #BEBEBE;
     }
 
     .notes {
+      margin-top: 32rpx;
       display: flex;
       justify-content: space-between;
+
     }
 
     .beColor {
       color: #BEBEBE;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
+      .text1 {
+        max-width: 400rpx;
+        max-height: 80rpx;
+        font-size: 28rpx;
+      }
+
+      .i-icons-right {
+        font-size: 32rpx;
+        width: 32rpx;
+        height: 32rpx;
+      }
     }
 
-    .mark {
-      max-width: 400rpx;
-      max-height: 80rpx;
-      overflow: hidden;
-
-    }
   }
 
 }

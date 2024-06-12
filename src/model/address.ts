@@ -2,9 +2,25 @@ export const useAddressStore = defineStore('address', {
   state: (): {
     addressList: addresslist[]
     addressString: addressStrs[]
+    nowAddress: addresslist
   } => ({
     addressList: [], // 收货地址列表
     addressString: [], // 单独存储一个显示地址的列表
+    nowAddress: {
+      address: '',
+      cityCode: '',
+      countryCode: '',
+      createdAt: '',
+      deletedAt: null,
+      id: 0,
+      isDefault: 0,
+      phone: '',
+      provinceCode: '',
+      status: 0,
+      updatedAt: '',
+      userID: 0,
+      username: '',
+    }, // 当前选择的地址
   }),
   getters: {
   },
@@ -39,6 +55,23 @@ export const useAddressStore = defineStore('address', {
       if (indexs !== -1)
         // 从数组中删除元素
         this.addressString.splice(indexs, 1)
+      if (id === this.nowAddress.id) {
+        this.nowAddress = {
+          address: '',
+          cityCode: '',
+          countryCode: '',
+          createdAt: '',
+          deletedAt: null,
+          id: 0,
+          isDefault: 0,
+          phone: '',
+          provinceCode: '',
+          status: 0,
+          updatedAt: '',
+          userID: 0,
+          username: '',
+        }
+      }
       return code
     },
     // 修改地址

@@ -1,27 +1,42 @@
 <script lang="ts" setup>
-import { useStore } from '@/plugins/pinia'
-
 const props = defineProps<{
   width: number
 }>()
-const state = useStore()
-onMounted(() => {
+const { addressList, nowAddress, addressString } = storeToRefs(useAddressStore())
+// 查询 是否有默认的地址
+const arr = ref<addresslist[]>([])
+// 判断地址是否存 单独的数组中
+const findObjectById = (id: number) => {
+  return addressString.value.find(obj => obj.id === id)?.str
+}
+onShow(() => {
+  // 找出是否存在 默认地址 如果不存在 返回空
+
+  function findDefault() {
+    arr.value = addressList.value.filter(item => item.isDefault === 1)
+
+    if (arr.value.length > 0) {
+      nowAddress.value = arr.value[0]
+    }
+  }
+
+  if (nowAddress.value.username === '')
+    findDefault()
 })
 </script>
 
 <template>
   <div class="addressCard">
     <div class="center_info" :style="{ width: `${props.width}rpx` }">
-      <div v-if="state.userInfo?.username && state.userInfo?.mobile" class="nameMobile">
+      <div v-if="nowAddress.username" class="nameMobile">
         <div style="display: flex;align-items: center;">
           <div class="usernameRow">
-            <div class="i-icons-address" /> {{ state.userInfo.username }}
+            <div class="i-icons-address" /> {{ nowAddress.username }}
           </div>
           <div style="font-size: 28rpx;">
-            {{ state.userInfo.mobile
-            }}
+            {{ nowAddress.phone }}
           </div>
-          <div v-if="state.userInfo.isDefault" class="isdefault">
+          <div v-if="nowAddress.isDefault === 1" class="isdefault">
             默认
           </div>
         </div>
@@ -31,9 +46,9 @@ onMounted(() => {
         <div class="i-icons-address" />
         <div>收货地址</div>
       </div>
-      <div v-if="!state.userInfo?.address || false" class="shadel" />
-      <div v-if="state.userInfo?.address" style="font-size: 28rpx;padding-left: 57rpx">
-        <span>{{ state.userInfo.address }}{{ state.userInfo.addressInfo }}</span>
+      <div v-if="!nowAddress.address" class="shadel" />
+      <div v-if="nowAddress.address" style="font-size: 28rpx;padding-left: 57rpx">
+        <span>{{ findObjectById(nowAddress.id) }}{{ nowAddress.address }}</span>
       </div>
       <div v-else class="addressInfoTips">
         <div> 请选择/添加收货地址</div>
@@ -82,6 +97,7 @@ $max-width: 686rpx;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       .usernameRow {
         display: flex;
         align-items: center;
@@ -131,6 +147,8 @@ $max-width: 686rpx;
         rgba($color: #848484, $alpha: 0.5) 20rpx);
   }
 
+  z-index: -1;
+
   &::before {
     content: '';
     position: absolute;
@@ -143,6 +161,7 @@ $max-width: 686rpx;
         transparent 0,
         transparent 20rpx,
         rgba($color: #848484, $alpha: 0.5) 20rpx);
+    z-index: -1;
   }
 
   background-repeat: no-repeat;

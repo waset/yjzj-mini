@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-
+const { couponList } = storeToRefs(useSubmitOrderStore())
 </script>
 
 <template>
   <navbar-home text="我的优惠券" />
   <div class="body">
     <buys-coupon-search />
-    <buys-coupon-couponItem />
+    <div v-for="(item, index) in couponList" :key="index">
+      <buys-coupon-couponItem :coupn="item" />
+    </div>
   </div>
 </template>
 

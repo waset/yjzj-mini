@@ -4,7 +4,7 @@ const props = defineProps<{
   addressStr: addressStrs[]
 }>()
 const emits = defineEmits(['deleteAddress', 'setDefault', 'editAddress'])
-
+const { nowAddress } = storeToRefs(useAddressStore())
 // 调用父组件中的删除
 const delAddressFn = (item: number) => {
   emits('deleteAddress', item)
@@ -21,10 +21,16 @@ const setDefaultAddress = async (item: addresslist, index: number) => {
 const editAddress = (item: addresslist) => {
   emits('editAddress', item)
 }
+
+// 设置当前地址
+const setNowAddress = (index: number) => {
+  nowAddress.value = props.addressdata[index]
+  Jump('/pages/buy/submitOrder', {}, 1)
+}
 </script>
 
 <template>
-  <div v-for="(item, index) in props.addressdata" :key="index" class="addressCard">
+  <div v-for="(item, index) in props.addressdata" :key="index" class="addressCard" @click="setNowAddress(index)">
     <div class="name">
       <div class="i-icons-address" />
       <span class="username"> {{ item.username }}</span>
@@ -39,7 +45,7 @@ const editAddress = (item: addresslist) => {
     </div>
     <div class="line" />
     <div class="edit">
-      <div class="select-default" @click="setDefaultAddress(item, index)">
+      <div class="select-default" @click.stop="setDefaultAddress(item, index)">
         <div v-if="item.isDefault === 1" class="default">
           <div class="i-icons-correct" />
         </div>
@@ -47,11 +53,11 @@ const editAddress = (item: addresslist) => {
         <span class="text"> 设为默认地址</span>
       </div>
       <div class="operation">
-        <div class="item" @click="editAddress(item)">
+        <div class="item" @click.stop="editAddress(item)">
           <div class="i-icons-edit" />
           编辑
         </div>
-        <div class="item" @click="delAddressFn(item.id)">
+        <div class="item" @click.stop="delAddressFn(item.id)">
           <div class="i-icons-del" />
           删除
         </div>
