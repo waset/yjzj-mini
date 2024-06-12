@@ -47,20 +47,10 @@ const DiyICons = [
   <div class="diy">
     <div class="top">
       <div class="wrap">
-        <div class="title">
-          一剑装机自由定制-1
-        </div>
-        <div class="desc">
-          13代13900KF+PTX4090超强的组合，3A大作满帧畅玩。
-        </div>
-      </div>
-    </div>
-    <div class="top">
-      <div class="wrap">
         <div v-for="(item, index) in DiyICons" :key="index" class="line">
           <div :class="item.icons" class="icon_style" />
           {{ item.text }}
-          <div class="alter" @click="() => { Jump('/pages/custom/selectList') }">
+          <div class="alter" @click="Jump('/pages/custom/selectList')">
             <div class="i-icons-edit alter_icon" />
             改配
           </div>
@@ -72,7 +62,7 @@ const DiyICons = [
 
 <style scoped lang="scss">
   .top {
-    padding: 32rpx;
+    padding: 0 32rpx;
     box-sizing: border-box;
 
     .wrap {
