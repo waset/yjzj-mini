@@ -1,41 +1,55 @@
 <script setup lang="ts">
 interface Props {
   show: boolean
-  name?: string
-  info?: string[]
-  width?: string
-  height?: string
+  position: 'top' | 'bottom' | 'left' | 'right'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  name: 'popup',
-  width: '100%',
-  height: '60%',
+  position: 'bottom',
 })
 
-const emit = defineEmits<{
-  close: []
-}>()
+const drop = ref<HTMLElement | null>(null)
 
-function close() {
-  emit('close')
-}
+watchEffect(() => {
+  if (props.show) {
+    console.log(drop.value)
+  }
+})
 </script>
 
 <template>
-  <div v-if="props.show" class="drop">
-    <div class="wrap" :style="{ width: props.width, height: props.height }">
-      <slot name="info">
-        <div class="title" @click="close">
-          <div v-if="props.info" class="func">
-            <template v-for="item in props.info" :key="item">
-              {{ props.info }}
-            </template>
-          </div>
-        </div>
-      </slot>
+  <div ref="drop" class="drop">
+    <div class="btn">
+      <slot />
     </div>
+    <template v-if="props.show">
+      <div
+        class="list" :style="{
+          top: props.position === 'bottom' ? '100%' : 'auto',
+          bottom: props.position === 'top' ? '100%' : 'auto',
+          left: props.position === 'right' ? '100%' : 'auto',
+          right: props.position === 'left' ? '100%' : 'auto',
+        }"
+      >
+        <div class="box">
+          <slot name="info" />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.drop {
+  position: relative;
+
+  .list {
+    position: absolute;
+    z-index: 100;
+
+    .box{
+
+    }
+  }
+}
+</style>
