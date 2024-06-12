@@ -41,9 +41,9 @@ const deleteAddressFn = async () => {
 }
 
 // 修改默认地址
-const setDefaultFn = async (item: addresslist) => {
+const setDefaultFn = async (item: addresslist, index: number) => {
   if (item.isDefault === 2)
-    item.isDefault = 1
+    addressList.value[index].isDefault = 1
   await editAddress(item)
   await getAddressList(page.value, 10)
 }

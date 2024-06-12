@@ -14,8 +14,8 @@ const findObjectById = (id: number) => {
   return props.addressStr.find(obj => obj.id === id)?.str
 }
 // 设置默认地址
-const setDefaultAddress = async (item: addresslist) => {
-  emits('setDefault', item)
+const setDefaultAddress = async (item: addresslist, index: number) => {
+  emits('setDefault', item, index)
 }
 // 调用父组件编辑地址
 const editAddress = (item: addresslist) => {
@@ -39,7 +39,7 @@ const editAddress = (item: addresslist) => {
     </div>
     <div class="line" />
     <div class="edit">
-      <div class="select-default" @click="setDefaultAddress(item)">
+      <div class="select-default" @click="setDefaultAddress(item, index)">
         <div v-if="item.isDefault === 1" class="default">
           <div class="i-icons-correct" />
         </div>
