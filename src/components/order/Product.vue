@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  orders: Order[]
+  order: Order
 }>(), {
-  orders: () => [],
 })
 </script>
 
@@ -10,31 +9,29 @@ const props = withDefaults(defineProps<{
   <div class="box">
     <div class="info">
       <div class="product">
-        <template v-for="(item, index) in props.orders" :key="index">
-          <template v-for="(detail, i) in item.details" :key="i">
-            <div class="proItem">
-              <div class="content">
-                <div class="left">
-                  <div class="img">
-                    <product-image :src="detail.productSnapshot.banner[index]" width="160rpx" radius="16rpx" />
-                  </div>
-                  <div class="text">
-                    <div class="name">
-                      {{ detail.productSnapshot.name }}
-                    </div>
-                    <universal-configs :product="detail.productSnapshot" />
-                  </div>
+        <template v-for="(detail, i) in props.order.details" :key="i">
+          <div class="proItem">
+            <div class="content">
+              <div class="left">
+                <div class="img">
+                  <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
                 </div>
-                <div class="right">
-                  <div class="productPrice">
-                    <span>￥</span>
-                    <span>{{ detail.productSnapshot.tagPrice }}</span>
+                <div class="text">
+                  <div class="name">
+                    {{ detail.productSnapshot.name }}
                   </div>
+                  <universal-configs :product="detail.productSnapshot" />
                 </div>
               </div>
-              <div v-if="i !== props.orders[0].details.length - 1" class="line" />
+              <div class="right">
+                <div class="productPrice">
+                  <span>￥</span>
+                  <span>{{ detail.productSnapshot.tagPrice }}</span>
+                </div>
+              </div>
             </div>
-          </template>
+            <div v-if="i !== props.order.details.length - 1" class="line" />
+          </div>
         </template>
       </div>
     </div>
@@ -59,10 +56,12 @@ const props = withDefaults(defineProps<{
         .content {
           display: flex;
           flex-direction: row;
+          justify-content: space-between;
           align-items: center;
-          gap: 16rpx;
 
           padding: 32rpx 0;
+
+          gap: 16rpx;
 
           .left {
             display: flex;
