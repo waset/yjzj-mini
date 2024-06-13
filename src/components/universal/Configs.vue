@@ -2,15 +2,15 @@
 // 商品配置详情
 const props = defineProps<{
   // 产品信息
-  product: BuyProduct | Product
+  product: Product
 }>()
 
 // 要显示的详情
-const showConfigs = ref<BuyProduct | Product | null>(null)
+const showConfigs = ref<Product | null>(null)
 // 是否显示详情
 const showConfigsSwitch = ref(false)
 // 显示详情方法
-function showConfigsFn(product: BuyProduct | Product) {
+function showConfigsFn(product: Product) {
   showConfigs.value = product
   showConfigsSwitch.value = true
 }
@@ -19,6 +19,7 @@ function showConfigsFn(product: BuyProduct | Product) {
 <template>
   <common-popup v-model:show="showConfigsSwitch" name="配置详情">
     <div class="configs">
+      <div class="test" />
       <div v-if="showConfigs" class="wrap">
         <template v-for="(item, index) in showConfigs.params" :key="index">
           <div class="item">
