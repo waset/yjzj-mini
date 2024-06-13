@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import areadata from '@/utils/common/division.json'
+
 const props = defineProps<{
   addressdata: addresslist[]
-  addressStr: addressStrs[]
+
 }>()
 const emits = defineEmits(['deleteAddress', 'setDefault', 'editAddress'])
+
 const { nowAddress } = storeToRefs(useAddressStore())
 // 调用父组件中的删除
-const delAddressFn = (item: number) => {
-  emits('deleteAddress', item)
+const delAddressFn = (id: number) => {
+  emits('deleteAddress', id)
 }
-// 判断地址是否存 单独的数组中
-const findObjectById = (id: number) => {
-  return props.addressStr.find(obj => obj.id === id)?.str
-}
+
 // 设置默认地址
 const setDefaultAddress = async (item: addresslist, index: number) => {
   emits('setDefault', item, index)
@@ -27,6 +27,21 @@ const setNowAddress = (index: number) => {
   nowAddress.value = props.addressdata[index]
   Jump('/pages/buy/submitOrder', {}, 1)
 }
+
+// 通过code获取省市区
+
+const getPcaDetails = (pcaCode: string[]) => {
+  const [p, c, a] = pcaCode
+  const province = areadata.find(item => item.value === p)
+  const city = province?.children.find(item => item.value === c)
+  const area = city?.children.find(item => item.value === a)
+
+  return `${province?.label} ${city?.label} ${area?.label}`
+}
+
+onMounted(() => {
+
+})
 </script>
 
 <template>
@@ -40,7 +55,7 @@ const setNowAddress = (index: number) => {
       </div>
     </div>
     <div class="addressInfo">
-      <span>{{ findObjectById(item.id) }}</span>
+      <span>{{ getPcaDetails([item.provinceCode, item.cityCode, item.countryCode]) }}</span>
       <span>{{ item.address }}</span>
     </div>
     <div class="line" />

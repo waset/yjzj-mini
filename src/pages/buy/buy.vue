@@ -134,7 +134,7 @@ function deleteProduct() {
         </div>
         <div class="btns">
           <template v-if="!management">
-            <div class="btn bg-green">
+            <div class="btn bg-green" @click="Jump('/pages/buy/submitOrder')">
               结算
             </div>
           </template>

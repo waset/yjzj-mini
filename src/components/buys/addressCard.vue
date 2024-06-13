@@ -1,33 +1,25 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  width: number
-}>()
-const { addressList, nowAddress, addressString } = storeToRefs(useAddressStore())
-// 查询 是否有默认的地址
-const arr = ref<addresslist[]>([])
-// 判断地址是否存 单独的数组中
-const findObjectById = (id: number) => {
-  return addressString.value.find(obj => obj.id === id)?.str
+import areadata from '@/utils/common/division.json'
+
+const { nowAddress } = storeToRefs(useAddressStore())
+// 通过code获取省市区
+
+const getPcaDetails = (pcaCode: string[]) => {
+  const [p, c, a] = pcaCode
+  const province = areadata.find(item => item.value === p)
+  const city = province?.children.find(item => item.value === c)
+  const area = city?.children.find(item => item.value === a)
+
+  return `${province?.label} ${city?.label} ${area?.label}`
 }
 onShow(() => {
-  // 找出是否存在 默认地址 如果不存在 返回空
 
-  function findDefault() {
-    arr.value = addressList.value.filter(item => item.isDefault === 1)
-
-    if (arr.value.length > 0) {
-      nowAddress.value = arr.value[0]
-    }
-  }
-
-  if (nowAddress.value.username === '')
-    findDefault()
 })
 </script>
 
 <template>
   <div class="addressCard">
-    <div class="center_info" :style="{ width: `${props.width}rpx` }">
+    <div class="center_info">
       <div v-if="nowAddress.username" class="nameMobile">
         <div style="display: flex;align-items: center;">
           <div class="usernameRow">
@@ -46,9 +38,9 @@ onShow(() => {
         <div class="i-icons-address" />
         <div>收货地址</div>
       </div>
-      <div v-if="!nowAddress.address" class="shadel" />
-      <div v-if="nowAddress.address" style="font-size: 28rpx;padding-left: 57rpx">
-        <span>{{ findObjectById(nowAddress.id) }}{{ nowAddress.address }}</span>
+      <div v-if="!nowAddress.provinceCode" class="shadel" />
+      <div v-if="nowAddress.provinceCode" style="font-size: 28rpx;padding-left: 57rpx">
+        <span>{{ getPcaDetails([nowAddress.provinceCode, nowAddress.cityCode, nowAddress.countryCode]) }}- {{ nowAddress.address }}</span>
       </div>
       <div v-else class="addressInfoTips">
         <div> 请选择/添加收货地址</div>
@@ -72,6 +64,7 @@ $max-width: 686rpx;
   box-sizing: border-box;
 
   .center_info {
+    width: 622rpx;
     height: 128rpx;
     z-index: 2;
     position: absolute;

@@ -12,15 +12,38 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
   actions: {
     // 获取卡券列表
     async getCouponList(page: number, pageSize: number) {
-      const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', { page, pageSize }, { auth: true })
-      if (code === 200)
-        this.couponList = data
+      try {
+        const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', { page, pageSize }, { auth: true })
+        if (code === 200)
+          this.couponList = data
+      }
+      catch {
+        uni.showToast({
+          title: '网络错误,请稍后重试',
+          icon: 'error',
+        })
+      }
     },
     // 获取卡券
     async getCoupon(params: couponReq) {
-      const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', params, { auth: true })
-      if (code === 200)
-        this.couponList = data
+      try {
+        const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', params, { auth: true })
+        if (code === 200)
+          this.couponList = data
+      }
+      catch {
+        uni.showToast({
+          title: '网络错误,请稍后重试',
+          icon: 'error',
+        })
+      }
+    },
+    //  下单
+    async submitOrderReq(params: submitOrderReq) {
+      try {
+        await http.post<couponList[]>('/web/order/add', { ...params }, { auth: true })
+      }
+      catch {}
     },
   },
   persist: true,

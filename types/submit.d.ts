@@ -90,3 +90,101 @@ interface couponReq {
    */
   ticketID: number
 }
+
+// 下单请求接口
+interface submitOrderReq {
+  /**
+   * 购物车ids
+   */
+  cartIDs?: string[]
+  /**
+   * 购买商品详情
+   */
+  details?: Detail[]
+  /**
+   * 邀请码
+   */
+  inviteCode?: string
+  /**
+   * 支付方式（"wechat":"jsApi","native"/ "aliPay":"web","pc"）
+   */
+  payMethod?: string
+  /**
+   * 支付类型（"wechat", "aliPay"）
+   */
+  payType?: string
+  /**
+   * 备注
+   */
+  remark?: string
+  /**
+   * 用户地址id
+   */
+  userAddressID?: number
+  /**
+   * 用户卡券id
+   */
+  userTicketID?: number
+
+}
+//  购买商品详情
+interface Detail {
+  /**
+   * 商品id
+   */
+  id?: number
+  /**
+   * 数量
+   */
+  number?: number
+  /**
+   * 关联类型（1：商品 2：配置单）
+   */
+  relationType?: number
+
+}
+
+// 下单返回接口
+interface submitRes {
+  code?: number
+  data?: submitResData
+  extra?: { [key: string]: any }
+  msg?: string
+  page?: Page
+
+}
+
+interface submitResData {
+  /**
+   * 扫码支付二维码
+   */
+  codeUrl?: string
+  jsapiPayParams?: JsapiPayParams
+  /**
+   * 订单id
+   */
+  orderID?: number
+  /**
+   * 第三方预支付订单id
+   */
+  prePayID?: string
+
+}
+
+interface JsapiPayParams {
+  appId: string
+  nonceStr: string
+  package: string
+  paySign: string
+  signType: string
+  timeStamp: string
+
+}
+
+interface Page {
+  currentPage?: number
+  LastPage?: number
+  pageSize?: number
+  total?: number
+
+}

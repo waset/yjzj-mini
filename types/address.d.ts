@@ -51,3 +51,8 @@ interface editReq {
   provinceCode?: string
   username?: string
 }
+
+interface areaData {
+  label: string
+  value: string
+}

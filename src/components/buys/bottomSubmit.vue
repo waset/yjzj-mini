@@ -3,6 +3,11 @@ const props = defineProps<{
   number: number
   pay: number
 }>()
+
+const emits = defineEmits(['submitOrder'])
+const submitOrder = () => {
+  emits('submitOrder')
+}
 </script>
 
 <template>
@@ -15,7 +20,7 @@ const props = defineProps<{
       <span class="fs24">合计：</span>
       <span class="fs32">￥{{ props.pay }}</span>
     </div>
-    <div class="submitBtn">
+    <div class="submitBtn" @click="submitOrder">
       立即购买
     </div>
 
