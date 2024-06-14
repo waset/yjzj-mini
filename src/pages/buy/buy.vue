@@ -102,6 +102,7 @@ function deleteProduct() {
               :product="item" :sliding="slidIdx === index" :is-management="management"
               @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="delModel([item.id])"
               @show-detail="showConfigsFn" @update:product="(product) => products[index] = product"
+              @click="(product) => Jump('/pages/product/detail', { id: product.id })"
             />
           </template>
         </template>

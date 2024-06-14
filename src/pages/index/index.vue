@@ -17,7 +17,7 @@ onShow(async () => {
   hots.value = getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
   pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
 
-  await getCategorys('laptop', 1, 3)
+  await getCategorys('laptop', 1, 4)
   notebook_type.value = types.value[0]?.id || 0
 
   await getProductsByType(notebook_type.value)
