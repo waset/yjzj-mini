@@ -50,7 +50,7 @@ const addBuyCar = () => {
       <div class="top">
         <div class="wrap">
           <div class="title">
-            {{ detail.name }}
+            {{ detail.name || '自由定制' }}
           </div>
           <div class="desc">
             {{ detail.description }}
@@ -58,7 +58,7 @@ const addBuyCar = () => {
           <div class="more">
             <div class="price">
               <span>￥</span>
-              <span>{{ detail.tagPrice }}</span>
+              <span>{{ detail.tagPrice || 0 }}</span>
             </div>
             <div class="btns">
               <div class="btn">
