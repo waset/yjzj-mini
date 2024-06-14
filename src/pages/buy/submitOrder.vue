@@ -71,7 +71,7 @@ const submitOrderFn = async () => {
     </div>
     <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
     <div class="CouponsAndNotes">
-      <div class="counpons" @click="Jump('/pages/buy/coupon')">
+      <div class="counpons" @click="Jump('/pages/buy/selectCoupon')">
         <div>优惠券</div>
         <div class="beColor">
           待使用

@@ -3,14 +3,14 @@ const { couponList } = storeToRefs(useSubmitOrderStore())
 </script>
 
 <template>
-  <navbar-home text="我的优惠券" />
+  <navbar-back text="我的优惠券" />
   <div class="body">
     <buys-coupon-search />
     <div v-if="couponList.length === 0 ">
       <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-nocoupon" />
     </div>
     <div v-for="(item, index) in couponList" :key="index">
-      <buys-coupon-couponItem :coupn="item" />
+      <buys-coupon-couponItem :coupn="item" :is-select="true" />
     </div>
   </div>
 </template>
