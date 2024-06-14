@@ -30,7 +30,7 @@ export const useOrderStore = defineStore('orders', {
   actions: {
     // 获取订单状态
     async getOrderList(status: Order['status'], page: number = 1, pageSize: number = 10) {
-      const sta = status !== undefined ? status : null
+      const sta = status !== undefined ? Number(status) : null
       const { data, code } = await http.post<Order[]>('/web/order/list', {
         status: sta,
         page,
