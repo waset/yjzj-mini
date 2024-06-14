@@ -64,7 +64,7 @@ const submitOrderFn = async () => {
 </script>
 
 <template>
-  <navbar-home text="提交订单" />
+  <navbar-back text="提交订单" />
   <div class="body">
     <div class="addressBox" @click="Jump('/pages/me/address/addressIndex')">
       <buys-addressCard />

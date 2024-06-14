@@ -220,9 +220,12 @@ onMounted(() => {
 
 <template>
   <div>
-    <navbar-home text="收货地址" />
+    <navbar-back text="收货地址" />
     <common-model :show="showModel" msg="确认删除该地址吗？" :icon="icon" @ok="deleteAddressFn" @cancel="showModel = false" />
     <div class="myaddress">
+      <div v-if="addressList.length === 0 ">
+        <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-union" />
+      </div>
       <address-item-card
         :addressdata="addressList" @delete-address="delAddressFn" @set-default="setDefaultFn"
         @edit-address="editAddressFn"
@@ -240,7 +243,7 @@ onMounted(() => {
           </div>
           <div class="row">
             <div>联系电话</div>
-            <input v-model="addReqParams.phone" type="text">
+            <input v-model="addReqParams.phone" type="text" :maxlength="11">
           </div>
           <div class="row">
             <div>收获地址</div>
