@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// const { couponList } = storeToRefs(useSubmitOrderStore())
 const { nowAddress } = storeToRefs(useAddressStore())
 const { getCouponList, submitOrderReq } = useSubmitOrderStore()
 const page = ref<number>(1)
@@ -74,7 +73,12 @@ const submitOrderFn = async () => {
       <div class="counpons" @click="Jump('/pages/buy/selectCoupon')">
         <div>优惠券</div>
         <div class="beColor">
-          待使用
+          <div class="text">
+            待使用
+            <div class="badge">
+              2
+            </div>
+          </div>
           <div class="i-icons-right" />
         </div>
       </div>
@@ -151,6 +155,26 @@ $Be: #BEBEBE;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      .text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .badge {
+          width: 32rpx;
+          height: 32rpx;
+          border-radius: 50%;
+          background-color: #F53F3F;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          font-size: 20rpx;
+          margin-left: 8rpx;
+        }
+
+      }
 
       .text1 {
         max-width: 400rpx;
