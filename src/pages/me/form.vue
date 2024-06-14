@@ -40,11 +40,10 @@ onShow(() => {
       <div class="box">
         <template v-if="orders && orders.length">
           <template v-for="(order, i) in orders" :key="i">
-            <order-list :order="order">
-              <template #actions>
+            <order-list :order="order" />
+            <!-- <template #actions>
                 <order-action :order="order" />
-              </template>
-            </order-list>
+              </template> -->
           </template>
         </template>
         <template v-else>

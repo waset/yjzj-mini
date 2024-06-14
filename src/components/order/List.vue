@@ -7,12 +7,12 @@ const props = withDefaults(defineProps<{
 // 点击更多显示提示弹窗
 const more = ref([
   {
-    text: '查看明细',
-    handleclick: () => { },
+    name: 'detail',
+    label: '查看明细',
   },
   {
-    text: '再来一单',
-    handleclick: () => { },
+    name: 'again',
+    label: '再来一单',
   },
 ])
 
@@ -21,6 +21,17 @@ const showDropSwitch = ref(false)
 // 显示下拉菜单的方法
 function showDropFn() {
   showDropSwitch.value = !showDropSwitch.value
+}
+const DropFn = (name: string) => {
+  switch (name) {
+    case 'detail':
+      // 查看明细
+      break
+
+    case 'again':
+      // 再来一单
+      break
+  }
 }
 
 // 订单状态描述及颜色
@@ -35,8 +46,8 @@ const filterOrder = (status: Order['status']) => {
       color: '#a7f522',
     },
     3: {
-      desc: '已发货',
-      color: '#a7f522',
+      desc: '支付失败',
+      color: '#ffffff',
     },
     4: {
       desc: '部分退款',
@@ -103,45 +114,20 @@ function copyText() {
             </div>
           </div>
           <div class="bottom">
-            <common-drop v-model:show="showDropSwitch">
-              <template #default>
+            <div class="left">
+              <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
                 <div class="more" @click="showDropFn">
                   <div class="icon">
                     <div class="i-icons-more" />
                   </div>
                   <span>更多</span>
                 </div>
-              </template>
-              <template #info>
-                <div class="menu">
-                  <template v-for="(i, idx) in more" :key="idx">
-                    <div class="item" @click="i.handleclick">
-                      {{ i.text }}
-                    </div>
-                  </template>
-                </div>
-              </template>
-            </common-drop>
-            <div class="btn">
-              <div v-if="props.order.status === 1" class="wait">
-                <div class="cancel">
-                  取消订单
-                </div>
-                <div class="pay">
-                  继续付款
-                </div>
-              </div>
-              <div v-else-if="props.order.status === 2" class="sucess">
-                <div class="refund">
-                  退款
-                </div>
-              </div>
-              <div
-                v-else-if="props.order.status === 4 || props.order.status === 5 || props.order.status === 6"
-                class="btnSta"
-              >
-                <button>确认收货</button>
-              </div>
+              </common-drop>
+            </div>
+            <div class="operation">
+              <order-action :order="order">
+                <slot />
+              </order-action>
             </div>
           </div>
         </div>
@@ -181,7 +167,7 @@ function copyText() {
 
           gap: 32rpx;
 
-          background: #000000;
+          background-image: linear-gradient(133.06deg, rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 0.5) 50%, rgba(0, 0, 0, 1) 100%);
           border-radius: 32rpx;
 
           .idFunc {
@@ -242,61 +228,38 @@ function copyText() {
         }
 
         .bottom {
+          all: unset;
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
 
-          .more {
-            position: relative;
-            display: inline-block;
+          .left {
+            width: auto;
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 4rpx;
+            justify-content: start;
+            gap: 16rpx;
 
-            font-size: 28rpx;
-            color: #ffffff;
-
-            .icon {
-              font-size: 32rpx;
-            }
-          }
-
-          .menu {
-            display: flex;
-            flex-direction: column;
-
-            .item {
-              padding: 16rpx 32rpx;
-            }
-          }
-
-          .btn {
-
-            .wait {
+            .more {
+              position: relative;
+              display: inline-block;
               display: flex;
               flex-direction: row;
               align-items: center;
-              gap: 16rpx;
+              gap: 4rpx;
 
-              .cancel {
-                padding: 12rpx 32rpx;
-                font-size: 28rpx;
-                color: #1d2129;
-                background-color: #ffffff;
-                border-radius: 4rpx;
-              }
+              font-size: 28rpx;
+              color: #ffffff;
 
-              .pay {
-                padding: 12rpx 32rpx;
-                font-size: 28rpx;
-                color: #1d2129;
-                background-color: #a7f522;
-                border-radius: 4rpx;
+              .icon {
+                font-size: 32rpx;
               }
             }
+
           }
+
         }
 
       }
