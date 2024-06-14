@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import areadata from '@/utils/common/division.json'
+import areadata from '@/assets/json/division.json'
 
 const { addressList } = storeToRefs(useAddressStore())
 const { getAddressList, newAddress, delAddress, editAddress } = useAddressStore()
 
 // ===== data ===================================
-const area = areadata
+
 const page = ref<number>(1)
 
 // 新增地址请求参数
@@ -22,7 +22,7 @@ const addReqParams = ref<addressReq>({
 // 要删除或者编辑的 id
 const delOrEditID = ref<number>(0)
 
-//  1 是新增 2 是编辑
+//  1 是新增地址 2 是编辑地址
 const popupName = ref<number>(1)
 // 开关 新增或者编辑弹出层
 const AddressshowPop = ref<boolean>(false)
@@ -44,21 +44,21 @@ const newAddressList = ref<any>([
 
 // 初始化数据
 const initAddress = () => {
-  newAddressList.value[0] = area.map((item: areaData) => {
+  newAddressList.value[0] = areadata.map((item: areaData) => {
     const obj = ref<areaData>({
       label: item.label,
       value: item.value,
     })
     return obj
   })
-  newAddressList.value[1] = area[multiIndex.value[0]].children.map((item: areaData) => {
+  newAddressList.value[1] = areadata[multiIndex.value[0]].children.map((item: areaData) => {
     const obj = ref<areaData>({
       label: item.label,
       value: item.value,
     })
     return obj
   })
-  newAddressList.value[2] = area[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item: areaData) => {
+  newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item: areaData) => {
     const obj = ref<areaData>({
       label: item.label,
       value: item.value,
@@ -77,21 +77,21 @@ const bindPickerChange = () => {
 const pickerColumnchange = (e: any) => {
   if (e.detail.column === 0) {
     multiIndex.value[0] = e.detail.value
-    newAddressList.value[0].value = area.map((item) => {
+    newAddressList.value[0].value = areadata.map((item) => {
       const obj = ref<areaData>({
         label: item.label,
         value: item.value,
       })
       return obj
     })
-    newAddressList.value[1] = area[multiIndex.value[0]].children.map((item) => {
+    newAddressList.value[1] = areadata[multiIndex.value[0]].children.map((item) => {
       const obj = ref<areaData>({
         label: item.label,
         value: item.value,
       })
       return obj
     })
-    newAddressList.value[2] = area[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
+    newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
       const obj = ref<areaData>({
         label: item.label,
         value: item.value,
@@ -103,7 +103,7 @@ const pickerColumnchange = (e: any) => {
   }
   if (e.detail.column === 1) {
     multiIndex.value[1] = e.detail.value
-    newAddressList.value[2] = area[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
+    newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
       const obj = ref<areaData>({
         label: item.label,
         value: item.value,
@@ -207,7 +207,6 @@ const editAddressFn = (data: addresslist) => {
   popupName.value = 2
   AddressshowPop.value = true
   addReqParams.value = JSON.parse(JSON.stringify(data))
-  // nowAddressCode.value = [data.provinceCode, data.cityCode, data.countryCode]
 }
 onShow(async () => {
   // 获取地址列表
@@ -232,7 +231,7 @@ onMounted(() => {
         新增收货地址
       </div>
     </div>
-    <common-popup v-model:show="AddressshowPop" :name="popupName === 1 ? '新增地址' : '编辑地址'">
+    <common-popup v-model:show="AddressshowPop" :name="popupName === 1 ? '新增地址' : '编辑地址'" height="70%">
       <div class="config">
         <div class="inputBox">
           <div class="row">

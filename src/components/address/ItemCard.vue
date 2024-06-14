@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import areadata from '@/utils/common/division.json'
+import areadata from '@/assets/json/division.json'
 
 const props = defineProps<{
   addressdata: addresslist[]

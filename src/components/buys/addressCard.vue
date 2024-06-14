@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import areadata from '@/utils/common/division.json'
+import areadata from '@/assets/json/division.json'
 
 const { nowAddress } = storeToRefs(useAddressStore())
 // 通过code获取省市区
