@@ -3,6 +3,10 @@ const props = withDefaults(defineProps<{
   order: Order
 }>(), {
 })
+
+const handleClick = (detailProduct: Product) => {
+  Jump('/pages/product/detail', { id: detailProduct.id })
+}
 </script>
 
 <template>
@@ -13,14 +17,14 @@ const props = withDefaults(defineProps<{
           <div class="proItem">
             <div class="content">
               <div class="left">
-                <div class="img">
+                <div class="img" @click="handleClick(detail.productSnapshot)">
                   <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
                 </div>
                 <div class="text">
-                  <div class="name">
+                  <div class="name" @click="handleClick(detail.productSnapshot)">
                     {{ detail.productSnapshot.name }}
                   </div>
-                  <universal-configs :product="detail.productSnapshot" />
+                  <order-configs :product="detail.productSnapshot" />
                 </div>
               </div>
               <div class="right">
