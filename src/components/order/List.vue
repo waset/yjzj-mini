@@ -22,10 +22,23 @@ const showDropSwitch = ref(false)
 function showDropFn() {
   showDropSwitch.value = !showDropSwitch.value
 }
+
+// 查看明细弹窗
+const detailDialog = ref(false)
+// 弹窗内展示信息
+const detailInfo = ref<Order>()
+// 显示查看明细弹窗
+function showDetailDialogFn() {
+  detailDialog.value = true
+  detailInfo.value = props.order
+}
+
+// 下拉菜单点击事件
 const DropFn = (name: string) => {
   switch (name) {
     case 'detail':
       // 查看明细
+      showDetailDialogFn()
       break
 
     case 'again':
@@ -80,6 +93,21 @@ function copyText() {
 </script>
 
 <template>
+  <common-popup v-model:show="detailDialog" name="查看明细">
+    <div class="detail">
+      <div v-if="detailInfo" class="wrap">
+        <div class="content">
+          <div class="total">
+            <div class="text">
+              订单详情
+            </div>
+            <div class="price" />
+          </div>
+        </div>
+        <div class="service" />
+      </div>
+    </div>
+  </common-popup>
   <div class="order-list">
     <div class="list">
       <div class="item">
@@ -125,7 +153,7 @@ function copyText() {
               </common-drop>
             </div>
             <div class="operation">
-              <order-action :order="order">
+              <order-action :status="props.order.status">
                 <slot />
               </order-action>
             </div>

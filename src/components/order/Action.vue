@@ -1,14 +1,14 @@
 <script setup lang="ts">
 // 定义不同状态订单的操作按钮
 const props = withDefaults(defineProps<{
-  order: Order
+  status: Order['status']
 }>(), {
 })
 </script>
 
 <template>
   <div class="action">
-    <div v-if="props.order.status === 1">
+    <div v-if="props.status === 1">
       <div class="wait">
         <div class="cancel">
           取消订单
@@ -18,14 +18,14 @@ const props = withDefaults(defineProps<{
         </div>
       </div>
     </div>
-    <div v-else-if="props.order.status === 2">
+    <div v-else-if="props.status === 2">
       <div class="ordered">
         <div class="refund">
           退款
         </div>
       </div>
     </div>
-    <div v-else-if="props.order.status === 3">
+    <div v-else-if="props.status === 3">
       <!-- 这里的状态不应该是3，引入物流信息后，增加&&物流信息的条件 -->
       <div class="shipped">
         <div class="logistics">
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<{
         </div>
       </div>
     </div>
-    <div v-else-if="props.order.status === 4 || 5 || 6">
+    <div v-else-if="props.status === 4 || props.status === 5 || props.status === 6">
       <div class="closed">
         <div class="add">
           加入购物车
