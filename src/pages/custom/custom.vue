@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-//
+const { detail } = storeToRefs(useProductStore())
+function JumpDetail() {
+  detail.value = {
+    typeParentID: 6,
+  } as Product
+  Jump('/pages/product/detail')
+}
 </script>
 
 <template>
@@ -7,12 +13,12 @@
     <navbar-home text="智能推荐" />
     <div class="body">
       <div class="wrap left">
-        <div class="item movein">
+        <div class="item movein" @click="() => { Jump('/pages/product/detail') }">
           <image class="image bounce" :src="StaticUrl('/images/custom_left.png')" mode="scaleToFill" />
         </div>
       </div>
       <div class="wrap right">
-        <div class="item movein" @click="() => { Jump('/pages/product/detail') }">
+        <div class="item movein" @click="JumpDetail">
           <image class="image bounce" :src="StaticUrl('/images/custom_right.png')" mode="scaleToFill" />
         </div>
       </div>

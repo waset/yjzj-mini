@@ -24,19 +24,23 @@ const tabs = reactive(['详情', '参数'])
         <div class="detail">
           <div class="bg">
             <div class="wrap">
-              <div v-if="props.info.content" class="box">
-                <template v-for="(item, index) in props.info.content" :key="index">
-                  <div class="item">
-                    <image
-                      class="img" :style="{ width: '100%', height: 'auto' }" :src="ImageUrl(item)"
-                      mode="widthFix"
-                    />
-                  </div>
-                </template>
-              </div>
-              <div v-else class="empty">
-                <common-empty text="暂无介绍" />
-              </div>
+              <template v-if="props.info.content && props.info.content.length">
+                <div class="box">
+                  <template v-for="(item, index) in props.info.content" :key="index">
+                    <div class="item">
+                      <image
+                        class="img" :style="{ width: '100%', height: 'auto' }" :src="ImageUrl(item)"
+                        mode="widthFix"
+                      />
+                    </div>
+                  </template>
+                </div>
+              </template>
+              <template v-else>
+                <div class="empty">
+                  <common-empty text="暂无介绍" />
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -45,18 +49,25 @@ const tabs = reactive(['详情', '参数'])
         <div class="param">
           <div class="bg">
             <div class="wrap">
-              <div v-if="props.info.content" class="box">
-                <template v-for="(item, index) in props.info.params" :key="index">
-                  <div class="item">
-                    <div class="type">
-                      {{ item.desc }}
+              <template v-if="props.info.content && props.info.content.length">
+                <div class="box">
+                  <template v-for="(item, index) in props.info.params" :key="index">
+                    <div class="item">
+                      <div class="type">
+                        {{ item.desc }}
+                      </div>
+                      <div class="desc">
+                        {{ item.name || item.paramValue }}
+                      </div>
                     </div>
-                    <div class="desc">
-                      {{ item.name || item.paramValue }}
-                    </div>
-                  </div>
-                </template>
-              </div>
+                  </template>
+                </div>
+              </template>
+              <template v-else>
+                <div class="empty">
+                  <common-empty text="暂无参数" />
+                </div>
+              </template>
             </div>
           </div>
         </div>

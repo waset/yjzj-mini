@@ -139,7 +139,7 @@ function goLogin() {
             <div class="left">
               我的邀请
             </div>
-            <div class="right">
+            <div class="right" @click="Jump('/pages/popularize/popularize')">
               邀请推广>>
             </div>
           </div>
