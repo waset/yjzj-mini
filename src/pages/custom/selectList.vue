@@ -65,6 +65,10 @@ onShow(async () => {
     <div class="commodity_list">
       <product-module-select />
     </div>
+
+    <div>
+      <product-select-num-bottom />
+    </div>
   </div>
 </template>
 
