@@ -56,3 +56,8 @@ interface areaData {
   label: string
   value: string
 }
+interface AddressItem {
+  value?: {
+    [key: string]: { label: string }
+  }
+}

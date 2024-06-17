@@ -3,7 +3,12 @@ const { nowAddress } = storeToRefs(useAddressStore())
 const { getCouponList, submitOrderReq } = useSubmitOrderStore()
 const page = ref<number>(1)
 onShow(async () => {
-  await getCouponList(page.value, 15)
+  try {
+    await getCouponList(page.value, 15)
+  }
+  catch (error) {
+    console.error('Failed to fetch coupon list:', error)
+  }
 })
 //  显示隐藏 卡片渐变边框
 const showborder = ref<boolean>(true)

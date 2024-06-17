@@ -39,77 +39,71 @@ const newAddressList = ref<any>([
   [],
   [],
 ])
+// ===== computed =============
+const new1 = computed(() => {
+  return areadata.map((item) => {
+    const obj = {
+      label: item.label,
+      value: item.value,
+    }
+    return obj
+  })
+})
+
+const new2 = computed(() => {
+  return areadata[multiIndex.value[0]].children.map((item) => {
+    const obj = {
+      label: item.label,
+      value: item.value,
+    }
+    return obj
+  })
+})
+const new3 = computed(() => {
+  return areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
+    const obj = {
+      label: item.label,
+      value: item.value,
+    }
+    return obj
+  })
+})
 
 // ===== methods =====================================
 
 // 初始化数据
 const initAddress = () => {
-  newAddressList.value[0] = areadata.map((item: areaData) => {
-    const obj = ref<areaData>({
-      label: item.label,
-      value: item.value,
-    })
-    return obj
-  })
-  newAddressList.value[1] = areadata[multiIndex.value[0]].children.map((item: areaData) => {
-    const obj = ref<areaData>({
-      label: item.label,
-      value: item.value,
-    })
-    return obj
-  })
-  newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item: areaData) => {
-    const obj = ref<areaData>({
-      label: item.label,
-      value: item.value,
-    })
-    return obj
+  newAddressList.value[0] = new1
+  newAddressList.value[1] = new2
+  newAddressList.value[2] = new3
+}
+// 确认地址以后 对 省市区进行赋值
+const setCodesFromAddresses = (params: any) => {
+  ['province', 'city', 'country'].forEach((key, index) => {
+    const addressLevel = newAddressList.value[index]
+    if (addressLevel && addressLevel.value && multiIndex.value[index] >= 0) {
+      params[`${key}Code`] = addressLevel.value[multiIndex.value[index]].value
+    }
   })
 }
 // 选择地址 确认
 const bindPickerChange = () => {
   // 地址拼接的字符串
-  addReqParams.value.provinceCode = newAddressList.value[0][multiIndex.value[0]].value.value
-  addReqParams.value.cityCode = newAddressList.value[1][multiIndex.value[1]].value.value
-  addReqParams.value.countryCode = newAddressList.value[2][multiIndex.value[2]].value.value
+  setCodesFromAddresses(addReqParams.value)
 }
 // 互动选择器第几列
 const pickerColumnchange = (e: any) => {
   if (e.detail.column === 0) {
     multiIndex.value[0] = e.detail.value
-    newAddressList.value[0].value = areadata.map((item) => {
-      const obj = ref<areaData>({
-        label: item.label,
-        value: item.value,
-      })
-      return obj
-    })
-    newAddressList.value[1] = areadata[multiIndex.value[0]].children.map((item) => {
-      const obj = ref<areaData>({
-        label: item.label,
-        value: item.value,
-      })
-      return obj
-    })
-    newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
-      const obj = ref<areaData>({
-        label: item.label,
-        value: item.value,
-      })
-      return obj
-    })
+    newAddressList.value[0].value = new1
+    newAddressList.value[1] = new2
+    newAddressList.value[2] = new3
     multiIndex.value.splice(1, 1, 0)
     multiIndex.value.splice(2, 1, 0)
   }
   if (e.detail.column === 1) {
     multiIndex.value[1] = e.detail.value
-    newAddressList.value[2] = areadata[multiIndex.value[0]].children[multiIndex.value[1]].children.map((item) => {
-      const obj = ref<areaData>({
-        label: item.label,
-        value: item.value,
-      })
-      return obj
-    })
+    newAddressList.value[2] = new3
     // 第二列 滑动 第三列 变成第一个
     multiIndex.value.splice(2, 1, 0)
   }
@@ -117,14 +111,16 @@ const pickerColumnchange = (e: any) => {
     multiIndex.value[2] = e.detail.value
   }
 }
-// 显示
+
+// 显示  地址文本 展示出来
 const labelsToRender = computed(() => {
-  return [
-    newAddressList.value[0] && newAddressList.value[0][multiIndex.value[0]] ? newAddressList.value[0][multiIndex.value[0]].value.label : '',
-    newAddressList.value[1] && newAddressList.value[1][multiIndex.value[1]] ? newAddressList.value[1][multiIndex.value[1]].value.label : '',
-    newAddressList.value[2] && newAddressList.value[2][multiIndex.value[2]] ? newAddressList.value[2][multiIndex.value[2]].value.label : '',
-  ]
+  return newAddressList.value
+    .slice(0, 3)
+    .map((item: AddressItem, index: number) =>
+      item?.value?.[multiIndex.value[index]]?.label || '',
+    )
 })
+
 // 打开 新增地址弹窗
 const newAdd = () => {
   AddressshowPop.value = true
@@ -142,6 +138,7 @@ const saveAddress = async () => {
     }
     catch (error) {
       // 捕获并处理任何可能发生的错误
+      console.error('Error saving address:', error)
       uni.showToast({
         title: '网络错误，请检查网络连接',
         icon: 'error',
@@ -150,7 +147,6 @@ const saveAddress = async () => {
     }
   }
   // 编辑
-
   const editFn = async () => {
     try {
       await editAddress(addReqParams.value)
@@ -158,7 +154,12 @@ const saveAddress = async () => {
       AddressshowPop.value = false
     }
     catch (error) {
-
+      console.error('Error saving address:', error)
+      uni.showToast({
+        title: '网络错误，请检查网络连接',
+        icon: 'error',
+        mask: true,
+      })
     }
   }
   popupName.value === 1 ? newSave() : editFn()
@@ -186,6 +187,8 @@ const deleteAddressFn = async () => {
   }
   catch (error) {
     // 处理可能的网络错误或其他异常
+    console.error('Error deleting address:', error)
+
     uni.showToast({
       title: '网络错误，请检查网络连接',
       icon: 'error',
@@ -196,6 +199,9 @@ const deleteAddressFn = async () => {
 
 //  ** 设置为默认地址  **
 const setDefaultFn = async (item: addresslist, index: number) => {
+  if (![1, 2].includes(item.isDefault)) {
+    return
+  }
   if (item.isDefault === 2)
     addressList.value[index].isDefault = 1
   await editAddress(item)
@@ -223,7 +229,7 @@ onMounted(() => {
     <navbar-back text="收货地址" />
     <common-model :show="showModel" msg="确认删除该地址吗？" :icon="icon" @ok="deleteAddressFn" @cancel="showModel = false" />
     <div class="myaddress">
-      <div v-if="addressList.length === 0 ">
+      <div v-if="addressList.length === 0">
         <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-union" />
       </div>
       <address-item-card
