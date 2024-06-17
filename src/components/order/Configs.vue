@@ -22,7 +22,6 @@ function showConfigsFn(product: Product) {
       测试弹窗{{ showConfigs?.params }}
     </div>
     <div class="configs">
-      <div class="test" />
       <div v-if="showConfigs && showConfigs.params" class="wrap">
         <template v-for="(item, index) in showConfigs.params" :key="index">
           <div class="item">
