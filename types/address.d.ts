@@ -6,7 +6,7 @@ interface addresslist {
   createdAt: string
   deletedAt: null
   id: number
-  isDefault: number
+  isDefault: defaultNum
   phone: string
   provinceCode: string
   status: number
@@ -14,7 +14,6 @@ interface addresslist {
   userID: number
   username: string
 }
-
 //  添加显示中文地址
 interface addressStrs {
   id: number
@@ -23,16 +22,13 @@ interface addressStrs {
 
 // 新增地址请求
 interface addressReq {
-  address?: string
-  cityCode?: string
-  countryCode?: string
-  /**
-   * 默认（1：是 2：否）
-   */
-  isDefault?: number
-  phone?: string
-  provinceCode?: string
-  username?: string
+  address: string
+  cityCode: string
+  countryCode: string
+  isDefault: number
+  phone: string
+  provinceCode: string
+  username: string
 }
 
 // 数去地址请求
@@ -55,9 +51,4 @@ interface editReq {
 interface areaData {
   label: string
   value: string
-}
-interface AddressItem {
-  value?: {
-    [key: string]: { label: string }
-  }
 }

@@ -34,7 +34,7 @@ const icon = ref<'i-svg-info' | 'i-svg-success' | 'i-svg-error' | 'i-svg-warn'>(
 // 索引
 const multiIndex = ref<number[]>([0, 0, 0])
 // 当前地址数组
-const newAddressList = ref<any>([
+const newAddressList = ref<{ [key: string]: string }[][]>([
   [],
   [],
   [],
@@ -73,16 +73,16 @@ const new3 = computed(() => {
 
 // 初始化数据
 const initAddress = () => {
-  newAddressList.value[0] = new1
-  newAddressList.value[1] = new2
-  newAddressList.value[2] = new3
+  newAddressList.value[0] = new1.value
+  newAddressList.value[1] = new2.value
+  newAddressList.value[2] = new3.value
 }
 // 确认地址以后 对 省市区进行赋值
 const setCodesFromAddresses = (params: any) => {
   ['province', 'city', 'country'].forEach((key, index) => {
     const addressLevel = newAddressList.value[index]
-    if (addressLevel && addressLevel.value && multiIndex.value[index] >= 0) {
-      params[`${key}Code`] = addressLevel.value[multiIndex.value[index]].value
+    if (addressLevel && addressLevel && multiIndex.value[index] >= 0) {
+      params[`${key}Code`] = addressLevel[multiIndex.value[index]].value
     }
   })
 }
@@ -95,15 +95,15 @@ const bindPickerChange = () => {
 const pickerColumnchange = (e: any) => {
   if (e.detail.column === 0) {
     multiIndex.value[0] = e.detail.value
-    newAddressList.value[0].value = new1
-    newAddressList.value[1] = new2
-    newAddressList.value[2] = new3
+    newAddressList.value[0] = new1.value
+    newAddressList.value[1] = new2.value
+    newAddressList.value[2] = new3.value
     multiIndex.value.splice(1, 1, 0)
     multiIndex.value.splice(2, 1, 0)
   }
   if (e.detail.column === 1) {
     multiIndex.value[1] = e.detail.value
-    newAddressList.value[2] = new3
+    newAddressList.value[2] = new3.value
     // 第二列 滑动 第三列 变成第一个
     multiIndex.value.splice(2, 1, 0)
   }
@@ -116,8 +116,8 @@ const pickerColumnchange = (e: any) => {
 const labelsToRender = computed(() => {
   return newAddressList.value
     .slice(0, 3)
-    .map((item: AddressItem, index: number) =>
-      item?.value?.[multiIndex.value[index]]?.label || '',
+    .map((item, index: number) =>
+      item?.[multiIndex.value[index]]?.label || '',
     )
 })
 

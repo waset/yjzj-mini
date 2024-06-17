@@ -69,7 +69,6 @@ interface TicketInfo {
   useStartAt?: string
   useTimeDays?: number
   useTimeType?: number
-
 }
 
 interface couponReq {

@@ -4,10 +4,29 @@ interface Props {
   isSelect?: boolean
   maxwidth?: number
 }
-
 const props = withDefaults(defineProps<Props>(), {
   isSelect: false,
   maxwidth: 526,
+})
+
+enum TimeTypeEnum {
+  day = 1,
+  today = 2,
+  setTime = 3,
+}
+
+const useTimeText = computed(() => {
+  const useTimeType = props.coupn.ticketInfo.useTimeType
+  switch (useTimeType) {
+    case TimeTypeEnum.day:
+      return props.coupn.ticketInfo.useTimeDays
+    case TimeTypeEnum.today:
+      return '当天内可用'
+    case TimeTypeEnum.setTime:
+      return `${props.coupn.ticketInfo.useStartAt}-${props.coupn.ticketInfo.useEndAt}`
+    default:
+      return ''
+  }
 })
 </script>
 
@@ -36,11 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
                   </div>
                   <div class="r">
                     <span style="color: #EDA522;">
-                      <span v-if="props.coupn.ticketInfo.useTimeType === 1"> {{ props.coupn.ticketInfo.useTimeDays
-                      }}</span>
-                      <span v-if="props.coupn.ticketInfo.useTimeType === 2">当天内可用</span>
-                      <span v-if="props.coupn.ticketInfo.useTimeType === 3">{{ props.coupn.ticketInfo.useStartAt }}- {{
-                        props.coupn.ticketInfo.useEndAt }}</span>
+                      <span> {{ useTimeText }}</span>
                     </span>
                     <span>天内使用 <span v-if="isSelect">| 立即使用 >></span></span>
                   </div>
@@ -108,6 +123,7 @@ $Be: #BEBEBE;
     display: flex;
     align-items: center;
     justify-content: center;
+
     .coupon-bg {
       position: relative;
       width: 40px;

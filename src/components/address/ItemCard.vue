@@ -8,6 +8,7 @@ const props = defineProps<{
 const emits = defineEmits(['deleteAddress', 'setDefault', 'editAddress'])
 
 const { nowAddress } = storeToRefs(useAddressStore())
+
 // 调用父组件中的删除
 const delAddressFn = (id: number) => {
   emits('deleteAddress', id)
@@ -39,9 +40,9 @@ const getPcaDetails = (pcaCode: string[]) => {
   return `${province?.label} ${city?.label} ${area?.label}`
 }
 
-onMounted(() => {
-
-})
+const isDefault = (item: number) => {
+  return item === defaultNum.yes
+}
 </script>
 
 <template>
@@ -50,7 +51,7 @@ onMounted(() => {
       <div class="i-icons-address" />
       <span class="username"> {{ item.username }}</span>
       <span> {{ item.phone }}</span>
-      <div v-if="item.isDefault === 1" class="isdefault">
+      <div v-if="isDefault(item.isDefault)" class="isdefault">
         默认
       </div>
     </div>
@@ -61,10 +62,10 @@ onMounted(() => {
     <div class="line" />
     <div class="edit">
       <div class="select-default" @click.stop="setDefaultAddress(item, index)">
-        <div v-if="item.isDefault === 1" class="default">
+        <div v-if="isDefault(item.isDefault)" class="default">
           <div class="i-icons-correct" />
         </div>
-        <div v-if="item.isDefault === 2" class="no-default" />
+        <div v-if="!isDefault(item.isDefault)" class="no-default" />
         <span class="text"> 设为默认地址</span>
       </div>
       <div class="operation">
