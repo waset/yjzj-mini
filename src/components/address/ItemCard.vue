@@ -6,7 +6,11 @@ const props = defineProps<{
 
 }>()
 
-const emits = defineEmits(['deleteAddress', 'setDefault', 'editAddress'])
+const emits = defineEmits<{
+  deleteAddress: [id: number]
+  setDefault: [item: addresslist, index: number]
+  editAddress: [item: addresslist]
+}>()
 
 const { nowAddress } = storeToRefs(useAddressStore())
 
