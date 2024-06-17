@@ -60,7 +60,6 @@ onShow(async () => {
   <div class="select">
     <navbar-back text="选择组件" />
     <common-search />
-
     <common-sort-filter :has-layout="false" @change="onChange" />
 
     <div class="commodity_list">
@@ -72,8 +71,8 @@ onShow(async () => {
 <style lang="scss" soped>
 .select {
   .commodity_list {
-    padding: 0 32rpx;
-    background-color: red;
+    padding: 32rpx;
+
   }
 }
 </style>

@@ -70,7 +70,10 @@ const DiyICons = [
       border-radius: 16rpx;
       background-color: #000;
       word-break: break-all;
-
+      .line {
+        display: flex;
+        align-items: center;
+      }
       .title {
         font-size: 40rpx;
         line-height: 48rpx;
