@@ -11,7 +11,7 @@ interface Order {
   details: orderDetail[]
   cancelAt: string
   createdAt: string
-  deletedAt: null
+  deletedAt: string | null
   express: Express
   inviteUserID: number
   payAt: string
@@ -24,7 +24,7 @@ interface Order {
   rebateAmount: string
   refundPrice: string
   sellPrice: string
-  status: OrderStatus
+  status: number
   ticketPrice: string
   totalNumber: number
   transactionID: string
@@ -35,8 +35,8 @@ interface Order {
 interface orderDetail {
   createdAt: string
   productSnapshot: Product
-  deletedAt: null
-  details: null
+  deletedAt: string | null
+  details: any | null
   evaluationReportID: string
   id: number
   inviteUserID: number
@@ -78,26 +78,4 @@ interface Express {
   status?: number
   updatedAt?: string
   userID?: number
-}
-
-/**
- * 购物车关联类型（1：商品，2：商品配置）
- */
-enum CartRelationType {
-  CartRelationTypeProduct = 1,
-  CartRelationTypeProductConfig = 2,
-}
-
-enum OrderStatus {
-  /**
-   * 状态 0：全部  1：待支付 2：支付成功 3：支付失败 4：部分退款 5：全部退款6：取消支付
-   * 0 全部订单，1 待付款订单，2 已付款订单，3 支付失败订单，4 部分退款订单，5 全部退款订单，6 取消支付订单
-   */
-  All = 0,
-  Wait = 1,
-  PaymentSuccessful = 2,
-  PaymentFailed = 3,
-  PartialRefund = 4,
-  FullRefund = 5,
-  CancelPayment = 6,
 }

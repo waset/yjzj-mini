@@ -18,21 +18,21 @@ const orderTypes = [
     icon: 'i-icons-payment',
     text: '待付款',
     num: () => {
-      return orders.value?.filter(item => item.status === 1).length || 0
+      return orders.value?.filter(item => item.status === OrderStatus.Wait).length || 0
     },
   },
   {
     icon: 'i-icons-delivery',
     text: '待发货',
     num: () => {
-      return orders.value?.filter(item => item.status === 2).length || 0
+      return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
     },
   },
   {
     icon: 'i-icons-receive',
     text: '待收货',
     num: () => {
-      return orders.value?.filter(item => item.status === 3).length || 0
+      return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
     },
   },
 ]

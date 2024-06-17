@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
 
 <template>
   <div class="action">
-    <div v-if="props.status === 1">
+    <div v-if="props.status === OrderStatus.Wait">
       <div class="wait">
         <div class="cancel">
           取消订单
@@ -18,15 +18,14 @@ const props = withDefaults(defineProps<{
         </div>
       </div>
     </div>
-    <div v-else-if="props.status === 2">
+    <div v-else-if="props.status === OrderStatus.PaymentSuccessful">
       <div class="ordered">
         <div class="refund">
           退款
         </div>
       </div>
     </div>
-    <div v-else-if="props.status === 3">
-      <!-- 这里的状态不应该是3，引入物流信息后，增加&&物流信息的条件 -->
+    <div v-else-if="props.status !== OrderStatus.All && props.status !== OrderStatus.PaymentFailed && props.status !== OrderStatus.CancelPayment">
       <div class="shipped">
         <div class="logistics">
           查看物流
@@ -36,7 +35,7 @@ const props = withDefaults(defineProps<{
         </div>
       </div>
     </div>
-    <div v-else-if="props.status === 4 || props.status === 5 || props.status === 6">
+    <div v-else-if="props.status === OrderStatus.CancelPayment || OrderStatus.PartialRefund || OrderStatus.FullRefund">
       <div class="closed">
         <div class="add">
           加入购物车
