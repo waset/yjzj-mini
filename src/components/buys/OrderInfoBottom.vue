@@ -7,7 +7,6 @@ const props = defineProps<{
 <template>
   <div class="bottom">
     <div v-if="props.status === 'waiting'" class="Tobepaid">
-      <!-- 待支付状态 -->
       <div class="cancle">
         取消支付
       </div>
@@ -16,7 +15,6 @@ const props = defineProps<{
       </div>
     </div>
     <div v-else-if="props.status === 'fail'" class="Tobepaid">
-      <!-- 待支付状态 -->
       <div class="cancle">
         删除订单
       </div>
@@ -25,7 +23,6 @@ const props = defineProps<{
       </div>
     </div>
     <div v-else class="Tobepaid">
-      <!-- 待支付状态 -->
       <div class="cancle">
         查看订单
       </div>

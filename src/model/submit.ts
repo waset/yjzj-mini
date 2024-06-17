@@ -41,9 +41,17 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     //  下单
     async submitOrderReq(params: submitOrderReq) {
       try {
-        await http.post<couponList[]>('/web/order/add', { ...params }, { auth: true })
+        const { code } = await http.post<couponList[]>('/web/order/add', { ...params }, { auth: true })
+        if (code !== 200) {
+          return uni.showToast({
+            title: '下单失败,请重试',
+            icon: 'error',
+          })
+        }
       }
-      catch { }
+      catch (error) {
+        console.error('提交订单失败:', error)
+      }
     },
   },
   persist: true,

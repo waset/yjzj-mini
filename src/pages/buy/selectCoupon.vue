@@ -16,7 +16,7 @@ const selectItem = (index: number) => {
   <div class="body">
     <buys-coupon-search />
     <div v-if="couponList.length === 0">
-      <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-nocoupon" />
+      <common-empty text="当前暂无优惠券" icon="i-svg-nocoupon" />
     </div>
     <div v-for="(item, index) in couponList" :key="index" class="itembox" @click="selectItem(index)">
       <buys-coupon-item :coupn="item" :maxwidth="476" />

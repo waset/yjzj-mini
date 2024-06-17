@@ -144,8 +144,8 @@ const useTimeText = computed(() => {
         align-items: center;
         justify-content: center;
 
-        .couponL-up,
-        .couponR-up {
+        &-up,
+        &-up {
           width: 74%;
           height: 86%;
           clip-path: var(--between-path);
@@ -219,7 +219,7 @@ const useTimeText = computed(() => {
         align-items: center;
         justify-content: center;
 
-        .couponC-lineL {
+        &-lineL {
           width: 2rpx;
           height: 170rpx;
           border: 2rpx dashed#fff;
@@ -228,7 +228,7 @@ const useTimeText = computed(() => {
           top: 40rpx;
         }
 
-        .couponC-lineR {
+        &-lineR {
           width: 2rpx;
           height: 170rpx;
           border: 2rpx dashed#fff;
@@ -237,7 +237,7 @@ const useTimeText = computed(() => {
           top: 40rpx;
         }
 
-        .couponC-up {
+        &-up {
           width: 94%;
           height: 86%;
 
