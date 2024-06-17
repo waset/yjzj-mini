@@ -5,7 +5,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
   } => ({
     couponList: [],
 
-  // 当前选择的地址
+    // 当前选择的地址
   }),
   getters: {
   },
@@ -43,7 +43,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         await http.post<couponList[]>('/web/order/add', { ...params }, { auth: true })
       }
-      catch {}
+      catch { }
     },
   },
   persist: true,

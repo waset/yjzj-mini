@@ -40,7 +40,8 @@ onShow(() => {
       </div>
       <div v-if="!nowAddress.provinceCode" class="shadel" />
       <div v-if="nowAddress.provinceCode" style="font-size: 28rpx;padding-left: 57rpx">
-        <span>{{ getPcaDetails([nowAddress.provinceCode, nowAddress.cityCode, nowAddress.countryCode]) }}- {{ nowAddress.address }}</span>
+        <span>{{ getPcaDetails([nowAddress.provinceCode, nowAddress.cityCode, nowAddress.countryCode]) }}- {{
+          nowAddress.address }}</span>
       </div>
       <div v-else class="addressInfoTips">
         <div> 请选择/添加收货地址</div>
@@ -51,115 +52,115 @@ onShow(() => {
 </template>
 
 <style scoped lang="scss">
-$max-width: 686rpx;
+  $max-width: 686rpx;
 
-.addressCard {
-  width: 100%;
-  height: 192rpx;
-  position: relative;
-  margin: 0 auto;
-  border-radius: 8rpx;
-  overflow: hidden;
-  padding: 32rpx;
-  box-sizing: border-box;
+  .addressCard {
+    width: 100%;
+    height: 192rpx;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 8rpx;
+    overflow: hidden;
+    padding: 32rpx;
+    box-sizing: border-box;
 
-  .center_info {
-    width: 622rpx;
-    height: 128rpx;
-    z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-around;
-
-    .addressInfoTips {
-      width: 100%;
-      font-size: 28rpx;
+    .center_info {
+      width: 622rpx;
+      height: 128rpx;
+      z-index: 2;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
 
-    .nameMobile {
-      width: 100%;
+      .addressInfoTips {
+        width: 100%;
+        font-size: 28rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      .nameMobile {
+        width: 100%;
 
-      .usernameRow {
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
+        .usernameRow {
+          display: flex;
+          align-items: center;
+
+        }
+
+        view {
+          margin-right: 16rpx;
+        }
+
+        .isdefault {
+          width: 96rpx;
+          height: 48rpx;
+          line-height: 48rpx;
+          font-size: 24rpx;
+          border: 2rpx solid transparent;
+          border-radius: 8rpx;
+          display: flex;
+          align-self: center;
+          justify-content: center;
+          background-clip: padding-box, border-box;
+          background-origin: padding-box, border-box;
+          background-image: linear-gradient(to right, #6F706E, #6F706E), linear-gradient(135deg, rgba(#fff, 1), rgba(#fff, 0.1), rgba(#fff, 1), );
+        }
       }
 
-      view {
-        margin-right: 16rpx;
-      }
-
-      .isdefault {
-        width: 96rpx;
-        height: 48rpx;
-        line-height: 48rpx;
-        font-size: 24rpx;
-        border: 2rpx solid transparent;
-        border-radius: 8rpx;
-        display: flex;
-        align-self: center;
-        justify-content: center;
-        background-clip: padding-box, border-box;
-        background-origin: padding-box, border-box;
-        background-image: linear-gradient(to right, #6F706E, #6F706E), linear-gradient(135deg, rgba(#fff, 1), rgba(#fff, 0.1), rgba(#fff, 1), );
+      .shadel {
+        width: 100%;
+        height: 2rpx;
+        border-top: 1px dashed #fff;
+        /* 在顶部创建一条1像素宽，黑色，虚线的边框 */
       }
     }
 
-    .shadel {
-      width: 100%;
-      height: 2rpx;
-      border-top: 1px dashed #fff;
-      /* 在顶部创建一条1像素宽，黑色，虚线的边框 */
+    // background-color: rgba($color: #848484, $alpha: 0.5);
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 50%;
+      background-image: radial-gradient(circle at 0 50%,
+          transparent 0,
+          transparent 20rpx,
+          rgba($color: #848484, $alpha: 0.5) 20rpx);
     }
-  }
 
-  // background-color: rgba($color: #848484, $alpha: 0.5);
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 50%;
-    background-image: radial-gradient(circle at 0 50%,
-        transparent 0,
-        transparent 20rpx,
-        rgba($color: #848484, $alpha: 0.5) 20rpx);
-  }
-
-  z-index: -1;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    right: 0;
-    width: 50%;
-    background-image: radial-gradient(circle at 100% 50%,
-        transparent 0,
-        transparent 20rpx,
-        rgba($color: #848484, $alpha: 0.5) 20rpx);
     z-index: -1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      right: 0;
+      width: 50%;
+      background-image: radial-gradient(circle at 100% 50%,
+          transparent 0,
+          transparent 20rpx,
+          rgba($color: #848484, $alpha: 0.5) 20rpx);
+      z-index: -1;
+    }
+
+    background-repeat: no-repeat;
+    background-position: left center,
+    right center;
+
   }
-
-  background-repeat: no-repeat;
-  background-position: left center,
-  right center;
-
-}
 </style>

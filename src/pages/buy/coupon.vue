@@ -6,7 +6,7 @@ const { couponList } = storeToRefs(useSubmitOrderStore())
   <navbar-back text="我的优惠券" />
   <div class="body">
     <buys-coupon-search />
-    <div v-if="couponList.length === 0 ">
+    <div v-if="couponList.length === 0">
       <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-nocoupon" />
     </div>
     <div v-for="(item, index) in couponList" :key="index">
@@ -16,21 +16,21 @@ const { couponList } = storeToRefs(useSubmitOrderStore())
 </template>
 
 <style lang="scss" scoped>
-$top-height: 112rpx;
-$bottom-height: 156rpx;
-$Be: #BEBEBE;
+  $top-height: 112rpx;
+  $bottom-height: 156rpx;
+  $Be: #BEBEBE;
 
-.i-background-product-detail {
-  width: 100%;
-  height: 100%;
-}
+  .i-background-product-detail {
+    width: 100%;
+    height: 100%;
+  }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-}
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
 </style>
 <!--
 <route lang="json">

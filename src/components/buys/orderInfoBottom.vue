@@ -37,37 +37,37 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.bottom {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 144rpx;
-  background-color: #414141;
+  .bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 144rpx;
+    background-color: #414141;
 
-  .Tobepaid {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    .Tobepaid {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
 
-    .cancle {
-      width: 192rpx;
-      padding: 20rpx 40rpx;
-      background-color: #fff;
-      font-size: 28rpx;
-      border-radius: 8rpx;
-      color: #333333;
-    }
+      .cancle {
+        width: 192rpx;
+        padding: 20rpx 40rpx;
+        background-color: #fff;
+        font-size: 28rpx;
+        border-radius: 8rpx;
+        color: #333333;
+      }
 
-    .fastPay {
-      width: 192rpx;
-      padding: 20rpx 40rpx;
-      background-color: #A7F522;
-      font-size: 28rpx;
-      border-radius: 8rpx;
-      color: #333333;
-      margin: 0 32rpx 0 16rpx;
+      .fastPay {
+        width: 192rpx;
+        padding: 20rpx 40rpx;
+        background-color: #A7F522;
+        font-size: 28rpx;
+        border-radius: 8rpx;
+        color: #333333;
+        margin: 0 32rpx 0 16rpx;
+      }
     }
   }
-}
 </style>

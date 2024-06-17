@@ -93,7 +93,7 @@ const addMark = (params: string) => {
 </template>
 
 <style scoped lang="scss">
-.mask {
+  .mask {
     display: none;
     background-color: rgba($color: #000000, $alpha: 0.5);
     position: fixed;
@@ -103,67 +103,67 @@ const addMark = (params: string) => {
     right: 0;
     z-index: 19;
 
-}
+  }
 
-@keyframes test2 {
+  @keyframes test2 {
     0% {
-        display: none;
+      display: none;
     }
 
     100% {
-        display: block;
+      display: block;
     }
-}
+  }
 
-@keyframes test2R {
+  @keyframes test2R {
     0% {
-        // opacity: 1;
-        display: block;
+      // opacity: 1;
+      display: block;
     }
 
     100% {
-        display: none;
-        // opacity: 0;
+      display: none;
+      // opacity: 0;
     }
-}
+  }
 
-@keyframes test {
+  @keyframes test {
     0% {
-        height: 0;
+      height: 0;
     }
 
     100% {
-        height: 1140rpx;
+      height: 1140rpx;
     }
-}
+  }
 
-@keyframes testR {
+  @keyframes testR {
     0% {
-        height: 1140rpx;
+      height: 1140rpx;
     }
 
     100% {
-        height: 0;
+      height: 0;
     }
-}
+  }
 
-.showmask {
+  .showmask {
     display: block;
     opacity: 1;
     animation: test2 0.5s ease;
-}
+  }
 
-.hiddenmask {
+  .hiddenmask {
     animation: test2R 0.5s ease;
     opacity: 0;
-}
+  }
 
-.hiddenPop {
+  .hiddenPop {
     animation: testR 0.5s ease;
     opacity: 0;
-}
+  }
 
-.popup {
+  .popup {
     width: 750rpx;
     height: 1140rpx;
     background-color: #272727;
@@ -175,87 +175,87 @@ const addMark = (params: string) => {
     animation: test 0.55s ease;
 
     .titlebgc {
-        box-sizing: border-box;
-        padding: 8rpx;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin: 32rpx auto 48rpx;
-        width: 686rpx;
-        height: 72rpx;
-        background-image: linear-gradient(135deg, rgba(190, 190, 190, 0), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0));
+      box-sizing: border-box;
+      padding: 8rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin: 32rpx auto 48rpx;
+      width: 686rpx;
+      height: 72rpx;
+      background-image: linear-gradient(135deg, rgba(190, 190, 190, 0), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0.4), rgba(190, 190, 190, 0));
     }
 
     .selectItemBox {
-        width: 610rpx;
-        height: 280rpx;
-        margin: 0 auto;
-        display: flex;
-        // flex-direction: column;
-        flex-wrap: wrap;
+      width: 610rpx;
+      height: 280rpx;
+      margin: 0 auto;
+      display: flex;
+      // flex-direction: column;
+      flex-wrap: wrap;
 
-        .selectItem {
-            // width: 210rpx;
-            height: 72rpx;
-            padding: 16rpx 24rpx;
-            box-sizing: border-box;
-            font-size: 28rpx;
-            color: #fff;
-            border: 2rpx solid #BEBEBE;
-            border-radius: 36rpx;
-            margin-right: 32rpx;
-        }
+      .selectItem {
+        // width: 210rpx;
+        height: 72rpx;
+        padding: 16rpx 24rpx;
+        box-sizing: border-box;
+        font-size: 28rpx;
+        color: #fff;
+        border: 2rpx solid #BEBEBE;
+        border-radius: 36rpx;
+        margin-right: 32rpx;
+      }
 
-        .active {
-            color: #A7F522;
-            border: 2rpx solid transparent;
-            background-clip: padding-box, border-box;
-            background-origin: padding-box, border-box;
-            background-image: linear-gradient(to right, #3C3C3C, #3C3C3C), linear-gradient(135deg, rgba(#A7F522, 1.0), rgba(#fff, 0.1), rgba(#A7F522, 1.0), );
-        }
+      .active {
+        color: #A7F522;
+        border: 2rpx solid transparent;
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        background-image: linear-gradient(to right, #3C3C3C, #3C3C3C), linear-gradient(135deg, rgba(#A7F522, 1.0), rgba(#fff, 0.1), rgba(#A7F522, 1.0), );
+      }
     }
 
     .txt {
-        position: relative;
-        margin: 48rpx auto;
-        width: 686rpx;
-        height: 470rpx;
-        background-color: rgba($color: #5C5C5C, $alpha: 0.5);
-        border-radius: 32rpx;
-        box-sizing: border-box;
-        padding: 32rpx;
+      position: relative;
+      margin: 48rpx auto;
+      width: 686rpx;
+      height: 470rpx;
+      background-color: rgba($color: #5C5C5C, $alpha: 0.5);
+      border-radius: 32rpx;
+      box-sizing: border-box;
+      padding: 32rpx;
 
-        .textarea {
-            width: 100%;
-            height: 100%;
-        }
+      .textarea {
+        width: 100%;
+        height: 100%;
+      }
 
-        .count {
-            position: absolute;
-            bottom: 32rpx;
-            right: 32rpx;
-            font-size: 28rpx;
-            color: #BEBEBE;
+      .count {
+        position: absolute;
+        bottom: 32rpx;
+        right: 32rpx;
+        font-size: 28rpx;
+        color: #BEBEBE;
 
-        }
+      }
     }
 
     .confirm {
-        width: 440rpx;
-        height: 80rpx;
-        background-color: #A7F522;
-        border-radius: 4rpx;
-        margin: 48rpx auto;
-        font-size: 28rpx;
-        color: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center
+      width: 440rpx;
+      height: 80rpx;
+      background-color: #A7F522;
+      border-radius: 4rpx;
+      margin: 48rpx auto;
+      font-size: 28rpx;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center
     }
 
     .confirm:active {
-        background-color: #bcfa52;
+      background-color: #bcfa52;
 
     }
-}
+  }
 </style>

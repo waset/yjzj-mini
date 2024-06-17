@@ -104,99 +104,99 @@ const submitOrderFn = async () => {
 </template>
 
 <style lang="scss" scoped>
-$top-height: 112rpx;
-$bottom-height: 156rpx;
+  $top-height: 112rpx;
+  $bottom-height: 156rpx;
 
-$Be: #BEBEBE;
+  $Be: #BEBEBE;
 
-.body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-
-  .addressBox {
-    width: 686rpx;
-    margin: 32rpx auto
-  }
-
-  .top-wrap {
-    height: $top-height;
-  }
-
-  .body-wrap {
-    flex: 1;
-  }
-
-  .bottom-wrap {
-    height: $bottom-height;
-  }
-
-  .CouponsAndNotes {
-    width: 686rpx;
-    height: 112rpx;
+  .body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin: 32rpx auto;
-    font-size: 28rpx;
-    box-sizing: border-box;
-    padding-left: 32rpx;
+    flex: 1;
+    overflow: hidden;
 
-    .counpons {
-      display: flex;
-      justify-content: space-between;
+    .addressBox {
+      width: 686rpx;
+      margin: 32rpx auto
     }
 
-    .notes {
-      margin-top: 32rpx;
-      display: flex;
-      justify-content: space-between;
-
+    .top-wrap {
+      height: $top-height;
     }
 
-    .beColor {
-      color: #BEBEBE;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .body-wrap {
+      flex: 1;
+    }
 
-      .text {
+    .bottom-wrap {
+      height: $bottom-height;
+    }
+
+    .CouponsAndNotes {
+      width: 686rpx;
+      height: 112rpx;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 32rpx auto;
+      font-size: 28rpx;
+      box-sizing: border-box;
+      padding-left: 32rpx;
+
+      .counpons {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .notes {
+        margin-top: 32rpx;
+        display: flex;
+        justify-content: space-between;
+
+      }
+
+      .beColor {
+        color: #BEBEBE;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        .badge {
-          width: 32rpx;
-          height: 32rpx;
-          border-radius: 50%;
-          background-color: #F53F3F;
+        .text {
           display: flex;
+          justify-content: space-between;
           align-items: center;
-          justify-content: center;
-          color: #fff;
-          font-size: 20rpx;
-          margin-left: 8rpx;
+
+          .badge {
+            width: 32rpx;
+            height: 32rpx;
+            border-radius: 50%;
+            background-color: #F53F3F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20rpx;
+            margin-left: 8rpx;
+          }
+
         }
 
+        .text1 {
+          max-width: 400rpx;
+          max-height: 80rpx;
+          font-size: 28rpx;
+        }
+
+        .i-icons-right {
+          font-size: 32rpx;
+          width: 32rpx;
+          height: 32rpx;
+        }
       }
 
-      .text1 {
-        max-width: 400rpx;
-        max-height: 80rpx;
-        font-size: 28rpx;
-      }
-
-      .i-icons-right {
-        font-size: 32rpx;
-        width: 32rpx;
-        height: 32rpx;
-      }
     }
 
   }
-
-}
 </style>
 <!--
 <route lang="json">

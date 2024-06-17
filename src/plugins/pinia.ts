@@ -1,14 +1,6 @@
-import { createPinia, defineStore } from 'pinia'
+import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 import type { App } from 'vue'
-
-interface address {
-  username: string
-  mobile: string
-  address: string
-  addressInfo: string
-  isDefault: boolean
-}
 
 export default (app: App) => {
   /**
@@ -17,6 +9,7 @@ export default (app: App) => {
    * @see https://prazdevs.github.io/pinia-plugin-persistedstate/zh/
    */
   const pinia = createPinia()
+
   pinia.use(createPersistedState({
     storage: {
       getItem: key => uni.getStorageSync(key),
@@ -26,24 +19,3 @@ export default (app: App) => {
 
   return app.use(pinia)
 }
-
-export const useStore = defineStore('defaultStore', {
-  state: () => ({
-    userInfo: {
-      username: '',
-      mobile: '',
-      address: '',
-      addressInfo: '',
-      isDefault: false,
-    },
-  }),
-  actions: {
-    setUserInfo(data: address) {
-      this.userInfo = data
-    },
-
-  },
-  getters: {
-  },
-  persist: true,
-})

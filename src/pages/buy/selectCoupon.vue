@@ -37,81 +37,81 @@ const selectItem = (index: number) => {
 </template>
 
 <style lang="scss" scoped>
-$top-height: 112rpx;
-$bottom-height: 156rpx;
-$Be: #BEBEBE;
+  $top-height: 112rpx;
+  $bottom-height: 156rpx;
+  $Be: #BEBEBE;
 
-.i-background-product-detail {
-  width: 100%;
-  height: 100%;
-}
+  .i-background-product-detail {
+    width: 100%;
+    height: 100%;
+  }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-
-  .itembox {
+  .body {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 32rpx;
-    box-sizing: border-box;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 
-    .circle,
-    .circle2 {
-      border-radius: 50%;
-      border: 2rpx solid #fff;
-      width: 40rpx;
-      height: 40rpx;
+    .itembox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 32rpx;
       box-sizing: border-box;
 
+      .circle,
+      .circle2 {
+        border-radius: 50%;
+        border: 2rpx solid #fff;
+        width: 40rpx;
+        height: 40rpx;
+        box-sizing: border-box;
+
+      }
+
+      .circle2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        font-size: 28rpx;
+        background-color: #A7F522;
+        border: 0;
+      }
     }
 
-    .circle2 {
+    .confirm {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 144rpx;
+      background-color: rgba($color: #fff, $alpha: 0.2);
+      backdrop-filter: blur(48rpx);
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #000;
-      font-size: 28rpx;
-      background-color: #A7F522;
-      border: 0;
+      justify-content: space-between;
+      padding: 32rpx;
+      box-sizing: border-box;
+
+      .confirmBtn {
+
+        background-color: #A7F522;
+        font-size: 28rpx;
+        border-radius: 8rpx;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 192rpx;
+        height: 80rpx;
+      }
+
+      .confirmBtn:active {
+        background-color: #8fdf06;
+
+      }
     }
   }
-
-  .confirm {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 144rpx;
-    background-color: rgba($color: #fff, $alpha: 0.2);
-    backdrop-filter: blur(48rpx);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32rpx;
-    box-sizing: border-box;
-
-    .confirmBtn {
-
-      background-color: #A7F522;
-      font-size: 28rpx;
-      border-radius: 8rpx;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 192rpx;
-      height: 80rpx;
-    }
-
-    .confirmBtn:active {
-      background-color: #8fdf06;
-
-    }
-  }
-}
 </style>
 <!--
 <route lang="json">

@@ -288,153 +288,153 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-$theme: #A7F522;
+  $theme: #A7F522;
 
-.myaddress {
-  padding-top: 32rpx;
+  .myaddress {
+    padding-top: 32rpx;
 
-  .newAddress {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    width: 440rpx;
-    border-radius: 4rpx;
-    height: 80rpx;
-    position: fixed;
-    bottom: 32rpx;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 28rpx;
-    background-color: $theme;
+    .newAddress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      width: 440rpx;
+      border-radius: 4rpx;
+      height: 80rpx;
+      position: fixed;
+      bottom: 32rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28rpx;
+      background-color: $theme;
+    }
+
   }
 
-}
-
-.config {
-  .inputBox {
-    width: 686rpx;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-
-    .row {
-      margin: 32rpx auto 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+  .config {
+    .inputBox {
       width: 686rpx;
-      height: 80rpx;
-      font-size: 28rpx;
-      color: #F5F5F5;
-
-      input {
-        border-radius: 10rpx;
-        width: 542rpx;
-        height: 80rpx;
-        background-color: #4C4C4C;
-        padding-left: 24rpx;
-        box-sizing: border-box;
-      }
-
-      .input {
-        position: relative;
-        border-radius: 10rpx;
-        width: 542rpx;
-        height: 80rpx;
-        box-sizing: border-box;
-        line-height: 80rpx;
-        text-align: left;
-
-        background-color: #4C4C4C;
-        padding-left: 24rpx;
-
-        .i-icons-left {
-          position: absolute;
-          right: 32rpx;
-          top: 24rpx;
-          transform: rotate(270deg);
-        }
-      }
-
-    }
-
-    .textareaBox {
-
-      width: 100%;
-      padding-left: 144rpx;
-      box-sizing: border-box;
-
-      .textarea {
-        width: 542rpx;
-        height: 160rpx;
-        border-radius: 10rpx;
-        background-color: #4C4C4C;
-        margin-top: 32rpx;
-        box-sizing: border-box;
-        padding: 20rpx 24rpx;
-
-        textarea {
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-    }
-
-    .check {
+      margin: 0 auto;
       display: flex;
-      align-items: center;
-      float: left;
-      font-size: 28rpx;
-      margin-top: 50rpx;
+      flex-direction: column;
 
-      .default {
-        width: 48rpx;
-        height: 48rpx;
-        border: 2rpx solid #fff;
+      .row {
+        margin: 32rpx auto 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 686rpx;
+        height: 80rpx;
+        font-size: 28rpx;
+        color: #F5F5F5;
+
+        input {
+          border-radius: 10rpx;
+          width: 542rpx;
+          height: 80rpx;
+          background-color: #4C4C4C;
+          padding-left: 24rpx;
+          box-sizing: border-box;
+        }
+
+        .input {
+          position: relative;
+          border-radius: 10rpx;
+          width: 542rpx;
+          height: 80rpx;
+          box-sizing: border-box;
+          line-height: 80rpx;
+          text-align: left;
+
+          background-color: #4C4C4C;
+          padding-left: 24rpx;
+
+          .i-icons-left {
+            position: absolute;
+            right: 32rpx;
+            top: 24rpx;
+            transform: rotate(270deg);
+          }
+        }
+
+      }
+
+      .textareaBox {
+
+        width: 100%;
+        padding-left: 144rpx;
         box-sizing: border-box;
-        border-radius: 50%;
-        background-color: #A7F522;
-        margin-right: 16rpx;
+
+        .textarea {
+          width: 542rpx;
+          height: 160rpx;
+          border-radius: 10rpx;
+          background-color: #4C4C4C;
+          margin-top: 32rpx;
+          box-sizing: border-box;
+          padding: 20rpx 24rpx;
+
+          textarea {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+      }
+
+      .check {
         display: flex;
         align-items: center;
-        justify-content: center;
+        float: left;
+        font-size: 28rpx;
+        margin-top: 50rpx;
 
+        .default {
+          width: 48rpx;
+          height: 48rpx;
+          border: 2rpx solid #fff;
+          box-sizing: border-box;
+          border-radius: 50%;
+          background-color: #A7F522;
+          margin-right: 16rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+        }
+
+        .not {
+          width: 48rpx;
+          height: 48rpx;
+          border-radius: 50%;
+          border: 2rpx solid #fff;
+          box-sizing: border-box;
+          margin-right: 16rpx;
+
+        }
       }
 
-      .not {
-        width: 48rpx;
-        height: 48rpx;
-        border-radius: 50%;
-        border: 2rpx solid #fff;
-        box-sizing: border-box;
-        margin-right: 16rpx;
-
-      }
     }
 
+    .confirm {
+      width: 440rpx;
+      height: 80rpx;
+      background-color: #A7F522;
+      border-radius: 4rpx;
+      margin: 148rpx auto 0;
+      font-size: 28rpx;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    .confirm:active {
+      background-color: #bcfa52;
+
+    }
   }
-
-  .confirm {
-    width: 440rpx;
-    height: 80rpx;
-    background-color: #A7F522;
-    border-radius: 4rpx;
-    margin: 148rpx auto 0;
-    font-size: 28rpx;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
-
-  .confirm:active {
-    background-color: #bcfa52;
-
-  }
-}
 </style>
 <!--
 <route lang="json">

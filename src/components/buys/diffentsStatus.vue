@@ -44,43 +44,44 @@ const props = defineProps<{
 </template>
 
 <style lang="scss" scoped>
-.statusBox {
-  width: 578rpx;
-  height: 188rpx;
-  margin: 0 auto 48rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .waiting {
-    font-size: 28rpx;
-  }
-  .leftIcon {
-    width: 188rpx;
+  .statusBox {
+    width: 578rpx;
     height: 188rpx;
-
-    .i-icons-arc {
-      width: 94rpx;
-      height: 188rpx;
-    }
-  }
-
-  .rightbox {
-    margin-left: 20rpx;
-    height: 160rpx;
-    width: 416rpx;
+    margin: 0 auto 48rpx;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
 
-    .title {
-      font-weight: 600;
-      font-size: 40rpx;
+    .waiting {
+      font-size: 28rpx;
     }
 
-    .text {
-      font-size: 24rpx;
+    .leftIcon {
+      width: 188rpx;
+      height: 188rpx;
+
+      .i-icons-arc {
+        width: 94rpx;
+        height: 188rpx;
+      }
+    }
+
+    .rightbox {
+      margin-left: 20rpx;
+      height: 160rpx;
+      width: 416rpx;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .title {
+        font-weight: 600;
+        font-size: 40rpx;
+      }
+
+      .text {
+        font-size: 24rpx;
+      }
     }
   }
-}
 </style>
