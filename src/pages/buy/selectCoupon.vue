@@ -19,7 +19,7 @@ const selectItem = (index: number) => {
       <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-nocoupon" />
     </div>
     <div v-for="(item, index) in couponList" :key="index" class="itembox" @click="selectItem(index)">
-      <buys-coupon-couponItem :coupn="item" :maxwidth="476" />
+      <buys-coupon-item :coupn="item" :maxwidth="476" />
       <div v-if="selectId !== item.ticketInfo.id" class="circle" />
       <div v-if="selectId === item.ticketInfo.id" class="circle2">
         <div class="i-icons-correct" />

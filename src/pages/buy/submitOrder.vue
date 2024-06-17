@@ -70,10 +70,10 @@ const submitOrderFn = async () => {
 <template>
   <navbar-back text="提交订单" />
   <div class="body">
-    <div class="addressBox" @click="Jump('/pages/me/address/addressIndex')">
-      <buys-addressCard />
+    <div class="addressBox" @click="Jump('/pages/me/address/index')">
+      <buys-address-card />
     </div>
-    <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
+    <buys-goods-item-card :list="goodslist" :showborder="showborder" />
     <div class="CouponsAndNotes">
       <div class="counpons" @click="Jump('/pages/buy/selectCoupon')">
         <div>优惠券</div>
@@ -97,8 +97,8 @@ const submitOrderFn = async () => {
         </div>
       </div>
     </div>
-    <buys-settlementCard :number="totalNumber" :pay="payment" />
-    <buys-bottomSubmit :number="totalNumber" :pay="payment" @submit-order="submitOrderFn" />
+    <buys-settlement-card :number="totalNumber" :pay="payment" />
+    <buys-bottom-submit :number="totalNumber" :pay="payment" @submit-order="submitOrderFn" />
     <buys-popup-markpopup :showpop="showPop" @set-show="setShowFn" @write-mark="writeMarkFn" />
   </div>
 </template>

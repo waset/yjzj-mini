@@ -23,14 +23,14 @@ const goodslist = ref<goodsListInfo[]>([
   <div class="body">
     <div class="status">
       <div class="addressBox">
-        <buys-diffentsStatus :status="state" />
-        <buys-addressCard :width="558" />
+        <buys-diffents-status :status="state" />
+        <buys-address-card :width="558" />
       </div>
     </div>
 
     <div class="box">
       <div class="gradient-border gradientbox">
-        <buys-goodsItemCard :list="goodslist" :showborder="showborder" />
+        <buys-goods-item-card :list="goodslist" :showborder="showborder" />
         <div class="totalPrice">
           <span class="textFont">待支付：</span>
           <span class="priceFont">￥123213</span>
@@ -38,7 +38,7 @@ const goodslist = ref<goodsListInfo[]>([
       </div>
     </div>
 
-    <buys-orderInfoBottom :status="state" />
+    <buys-order-info-bottom :status="state" />
   </div>
 </template>
 
