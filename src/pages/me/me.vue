@@ -120,9 +120,9 @@ function goLogin() {
               <div class="item">
                 <div class="icon">
                   <div :class="item.icon" />
-                  <template v-if="item.num && item.num() < 99">
+                  <template v-if="item.num && item.num() !== 0 && item.num() < 99">
                     <div class="num">
-                      {{ orders.length }}
+                      {{ item.num() }}
                     </div>
                   </template>
                   <template v-if="item.num && item.num() > 99">
