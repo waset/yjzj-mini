@@ -177,6 +177,9 @@ function goLogin() {
         </div>
       </div>
     </div>
+    <div @click="Jump('/pages/popularize/invitetion')">
+      推广邀请
+    </div>
     <div class="func">
       <div class="wrap">
         <div class="items">
