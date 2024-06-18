@@ -3,10 +3,12 @@ const { getUserInfo } = useUserStore()
 const { userDesc, isRegister, token } = storeToRefs(useUserStore())
 
 const { orders } = storeToRefs(useOrderStore())
+const { getOrderList } = useOrderStore()
 
 onShow(async () => {
   if (token.value) {
     await getUserInfo()
+    await getOrderList(OrderStatus.All, 1, 1000)
   }
 })
 
@@ -15,17 +17,27 @@ onShow(async () => {
  */
 const orderTypes = [
   {
-    icon: 'i-icons-payment',
-    text: '待付款',
+    icon: 'i-icons-delivery',
+    text: '全部',
     num: () => {
-      return orders.value?.filter(item => item.status === OrderStatus.Wait).length || 0
+      return orders.value.length || 0
+    },
+    click: () => {
+      Jump('/pages/order/list', {
+        status: OrderStatus.All,
+      })
     },
   },
   {
-    icon: 'i-icons-delivery',
-    text: '待发货',
+    icon: 'i-icons-payment',
+    text: '待付款',
     num: () => {
       return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
+    },
+    click: () => {
+      Jump('/pages/order/list', {
+        status: OrderStatus.Wait,
+      })
     },
   },
   {
@@ -33,6 +45,11 @@ const orderTypes = [
     text: '待收货',
     num: () => {
       return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
+    },
+    click: () => {
+      Jump('/pages/order/list', {
+        status: OrderStatus.PaymentSuccessful,
+      })
     },
   },
 ]
@@ -107,7 +124,7 @@ function goLogin() {
         <div class="text">
           我的订单
         </div>
-        <div class="more" @click="Jump('/pages/me/form')">
+        <div class="more" @click="Jump('/pages/order/list')">
           <span>全部订单</span>
           <span v-if="orders" class="num">{{ orders.length }}</span>
           <div class="i-icons-right" />
@@ -117,7 +134,7 @@ function goLogin() {
         <div class="wrap">
           <div class="types">
             <template v-for="(item, index) in orderTypes" :key="index">
-              <div class="item">
+              <div class="item" @click="item.click()">
                 <div class="icon">
                   <div :class="item.icon" />
                   <template v-if="item.num && item.num() !== 0 && item.num() < 99">
