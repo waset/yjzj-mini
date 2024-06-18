@@ -39,6 +39,8 @@ const getProduct = async () => {
 
 const filte = ref(false)
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
+  console.log(name)
+
   switch (name) {
     case 'filte':
       filte.value = Boolean(value) || !filte.value
