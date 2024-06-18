@@ -270,7 +270,7 @@ const addBuyCar = () => {
             .btn {
               font-size: 28rpx;
               font-weight: 400;
-              line-height: 40rpx;
+              line-height: 50rpx;
             }
           }
         }
