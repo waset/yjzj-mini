@@ -4,6 +4,19 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
+// 定义展示详情的方法
+const emits = defineEmits<{
+  configDetail: [detailProduct: orderDetail]
+  // click: [detailProduct: Product]
+}>()
+
+function showConfigs(configs: orderDetail) {
+  // emits('configDetail', props.order.details[0].productSnapshot)
+  emits('configDetail', configs)
+  console.log('配置详情点击了', configs)
+}
+
+// 商品名和商品图的跳转地址
 const handleClick = (detailProduct: Product) => {
   Jump('/pages/product/detail', { id: detailProduct.id })
 }
@@ -24,7 +37,10 @@ const handleClick = (detailProduct: Product) => {
                   <div class="name" @click="handleClick(detail.productSnapshot)">
                     {{ detail.productSnapshot.name }}
                   </div>
-                  <order-configs :product="detail.productSnapshot" />
+                  <div class="info" @click.stop.prevent="showConfigs(detail)">
+                    <span>配置详情</span>
+                    <div class="i-icons-right" />
+                  </div>
                 </div>
               </div>
               <div class="right">

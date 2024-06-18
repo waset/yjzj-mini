@@ -47,6 +47,17 @@ const DropFn = (name: string) => {
   }
 }
 
+// 是否展示配置详情弹窗
+const isShow = ref(false)
+// 配置详情弹窗内展示的信息
+const configsInfo = ref<orderDetail>()
+// 显示配置详情弹窗和内容
+function showConfigs(config: orderDetail) {
+  configsInfo.value = config
+  isShow.value = true
+  console.log('这里是configsInfo的值', configsInfo.value)
+}
+
 // 订单状态描述及颜色
 const filterOrder = (status: Order['status']) => {
   const statusMap: any = {
@@ -64,193 +75,195 @@ const filterOrder = (status: Order['status']) => {
     },
     4: {
       desc: '部分退款',
-      color: '#ffffff',
+      color: '#bebebe',
     },
     5: {
       desc: '交易关闭',
-      color: '#ffffff',
+      color: '#bebebe',
     },
     6: {
       desc: '取消支付',
-      color: '#ffffff',
+      color: '#bebebe',
     },
   }
   return statusMap[status]
 }
-
-// 复制订单号
-function copyText() {
-  uni.setClipboardData({
-    data: props.order.no || '暂无订单号',
-    success: () => {
-      uni.showToast({ title: '复制成功' })
-    },
-    fail: () => {
-      uni.showToast({ title: '复制失败' })
-    },
-  })
-}
 </script>
 
 <template>
-  <common-popup v-model:show="detailDialog" name="查看明细">
-    <div class="detail">
-      <div v-if="detailInfo" class="wrap">
-        <div class="content">
-          <div class="bg">
-            <div class="top">
-              <div class="total">
-                <div class="text">
-                  合计金额
-                </div>
-                <div class="price">
-                  <span>￥</span>
-                  <span>{{ detailInfo.sellPrice }}</span>
-                </div>
-              </div>
-              <div class="activity">
-                <div class="text">
-                  活动优惠
-                </div>
-                <div class="price">
-                  <span>-￥</span>
-                  <span>{{ detailInfo.ticketPrice }}</span>
-                </div>
-              </div>
-              <div class="coupon">
-                <div class="text">
-                  卡券优惠
-                </div>
-                <div class="price">
-                  <span>-￥</span>
-                  <span>{{ detailInfo.ticketPrice }}</span>
-                </div>
-              </div>
-              <div class="freight">
-                <div class="text">
-                  运费
-                </div>
-                <div class="price">
-                  <span>￥</span>
-                  <span>0</span>
-                </div>
-              </div>
-              <div class="actualPayment">
-                <div class="text">
-                  实付金额
-                </div>
-                <div class="price">
-                  <span>￥</span>
-                  <span>{{ detailInfo.payPrice }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="line" />
-            <div class="bottom">
-              <div class="orderNumber">
-                <div class="text">
-                  订单编号
-                </div>
-                <div class="info">
-                  <div class="num">
-                    {{ detailInfo.no }}
+  <div class="order-list-container">
+    <common-popup v-model:show="detailDialog" name="查看明细">
+      <div class="detail">
+        <div v-if="detailInfo" class="wrap">
+          <div class="content">
+            <div class="bg">
+              <div class="top">
+                <div class="total">
+                  <div class="text">
+                    合计金额
                   </div>
-                  <div class="replication" @click="copyText">
-                    | 复制
+                  <div class="price">
+                    <span>￥</span>
+                    <span>{{ detailInfo.sellPrice }}</span>
+                  </div>
+                </div>
+                <div class="activity">
+                  <div class="text">
+                    活动优惠
+                  </div>
+                  <div class="price">
+                    <span>-￥</span>
+                    <span>0</span>
+                  </div>
+                </div>
+                <div class="coupon">
+                  <div class="text">
+                    卡券优惠
+                  </div>
+                  <div class="price">
+                    <span>-￥</span>
+                    <span>{{ detailInfo.ticketPrice }}</span>
+                  </div>
+                </div>
+                <div class="freight">
+                  <div class="text">
+                    运费
+                  </div>
+                  <div class="price">
+                    <span>￥</span>
+                    <span>0</span>
+                  </div>
+                </div>
+                <div class="actualPayment">
+                  <div class="text">
+                    实付金额
+                  </div>
+                  <div class="price">
+                    <span>￥</span>
+                    <span>{{ detailInfo.payPrice }}</span>
                   </div>
                 </div>
               </div>
-              <div class="create">
-                <div class="text">
-                  创建时间
+              <div class="line" />
+              <div class="bottom">
+                <div class="orderNumber">
+                  <div class="text">
+                    订单编号
+                  </div>
+                  <div class="info">
+                    <div class="num">
+                      {{ detailInfo.no }}
+                    </div>
+                    <div class="replication" @click="copyText(detailInfo.no)">
+                      | 复制
+                    </div>
+                  </div>
                 </div>
-                <div class="info">
-                  <div>{{ detailInfo.createdAt }}</div>
+                <div class="create">
+                  <div class="text">
+                    创建时间
+                  </div>
+                  <div class="info">
+                    <div>{{ detailInfo.createdAt }}</div>
+                  </div>
                 </div>
-              </div>
-              <div v-if="detailInfo.payAt" class="pay">
-                <div class="text">
-                  付款时间
+                <div v-if="detailInfo.payAt" class="pay">
+                  <div class="text">
+                    付款时间
+                  </div>
+                  <div class="info">
+                    <div>{{ detailInfo.payAt }}</div>
+                  </div>
                 </div>
-                <div class="info">
-                  <div>{{ detailInfo.payAt }}</div>
-                </div>
-              </div>
-              <div v-if="detailInfo.updatedAt" class="finish">
-                <div class="text">
-                  成交时间
-                </div>
-                <div class="info">
-                  <div>{{ detailInfo.updatedAt }}</div>
+                <div v-if="detailInfo.updatedAt" class="finish">
+                  <div class="text">
+                    成交时间
+                  </div>
+                  <div class="info">
+                    <div>{{ detailInfo.updatedAt }}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="service">
-          <div class="body">
-            <div class="title">
-              遇到问题？
-            </div>
-            <div class="btn">
-              <div class="i-icons-service" />
-              <div class="text">
-                联系客服
+          <div class="service">
+            <div class="body">
+              <div class="title">
+                遇到问题？
+              </div>
+              <div class="btn">
+                <div class="i-icons-service" />
+                <div class="text">
+                  联系客服
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </common-popup>
-  <div class="order-list">
-    <div class="list">
-      <div class="item">
-        <div class="info">
-          <div class="top">
-            <div class="idFunc">
-              <div class="id">
-                订单号：{{ props.order.no }}
-              </div>
-              <div class="copy" @click="copyText">
-                | 复制
-              </div>
-            </div>
-            <div class="statusDesc" :style="{ color: filterOrder(props.order.status).color }">
-              {{ filterOrder(props.order.status).desc }}
-            </div>
-          </div>
-          <div class="product">
-            <order-product :order="order" />
-          </div>
+    </common-popup>
+    <common-popup v-model:show="isShow" name="配置详情" @close="isShow = false">
+      <div class="configs">
+        <div class="test">
+          {{ configsInfo?.details[0].id }}
         </div>
-        <div class="func">
-          <div class="upper">
-            <div class="price">
-              <div class="text">
-                总计：
+        <template v-if="configsInfo">
+          <template v-for="(item, i) in configsInfo" :key="i" />
+        </template>
+        <template v-else>
+          <common-empty text="暂无配置信息" />
+        </template>
+      </div>
+    </common-popup>
+    <div class="order-list">
+      <div class="list">
+        <div class="item">
+          <div class="info">
+            <div class="top">
+              <div class="idFunc">
+                <div class="id">
+                  订单号：{{ props.order.no }}
+                </div>
+                <div class="copy" @click="copyText(props.order.no)">
+                  | 复制
+                </div>
               </div>
-              <div class="totalPrice">
-                <span>￥</span>
-                <span>{{ props.order.sellPrice }}</span>
+              <div class="statusDesc" :style="{ color: filterOrder(props.order.status).color }">
+                {{ filterOrder(props.order.status).desc }}
               </div>
+            </div>
+            <div class="product">
+              <order-product :order="order" @config-detail="showConfigs" />
             </div>
           </div>
-          <div class="bottom">
-            <div class="left">
-              <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
-                <div class="more" @click="toggleDropFn">
-                  <div class="icon">
-                    <div class="i-icons-more" />
-                  </div>
-                  <span>更多</span>
+          <div class="func">
+            <div class="upper">
+              <div class="price">
+                <div class="text">
+                  总计：
                 </div>
-              </common-drop>
+                <div class="totalPrice">
+                  <span>￥</span>
+                  <span>{{ props.order.sellPrice }}</span>
+                </div>
+              </div>
             </div>
-            <div class="operation">
-              <order-action :status="props.order.status">
-                <slot />
-              </order-action>
+            <div class="bottom">
+              <div class="left">
+                <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
+                  <div class="more" @click="toggleDropFn">
+                    <div class="icon">
+                      <div class="i-icons-more" />
+                    </div>
+                    <span>更多</span>
+                  </div>
+                </common-drop>
+              </div>
+              <div class="operation">
+                <order-action :status="props.order.status" :express="props.order.express">
+                  <slot />
+                </order-action>
+              </div>
             </div>
           </div>
         </div>
@@ -263,7 +276,6 @@ function copyText() {
 .order-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
@@ -276,7 +288,7 @@ function copyText() {
       padding: 24rpx;
 
       background: rgba(132, 132, 132, 0.2);
-      border: 2rpx solid rgba(189, 189, 189, 0.6);
+      border: 2rpx solid rgba(189, 189, 189, 0.5);
       border-radius: 32rpx;
 
       .info {
@@ -554,7 +566,7 @@ function copyText() {
         .line {
           width: 100%;
           height: 2rpx;
-          background-image: linear-gradient(134deg, rgba(190, 190, 190, 0.2), rgba(190, 190, 190, 0.8), rgba(190, 190, 190, 0.8), rgba(190, 190, 190, 0.2));
+          background-image: linear-gradient(134deg, rgba(190, 190, 190, 0.2), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.2));
         }
 
         .bottom {
