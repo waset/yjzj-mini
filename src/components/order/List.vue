@@ -19,7 +19,7 @@ const more = ref([
 // 是否展示下拉菜单
 const showDropSwitch = ref(false)
 // 显示下拉菜单的方法
-function showDropFn() {
+function toggleDropFn() {
   showDropSwitch.value = !showDropSwitch.value
 }
 
@@ -239,7 +239,7 @@ function copyText() {
           <div class="bottom">
             <div class="left">
               <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
-                <div class="more" @click="showDropFn">
+                <div class="more" @click="toggleDropFn">
                   <div class="icon">
                     <div class="i-icons-more" />
                   </div>
