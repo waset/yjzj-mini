@@ -1,26 +1,43 @@
 <script setup lang="ts">
-import inviteImg from '@/assets/background/invite-img.svg'
+import mainbg from '@/assets/background/invite-mainbg.svg'
 
-const mineImg = ref(inviteImg)
+const mainbgImg = ref(mainbg)
 </script>
 
 <template>
   <div class="invietion">
     <navbar-home text="邀请推广" />
-    <image
-      class="invietion-img w-100"
-      :src="mineImg"
-      mode="widthFix"
-    />
+    <!-- 海报 -->
+    <invite-banner />
+
+    <div :style="`background-image: url(${mainbgImg})`" class="main">
+      <!-- 推广等级 -->
+      <invite-level />
+      <!-- 榜单排名 -->
+      <invite-ranking />
+      <image
+        style="width: 100%;"
+        class="mt-20"
+        src="@/assets/background/invite-program.svg"
+        mode="widthFix"
+      />
+      <div class="flex justify-center">
+        <image
+          style="width: 90%;"
+          src="@/assets/background/invite-btn.svg"
+          mode="widthFix"
+        />
+      </div>
+    </div>
   </div>
-  <!-- 推广等级 -->
-  <invite-level />
 </template>
 
 <style lang="scss" scoped>
-.invietion-img {
+.main {
   width: 100%;
-  height: 1296rpx;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>
 
