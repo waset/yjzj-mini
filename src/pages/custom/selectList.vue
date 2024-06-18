@@ -36,10 +36,9 @@ const getProduct = async () => {
     20,
   )
 }
-
+const showSelected = ref<selectItem[]>([])
 const filte = ref(false)
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
-  console.log(name)
   switch (name) {
     case 'filte':
       filte.value = Boolean(value) || !filte.value
@@ -48,6 +47,11 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value
       break
   }
 }
+
+const confirmFn = (selected: selectItem[]) => {
+  showSelected.value = selected
+}
+
 /**
  * 页面显示获取数据
  */
@@ -62,9 +66,17 @@ onShow(async () => {
     <navbar-back text="选择组件" />
     <common-search />
     <common-sort-filter :has-layout="false" @change="onChange" />
-
+    <div class="showSelected">
+      <div>筛选条件：</div>
+      <div v-for="(item, index) in showSelected" :key="index" class="selectedItem">
+        {{
+          item.name
+        }}
+        <div class="i-icons-closed" />
+      </div>
+    </div>
     <common-popup :show="filte" name="筛选" @close="filte = false">
-      <product-filter-list />
+      <product-filter-list @confirm="confirmFn" />
     </common-popup>
     <div class="commodity_list">
       <product-module-select />
@@ -83,5 +95,34 @@ onShow(async () => {
 
   }
 
+}
+
+.showSelected {
+  font-size: 28rpx;
+  padding: 32rpx 32rpx 0 32rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+  .selectedItem {
+    margin-right: 16rpx;
+    width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    padding: 8rpx 16rpx;
+    background-color: #414141;
+    color: #A7F522;
+    border-radius: 8rpx;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16rpx;
+    .i-icons-closed {
+      color: #fff;
+      font-size: 24rpx;
+      margin-left: 8rpx;
+
+    }
+  }
 }
 </style>
