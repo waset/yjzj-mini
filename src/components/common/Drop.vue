@@ -72,7 +72,7 @@ const emits = defineEmits<{
       border: 2rpx solid #bdbdbd;
 
       backdrop-filter: blur(5px);
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(87, 87, 87, 0.6);
 
       .item {
         all: unset;
