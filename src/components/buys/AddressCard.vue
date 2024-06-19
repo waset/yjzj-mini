@@ -65,7 +65,7 @@ onShow(() => {
     box-sizing: border-box;
 
     .center_info {
-      width: 622rpx;
+      width: 100%;
       height: 128rpx;
       z-index: 2;
       position: absolute;
@@ -76,6 +76,7 @@ onShow(() => {
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-around;
+      padding: 0 32rpx;
 
       .addressInfoTips {
         width: 100%;
@@ -97,10 +98,9 @@ onShow(() => {
           align-items: center;
 
         }
-
-        view {
-          margin-right: 16rpx;
-        }
+          .i-icons-address {
+            margin-right: 16rpx;
+          }
 
         .isdefault {
           width: 96rpx;

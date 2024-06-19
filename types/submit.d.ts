@@ -99,7 +99,7 @@ interface submitOrderReq {
   /**
    * 购买商品详情
    */
-  details?: Detail[]
+  details: Detail[]
   /**
    * 邀请码
    */
@@ -107,11 +107,11 @@ interface submitOrderReq {
   /**
    * 支付方式（"wechat":"jsApi","native"/ "aliPay":"web","pc"）
    */
-  payMethod?: string
+  payMethod: string
   /**
    * 支付类型（"wechat", "aliPay"）
    */
-  payType?: string
+  payType: string
   /**
    * 备注
    */
@@ -119,7 +119,7 @@ interface submitOrderReq {
   /**
    * 用户地址id
    */
-  userAddressID?: number
+  userAddressID: number
   /**
    * 用户卡券id
    */
@@ -186,4 +186,277 @@ interface Page {
   pageSize?: number
   total?: number
 
+}
+
+interface orderinfoDataRes {
+  code?: number
+  data?: orderinfoData
+  extra?: { [key: string]: any }
+  msg?: string
+  page?: Page
+}
+
+interface orderinfoData {
+  cancelAt?: string
+  createdAt?: string
+  deletedAt?: null
+  details?: sDetail[]
+  express?: Express
+  freezePrice?: string
+  id?: number
+  inviteUserID?: number
+  no?: string
+  payAt?: string
+  payMethod?: string
+  payPrice?: string
+  payType?: string
+  rebateAmount?: string
+  refundPrice?: string
+  sellPrice?: string
+  /**
+   * 状态 1：待支付 2：支付成功 3：支付失败 4：部分退款 5：全部退款6：取消支付
+   */
+  status?: number
+  ticketPrice?: string
+  ticketSnapshot?: DataTicketSnapshot
+  totalNumber?: number
+  transactionID?: string
+  updatedAt?: string
+  userAddressSnapshot?: UserAddressSnapshot
+  userID?: number
+  userTicketID?: number
+}
+
+interface sDetail {
+  createdAt: string
+  deletedAt?: null
+  details?: sDetail[]
+  evaluationReportID: string
+  id: number
+  inviteUserID: number
+  no: string
+  orderID: number
+  parentNO: string
+  payPrice: string
+  productConfigID: number
+  productConfigSnapshot?: ProductConfigSnapshot
+  productID: number
+  productSnapshot: ProductSnapshot
+  productTypeID: number
+  productTypeName: string
+  rebateAmount: string
+  refundNumber: number
+  refundPrice: string
+  relationType: number
+  sellPrice: string
+  status: number
+  ticketPrice: string
+  ticketSnapshot?: DetailTicketSnapshot
+  totalNumber: number
+  updatedAt: string
+  userID: number
+  userTicketID: number
+
+}
+
+interface ProductConfigSnapshot {
+  createAdminID?: number
+  createdAt?: string
+  createUserID?: number
+  deletedAt?: null
+  id?: number
+  no?: string
+  params?: null
+  shareCode?: string
+  status?: number
+  uniqueCode?: string
+  updatedAt?: string
+
+}
+
+interface ProductSnapshot {
+  banner: string[]
+  configNO?: string
+  configUniqueCode?: string
+  content?: string[]
+  createAdminID?: number
+  createdAt?: string
+  deletedAt?: null
+  description?: string
+  freezeNumber?: number
+  id?: number
+  maxBuyNumber?: number
+  mergeProductIDs?: null
+  name?: string
+  no?: string
+  onceMaxNumber?: number
+  onceMinNumber?: number
+  priceType?: number
+  rebateType?: number
+  rebateValue?: number
+  sellNumber?: number
+  sellPrice?: string
+  sort?: number
+  status?: number
+  stockNumber?: number
+  tagPrice?: string
+  tags?: number[] | null
+  tags2?: null
+  typeID?: number
+  unOrderArea?: null
+  updatedAt?: string
+
+}
+
+interface DetailTicketSnapshot {
+  createAdminID?: number
+  createdAt?: string
+  deletedAt?: null
+  description?: string
+  discountPrice?: string
+  getEndAt?: string
+  getNumber?: number
+  getStartAt?: string
+  id?: number
+  images?: null
+  instruction?: string
+  limitNumber?: number
+  no?: string
+  noUseAreas?: null
+  otherSetting?: null
+  overPrice?: string
+  status?: number
+  stockNumber?: number
+  style?: string
+  type?: number
+  updatedAt?: string
+  useEndAt?: string
+  useNumber?: number
+  useProductContent?: null
+  useProductType?: number
+  useStartAt?: string
+  useTimeDays?: number
+  useTimeType?: number
+
+}
+
+interface Express {
+  companyCode?: string
+  companyName?: string
+  createAdminID?: number
+  createdAt?: string
+  deletedAt?: null
+  id?: number
+  no?: string
+  orderID?: number
+  snapshot?: Snapshot
+  status?: number
+  updatedAt?: string
+  userID?: number
+
+}
+
+interface Snapshot {
+  autoCheck?: string
+  comNew?: string
+  comOld?: string
+  destResult?: DestResult
+  lastResult?: LastResult
+  message?: string
+  status?: string
+
+}
+
+interface DestResult {
+  com?: string
+  data?: null
+  ischeck?: string
+  nu?: string
+  state?: string
+
+}
+
+interface LastResult {
+  com?: string
+  data?: Datum[]
+  ischeck?: string
+  nu?: string
+  state?: string
+
+}
+
+interface Datum {
+  areaCode: string
+  areaName: string
+  context: string
+  ftime: string
+  status: string
+  time: string
+
+}
+
+interface DataTicketSnapshot {
+  createAdminID?: number
+  createdAt?: string
+  deletedAt?: null
+  description?: string
+  discountPrice?: string
+  getEndAt?: string
+  getNumber?: number
+  getStartAt?: string
+  id?: number
+  images?: null
+  instruction?: string
+  limitNumber?: number
+  no?: string
+  noUseAreas?: null
+  otherSetting?: null
+  overPrice?: string
+  status?: number
+  stockNumber?: number
+  style?: string
+  type?: number
+  updatedAt?: string
+  useEndAt?: string
+  useNumber?: number
+  useProductContent?: null
+  useProductType?: number
+  useStartAt?: string
+  useTimeDays?: number
+  useTimeType?: number
+
+}
+
+interface UserAddressSnapshot {
+  address?: string
+  cityCode?: string
+  countryCode?: string
+  createdAt?: string
+  deletedAt?: null
+  id?: number
+  isDefault?: number
+  phone?: string
+  provinceCode?: string
+  status?: number
+  updatedAt?: string
+  userID?: number
+  username?: string
+
+}
+
+interface Page {
+  currentPage?: number
+  LastPage?: number
+  pageSize?: number
+  total?: number
+
+}
+
+// 取消支付
+interface cancelPayRes {
+  code?: number
+  data?: Data
+  extra?: { [key: string]: any }
+  msg?: string
+  page?: Page
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  list?: sDetail[]
+  list?: BuyProduct[]
   showborder: boolean
 }>()
 </script>
@@ -16,12 +16,12 @@ const props = defineProps<{
         <div class="goodsImg">
           <div class="i-svg-product-bg" />
           <div class="img">
-            <product-image :src="item?.productSnapshot?.banner[0] || ''" width="120rpx" height="120rpx" />
+            <product-image :src="item?.banner[0] || ''" width="120rpx" height="120rpx" />
           </div>
         </div>
         <div class="goodsOptions">
           <div class="goodsTitle">
-            {{ item.productSnapshot.name }}
+            {{ item.name }}
           </div>
           <div class="options">
             配置详情
@@ -30,10 +30,10 @@ const props = defineProps<{
 
           <div class="priceAndNum">
             <div class="price">
-              ￥{{ item.productSnapshot.sellPrice }}
+              ￥{{ item.sellPrice }}
             </div>
             <div class="Number">
-              x {{ item.totalNumber }}
+              x {{ item.quantity }}
             </div>
           </div>
         </div>

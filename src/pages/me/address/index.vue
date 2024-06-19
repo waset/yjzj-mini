@@ -302,7 +302,7 @@ onMounted(() => {
       border-radius: 4rpx;
       height: 80rpx;
       position: fixed;
-      bottom: 32rpx;
+      bottom: calc(32rpx +  env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
       font-size: 28rpx;

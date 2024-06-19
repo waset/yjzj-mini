@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
   status: 'success' | 'fail' | 'waiting'
+  timer: string
 }>()
 </script>
 
@@ -16,10 +17,10 @@ const props = defineProps<{
         </div>
         <div class="waiting">
           <span>剩余时间</span>
-          <span style="color: #FF7D00;">15:00:00</span>
+          <span style="color: #FF7D00;">{{ props.timer }}</span>
         </div>
         <div class="text">
-          15分钟内未付款将自动关闭订单。
+          10分钟内未付款将自动关闭订单。
         </div>
       </div>
     </template>
