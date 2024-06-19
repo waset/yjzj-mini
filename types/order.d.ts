@@ -36,7 +36,7 @@ interface orderDetail {
   createdAt: string
   productSnapshot: Product
   deletedAt: string | null
-  details: any | null
+  details: orderDetail[]
   evaluationReportID: string
   id: number
   inviteUserID: number
@@ -74,8 +74,43 @@ interface Express {
   id?: number
   no?: string
   orderID?: number
-  snapshot?: Snapshot
+  snapshot?: ExpressSnapshot
   status?: number
   updatedAt?: string
   userID?: number
+}
+
+interface ExpressSnapshot {
+  autoCheck?: string
+  comNew?: string
+  comOld?: string
+  destResult?: DestResult
+  lastResult?: LastResult
+  message?: string
+  status?: string
+}
+
+interface DestResult {
+  com?: string
+  data?: null
+  ischeck?: string
+  nu?: string
+  state?: string
+}
+
+interface LastResult {
+  com?: string
+  data?: Datum[]
+  ischeck?: string
+  nu?: string
+  state?: string
+}
+
+interface Datum {
+  areaCode: string
+  areaName: string
+  context: string
+  ftime: string
+  status: string
+  time: string
 }

@@ -16,6 +16,9 @@ const more = ref([
   },
 ])
 
+const { detail } = storeToRefs(useProductStore())
+const { addProduct } = useBuyStore()
+
 // 是否展示下拉菜单
 const showDropSwitch = ref(false)
 // 显示下拉菜单的方法
@@ -45,6 +48,20 @@ const DropFn = (name: string) => {
       // 再来一单
       break
   }
+}
+
+// 加入购物车
+const addBuyCar = () => {
+  addProduct({
+    ...detail.value,
+    quantity: 1,
+    select: false,
+    delete: false,
+  })
+  uni.showToast({
+    title: '添加成功',
+    icon: 'success',
+  })
 }
 
 // 是否展示配置详情弹窗
@@ -252,15 +269,12 @@ const filterOrder = (status: Order['status']) => {
               <div class="left">
                 <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
                   <div class="more" @click="toggleDropFn">
-                    <div class="icon">
-                      <div class="i-icons-more" />
-                    </div>
                     <span>更多</span>
                   </div>
                 </common-drop>
               </div>
               <div class="operation">
-                <order-action :status="props.order.status" :express="props.order.express">
+                <order-action :order="props.order" :status="props.order.status" :express="props.order.express" @add-buy-car="addBuyCar">
                   <slot />
                 </order-action>
               </div>
