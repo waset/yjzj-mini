@@ -9,7 +9,7 @@ const bannerImg = ref(banner)
     <div class="banner" :style="`background-image: url(${bannerImg})`">
       <div class="banner-bg">
         <image
-          class="icon1"
+          class="icon1 mt-20"
           src="@/assets/background/invite-icon1.svg"
           mode="widthFix"
         />
@@ -19,7 +19,7 @@ const bannerImg = ref(banner)
           mode="widthFix"
         />
       </div>
-      <div class="flex justify-between items-center ml-6 mr-6">
+      <div class="flex justify-between items-center mt-10 ml-6 mr-6">
         <span class="my-inviter">我的邀请人：---</span>
         <span class="btn-inviter">绑定邀请人</span>
         <span class="btn-inviter">我的下级</span>

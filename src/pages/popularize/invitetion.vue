@@ -6,7 +6,7 @@ const mainbgImg = ref(mainbg)
 
 <template>
   <div class="invietion">
-    <navbar-home text="邀请推广" />
+    <navbar-back text="邀请推广" />
     <!-- 海报 -->
     <invite-banner />
 
@@ -29,6 +29,12 @@ const mainbgImg = ref(mainbg)
         />
       </div>
     </div>
+    <image
+      style="width: 100%;"
+      class="mt-10"
+      src="@/assets/background/invite-foot.svg"
+      mode="widthFix"
+    />
   </div>
 </template>
 
