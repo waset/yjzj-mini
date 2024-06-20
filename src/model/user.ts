@@ -1,14 +1,6 @@
 export const useUserStore = defineStore('user', {
   state: (): {
     /**
-     * 密钥
-     */
-    key: string
-    /**
-     * token
-     */
-    token: string
-    /**
      * 当前登录用户信息
      */
     user: UserInfo
@@ -17,8 +9,6 @@ export const useUserStore = defineStore('user', {
      */
     isRegister: boolean
   } => ({
-    key: '',
-    token: '',
     user: {} as UserInfo,
     isRegister: false,
   }),
@@ -32,23 +22,6 @@ export const useUserStore = defineStore('user', {
     },
   },
   actions: {
-    async getKey() {
-      if (this.key)
-        return
-      const { data, code } = await http.post<loginKey>('/web/login/generate/key', {}, { auth: false })
-      if (code === 200)
-        this.key = data.loginKey
-    },
-    async getToken(code: string) {
-      const { data, code: rescode } = await http.post<LoginRes>('/web/login', {
-        code,
-        loginKey: this.key,
-        type: 'miniPrograms',
-      } as LoginReq, { auth: false })
-      if (rescode === 200) {
-        this.token = data.token
-      }
-    },
     async getUserInfo() {
       const { data, code } = await http.post<UserInfo>('/web/user/info')
       if (code === 200) {
