@@ -1,284 +1,229 @@
 /**
- * 公共请求配置类型
+ * 请求类
  */
-interface Options extends Partial<UniNamespace.RequestOptions> {
-  /**
-   * 是否显示加载提示
-   */
-  showLoading?: boolean
-
-  /**
-   * 是否需要登录
-   */
-  auth?: boolean
-}
-
-/**
- * 全局配置类型
- */
-interface Config {
+class Http {
   /**
    * 基础路径
    */
-  baseUrl?: string
-  /**
-   * 请求头
-   */
-  headers?: { [Key: string]: string }
-}
+  baseUrl = import.meta.env.VITE_API_URL || ''
 
-/**
- * 请求方法
- *
- * @param method 请求方式
- * @param api 接口地址
- * @param data 接口数据
- * @param options 请求配置
- */
-function request<T>(method: Options['method'], api: string, data?: any, options?: Options): Promise<T> {
-  return new Promise((resolve) => {
+  /**
+   * 构造方法
+   */
+  constructor() {
+    if (import.meta.env.MODE === 'development') {
+      // #ifdef H5
+      this.baseUrl = '/api'
+      // #endif
+    }
+  }
+
+  /**
+   * 请求配置
+   */
+  options: Options = {}
+
+  /**
+   * 请求方法
+   *
+   * @param api 接口地址
+   * @param data 接口数据
+   * @param options 请求配置
+   */
+  async Request<T>(api: string, data?: any, options?: Options): Promise<T> {
     /**
-     * 加载提示
+     * 保存请求配置
      */
-    options?.showLoading && uni.showLoading({ mask: true })
+    this.options = options || {}
 
     /**
      * 权限控制
      */
-    if (options?.auth ?? true) {
-      options = auth(options)
-      if (!options) {
-        resolve(fail({ error: '未登录', code: 401, data: {}, message: '请登录' }) as T)
-        return
-      }
+    if (this.options?.auth ?? true) {
+      await this.auth()
     }
 
     /**
      * 公共配置
      */
-    const config = <Config>{
-      baseUrl: api.includes('://') ? '' : import.meta.env.VITE_API_URL,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-    }
+    this.options.baseUrl = api.includes('://') ? '' : this.baseUrl
 
-    if (import.meta.env.MODE === 'development') {
-      // #ifdef H5
-      config.baseUrl = '/api'
-      // #endif
-    }
+    return new Promise((resolve) => {
+      /**
+       * 加载提示
+       */
+      this.options?.showLoading && uni.showLoading({ mask: true })
 
-    /**
-     * 发起请求
-     */
-    uni.request({
-      url: config.baseUrl + api,
-      method,
-      data,
-      success(res: any) {
-        return resolve(success(res) as T)
-      },
-      fail(err: any) {
-        return resolve(fail(err) as T)
-      },
-      ...options,
-      header: { ...config?.headers, ...options?.header },
-    })
-  })
-}
-
-function upload<T>(api: string, filePath: UniApp.UploadFileOption['filePath'], data: any, options?: Options): Promise<T> {
-  return new Promise((resolve) => {
-    /**
-     * 加载提示
-     */
-    options?.showLoading && uni.showLoading({ mask: true })
-
-    /**
-     * 权限控制
-     */
-    if (options?.auth ?? true) {
-      options = auth(options)
-      if (!options) {
-        resolve(fail({ error: '未登录', code: 401, data: {}, message: '请登录' }) as T)
+      if (this.options.auth && !this.hasToken()) {
+        resolve(this.fail({ error: '未登录', code: 401, data: {}, message: '请登录' }) as T)
         return
       }
-    }
 
-    /**
-     * 公共配置
-     */
-    const config = <Config>{
-      baseUrl: api.includes('://') ? '' : import.meta.env.VITE_API_URL,
-      headers: {
+      switch (this.options.methods) {
+        case 'UPLOAD':{
+          uni.uploadFile<UniNamespace.UploadFileOption>({
+            url: this.options.baseUrl + api,
+            filePath: this.options.filePath,
+            formData: data,
+            name: 'file',
+            header: { ...options?.headers },
+            success: (res: any) => {
+              if (typeof res.data == 'string') {
+                res.data = JSON.parse(res.data)
+              }
+              return resolve(this.success(res) as T)
+            },
+            fail: (err: any) => {
+              return resolve(this.fail(err) as T)
+            },
+          })
+          break
+        }
 
-      },
-    }
-
-    if (import.meta.env.MODE === 'development') {
-      // #ifdef H5
-      config.baseUrl = '/api'
-      // #endif
-    }
-
-    const upload = uni.uploadFile({
-      url: config.baseUrl + api,
-      filePath,
-      formData: data,
-      name: 'file',
-      header: { ...config?.headers, ...options?.header },
-      success: (res: any) => {
-        if (typeof res.data == 'string')
-          res.data = JSON.parse(res.data)
-
-        return resolve(success(res) as T)
-      },
-      fail: (err: any) => {
-        return resolve(fail(err) as T)
-      },
+        default:{
+          /**
+           * 发起请求
+           */
+          uni.request<UniNamespace.RequestOptions>({
+            url: this.options.baseUrl + api,
+            method: this.options.methods,
+            data,
+            success: (res: any) => {
+              return resolve(this.success(res) as T)
+            },
+            fail: (err: any) => {
+              return resolve(this.fail(err) as T)
+            },
+            ...options,
+            header: { ...options?.headers },
+            complete: () => {
+              uni.hideLoading()
+            },
+          })
+          break
+        }
+      }
     })
+  }
 
-    upload.onProgressUpdate((res) => {
-      //   console.log(`上传进度${res.progress}`)
-      //   console.log(`已经上传的数据长度${res.totalBytesSent}`)
-      //   console.log(`预期需要上传的数据总长度${res.totalBytesExpectedToSend}`)
-      return res
-    })
-  })
-}
-
-/**
- * 请求结果（原始）
- */
-interface RequestSuccessCallbackResult {
   /**
-   * 开发者服务器返回的数据
+   * 是否有 token
    */
-  data: NormalResult
-  /**
-   * 开发者服务器返回的 HTTP 状态码
-   */
-  statusCode: number
-  /**
-   * 开发者服务器返回的 HTTP Response Header
-   */
-  header: any
-  /**
-   * 开发者服务器返回的 cookies，格式为字符串数组
-   */
-  cookies: string[]
-}
+  private hasToken(): boolean {
+    const { token } = storeToRefs(useAuthStore())
+    if (token.value) {
+      this.options.headers = {
+        ...this.options?.headers,
+        Authorization: `Bearer ${token.value}`,
+      }
+    }
+    return !!token.value
+  }
 
-/**
- * 请求结果（业务通用）
- */
-type Result<T> = NormalResult<T> & { [K in keyof T]: T[K] }
+  /**
+   * 判断 token 是否过期
+   */
+  private isTokenExpired(): boolean {
+    if (!this.hasToken()) {
+      this.loginFunc('请登录')
+    }
+    const { expire_time } = storeToRefs(useAuthStore())
 
-/**
- * 权限控制
- *
- * @param options 请求配置
- * @returns 是否登录
- */
-function auth(options: Options | undefined): Options | undefined {
-  const token = useUserStore().$state.token
-  if (!token)
-    return undefined
+    return expire_time.value <= Date.now()
+  }
 
-  if (typeof options === 'undefined' || typeof options.header === 'undefined') {
-    options = {
-      header: {},
+  /**
+   * 刷新 token
+   */
+  private async refreshToken(): Promise<void> {
+    const { refreshToken: refresh } = useAuthStore()
+    try {
+      await refresh()
+    }
+    catch (err) {
+      this.loginFunc('登录已失效，请重新登录')
     }
   }
 
-  options.header = {
-    ...options.header,
-    Authorization: `Bearer ${token}`,
+  /**
+   * 权限控制
+   */
+  async auth() {
+    if (!this.isTokenExpired()) {
+      await this.refreshToken()
+    }
   }
 
-  return options
-}
-
-/**
- * 成功回调
- *
- * @param res 请求结果
- */
-function success<T>(res: RequestSuccessCallbackResult): T {
   /**
-   * 关闭加载提示
+   * 成功回调
+   *
+   * @param res 请求结果
    */
-  uni.hideLoading()
-  if (login(res.data.code))
+  private success<T>(res: RequestSuccessCallbackResult): T {
+    if (this.login(res.data.code)) {
+      return (res.data ?? res) as T
+    }
+
     return (res.data ?? res) as T
+  }
 
-  return (res.data ?? res) as T
-}
-
-/**
- * 失败回调
- *
- * @param err 失败信息
- */
-function fail<T>(err: NormalResult): T {
   /**
-   * 关闭加载提示
+   * 失败回调
+   *
+   * @param err 失败信息
    */
-  uni.hideLoading()
-  if (login(err.code))
-    return { error: '登录失败，请重试', code: err.code } as T
+  private fail<T>(err: NormalResult): T {
+    if (this.login(err.code)) {
+      return { error: '登录失败，请重试', code: err.code } as T
+    }
 
-  return { error: err, code: err.code } as T
-}
-
-/**
- * 登录地址
- */
-const loginUrl = '/pages/me/login'
-
-/**
- * 是否需要登录
- * @param code 状态码
- */
-function login(code: number) {
-  if (code === 401) {
-    loginFunc('请登录')
-    return true
+    return { error: err, code: err.code } as T
   }
-  if (code === 20001) {
-    loginFunc('请重新登录')
-    return true
+
+  /**
+   * 是否需要登录
+   * @param code 状态码
+   */
+  login(code: number) {
+    if (code === 401) {
+      this.loginFunc('请登录')
+      return true
+    }
+    if (code === 20001) {
+      this.loginFunc('请重新登录')
+      return true
+    }
+    return false
   }
-  return false
-}
 
-/**
- * 登录方法
- * @param msg 提示信息
- */
-function loginFunc(msg: string, url: string = loginUrl) {
-  Toast(msg, 'none', () => {
-    uni.reLaunch({
-      url,
-    })
-  }, 2000)
-}
+  /**
+   * 登录地址
+   */
+  loginUrl = '/pages/me/login'
 
-export const http = {
+  /**
+   * 登录方法
+   * @param msg 提示信息
+   */
+  loginFunc(msg: string, url: string = this.loginUrl) {
+    Toast(msg, 'none', () => {
+      uni.reLaunch({
+        url,
+      })
+    }, 2000)
+  }
+
   get<T = any>(api: string, data?: any, config?: Options): Promise<Result<T>> {
-    return request('GET', api, data, config)
-  },
+    return this.Request(api, data, { ...config, methods: 'GET' })
+  }
+
   post<T = any>(api: string, data?: any, config?: Options): Promise<Result<T>> {
-    return request('POST', api, data, config)
-  },
-  put<T = any>(api: string, data?: any, config?: Options): Promise<Result<T>> {
-    return request('PUT', api, data, config)
-  },
-  delete<T = any>(api: string, config?: Options): Promise<Result<T>> {
-    return request('DELETE', api, {}, config)
-  },
-  upload<T = any>(api: string, files: UniApp.UploadFileOption['filePath'], data?: any, config?: Options): Promise<Result<T>> {
-    return upload(api, files, data, config)
-  },
+    return this.Request(api, data, { ...config, methods: 'POST' })
+  }
+
+  upload<T = any>(api: string, data?: any, config?: Options): Promise<Result<T>> {
+    return this.Request(api, data, { ...config, methods: 'UPLOAD' })
+  }
 }
+
+export const http = new Http()

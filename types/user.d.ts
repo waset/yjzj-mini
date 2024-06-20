@@ -24,6 +24,7 @@ interface LoginReq {
 
 interface LoginRes {
   token: string
+  expire_time: number
 }
 
 interface UserInfo {

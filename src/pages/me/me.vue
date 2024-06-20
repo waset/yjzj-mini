@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const { getUserInfo } = useUserStore()
-const { userDesc, isRegister, token } = storeToRefs(useUserStore())
+const { token } = storeToRefs(useAuthStore())
+const { userDesc, isRegister } = storeToRefs(useUserStore())
 
 onShow(async () => {
   if (token.value) {
