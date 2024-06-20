@@ -28,11 +28,9 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
 
       // 时间戳转换时间
       const formatTimestamp = (timestamp: number): string => {
+        const pad = (num: number): string => (`0${num}`).slice(-2)
         const date = new Date(timestamp)
-        const hours = (`0${date.getHours()}`).slice(-2)
-        const minutes = (`0${date.getMinutes()}`).slice(-2)
-        const seconds = (`0${date.getSeconds()}`).slice(-2)
-        return `${hours}:${minutes}:${seconds}`
+        return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
       }
       const nowTime = Date.now()
       const outTime = convertToTimestamp(timeStamp) + (10 * 60 * 1000)

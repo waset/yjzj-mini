@@ -3,6 +3,10 @@ const props = defineProps<{
   list?: sDetail[]
   showborder: boolean
 }>()
+
+const emit = defineEmits<{
+  (e: 'check', index: number): void
+}>()
 </script>
 
 <template>
@@ -23,7 +27,7 @@ const props = defineProps<{
           <div class="goodsTitle">
             {{ item.productSnapshot.name }}
           </div>
-          <div class="options">
+          <div class="options" @click="emit('check', index)">
             配置详情
             <div class="i-icons-right" />
           </div>
@@ -103,7 +107,7 @@ const props = defineProps<{
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
       }
     }
 

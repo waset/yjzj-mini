@@ -3,6 +3,13 @@ const props = defineProps<{
   list?: BuyProduct[]
   showborder: boolean
 }>()
+const emit = defineEmits<{
+  (e: 'checked', index: number): void
+}>()
+
+const checkFn = (index: number) => {
+  emit('checked', index)
+}
 </script>
 
 <template>
@@ -23,7 +30,7 @@ const props = defineProps<{
           <div class="goodsTitle">
             {{ item.name }}
           </div>
-          <div class="options">
+          <div class="options" @click="checkFn(index)">
             配置详情
             <div class="i-icons-right" />
           </div>
@@ -62,6 +69,7 @@ const props = defineProps<{
   background: linear-gradient(135deg, rgba(#FFFFFF, 0.8), rgba(#FFFFFF, 0.08), rgba(#FFFFFF, 0.8));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
+  z-index: -1;
 }
 
 .goodsCard {

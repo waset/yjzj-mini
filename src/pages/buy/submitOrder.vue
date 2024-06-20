@@ -18,13 +18,7 @@ const showPop = ref<boolean>(false)
 // 下单参数
 const submitOrderParams = ref<submitOrderReq>({
   inviteCode: '',
-  details: [
-    {
-      id: 0,
-      number: 0,
-      relationType: 0,
-    },
-  ],
+  details: [],
   userTicketID: 0,
   userAddressID: nowAddress.value.id,
   payType: 'wechat',
@@ -41,13 +35,30 @@ const nowGoods = ref<BuyProduct[]>([])
 // 下单
 // 优惠券金额  用于显示在提交订单页面
 const couponPrice = ref<string>('')
+
+// 配置详情展示
+const allocationShow = ref<boolean>(false)
+// 配置详情列表
+const allocationList = ref<checkParam[]>([])
+
+// 查看 配置单
+const checkAllocation = (index: number) => {
+  allocationList.value = nowGoods.value[index].params
+  allocationShow.value = true
+}
+
 // 提交订单 去支付
 const submitOrderFn = async () => {
   // 提交订单接口
   await submitOrderReq(submitOrderParams.value)
 }
+
 // 接受参数  选择优惠券的id 和金额
 onLoad((options) => {
+  // if (!options?.id || !options?.couponPrice) {
+  //   console.error('缺少必要的页面参数')
+  //   return
+  // }
   if (options?.id) {
     submitOrderParams.value.userTicketID = Number(options?.id)
     couponPrice.value = options?.couponPrice
@@ -103,7 +114,7 @@ onMounted(async () => {
     <div class="addressBox" @click="Jump('/pages/me/address/index', {}, 1)">
       <buys-address-card />
     </div>
-    <buys-submit-goods-item :list="nowGoods" :showborder="showborder" />
+    <buys-submit-goods-item :list="nowGoods" :showborder="showborder" @checked="checkAllocation" />
     <div class="CouponsAndNotes">
       <div class="counpons" @click="Jump('/pages/buy/selectCoupon', {}, 1)">
         <div>优惠券</div>
@@ -144,7 +155,14 @@ onMounted(async () => {
         <buys-submit-remark @write-mark="writeMarkFn" />
       </div>
     </common-popup>
-    <!-- <buys-popup-markpopup :showpop="showPop" @set-show="setShowFn" @write-mark="writeMarkFn" /> -->
+
+    <common-popup :show="allocationShow" name="配置详情" @close="allocationShow = false">
+      <div>
+        <div v-for="(item, index) in allocationList" :key="index">
+          <buys-submit-allocation-card :params="item" />
+        </div>
+      </div>
+    </common-popup>
   </div>
 </template>
 

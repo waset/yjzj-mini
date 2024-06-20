@@ -465,3 +465,27 @@ interface marklist {
   id: string
   title: string
 }
+
+interface checkParam {
+  banner: string[] | null
+  content: string[] | string
+  createdAt: string
+  default: string
+  deletedAt: null
+  desc: string
+  id: number
+  isGroup: number
+  isRequired: number
+  isSearch: number
+  name: string
+  number: number
+  paramDesc: string
+  paramType: string
+  paramValue: string[] | number | string
+  productTypeID: number
+  remark: string
+  sellPrice: string
+  type: string
+  updatedAt: string
+  product?: any
+}
