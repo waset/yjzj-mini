@@ -1,52 +1,71 @@
 <script setup lang="ts">
+const totalnumber = ref<number>(1)
 
+// 计算
+const calculate = (str: string) => {
+  if (str === 'reduce') {
+    if (totalnumber.value > 1)
+      totalnumber.value -= 1
+    else
+      return ''
+  }
+  else {
+    totalnumber.value += 1
+  }
+}
 </script>
 
 <template>
   <div class="bottom">
-    <div class="left">
-      <div class="number">
-        数量
+    <div class="center">
+      <div class="left">
+        <div class="number">
+          数量
+        </div>
+        <div class="counter">
+          <div class="reduce" @click="calculate('reduce')">
+            -
+          </div>
+          <div class="count">
+            {{ totalnumber }}
+          </div>
+          <div class="plus" @click="calculate('plus')">
+            +
+          </div>
+        </div>
       </div>
-      <div class="counter">
-        <div class="reduce">
-          -
+      <div class="right">
+        <div class="cancel">
+          取消
         </div>
-        <div class="count">
-          5
-        </div>
-        <div class="plus">
-          +
+        <div class="confirm">
+          确定
+          <div class="confirm2" />
         </div>
       </div>
     </div>
-    <div class="right">
-      <div class="cancel">
-        取消
-      </div>
-      <div class="confirm">
-        确定
-        <div class="confirm2" />
-      </div>
-    </div>
-
-    <div />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .bottom {
-  box-sizing: border-box;
-  padding: 32rpx;
-  height: 144rpx;
+  padding: 32rpx 0;
+  padding-bottom: env(safe-area-inset-bottom);
   width: 100%;
   position: fixed;
   bottom: 0;
   background-color: rgba($color: #fff, $alpha: .2);
-  display: flex;
   color: #f5f5f5;
-  justify-content: space-between;
-  align-items: center;
+
+  .center {
+    position: relative;
+    display: flex;
+    color: #f5f5f5;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32rpx;
+    box-sizing: border-box;
+  }
 
   .left {
     width: 272rpx;
@@ -92,7 +111,7 @@
     .cancel,
     .confirm2 {
       position: absolute;
-      right: 0;
+      right: 32rpx;
       width: 186rpx;
       height: 64rpx;
       line-height: 64rpx;
@@ -150,7 +169,7 @@
     }
 
     .cancel {
-      left: 36rpx;
+      left: 6rpx;
       padding-left: 60rpx;
       padding-right: 50rpx;
 

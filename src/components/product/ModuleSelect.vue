@@ -114,8 +114,7 @@ const isSelect = (item: number) => {
     width: 160rpx;
     height: 160rpx;
     margin-right: 16rpx;
-    // background-color:aquamarine;
-    background: url(../../assets/svg/product_bg.svg);
+    background: url(../../assets/svg/product_bg.svg) no-repeat;
 
   }
 

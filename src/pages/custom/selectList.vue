@@ -48,10 +48,16 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value
   }
 }
 
+// 确定筛选项
 const confirmFn = (selected: selectItem[]) => {
   showSelected.value = selected
+  filte.value = false
 }
 
+// 移除筛选项
+const remove = (index: number) => {
+  showSelected.value.splice(index, 1)
+}
 /**
  * 页面显示获取数据
  */
@@ -66,13 +72,13 @@ onShow(async () => {
     <navbar-back text="选择组件" />
     <common-search />
     <common-sort-filter :has-layout="false" @change="onChange" />
-    <div class="showSelected">
+    <div v-if="showSelected.length" class="showSelected">
       <div>筛选条件：</div>
       <div v-for="(item, index) in showSelected" :key="index" class="selectedItem">
         {{
           item.name
         }}
-        <div class="i-icons-closed" />
+        <div class="i-icons-closed" @click="remove(index)" />
       </div>
     </div>
     <common-popup :show="filte" name="筛选" @close="filte = false">
@@ -105,6 +111,7 @@ onShow(async () => {
   align-items: center;
 
   flex-wrap: wrap;
+
   .selectedItem {
     margin-right: 16rpx;
     width: fit-content;
@@ -117,6 +124,7 @@ onShow(async () => {
     display: flex;
     align-items: center;
     margin-bottom: 16rpx;
+
     .i-icons-closed {
       color: #fff;
       font-size: 24rpx;
