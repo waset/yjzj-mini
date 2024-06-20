@@ -460,3 +460,8 @@ interface cancelPayRes {
   msg?: string
   page?: Page
 }
+
+interface marklist {
+  id: string
+  title: string
+}

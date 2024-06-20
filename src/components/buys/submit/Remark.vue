@@ -6,11 +6,6 @@ const emits = defineEmits<{
 // 字数
 const txt = ref<string>('')
 
-interface marklist {
-  id: string
-  title: string
-}
-
 // 确认备注信息
 const sendMark = (txt: string) => {
   emits('writeMark', txt)
@@ -37,13 +32,7 @@ const markList = ref<marklist[]>([
 ])
 // 添加备注选项到 备注框
 const addMark = (params: string) => {
-  if (txt.value.includes(params)) {
-    // 包含
-    txt.value = txt.value.replace(params, '')
-  }
-  else {
-    txt.value = txt.value + params
-  }
+  txt.value = txt.value.includes(params) ? txt.value.replace(params, '') : txt.value + params
 }
 </script>
 

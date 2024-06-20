@@ -36,10 +36,14 @@ const writeMarkFn = (data: string): void => {
   submitOrderParams.value.remark = data
   showPop.value = false
 }
+// 当前商品列表
 const nowGoods = ref<BuyProduct[]>([])
 // 下单
+// 优惠券金额  用于显示在提交订单页面
 const couponPrice = ref<string>('')
+// 提交订单 去支付
 const submitOrderFn = async () => {
+  // 提交订单接口
   await submitOrderReq(submitOrderParams.value)
 }
 // 接受参数  选择优惠券的id 和金额
@@ -64,11 +68,17 @@ onMounted(async () => {
   // const productConfigIDs = ref<string[]>([])
   // 给请求 添加商品
   const arr = ref<{ [key: string]: number }[]>([])
+  // 循环购物车的列表
   products.value.forEach((item) => {
+    // 如果是购物车中的选中状态
     if (item.select) {
+      // 放进当前商品列表
       nowGoods.value.push(item)
+      // 总数量  用于展示
       totalNumber.value += item.quantity
+      //  总金额 用于展示
       payment.value += Number(item.tagPrice)
+      // 产品id 列表 用于提交订单时的参数
       productIDs.value.push(item.id)
 
       arr.value.push({
@@ -82,7 +92,7 @@ onMounted(async () => {
   })
 
   submitOrderParams.value.details = arr.value
-
+  // 查询可用的优惠券
   await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
 })
 </script>

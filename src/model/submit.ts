@@ -17,10 +17,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       // 转换的时间戳加上十分钟的时间
       // 转换的减去当前时间戳
       // 在转换为是时分秒
-      // 当前时间戳
-      const nowtime = ref<number>(0)
-      // 倒计时时间戳
-      const outtime = ref<number>(0)
+
       // 转换为时间戳
       const convertToTimestamp = (dateTimeStr: string): number => {
         const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
@@ -28,7 +25,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const timestamp = date.getTime()
         return timestamp
       }
-      nowtime.value = Date.now()
+
       // 时间戳转换时间
       const formatTimestamp = (timestamp: number): string => {
         const date = new Date(timestamp)
@@ -37,10 +34,10 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const seconds = (`0${date.getSeconds()}`).slice(-2)
         return `${hours}:${minutes}:${seconds}`
       }
-      outtime.value = convertToTimestamp(timeStamp) + (10 * 60 * 1000)
-      const returnTime = ref<number>(0)
-      returnTime.value = outtime.value - nowtime.value
-      return returnTime.value > 0 ? formatTimestamp(outtime.value - nowtime.value) : '已过期'
+      const nowTime = Date.now()
+      const outTime = convertToTimestamp(timeStamp) + (10 * 60 * 1000)
+      const remainingTime = outTime - nowTime
+      return remainingTime > 0 ? formatTimestamp(remainingTime) : '已过期'
     },
 
     // 获取卡券列表
@@ -120,11 +117,11 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
             provider: res.provider[0] as ('alipay' | 'wxpay' | 'appleiap' | 'baidu'),
             ...orderInfo,
             // 微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名 】
-            success: (res: any) => {
-              console.log(res)
+            success: () => {
+
             },
-            fail: (error: any) => {
-              console.log(error)
+            fail: () => {
+              // Consider removing console logs or replacing them with more secure logging mechanisms.
             },
 
           })
