@@ -67,7 +67,7 @@ const emits = defineEmits<{
       flex-direction: column;
       align-items: center;
 
-      width: 200%;
+      width: max-content;
       border-radius: 8rpx;
       border: 2rpx solid #bdbdbd;
 
@@ -81,7 +81,7 @@ const emits = defineEmits<{
 
         font-size: 28rpx;
 
-        width: 60%;
+        width: fit-content;
         padding: 24rpx 32rpx;
 
       }
