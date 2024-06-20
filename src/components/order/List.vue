@@ -19,6 +19,20 @@ const more = ref([
 const { detail } = storeToRefs(useProductStore())
 const { addProduct } = useBuyStore()
 
+// 加入购物车
+const addBuyCar = () => {
+  addProduct({
+    ...detail.value,
+    quantity: 1,
+    select: false,
+    delete: false,
+  })
+  uni.showToast({
+    title: '添加成功',
+    icon: 'success',
+  })
+}
+
 // 是否展示下拉菜单
 const showDropSwitch = ref(false)
 // 显示下拉菜单的方法
@@ -28,7 +42,7 @@ function toggleDropFn() {
 
 // 查看明细弹窗
 const detailDialog = ref(false)
-// 弹窗内展示信息
+// 查看明细弹窗内展示信息
 const detailInfo = ref<Order>()
 // 显示查看明细弹窗
 function showDetailDialogFn() {
@@ -46,33 +60,9 @@ const DropFn = (name: string) => {
 
     case 'again':
       // 再来一单
+      addBuyCar()
       break
   }
-}
-
-// 加入购物车
-const addBuyCar = () => {
-  addProduct({
-    ...detail.value,
-    quantity: 1,
-    select: false,
-    delete: false,
-  })
-  uni.showToast({
-    title: '添加成功',
-    icon: 'success',
-  })
-}
-
-// 是否展示配置详情弹窗
-const isShow = ref(false)
-// 配置详情弹窗内展示的信息
-const configsInfo = ref<orderDetail>()
-// 显示配置详情弹窗和内容
-function showConfigs(config: orderDetail) {
-  configsInfo.value = config
-  isShow.value = true
-  console.log('这里是configsInfo的值', configsInfo.value)
 }
 
 // 订单状态描述及颜色
@@ -157,7 +147,7 @@ const filterOrder = (status: Order['status']) => {
                   </div>
                   <div class="price">
                     <span>￥</span>
-                    <span>{{ detailInfo.payPrice }}</span>
+                    <span>{{ detailInfo.sellPrice }}</span>
                   </div>
                 </div>
               </div>
@@ -219,19 +209,6 @@ const filterOrder = (status: Order['status']) => {
         </div>
       </div>
     </common-popup>
-    <common-popup v-model:show="isShow" name="配置详情" @close="isShow = false">
-      <div class="configs">
-        <div class="test">
-          {{ configsInfo?.details[0].id }}
-        </div>
-        <template v-if="configsInfo">
-          <template v-for="(item, i) in configsInfo" :key="i" />
-        </template>
-        <template v-else>
-          <common-empty text="暂无配置信息" />
-        </template>
-      </div>
-    </common-popup>
     <div class="order-list">
       <div class="list">
         <div class="item">
@@ -250,12 +227,12 @@ const filterOrder = (status: Order['status']) => {
               </div>
             </div>
             <div class="product">
-              <order-product :order="order" @config-detail="showConfigs" />
+              <order-product :order="order" />
             </div>
           </div>
           <div class="func">
             <div class="upper">
-              <div class="price">
+              <div v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful" class="price">
                 <div class="text">
                   总计：
                 </div>
@@ -274,7 +251,10 @@ const filterOrder = (status: Order['status']) => {
                 </common-drop>
               </div>
               <div class="operation">
-                <order-action :order="props.order" :status="props.order.status" :express="props.order.express" @add-buy-car="addBuyCar">
+                <order-action
+                  :order="props.order" :status="props.order.status" :express="props.order.express"
+                  @add-buy-car="addBuyCar"
+                >
                   <slot />
                 </order-action>
               </div>

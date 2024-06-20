@@ -1,19 +1,10 @@
 <script setup lang="ts">
 // 定义不同状态订单的操作按钮
 const props = withDefaults(defineProps<{
-  order: Order
   status: Order['status']
   express: Order['express']
 }>(), {
 })
-
-const emits = defineEmits<{
-  addBuyCar: []
-}>()
-
-function add() {
-  emits('addBuyCar')
-}
 
 // 查看物流
 const showExpress = ref(false)
@@ -28,6 +19,18 @@ function viewLogistics(express: Order['express']) {
 // 计算物流的文本长度
 const data = computed(() => expressInfo?.value?.snapshot?.lastResult?.data)
 const dataLength = computed(() => data.value?.length)
+
+// 退款确认弹窗
+const showModel = ref(false)
+function refundConfirm() {
+  showModel.value = true
+}
+
+// 取消订单确认弹窗
+const cancelOrder = ref(false)
+function cancelConfirm() {
+  cancelOrder.value = true
+}
 </script>
 
 <template>
@@ -77,9 +80,11 @@ const dataLength = computed(() => data.value?.length)
         </div>
       </div>
     </common-popup>
+    <common-model v-model:show="showModel" msg="确认退款吗" icon="i-svg-warn" />
+    <common-model v-model:show="cancelOrder" msg="取消后订单将无法恢复，确认取消吗？" icon="i-svg-warn" />
     <div v-if="props.status === OrderStatus.Wait">
       <div class="wait">
-        <div class="cancel">
+        <div class="cancel" @click="cancelConfirm">
           取消订单
         </div>
         <div class="waitPay">
@@ -100,16 +105,9 @@ const dataLength = computed(() => data.value?.length)
           </div>
         </div>
         <div v-else class="refund">
-          <div class="text">
+          <div class="text" @click="refundConfirm">
             退款
           </div>
-        </div>
-      </div>
-    </div>
-    <div v-else-if="props.status === OrderStatus.CancelPayment || OrderStatus.PartialRefund || OrderStatus.FullRefund">
-      <div class="closed">
-        <div class="add" @click="add">
-          加入购物车
         </div>
       </div>
     </div>
