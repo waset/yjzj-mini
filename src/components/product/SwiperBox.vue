@@ -1,31 +1,93 @@
 <script setup lang="ts">
-interface banner {
-  banner: string[]
-}
 const props = defineProps<{
-  list: banner[]
+  list: gamesList[]
+  params: any[]
 }>()
-
 const emit = defineEmits<{
   (e: 'selectGames'): void
   (e: 'changeSwiper', value: number): void
 }>()
-
+const { getGamePower } = useDiyStore()
+// 当前第几页 页码
 const pcurrent = ref(0)
-// const list = ref([])
+// 分辨率
+const power = ref<string[]>(['1080', '2k'])
+const selectPower = ref<string>('1080')
+// 游戏性能请求参数
+const powerParams = ref<powerParams>({
+  cpuTag2IDS: props?.params[0].product.tags2,
+  displayCardTag2IDs: props?.params[2].product.tags2,
+  gameID: props.list.length !== 0 ? props.list[pcurrent.value].id : 0,
+  resolutionType: selectPower.value === '1080' ? 1 : 2,
+  page: 1,
+  pageSize: 10,
+})
+
+const copyPararms = ref<powerParams>({ resolutionType: selectPower.value === '1080' ? 1 : 2, page: 1, pageSize: 10 })
+// 处理游戏性能请求参数
+const handleParams = () => {
+  copyPararms.value = { ...copyPararms.value, ...powerParams.value }
+
+  // 然后删除不需要的属性
+  if (powerParams.value.cpuTag2IDS?.length === 0) {
+    delete copyPararms.value.cpuTag2IDS
+  }
+  if (powerParams.value.displayCardTag2IDs?.length === 0) {
+    delete copyPararms.value.displayCardTag2IDs
+  }
+  if (powerParams.value.gameID === 0) {
+    delete copyPararms.value.gameID
+  }
+}
+
+const FPSpower = ref({
+  fpsAvg: 0,
+  fpsMax: 0,
+  fpsMin: 0,
+})
+// 监听分辨率选择是否变化了  变化了就请求
+
+onMounted(async () => {
+  handleParams()
+  const arr = ref<any>([])
+
+  arr.value = await getGamePower(copyPararms.value) || []
+  const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
+  FPSpower.value = {
+    fpsAvg,
+    fpsMax,
+    fpsMin,
+  }
+})
+
+watch(selectPower, async () => {
+  handleParams()
+  const arr = ref<any>([])
+  nextTick(async () => {
+    arr.value = await getGamePower(copyPararms.value)
+  })
+
+  const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
+  FPSpower.value = {
+    fpsAvg,
+    fpsMax,
+    fpsMin,
+  }
+})
+
+// 监听页面是否变化  变化了就传递给父组件显示
 watch(pcurrent, () => {
   emit('changeSwiper', pcurrent.value)
 })
-const carouselHeight = ref(456)
+
+// 轮播图高度
+const carouselHeight = ref(360)
 const colors: string[] = [
   '#A7F522',
   '#E61C44',
   '#52FFE2',
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
-
-const power = ref<string[]>(['1080', '2k'])
-const selectPower = ref<string>('1080')
 
 // 选择游戏
 const selectGame = () => {
@@ -81,9 +143,9 @@ const changeGame = (text: string) => {
                   <div class="body">
                     <div class="image">
                       <image
-                        :src="ImageUrl(item?.banner[0] || '')" mode="aspectFill" :style="{
+                        :src="ImageUrl(item?.cover || '')" mode="aspectFill" :style="{
                           width: '488rpx',
-                          height: '456rpx',
+                          height: '248rpx',
                         }" :draggable="false" :fade-show="false"
                       />
                     </div>
@@ -105,7 +167,7 @@ const changeGame = (text: string) => {
 
           <div class="gamesName">
             <div class="name-text">
-              游戏名
+              {{ list[pcurrent].name }}
             </div>
             <div class="length">
               <div class="i-icons-left" @click="changeGame('pre')" />
@@ -153,17 +215,17 @@ const changeGame = (text: string) => {
       <div class="textinfo">
         <div class="row">
           <span class="rowtext">平均帧率：</span>
-          <span class="number">0</span>
+          <span class="number">{{ FPSpower.fpsAvg }}</span>
           <span>FPS</span>
         </div>
         <div class="row">
           <span class="rowtext">最高帧率：</span>
-          <span class="number">0</span>
+          <span class="number">{{ FPSpower.fpsMax }}</span>
           <span>FPS</span>
         </div>
         <div class="row">
           <span class="rowtext">最低帧率：</span>
-          <span class="number low">0</span>
+          <span class="number low">{{ FPSpower.fpsMin }}</span>
           <span>FPS</span>
         </div>
       </div>
@@ -200,9 +262,6 @@ const changeGame = (text: string) => {
   }
 
   .swiper {
-    height: 400rpx;
-    margin-bottom: 176rpx;
-
     .gamesName {
       display: flex;
       flex-direction: column;
@@ -260,7 +319,7 @@ const changeGame = (text: string) => {
           padding-top: 0;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: center;
           align-items: center;
 
           --margin-top: -64rpx;

@@ -2,30 +2,14 @@
 const { detail, isDiy } = storeToRefs(useProductStore())
 const { products } = storeToRefs(useBuyStore())
 const { getProductDetail } = useProductStore()
+const { getGamesList } = useDiyStore()
 const { addProduct } = useBuyStore()
 const productId = ref<Product['id']>()
 
 interface PageReq {
   id: Product['id']
 }
-onLoad(async (params) => {
-  const req = params as PageReq
-  if (req.id) {
-    productId.value = Number(req.id)
-  }
-})
-onShow(async () => {
-  if (productId.value) {
-    await getProductDetail(productId.value)
-  }
-  else {
-    if (productId.value) {
-      detail.value = {
-        typeID: 6,
-      } as Product
-    }
-  }
-})
+
 const addBuyCar = () => {
   addProduct({
     ...detail.value,
@@ -38,25 +22,38 @@ const addBuyCar = () => {
     icon: 'success',
   })
 }
+
 // swiper当前位置
 const current = ref<number>(0)
 
 // 显示选择游戏弹窗
 const showGames = ref<boolean>(false)
-//  swiper list
-interface banner {
-  banner: string[]
-}
-const swiperList = ref<banner[]>([{
-  banner: ['upload/202309/1695623793-202304141825018112_pixian_ai.png'],
-}, {
-  banner: ['upload/202310/1696732569-1694420338-abe5d6724d1d167a.png'],
-}, {
-  banner: ['upload/202309/1695694468-w800 (1).png'],
-}])
+//  swiper 列表
+
+const swiperList = ref<gamesList[]>([])
 const changeSwiperFn = (value: number) => {
   current.value = value
 }
+
+onLoad(async (params) => {
+  const req = params as PageReq
+  if (req.id) {
+    productId.value = Number(req.id)
+  }
+})
+onShow(async () => {
+  swiperList.value = await getGamesList() || []
+  if (productId.value) {
+    await getProductDetail(productId.value)
+  }
+  else {
+    if (productId.value) {
+      detail.value = {
+        typeID: 6,
+      } as Product
+    }
+  }
+})
 </script>
 
 <template>
@@ -91,7 +88,7 @@ const changeSwiperFn = (value: number) => {
 
     <div class="info">
       <template v-if="isDiy">
-        <product-diy />
+        <product-diy :params="detail.params" />
       </template>
       <template v-else>
         <product-info :info="detail" />
@@ -101,9 +98,12 @@ const changeSwiperFn = (value: number) => {
     <div v-if="isDiy" class="swiper">
       <div
         class="content"
-        :style="{ background: swiperList.length !== 0 ? `url(https://file.yjzj.com/${swiperList[current]?.banner[0] || ''}` : `url(${StaticUrl('/images/login-bg.png')})` }"
+        :style="{ backgroundImage: swiperList.length !== 0 ? `url(https://file.yjzj.com/${swiperList[current]?.cover || ''}` : `url(${StaticUrl('/images/login-bg.png')})` }"
       >
-        <product-swiper-box :list="swiperList" :pcurrent="current" @select-games="showGames = true" @change-swiper="changeSwiperFn" />
+        <product-swiper-box
+          :list="swiperList" :pcurrent="current" :params="detail.params" @select-games="showGames = true"
+          @change-swiper="changeSwiperFn"
+        />
       </div>
     </div>
 
@@ -202,6 +202,7 @@ const changeSwiperFn = (value: number) => {
       padding: 32rpx 22rpx;
       border-radius: 32rpx;
       background-size: cover;
+      background-position:left
     }
   }
 
