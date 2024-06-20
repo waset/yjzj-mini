@@ -4,19 +4,7 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
-// 定义展示详情的方法
-const emits = defineEmits<{
-  configDetail: [detailProduct: orderDetail]
-  // click: [detailProduct: Product]
-}>()
-
-function showConfigs(configs: orderDetail) {
-  // emits('configDetail', props.order.details[0].productSnapshot)
-  emits('configDetail', configs)
-  console.log('配置详情点击了', configs)
-}
-
-// 商品名和商品图的跳转地址
+// 点击商品名和商品图跳转
 const handleClick = (detailProduct: Product) => {
   Jump('/pages/product/detail', { id: detailProduct.id })
 }
@@ -37,9 +25,10 @@ const handleClick = (detailProduct: Product) => {
                   <div class="name" @click="handleClick(detail.productSnapshot)">
                     {{ detail.productSnapshot.name }}
                   </div>
-                  <div class="info" @click.stop.prevent="showConfigs(detail)">
-                    <span>配置详情</span>
-                    <div class="i-icons-right" />
+                  <div v-if="detail.productSnapshot.description" class="desc">
+                    <div class="descText">
+                      {{ detail.productSnapshot.description }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -107,14 +96,21 @@ const handleClick = (detailProduct: Product) => {
                 line-height: 40rpx;
               }
 
-              .info {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
+              .desc {
 
-                font-size: 24rpx;
-                color: #bebebe;
+                .descText {
+                  display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                word-break: break-all;
+
+                  font-size: 24rpx;
+                  color: #bebebe;
+                }
               }
+
             }
           }
 
