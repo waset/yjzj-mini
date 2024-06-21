@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
     <div class="flex justify-center">
       <image
         style="width: 90%;"
-        src="@/assets/background/invite-label.svg"
+        :src="StaticUrl('/svg/invite-label.svg')"
         mode="widthFix"
       />
     </div>

@@ -1,21 +1,15 @@
-<script lang="ts" setup>
-import banner from '@/assets/background/invite-banner.svg'
-
-const bannerImg = ref(banner)
-</script>
-
 <template>
-  <div>
-    <div class="banner" :style="`background-image: url(${bannerImg})`">
+  <div class="banner-container">
+    <div class="banner" :style="`background-image: url(${StaticUrl('/svg/invite-banner.svg')})`">
       <div class="banner-bg">
         <image
           class="icon1 mt-20"
-          src="@/assets/background/invite-icon1.svg"
+          :src="StaticUrl('/svg/invite-icon1.svg')"
           mode="widthFix"
         />
         <image
           class="icon2"
-          src="@/assets/background/invite-icon2.svg"
+          :src="StaticUrl('/svg/invite-icon2.svg')"
           mode="widthFix"
         />
       </div>
@@ -36,6 +30,9 @@ const bannerImg = ref(banner)
 </template>
 
 <style lang="scss" scoped>
+.banner-container{
+  background-color: #150A35;
+}
 .banner {
   width: 100%;
   // height: 1296rpx;

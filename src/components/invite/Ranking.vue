@@ -33,7 +33,7 @@ const bordercolor = ref<string[]>([
 // 前三名榜单
 const ranktop = computed(() => {
   if (props.inviterank.length < 2)
-    return false
+    return props.inviterank
   return [
     props.inviterank[1],
     props.inviterank[0],
@@ -84,10 +84,7 @@ const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.lengt
             </div>
             <div class="flex">
               <div class="title">
-                推广人数：{{ item.orderAmount }}
-              </div>
-              <div class="text">
-                {{ item.orderNumber }}
+                推广人数：{{ item.memberNumber }}
               </div>
             </div>
           </div>
@@ -107,10 +104,10 @@ const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.lengt
         <template v-for="(item, i) in ranklist" :key="i">
           <div class="flex items-center mt-2">
             <div :class="thIcon[i]" class="th" />
-            <div class="userinfo flex-center">
+            <div class="userinfo flex items-center ml-4">
               <image
                 :src="ImageUrl(item.avatar)"
-                mode="scaleToFill"
+                mode="widthFix"
                 class="avatar"
               />
               <span class="text nickname">{{ item.nickname }}</span>
@@ -120,7 +117,7 @@ const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.lengt
               {{ item.orderAmount }}
             </div>
             <div class="text num">
-              {{ item.orderNumber }}
+              {{ item.memberNumber }}
             </div>
           </div>
         </template>
@@ -188,7 +185,7 @@ const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.lengt
       margin: 0 24rpx;
     }
     .userinfo {
-      width: 268rpx;
+      width: 218rpx;
       .nickname {
         margin: 0 8rpx;
         max-width: 140rpx;
@@ -200,6 +197,7 @@ const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.lengt
         width: 48rpx;
         height: 48rpx;
         border-radius:48rpx;
+        flex-shrink: 0;
       }
     }
     .price {

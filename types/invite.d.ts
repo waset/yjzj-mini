@@ -1,5 +1,4 @@
 interface Levelall {
-  level: number
   /**
    * 积分业绩
    */
@@ -13,7 +12,9 @@ interface Levelall {
    * 等级
    */
   level: number
-  // 等级勋章图片
+  /**
+   * 等级勋章图片
+   */
   icon?: string
 }
 
@@ -25,7 +26,10 @@ interface Inviterank {
   levelName: string
   orderNumber: number
   orderAmount: string
-  // 排名
+  /**
+   * 排名
+   */
   lv: number
-  levelLevel
+  levelLevel: number
+  memberNumber: number
 }
