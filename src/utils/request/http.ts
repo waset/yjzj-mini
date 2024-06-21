@@ -149,7 +149,7 @@ class Http {
    * 权限控制
    */
   async auth() {
-    if (!this.isTokenExpired()) {
+    if (this.isTokenExpired()) {
       await this.refreshToken()
     }
   }
