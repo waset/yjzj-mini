@@ -46,34 +46,17 @@ const FPSpower = ref({
   fpsMin: 0,
 })
 // 监听分辨率选择是否变化了  变化了就请求
-
-onMounted(async () => {
-  handleParams()
-  const arr = ref<any>([])
-
-  arr.value = await getGamePower(copyPararms.value) || []
-  const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
-  FPSpower.value = {
-    fpsAvg,
-    fpsMax,
-    fpsMin,
-  }
-})
-
 watch(selectPower, async () => {
   handleParams()
   const arr = ref<any>([])
-  nextTick(async () => {
-    arr.value = await getGamePower(copyPararms.value)
-  })
-
+  arr.value = await getGamePower(copyPararms.value)
   const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
   FPSpower.value = {
     fpsAvg,
     fpsMax,
     fpsMin,
   }
-})
+}, { immediate: true })
 
 // 监听页面是否变化  变化了就传递给父组件显示
 watch(pcurrent, () => {

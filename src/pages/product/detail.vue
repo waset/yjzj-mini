@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { detail, isDiy } = storeToRefs(useProductStore())
+const { detail, isDiy, types } = storeToRefs(useProductStore())
 const { products } = storeToRefs(useBuyStore())
-const { getProductDetail } = useProductStore()
-const { getGamesList } = useDiyStore()
+const { getProductDetail, categorys, getCategorys } = useProductStore()
+const { getGamesList, getModificationList, configurationList, addConfiguration } = useDiyStore()
 const { addProduct } = useBuyStore()
-const productId = ref<Product['id']>()
 
+const productId = ref<Product['id']>()
 interface PageReq {
   id: Product['id']
 }
@@ -23,16 +23,90 @@ const addBuyCar = () => {
   })
 }
 
+// 展示选中项
+const showSelected = ref<selectItem[]>([])
 // swiper当前位置
 const current = ref<number>(0)
-
+// 改配的弹窗
+const changeAllocation = ref<boolean>(false)
 // 显示选择游戏弹窗
 const showGames = ref<boolean>(false)
 //  swiper 列表
-
 const swiperList = ref<gamesList[]>([])
+// 获取请求列表的参数
+const getModificationListParams = ref<Modification>({
+  productTypeParentID: 0,
+  productTypeID: 0,
+  page: 1,
+  pageSize: 10,
+})
+// 配置弹窗的显示列表
+const ModificationList = ref<any>([])
+// 打开的是第几项配置
+const openIndex = ref<number>(0)
+
+// 切换 swiper
 const changeSwiperFn = (value: number) => {
   current.value = value
+}
+
+// 获取配置列表数据
+const getAllocationList = async () => {
+  ModificationList.value = await getModificationList(getModificationListParams.value)
+}
+
+// 打开选择配置组件的弹窗
+const openSelectPop = async (index: number) => {
+  openIndex.value = index
+  changeAllocation.value = true
+  getModificationListParams.value.productTypeParentID = categorys.components.value
+  await getCategorys('components', 1, 20)
+  getModificationListParams.value.productTypeID = types.value[index].id
+  // 获取配置列表
+  await getAllocationList()
+}
+
+// 筛选弹窗开关
+const filte = ref(false)
+const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
+  switch (name) {
+    case 'filte':
+      filte.value = Boolean(value) || !filte.value
+      break
+    default:
+      break
+  }
+}
+
+// 确定筛选项
+const confirmFn = (selected: selectItem[]) => {
+  showSelected.value = selected
+  filte.value = false
+}
+
+// 移除筛选项
+const remove = (index: number) => {
+  showSelected.value.splice(index, 1)
+}
+
+// 替换 选配 组件
+const replaceAllocation = (index: number) => {
+  detail.value.params[openIndex.value].id = ModificationList.value[index].id
+  detail.value.params[openIndex.value].product = ModificationList.value[index]
+  changeAllocation.value = false
+  ModificationList.value = []
+}
+
+// 立即购买
+const buyNow = async () => {
+  const params = ref<addConfiguration>({ params: [] })
+  detail.value.params.forEach((item) => {
+    params.value.params.push({ productID: item.id, number: 1 })
+  })
+  // 新增配置单
+  await addConfiguration(params.value)
+  // 提交订单
+  // await submit()
 }
 
 onLoad(async (params) => {
@@ -40,9 +114,11 @@ onLoad(async (params) => {
   if (req.id) {
     productId.value = Number(req.id)
   }
+  await configurationList({ page: 1, pageSize: 10 })
 })
 onShow(async () => {
-  swiperList.value = await getGamesList() || []
+  const gemelist = await getGamesList() || []
+  swiperList.value = [...gemelist, ...gemelist]
   if (productId.value) {
     await getProductDetail(productId.value)
   }
@@ -88,7 +164,7 @@ onShow(async () => {
 
     <div class="info">
       <template v-if="isDiy">
-        <product-diy :params="detail.params" />
+        <product-diy :params="detail.params" @change="openSelectPop" />
       </template>
       <template v-else>
         <product-info :info="detail" />
@@ -101,15 +177,40 @@ onShow(async () => {
         :style="{ backgroundImage: swiperList.length !== 0 ? `url(https://file.yjzj.com/${swiperList[current]?.cover || ''}` : `url(${StaticUrl('/images/login-bg.png')})` }"
       >
         <product-swiper-box
-          :list="swiperList" :pcurrent="current" :params="detail.params" @select-games="showGames = true"
-          @change-swiper="changeSwiperFn"
+          :list="swiperList" :pcurrent="current" :params="detail.params"
+          @select-games="showGames = true" @change-swiper="changeSwiperFn"
         />
       </div>
     </div>
 
     <common-popup :show="showGames" name="选择游戏" @close="showGames = false">
       <div>
-        <product-select-games />
+        <product-select-games :list="swiperList" />
+      </div>
+    </common-popup>
+
+    <common-popup :show="changeAllocation" name="修改配置" height="80%" @close="changeAllocation = false">
+      <div>
+        <div class="select">
+          <navbar-back text="选择组件" />
+          <common-search />
+          <common-sort-filter :has-layout="false" @change="onChange" />
+          <div v-if="showSelected.length" class="showSelected">
+            <div>筛选条件：</div>
+            <div v-for="(item, index) in showSelected" :key="index" class="selectedItem">
+              {{
+                item.name
+              }}
+              <div class="i-icons-closed" @click="remove(index)" />
+            </div>
+          </div>
+          <common-popup :show="filte" name="筛选" @close="filte = false">
+            <product-filter-list @confirm="confirmFn" />
+          </common-popup>
+          <div class="commodity_list">
+            <product-module-select :list="ModificationList" @confirm="replaceAllocation" />
+          </div>
+        </div>
       </div>
     </common-popup>
 
@@ -143,7 +244,7 @@ onShow(async () => {
             </div>
           </div>
           <div class="item">
-            <div class="btn">
+            <div class="btn" @click="buyNow">
               立即购买
             </div>
           </div>
@@ -202,7 +303,7 @@ onShow(async () => {
       padding: 32rpx 22rpx;
       border-radius: 32rpx;
       background-size: cover;
-      background-position:left
+      background-position: left
     }
   }
 
@@ -319,6 +420,45 @@ onShow(async () => {
             line-height: 40rpx;
           }
         }
+      }
+    }
+  }
+
+  .select {
+    .commodity_list {
+      padding: 32rpx;
+      padding-bottom: 144rpx;
+    }
+
+  }
+
+  .showSelected {
+    font-size: 28rpx;
+    padding: 32rpx 32rpx 0 32rpx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    .selectedItem {
+      margin-right: 16rpx;
+      width: fit-content;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      padding: 8rpx 16rpx;
+      background-color: #414141;
+      color: #A7F522;
+      border-radius: 8rpx;
+      display: flex;
+      align-items: center;
+      margin-bottom: 16rpx;
+
+      .i-icons-closed {
+        color: #fff;
+        font-size: 24rpx;
+        margin-left: 8rpx;
+
       }
     }
   }

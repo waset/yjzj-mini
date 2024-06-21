@@ -2,6 +2,9 @@
 const props = defineProps<{
   params: any[]
 }>()
+const emit = defineEmits<{
+  (e: 'change', index: number): void
+}>()
 const DiyICons = [
   {
     text: '请选择CPU',
@@ -57,7 +60,7 @@ const DiyICons = [
             {{ props.params[index].product.name || item.text }}
           </div>
 
-          <div class="alter" @click="Jump('/pages/custom/selectList')">
+          <div class="alter" @click="emit('change', index)">
             <div class="i-icons-edit alter_icon" />
             改配
           </div>

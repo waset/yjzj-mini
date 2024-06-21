@@ -1,9 +1,8 @@
 <script setup lang="ts">
+const props = defineProps<{
+  list: gamesList[]
+}>()
 const selectId = ref<number>(0)
-
-const isSelect = (item: number) => {
-  return item === selectId.value
-}
 
 const searchText = ref<string>('')
 </script>
@@ -15,17 +14,17 @@ const searchText = ref<string>('')
       <div class="i-icons-search" />
     </div>
 
-    <div v-for="(item, index) in [1, 2, 3]" :key="index">
-      <div class="select" @click="selectId = item">
-        <div v-if="isSelect(item)" class="selectbg" />
-        <div v-if="isSelect(item)" class="selected">
+    <div v-for="(item, index) in props.list" :key="index">
+      <div class="select" @click="selectId = index">
+        <div class="selected">
           <div class="i-icons-correct" />
         </div>
-
-        <div class="goodsImg" />
+        <div class="goodsImg">
+          <image class="img" :src="ImageUrl(item.cover)" mode="aspectFill" />
+        </div>
         <div class="goodsInfo">
           <div class="name">
-            荒野大镖客2:老根的救赎
+            {{ item.name }}
           </div>
         </div>
       </div>
@@ -81,6 +80,12 @@ const searchText = ref<string>('')
     height: 100rpx;
     border-radius: 16rpx;
     background-color: #fff;
+    overflow: hidden;
+
+    .img {
+      width: 100rpx;
+      height: 100rpx;
+    }
   }
 
   .goodsInfo {

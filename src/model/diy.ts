@@ -22,7 +22,28 @@ export const useDiyStore = defineStore('diy', {
         return data
       }
     },
+    // 获取改配的列表
+    async getModificationList(params: Modification) {
+      const { code, data } = await http.post('/web/product/list/by/params', params, { auth: true })
+      if (code === 200) {
+        return data
+      }
+    },
+    // 获取配置单列表
+    async configurationList(params: configurationListReq) {
+      await http.post('/web/product/config/list', params, { auth: true })
+    },
+
+    // 新增配置单 /product/config/add
+    async addConfiguration(params: addConfiguration) {
+      await http.post('/web/product/config/add', params, { auth: true })
+    },
+    // 下单
+    async submit(params: submitReq) {
+      await http.post('/web/order/add', params, { auth: true })
+    },
 
   },
+
   persist: true,
 })
