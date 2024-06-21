@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  levelall: Levelall[]
+}>(), {
+  levelall: () => [],
+})
 interface listType {
   lv: number
   icon: string
@@ -12,6 +17,19 @@ const list = ref<listType[]>([
   { lv: 5, icon: 'i-svg-medal-lv5' },
 ])
 
+// 升级轮播滑动值
+const elSlide = ref(0)
+onReady(() => {
+  // 元素信息
+  const query = uni.createSelectorQuery().in(getCurrentInstance())
+  query
+    .select('#scrollview')
+    .fields({ size: true, scrollOffset: true }, (data: any) => {
+      elSlide.value = data.scrollWidth - data.width
+    })
+    .exec()
+})
+
 // 邀请升级进度
 const tempo = ref('15%')
 
@@ -24,12 +42,20 @@ const autoSlide = ref(0)
 // 是否滑倒最左边了
 const isTouchLeft = ref(false)
 
+// 是否滑倒最右边了
+const isTouchRight = ref(false)
+
 // 向右滑动
 function slideRight() {
   if (autoSlide.value) {
     leftSlide.value = autoSlide.value
   }
-  leftSlide.value += 200
+  if (leftSlide.value >= elSlide.value) {
+    leftSlide.value = elSlide.value
+  }
+  else {
+    leftSlide.value += 200
+  }
   autoSlide.value = 0
 }
 
@@ -48,21 +74,33 @@ function slideLeft() {
 }
 
 // 滑动时触发事件
-async function sliding(event: any) {
+function sliding(event: any) {
   autoSlide.value = event.detail.scrollLeft
   isTouchLeft.value = autoSlide.value < 10
+  isTouchRight.value = autoSlide.value > elSlide.value - 10
 }
 </script>
 
 <template>
   <div class="step">
-    <scroll-view class="scroll scrollview" scroll-into-view="ell" scroll-x scroll-with-animation :scroll-left="leftSlide" @scroll="sliding">
+    <scroll-view id="scrollview" class="scroll" scroll-x scroll-with-animation :scroll-left="leftSlide" @scroll="sliding">
       <div class="container">
-        <template v-for="(item, index) in list" :key="index">
-          <div class="medal flex-center" style="width: 400rpx;height: 600rpx;" :style="{ marginRight: item.lv !== list.length ? '48rpx' : '0' }">
-            <div class="icon" :class="item.icon" />
-            <div class="icon shadows" :class="item.icon" />
-            <div>艺术字</div>
+        <template v-for="(item, index) in props.levelall" :key="index">
+          <div class="medal flex-center" style="width: 400rpx;height: 600rpx;" :style="{ marginRight: item.level !== list.length ? '48rpx' : '0' }">
+            <div class="icon" :class="`i-svg-medal-lv${item.level}`" />
+            <div class="icon shadows" :class="`i-svg-medal-lv${item.level}`" />
+            <div class="dec mt--12">
+              <div class="preforman">
+                积分{{ item.performanceMin }}-{{ item.performanceMax }}
+              </div>
+              <div class="ratio mt-3">
+                周期内推广升级
+              </div>
+              <div class="mt-1">
+                <span class="ratio">获取佣金返利最高达</span>
+                <span class="retiobe ml-1">{{ Number(item.rebateRatio) * 100 }}%</span>
+              </div>
+            </div>
           </div>
         </template>
         <!-- 进度条 -->
@@ -86,7 +124,9 @@ async function sliding(event: any) {
     <template v-if="!isTouchLeft">
       <div class="i-icons-left left-arrows" @click="slideLeft" />
     </template>
-    <div class="i-icons-right right-arrows" @click="slideRight" />
+    <template v-if="!isTouchRight">
+      <div class="i-icons-right right-arrows" @click="slideRight" />
+    </template>
   </div>
 </template>
 
@@ -153,8 +193,28 @@ async function sliding(event: any) {
 
     .shadows {
       transform: rotateY(180deg);
-      opacity: 0.3;
+      opacity: 0.2;
       margin-top: 12rpx;
+    }
+    .dec {
+      .preforman {
+        color: #901CCB;
+        font-weight: bold;
+        font-size:28rpx;
+        font-style:normal;
+      }
+      .ratio {
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size:22rpx;
+        font-style:normal;
+      }
+      .retiobe {
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size:28rpx;
+        font-style:normal;
+      }
     }
   }
 

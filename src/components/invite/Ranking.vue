@@ -1,13 +1,48 @@
 <script lang="ts" setup>
-import ranktopimg1 from '@/assets/background/invite-th1bg.svg'
-import ranktopimg2 from '@/assets/background/invite-th2bg.svg'
-import ranktopimg3 from '@/assets/background/invite-th3bg.svg'
+import ranktoplv1 from '@/assets/background/invite-th1bg.svg'
+import ranktoplv2 from '@/assets/background/invite-th2bg.svg'
+import ranktoplv3 from '@/assets/background/invite-th3bg.svg'
 
+const props = withDefaults(defineProps<{
+  inviterank: Inviterank[]
+}>(), {
+  inviterank: () => [],
+})
 const rankImglist = ref<string[]>([
-  ranktopimg1,
-  ranktopimg2,
-  ranktopimg3,
+  ranktoplv1,
+  ranktoplv2,
+  ranktoplv3,
 ])
+
+const thIcon = ref<string[]>([
+  'i-svg-th4',
+  'i-svg-th5',
+  'i-svg-th6',
+  'i-svg-th7',
+  'i-svg-th8',
+  'i-svg-th9',
+  'i-svg-th10',
+])
+
+// 榜单头像边框颜色
+const bordercolor = ref<string[]>([
+  '#6AE4FF',
+  '#EFAA13',
+  '#FFB774',
+])
+// 前三名榜单
+const ranktop = computed(() => {
+  if (props.inviterank.length < 2)
+    return false
+  return [
+    props.inviterank[1],
+    props.inviterank[0],
+    props.inviterank[2],
+  ]
+})
+
+// 第三名到第十名榜单
+const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.length >= 10 ? 10 : props.inviterank.length + 1))
 </script>
 
 <template>
@@ -21,36 +56,42 @@ const rankImglist = ref<string[]>([
 
   <div class="ranking">
     <div class="award flex justify-between pb-10">
-      <template v-for="i in 3" :key="i">
-        <div class="awardbg" :style="{ marginTop: i !== 2 ? '80rpx' : '0', backgroundImage: `url(${rankImglist[i - 1]})` }">
-          <image
-            src="@/assets/background/invite-icon1.svg"
-            mode="scaleToFill"
-            class="avatar"
-          />
-          <div class="no">
-            NO.2
-          </div>
-          <div class="nickname">
-            昵称
-          </div>
-          <div class="flex mt-1">
-            <div class="title">
-              返利金额：
+      <template v-if="ranktop && ranktop.length">
+        <template v-for="(item, i) in ranktop" :key="i">
+          <div class="awardbg" :style="{ marginTop: i !== 1 ? '80rpx' : '0', backgroundImage: `url(${rankImglist[item.lv - 1]})` }">
+            <image
+              :src="ImageUrl(item.avatar)"
+              mode="scaleToFill"
+              class="avatar"
+              :style="`border: 4rpx solid ${bordercolor[i]};`"
+            />
+            <div class="no">
+              NO.{{ item.lv }}
             </div>
-            <div class="text">
-              1000
+            <div class="flex-center">
+              <div class="nickname">
+                {{ item.nickname }}
+              </div>
+              <div :class="`i-svg-medal-lv${item.levelLevel} ml-1`" />
+            </div>
+            <div class="flex mt-1">
+              <div class="title">
+                返利金额：
+              </div>
+              <div class="text">
+                {{ }}
+              </div>
+            </div>
+            <div class="flex">
+              <div class="title">
+                推广人数：{{ item.orderAmount }}
+              </div>
+              <div class="text">
+                {{ item.orderNumber }}
+              </div>
             </div>
           </div>
-          <div class="flex">
-            <div class="title">
-              推广人数：
-            </div>
-            <div class="text">
-              130
-            </div>
-          </div>
-        </div>
+        </template>
       </template>
     </div>
 
@@ -62,25 +103,27 @@ const rankImglist = ref<string[]>([
           class="ranktop  mt-10 mb-4"
         />
       </div>
-      <template v-for="i in 6" :key="i">
-        <div class="flex items-center mt-2">
-          <div class="i-svg-th4 th" />
-          <div class="userinfo flex-center">
-            <image
-              src="@/assets/background/invite-icon1.svg"
-              mode="scaleToFill"
-              class="avatar"
-            />
-            <span class="text nickname">昵称</span>
-            <div class="i-svg-th4" />
+      <template v-if="ranklist && ranklist.length">
+        <template v-for="(item, i) in ranklist" :key="i">
+          <div class="flex items-center mt-2">
+            <div :class="thIcon[i]" class="th" />
+            <div class="userinfo flex-center">
+              <image
+                :src="ImageUrl(item.avatar)"
+                mode="scaleToFill"
+                class="avatar"
+              />
+              <span class="text nickname">{{ item.nickname }}</span>
+              <div :class="`i-svg-medal-lv${item.levelLevel}`" />
+            </div>
+            <div class="text price">
+              {{ item.orderAmount }}
+            </div>
+            <div class="text num">
+              {{ item.orderNumber }}
+            </div>
           </div>
-          <div class="text price">
-            3000
-          </div>
-          <div class="text num">
-            3
-          </div>
-        </div>
+        </template>
       </template>
     </div>
   </div>
@@ -101,22 +144,25 @@ const rankImglist = ref<string[]>([
       .avatar {
         width: 134rpx;
         height: 134rpx;
-        border-radius: 134rpx;
         width: 133rpx;
         height: 132rpx;
-        border: 4rpx solid;
+        border-radius: 134rpx;
         background-color: linear-gradient(141deg, rgba(252, 255, 86, 1), rgba(255, 178, 18, 1)) 4 4;
       }
       .no {
         font-weight: 400;
         font-size: 28rpx;
         line-height: 40rpx;
-        color: linear-gradient(38.96901306494723deg, #FFF387 0%, #FFA800 100%);
+        color: linear-gradient(38deg, #FFF387 0%, #FFA800 100%);
       }
       .nickname {
         font-weight: 400;
         font-size: 24rpx;
         color: #FFFFFF;
+        max-width: 120rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .title {
         font-weight: 400;
@@ -145,10 +191,15 @@ const rankImglist = ref<string[]>([
       width: 268rpx;
       .nickname {
         margin: 0 8rpx;
+        max-width: 140rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .avatar {
         width: 48rpx;
         height: 48rpx;
+        border-radius:48rpx;
       }
     }
     .price {

@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  levelall: Levelall[]
+}>(), {
+  levelall: () => [],
+})
+</script>
+
 <template>
   <div class="inviation">
     <div class="flex justify-center pt-20 pb-10">
@@ -8,7 +16,7 @@
       />
     </div>
     <!-- 推广等级进度 -->
-    <invite-step />
+    <invite-step :levelall="props.levelall" />
     <div class="flex justify-center">
       <image
         style="width: 90%;"

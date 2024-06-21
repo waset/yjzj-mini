@@ -2,6 +2,12 @@
 import mainbg from '@/assets/background/invite-mainbg.svg'
 
 const mainbgImg = ref(mainbg)
+const { levelall, inviterank } = storeToRefs(useInviteStore())
+const { getInviteall, getInviteRank } = useInviteStore()
+onShow(async () => {
+  await getInviteall()
+  await getInviteRank()
+})
 </script>
 
 <template>
@@ -9,12 +15,11 @@ const mainbgImg = ref(mainbg)
     <navbar-back text="邀请推广" />
     <!-- 海报 -->
     <invite-banner />
-
     <div :style="`background-image: url(${mainbgImg})`" class="main">
       <!-- 推广等级 -->
-      <invite-level />
+      <invite-level :levelall="levelall" />
       <!-- 榜单排名 -->
-      <invite-ranking />
+      <invite-ranking :inviterank="inviterank" />
       <image
         style="width: 100%;"
         class="mt-20"
@@ -31,7 +36,6 @@ const mainbgImg = ref(mainbg)
     </div>
     <image
       style="width: 100%;"
-      class="mt-10"
       src="@/assets/background/invite-foot.svg"
       mode="widthFix"
     />
@@ -50,8 +54,6 @@ const mainbgImg = ref(mainbg)
 <style>
 page {
   background-image: none;
-  background-color: #0F0820;
-  padding: 0;
-  margin: 0;
+  background-color: #08050C;
 }
 </style>
