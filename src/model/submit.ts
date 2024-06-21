@@ -108,22 +108,27 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     },
     // 支付
     async wxpay(orderInfo: any) {
-      await uni.getProvider({
-        service: 'payment',
-        success: (res) => {
-          uni.requestPayment({
-            provider: res.provider[0] as ('alipay' | 'wxpay' | 'appleiap' | 'baidu'),
-            ...orderInfo,
-            // 微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名 】
-            success: () => {
-
-            },
-            fail: () => {
-              // Consider removing console logs or replacing them with more secure logging mechanisms.
-            },
-
-          })
-        },
+      return new Promise((resolve, reject) => {
+        uni.showLoading({ title: '支付中' })
+        uni.getProvider<UniNamespace.GetProviderOptions>({
+          service: 'payment',
+          success: (res) => {
+            uni.requestPayment<UniNamespace.RequestPaymentOptions>({
+              provider: res.provider[0],
+              ...orderInfo,
+              // 微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名 】
+              success: (res) => {
+                resolve(res)
+              },
+              fail: (err) => {
+                reject(err)
+              },
+              complete: () => {
+                uni.hideLoading()
+              },
+            })
+          },
+        })
       })
     },
     // 订单详情
