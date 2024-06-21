@@ -1,3 +1,9 @@
 {
-  "extends": ["github>uni-helper/renovate-config"]
+  "extends": ["github>uni-helper/renovate-config"],
+  "packageRules": [
+    {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "1 days"
+    }
+  ]
 }
