@@ -50,8 +50,8 @@ function deleteProduct() {
       <div v-if="showConfigs" class="wrap">
         <template v-for="(item, index) in showConfigs.params" :key="index">
           <div class="item">
-            <div v-if="item.banner" class="image">
-              <product-image :src="item.banner[0]" width="60rpx" height="60rpx" />
+            <div v-if="product_is_diy(showConfigs) && item.product.banner" class="image">
+              <product-image :src="item.product.banner[0]" :background="false" width="100rpx" height="100rpx" />
             </div>
             <div class="info">
               <div class="top">
@@ -64,7 +64,12 @@ function deleteProduct() {
                 </div>
               </div>
               <div class="desc">
-                {{ item.name || item.paramValue }}
+                <template v-if="product_is_diy(showConfigs)">
+                  {{ item.product.name }}
+                </template>
+                <template v-else>
+                  {{ item.name || item.paramValue }}
+                </template>
               </div>
             </div>
           </div>

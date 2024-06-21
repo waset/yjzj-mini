@@ -117,6 +117,7 @@ interface CreateAdmin {
 }
 
 interface Param {
+  product: Product
   banner: string[] | null
   content: string[] | string
   createdAt: string
