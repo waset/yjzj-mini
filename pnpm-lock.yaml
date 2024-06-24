@@ -56,6 +56,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.7.2
         version: 10.9.0(vue@3.4.25(typescript@5.4.5))
+      '@zebra-ui/swiper':
+        specifier: ^2.2.8
+        version: 2.2.8
       vue:
         specifier: ^3.4.25
         version: 3.4.25(typescript@5.4.5)
@@ -2180,6 +2183,10 @@ packages:
 
   '@vueuse/shared@10.9.0':
     resolution: {integrity: sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==}
+
+  '@zebra-ui/swiper@2.2.8':
+    resolution: {integrity: sha512-ujS0xKzEieFg59Wjz1fOtqeZthoMOgTZrFdN7c8Tq/qrIjKst6JGd35qg5/tvK4v9idtmywK4Dzp77go3LolKQ==}
+    engines: {HBuilderX: ^3.1.0}
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
@@ -8962,6 +8969,8 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@zebra-ui/swiper@2.2.8': {}
 
   abab@2.0.6: {}
 

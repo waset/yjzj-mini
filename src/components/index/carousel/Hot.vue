@@ -3,34 +3,55 @@ const props = defineProps<{
   list: Product[]
   current: number
 }>()
+
 const emit = defineEmits<{
   'update:current': [id: number]
   'click': [item: Product, index: number]
 }>()
-const pcurrent = ref(props.current)
-watch(pcurrent, (v) => {
-  emit('update:current', v)
-})
+
+const zswiper = ref()
+const carouselHeight = ref(900)
+
 const colors: string[] = [
   '#A7F522',
   '#E61C44',
   '#52FFE2',
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
-const carouselHeight = ref(900)
+
+const products = ref<Product[] & {
+  color: string
+}[]>([])
+watchEffect(() => {
+  products.value = props.list.map((item, index) => {
+    return {
+      ...item,
+      color: colors[index % colors.length],
+    }
+  })
+})
+
+const onChange = () => {
+  emit('update:current', zswiper.value?.swiper.realIndex)
+}
 </script>
 
 <template>
   <div class="hots">
-    <carousel
-      v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="vertical"
-      :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="48" offset-y-step-units="rpx" :scale-step="0.8"
-      :opacity-step="0.99" overflow="visible" loop switch
+    <z-swiper
+      ref="zswiper" v-model="products" :options="{
+        loop: true,
+        effect: 'cards',
+        autoplay: true,
+        navigation: {
+          slot: true,
+        },
+      }" @slide-change="onChange"
     >
-      <template #item="{ item, index }">
+      <z-swiper-item v-for="(item, index) in products" :key="index">
         <div
           class="item" :style="{
-            '--color': colors[index % colors.length],
+            '--color': item.color,
             '--carousel-length': props.list.length,
             '--carousel-index': index,
             '--carousel-heigit': `${carouselHeight}rpx`,
@@ -67,18 +88,19 @@ const carouselHeight = ref(900)
             </div>
           </div>
         </div>
-      </template>
-      <template #prev>
+      </z-swiper-item>
+
+      <template #pre-button>
         <div class="switch left">
           <div class="i-svg-hot-left" />
         </div>
       </template>
-      <template #next>
+      <template #next-button>
         <div class="switch right">
           <div class="i-svg-hot-right" />
         </div>
       </template>
-    </carousel>
+    </z-swiper>
   </div>
 </template>
 
@@ -86,6 +108,7 @@ const carouselHeight = ref(900)
   .hots {
     @apply px-[64rpx];
     --padding: 32rpx;
+    position: relative;
 
     .item {
       height: var(--carousel-heigit);
