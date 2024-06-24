@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { getKey } = useUserStore()
+const { getKey } = useAuthStore()
 onLaunch(async () => {
   await getKey()
 })

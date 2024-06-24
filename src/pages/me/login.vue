@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { isRegister } = storeToRefs(useUserStore())
-const { getToken, getUserInfo } = useUserStore()
+const { getUserInfo } = useUserStore()
+const { getToken } = useAuthStore()
 const agreementChecked = ref(false)
 
 async function gologin() {
