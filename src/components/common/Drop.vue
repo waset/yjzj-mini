@@ -35,7 +35,7 @@ const emits = defineEmits<{
           <div class="menu">
             <template v-for="(i, idx) in list" :key="idx">
               <div v-if="idx !== 0" class="line" />
-              <div class="item" @click="emits('click', i.name)">
+              <div class="item" @click.stop="emits('click', i.name)">
                 {{ i.label }}
               </div>
             </template>

@@ -48,7 +48,7 @@ onShow(() => {
       <div class="box">
         <template v-if="orders && orders.length">
           <template v-for="(order, i) in orders" :key="i">
-            <order-list :order="order" />
+            <order-list :order="order" @updata="getOrderList(tabsIdx)" />
           </template>
         </template>
         <template v-else>

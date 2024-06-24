@@ -18,11 +18,11 @@ const handleClick = (detailProduct: Product) => {
           <div class="proItem">
             <div class="content">
               <div class="left">
-                <div class="img" @click="handleClick(detail.productSnapshot)">
+                <div class="img" @click.stop="handleClick(detail.productSnapshot)">
                   <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
                 </div>
                 <div class="text">
-                  <div class="name" @click="handleClick(detail.productSnapshot)">
+                  <div class="name" @click.stop="handleClick(detail.productSnapshot)">
                     {{ detail.productSnapshot.name }}
                   </div>
                   <div v-if="detail.productSnapshot.description" class="desc">

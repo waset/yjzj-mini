@@ -27,23 +27,67 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       // 在转换为是时分秒
 
       // 转换为时间戳
-      const convertToTimestamp = (dateTimeStr: string): number => {
-        const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
-        const date = new Date(isoDateTimeStr)
-        const timestamp = date.getTime()
-        return timestamp
+
+      function convertToTimestamp(dateStr: string) {
+        // 定义正则表达式以匹配输入格式
+        const regex = /^(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})$/
+        const match = dateStr.match(regex)
+
+        // 验证输入字符串是否符合预期格式
+        if (!match) {
+          throw new Error('Invalid date format')
+        }
+
+        // 提取日期和时间部分
+        const year = Number.parseInt(match[1], 10)
+        const month = Number.parseInt(match[2], 10) - 1 // 月份从0开始
+        const day = Number.parseInt(match[3], 10)
+        const hours = Number.parseInt(match[4], 10)
+        const minutes = Number.parseInt(match[5], 10)
+        const seconds = Number.parseInt(match[6], 10)
+
+        // 创建Date对象并返回时间戳
+        const date = new Date(year, month, day, hours, minutes, seconds)
+        return date.getTime()
       }
 
-      // 时间戳转换时间
-      const formatTimestamp = (timestamp: number): string => {
-        const pad = (num: number): string => (`0${num}`).slice(-2)
-        const date = new Date(timestamp)
-        return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+      // 输出时间戳
+
+      // const convertToTimestamp = (dateTimeStr: string): number => {
+      //   const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
+      //   const date = new Date(isoDateTimeStr)
+      //   const timestamp = date.getTime()
+      //   return timestamp
+      // }
+
+      function convertMillisecondsToHMS(milliseconds: number) {
+        // 将毫秒转换为秒
+        let seconds = Math.floor(milliseconds / 1000)
+
+        // 计算小时数
+        const hours = Math.floor(seconds / 3600)
+        seconds %= 3600
+        // 计算分钟数
+        const minutes = Math.floor(seconds / 60)
+        seconds %= 60
+        // 返回一个对象，包含小时、分钟和秒
+        return {
+          hours,
+          minutes,
+          seconds,
+        }
       }
+      // 毫秒转时分秒
+      function formatMillisecondsToHMS(milliseconds: number) {
+        const hms = convertMillisecondsToHMS(milliseconds)
+        return `${hms.hours.toString().padStart(2, '0')}:${hms.minutes.toString().padStart(2, '0')}:${hms.seconds.toString().padStart(2, '0')}`
+      }
+
       const nowTime = Date.now()
       const outTime = convertToTimestamp(timeStamp) + (10 * 60 * 1000)
+
       const remainingTime = outTime - nowTime
-      return remainingTime > 0 ? formatTimestamp(remainingTime) : '已过期'
+      return remainingTime > 0 ? formatMillisecondsToHMS(remainingTime) : '已过期'
     },
 
     // 获取卡券列表
@@ -68,7 +112,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         if (code === 200) {
           this.canUseCouponNum = 0
           data.forEach((item) => {
-            if (item.status === 1) {
+            if (item.ticketInfo.status === 1) {
               this.canUseCouponNum += 1
             }
           })
@@ -129,7 +173,13 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 resolve(res)
               },
               fail: (err) => {
-                Jump('/pages/buy/orderInfo')
+                const pages = getCurrentPages()
+                const page = pages[pages.length - 1]
+                const nowpage = page.route
+                if (nowpage !== 'pages/order/list') {
+                  Jump('/pages/order/list')
+                }
+
                 reject(err)
               },
               complete: () => {
@@ -141,8 +191,8 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       })
     },
     // 订单详情
-    async orderInfo() {
-      const { data } = await http.post<orderinfoData>('/web/order/info', { NO: 'DD202406191012561025' }, { auth: true })
+    async orderInfo(id: string) {
+      const { data } = await http.post<orderinfoData>('/web/order/info', { NO: id }, { auth: true })
 
       return data
     },
@@ -154,7 +204,9 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     },
     // 取消支付
     async cancelPay(id: number) {
-      await http.post<cancelPayRes>('/web/order/pay/cancel', { id }, { auth: true })
+      const { code } = await http.post<cancelPayRes>('/web/order/pay/cancel', { id }, { auth: true })
+
+      return code
     },
 
   },

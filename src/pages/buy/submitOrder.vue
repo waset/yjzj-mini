@@ -63,7 +63,7 @@ onLoad((options) => {
 })
 onShow(async () => {
   try {
-    // 获取优惠券列表
+    // 获取优惠列表
     await getCouponList(page.value, 15)
   }
   catch (error) {

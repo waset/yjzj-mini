@@ -4,6 +4,10 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
+const emit = defineEmits<{
+  (e: 'updata'): void
+}>()
+
 // 点击更多显示提示弹窗
 const more = ref([
   {
@@ -94,6 +98,11 @@ const filterOrder = (status: Order['status']) => {
     },
   }
   return statusMap[status]
+}
+
+// 查看订单详情
+const checkOrderInfo = () => {
+  Jump('/pages/buy/orderInfo', { no: props.order.no, status: props.order.status })
 }
 </script>
 
@@ -211,14 +220,14 @@ const filterOrder = (status: Order['status']) => {
     </common-popup>
     <div class="order-list">
       <div class="list">
-        <div class="item">
+        <div class="item" @click.stop="checkOrderInfo">
           <div class="info">
             <div class="top">
               <div class="idFunc">
                 <div class="id">
                   订单号：{{ props.order.no }}
                 </div>
-                <div class="copy" @click="copyText(props.order.no)">
+                <div class="copy" @click.stop="copyText(props.order.no)">
                   | 复制
                 </div>
               </div>
@@ -232,7 +241,10 @@ const filterOrder = (status: Order['status']) => {
           </div>
           <div class="func">
             <div class="upper">
-              <div v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful" class="price">
+              <div
+                v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful"
+                class="price"
+              >
                 <div class="text">
                   总计：
                 </div>
@@ -244,8 +256,8 @@ const filterOrder = (status: Order['status']) => {
             </div>
             <div class="bottom">
               <div class="left">
-                <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click="DropFn">
-                  <div class="more" @click="toggleDropFn">
+                <common-drop v-model:show="showDropSwitch" :list="more" position="top" @click.stop="DropFn">
+                  <div class="more" @click.stop="toggleDropFn">
                     <span>更多</span>
                   </div>
                 </common-drop>
@@ -253,7 +265,7 @@ const filterOrder = (status: Order['status']) => {
               <div class="operation">
                 <order-action
                   :order="props.order" :status="props.order.status" :express="props.order.express"
-                  @add-buy-car="addBuyCar"
+                  @add-buy-car="addBuyCar" @updata="emit('updata')"
                 >
                   <slot />
                 </order-action>
