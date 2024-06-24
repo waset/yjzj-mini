@@ -12,13 +12,13 @@ function skip(index: number) {
   const path = props.list[index].src as any
   Jump(path)
 }
-const zswiper = ref()
+const bannerSwiper = ref()
 const current = ref(0)
 const onChange = () => {
-  current.value = zswiper.value?.swiper.realIndex
+  current.value = bannerSwiper.value?.swiper.realIndex
 }
 const changSwiper = (index: number) => {
-  zswiper.value?.swiper.slideToLoop(index)
+  bannerSwiper.value?.swiper.slideToLoop(index)
 }
 </script>
 
@@ -29,7 +29,7 @@ const changSwiper = (index: number) => {
     }"
   >
     <z-swiper
-      ref="zswiper" v-model="bannerImages" :options="{
+      ref="bannerSwiper" v-model="bannerImages" :options="{
         loop: true,
         autoplay: true,
       }" @slide-change="onChange"

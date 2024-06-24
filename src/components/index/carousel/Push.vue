@@ -13,7 +13,7 @@ const colors: string[] = [
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
 
-const zswiper = ref()
+const pushSwiper = ref()
 const carouselHeight = ref(900)
 
 const products = ref<Product[] & {
@@ -32,22 +32,19 @@ watchEffect(() => {
 <template>
   <div class="pushs">
     <z-swiper
-      ref="zswiper" v-model="products" :options="{
-        effect: 'coverflow',
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        coverflowEffect: {
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        },
-        autoplay: true,
+      ref="pushSwiper" v-model="products" :options="{
         loop: true,
+        autoplay: true,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 14,
       }"
     >
-      <z-swiper-item v-for="(item, index) in products" :key="index" :custom-style="{ width: '80%' }">
+      <z-swiper-item
+        v-for="(item, index) in products" :key="index" :custom-style="{
+          width: '80%',
+        }"
+      >
         <div
           class="item" :style="{
             '--color': item.color,
@@ -170,6 +167,7 @@ watchEffect(() => {
             .desc {
               font-size: 28rpx;
               line-height: 40rpx;
+              min-height: 80rpx;
               margin: 16rpx 0;
 
               display: -webkit-box;
