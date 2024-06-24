@@ -13,7 +13,7 @@ const handleClick = (detailProduct: Product) => {
 <template>
   <div class="box">
     <div class="info">
-      <div class="product">
+      <div v-if="props.order.details[0].productSnapshot" class="product">
         <template v-for="(detail, i) in props.order.details" :key="i">
           <div class="proItem">
             <div class="content">
@@ -100,11 +100,11 @@ const handleClick = (detailProduct: Product) => {
 
                 .descText {
                   display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 1;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                word-break: break-all;
+                  -webkit-box-orient: vertical;
+                  -webkit-line-clamp: 1;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  word-break: break-all;
 
                   font-size: 24rpx;
                   color: #bebebe;
