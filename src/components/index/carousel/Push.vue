@@ -18,9 +18,9 @@ const carouselHeight = ref(900)
 <template>
   <div class="pushs">
     <carousel
-      v-model:current="current" indicator loop :list="props.list" :height="carouselHeight" direction="vertical"
-      :offset-x-step="280" offset-x-step-units="rpx" :offset-y-step="0" :duration="500" offset-y-step-units="rpx"
-      :scale-step="0.93" :opacity-step="0.9" overflow="visible" easing-function="linear" natural-direction
+      v-model:current="current" indicator loop :list="props.list" :height="carouselHeight" :offset-x-step="280"
+      offset-x-step-units="rpx" :offset-y-step="0" :duration="500" offset-y-step-units="rpx" :scale-step="0.93"
+      :opacity-step="0.9" overflow="visible" easing-function="linear"
     >
       <template #item="{ item, index }">
         <div
@@ -28,8 +28,7 @@ const carouselHeight = ref(900)
             '--color': colors[index % colors.length],
             '--carousel-length': props.list.length,
             '--carousel-heigit': `${carouselHeight}rpx`,
-          }"
-          @click="emit('click', item, index)"
+          }" @click="emit('click', item, index)"
         >
           <div class="box">
             <div class="body">

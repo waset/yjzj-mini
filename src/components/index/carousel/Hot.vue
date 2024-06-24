@@ -25,7 +25,7 @@ const carouselHeight = ref(900)
     <carousel
       v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="vertical"
       :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="48" offset-y-step-units="rpx" :scale-step="0.8"
-      :opacity-step="0.99" overflow="visible" loop switch natural-direction
+      :opacity-step="0.99" overflow="visible" loop switch
     >
       <template #item="{ item, index }">
         <div
@@ -34,8 +34,7 @@ const carouselHeight = ref(900)
             '--carousel-length': props.list.length,
             '--carousel-index': index,
             '--carousel-heigit': `${carouselHeight}rpx`,
-          }"
-          @click="emit('click', item, index)"
+          }" @click="emit('click', item, index)"
         >
           <div class="box">
             <div class="body">

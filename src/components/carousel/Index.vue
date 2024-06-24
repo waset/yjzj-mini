@@ -61,6 +61,16 @@ onUnmounted(() => {
   carousel.clear()
 })
 
+// 显示时
+onShow(() => {
+  carousel.init()
+})
+
+// 隐藏时
+onHide(() => {
+  carousel.clear()
+})
+
 // 点击事件
 function clickHandler(index: number) {
   emits('click', index)
