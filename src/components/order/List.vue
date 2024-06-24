@@ -232,7 +232,10 @@ const filterOrder = (status: Order['status']) => {
           </div>
           <div class="func">
             <div class="upper">
-              <div v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful" class="price">
+              <div
+                v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful"
+                class="price"
+              >
                 <div class="text">
                   总计：
                 </div>
@@ -250,13 +253,29 @@ const filterOrder = (status: Order['status']) => {
                   </div>
                 </common-drop>
               </div>
-              <div class="operation">
-                <order-action
-                  :order="props.order" :status="props.order.status" :express="props.order.express"
-                  @add-buy-car="addBuyCar"
+              <div class="right">
+                <div
+                  v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful"
+                  class="action"
                 >
-                  <slot />
-                </order-action>
+                  <div class="operation">
+                    <order-action
+                      :order="props.order" :status="props.order.status" :express="props.order.express"
+                      @add-buy-car="addBuyCar"
+                    >
+                      <slot />
+                    </order-action>
+                  </div>
+                </div>
+                <div v-else class="sum">
+                  <div class="text">
+                    总计：
+                  </div>
+                  <div class="totalPrice">
+                    <span>￥</span>
+                    <span>{{ props.order.sellPrice }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -384,6 +403,29 @@ const filterOrder = (status: Order['status']) => {
 
               .icon {
                 font-size: 32rpx;
+              }
+            }
+
+          }
+
+          .right {
+
+            .sum {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+
+              padding: 0 8rpx;
+
+              .text {
+                font-size: 24rpx;
+                color: #ffffff;
+              }
+
+              .totalPrice {
+                font-size: 32rpx;
+                font-weight: 550;
+                color: #ffffff;
               }
             }
 
@@ -675,8 +717,7 @@ const filterOrder = (status: Order['status']) => {
       border-radius: 32rpx;
 
       .body {
-        border-radius: 32rpx;
-        background: rgba(0, 0, 0, 0.8);
+        border-radius: 32rpx;    background: rgba(0, 0, 0, 0.8);
 
         display: flex;
         flex-direction: row;
