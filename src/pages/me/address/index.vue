@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import areadata from '@/assets/json/division.json'
-
 const { addressList } = storeToRefs(useAddressStore())
 const { getAddressList, newAddress, delAddress, editAddress } = useAddressStore()
 

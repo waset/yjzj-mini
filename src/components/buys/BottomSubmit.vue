@@ -25,7 +25,7 @@ const submitOrder = () => {
       </div>
       <div class="submitBtn" @click="submitOrder">
         <div class="submitBtnCopy" />
-        立即购买
+        立即下单
       </div>
     </div>
   </div>

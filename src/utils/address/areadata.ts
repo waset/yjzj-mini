@@ -1,4 +1,4 @@
-import areadata from '@/assets/json/division.json'
+import areadata from './division.json'
 
 export const getPcaDetails = (pcaCode: string[]) => {
   const [p, c, a] = pcaCode
@@ -8,3 +8,5 @@ export const getPcaDetails = (pcaCode: string[]) => {
 
   return `${province?.label} ${city?.label} ${area?.label}`
 }
+
+export default areadata

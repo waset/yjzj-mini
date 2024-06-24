@@ -3,14 +3,22 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     couponList: couponList[]
     canUseCouponNum: number
     provider: string
+    buyType: string
+
   } => ({
     couponList: [],
     canUseCouponNum: 0,
     provider: '',
+    buyType: '',
+
   }),
   getters: {
   },
   actions: {
+    changeBuyType(type: string) {
+      this.buyType = type
+    },
+
     countdown(timeStamp: string) {
       // 转换为时间戳
       // 获取当前时间戳
@@ -121,6 +129,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 resolve(res)
               },
               fail: (err) => {
+                Jump('/pages/buy/orderInfo')
                 reject(err)
               },
               complete: () => {

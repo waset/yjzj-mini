@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 const { nowAddress } = storeToRefs(useAddressStore())
 const { products } = storeToRefs(useBuyStore())
+const { detail } = storeToRefs(useProductStore())
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
-const { getCouponList, submitOrderReq, canUseCoupon } = useSubmitOrderStore()
+const { getCouponList, submitOrderReq, canUseCoupon, buyType } = useSubmitOrderStore()
 const page = ref<number>(1)
 
 //  显示隐藏 卡片渐变边框
@@ -55,10 +56,6 @@ const submitOrderFn = async () => {
 
 // 接受参数  选择优惠券的id 和金额
 onLoad((options) => {
-  // if (!options?.id || !options?.couponPrice) {
-  //   console.error('缺少必要的页面参数')
-  //   return
-  // }
   if (options?.id) {
     submitOrderParams.value.userTicketID = Number(options?.id)
     couponPrice.value = options?.couponPrice
@@ -74,37 +71,49 @@ onShow(async () => {
   }
 })
 onMounted(async () => {
-  // 产品id 数组
-  const productIDs = ref<number[]>([])
-  // const productConfigIDs = ref<string[]>([])
-  // 给请求 添加商品
-  const arr = ref<{ [key: string]: number }[]>([])
-  // 循环购物车的列表
-  products.value.forEach((item) => {
-    // 如果是购物车中的选中状态
-    if (item.select) {
-      // 放进当前商品列表
-      nowGoods.value.push(item)
-      // 总数量  用于展示
-      totalNumber.value += item.quantity
-      //  总金额 用于展示
-      payment.value += Number(item.tagPrice)
-      // 产品id 列表 用于提交订单时的参数
-      productIDs.value.push(item.id)
+  console.log(detail.value)
 
-      arr.value.push({
-        id: item.id,
-        number: item.quantity,
-        relationType: 1,
-      })
-    }
+  // 商品详情进入
+  if (buyType === 'buy') {
+    nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
+    submitOrderParams.value.details.push({ id: detail.value.id, number: 1, relationType: 1 })
+    totalNumber.value = 1
+    payment.value = Number(detail.value.sellPrice)
+  }
+  else {
+    // 购物车进入
+    // 产品id 数组
+    const productIDs = ref<number[]>([])
+    // const productConfigIDs = ref<string[]>([])
+    // 给请求 添加商品
+    const arr = ref<{ [key: string]: number }[]>([])
+    // 循环购物车的列表
+    products.value.forEach((item) => {
+      // 如果是购物车中的选中状态
+      if (item.select) {
+        // 放进当前商品列表
+        nowGoods.value.push(item)
+        // 总数量  用于展示
+        totalNumber.value += item.quantity
+        //  总金额 用于展示
+        payment.value += Number(item.sellPrice)
+        // 产品id 列表 用于提交订单时的参数
+        productIDs.value.push(item.id)
 
-    // productConfigIDs.value.push(item.id)
-  })
+        arr.value.push({
+          id: item.id,
+          number: item.quantity,
+          relationType: 1,
+        })
+      }
 
-  submitOrderParams.value.details = arr.value
-  // 查询可用的优惠券
-  await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
+      // productConfigIDs.value.push(item.id)
+    })
+
+    submitOrderParams.value.details = arr.value
+    // 查询可用的优惠券
+    await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
+  }
 })
 </script>
 
@@ -114,7 +123,9 @@ onMounted(async () => {
     <div class="addressBox" @click="Jump('/pages/me/address/index', {}, 1)">
       <buys-address-card />
     </div>
-    <buys-submit-goods-item :list="nowGoods" :showborder="showborder" @checked="checkAllocation" />
+
+    <buys-submit-goods-item :list="nowGoods" :goods="detail" :showborder="showborder" @checked="checkAllocation" />
+
     <div class="CouponsAndNotes">
       <div class="counpons" @click="Jump('/pages/buy/selectCoupon', {}, 1)">
         <div>优惠券</div>

@@ -104,6 +104,9 @@ interface Product {
   typeParentID: number
   unOrderArea: null
   updatedAt: string
+  quantity?: number
+  select?: boolean
+  delete?: boolean
 }
 
 interface Brand {
