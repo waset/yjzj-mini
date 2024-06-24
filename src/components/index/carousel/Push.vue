@@ -43,6 +43,7 @@ watchEffect(() => {
           modifier: 1,
           slideShadows: true,
         },
+        autoplay: true,
         loop: true,
       }"
     >

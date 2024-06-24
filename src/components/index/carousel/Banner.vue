@@ -31,7 +31,7 @@ const changSwiper = (index: number) => {
     <z-swiper
       ref="zswiper" v-model="bannerImages" :options="{
         loop: true,
-      // autoplay: true,
+        autoplay: true,
       }" @slide-change="onChange"
     >
       <z-swiper-item v-for="(item, index) in bannerImages" :key="index">
