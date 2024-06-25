@@ -26,7 +26,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       // 转换的时间戳加上十分钟的时间
       // 转换的减去当前时间戳
       // 在转换为是时分秒
-
       // 转换为时间戳
 
       function convertToTimestamp(dateStr: string) {
@@ -53,7 +52,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       }
 
       // 输出时间戳
-
       // const convertToTimestamp = (dateTimeStr: string): number => {
       //   const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
       //   const date = new Date(isoDateTimeStr)
@@ -64,7 +62,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       function convertMillisecondsToHMS(milliseconds: number) {
         // 将毫秒转换为秒
         let seconds = Math.floor(milliseconds / 1000)
-
         // 计算小时数
         const hours = Math.floor(seconds / 3600)
         seconds %= 3600
@@ -78,6 +75,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
           seconds,
         }
       }
+
       // 毫秒转时分秒
       function formatMillisecondsToHMS(milliseconds: number) {
         const hms = convertMillisecondsToHMS(milliseconds)
@@ -109,7 +107,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     async canUseCoupon(userAddressID: number, productIDs?: number[], productConfigIDs?: string[]) {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
-
         if (code === 200) {
           this.canUseCouponNum = 0
           data.forEach((item) => {
@@ -144,14 +141,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
           await this.wxpay(data.jsapiPayParams)
-
-          if (this.buyType === 'car') {
-            products.value.forEach((element, index) => {
-              if (element.select === true) {
-                products.value.splice(index, 1)
-              }
-            })
-          }
+          products.value = products.value.filter(element => !element.select)
         }
 
         if (code === 500 && msg === '有未支付订单') {
