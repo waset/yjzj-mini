@@ -8,7 +8,7 @@ const props = defineProps<{
   <div>
     <div class="card">
       <div class="image">
-        <image class="pic" :src="ImageUrl(props.params?.product?.banner[0]) || ''" mode="scaleToFill" />
+        <product-image :src="ImageUrl(props.params?.product?.banner[0]) || ''" mode="scaleToFill" width="116rpx" />
       </div>
       <div class="info">
         <div class="row">
@@ -40,18 +40,7 @@ const props = defineProps<{
   border-radius: 8rpx;
 
   .image {
-    width: 116rpx;
-    height: 116rpx;
     margin-right: 16rpx;
-    background: url(../../../assets/svg/product-bg.svg);
-    background-size: contain;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .pic {
-      width: 96rpx;
-      height: 96rpx;
-    }
   }
 
   .info {
