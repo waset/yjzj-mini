@@ -145,7 +145,12 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
           await this.wxpay(data.jsapiPayParams)
         }
         if (code === 500 && msg === '有未支付订单') {
-          Jump('/pages/buy/orderInfo')
+          const pages = getCurrentPages()
+          const page = pages[pages.length - 1]
+          const nowpage = page.route
+          if (nowpage !== 'pages/order/list') {
+            Jump('/pages/order/list')
+          }
         }
         if (code !== 200) {
           return uni.showToast({
