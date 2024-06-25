@@ -1,49 +1,51 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  list?: sDetail[]
+  list?: BuyProduct[]
   showborder: boolean
 }>()
 const emit = defineEmits<{
-  (e: 'check', index: number): void
+  (e: 'checked', index: number): void
 }>()
+
+const checkFn = (index: number) => {
+  emit('checked', index)
+}
 </script>
 
 <template>
-  <div>
-    <div
-      v-for="(item, index) in props.list" :key="index"
-      :class="[props.showborder ? 'gradient-border goodsCard' : 'goodsCard']"
-      :style="{ margin: props.showborder ? '30rpx auto 0' : '0' }"
-    >
-      <div class="goodsInfo" :style="{ margin: props.showborder ? ' 32rpx auto' : '0' }">
-        <div class="goodsInfo-flex">
-          <div class="goodsImg">
-            <div class="i-svg-product-bg" />
-            <div class="img">
-              <product-image :src="item?.productSnapshot?.banner[0] || ''" width="120rpx" height="120rpx" />
-            </div>
+  <div
+    v-for="(item, index) in props.list" :key="index"
+    :class="[props.showborder ? 'gradient-border goodsCard' : 'goodsCard']"
+    :style="{ margin: props.showborder ? '30rpx auto 0' : '0' }"
+  >
+    <div class="goodsInfo" :style="{ margin: props.showborder ? ' 32rpx auto' : '0' }">
+      <div class="goodsInfo-flex">
+        <div class="goodsImg">
+          <div class="i-svg-product-bg" />
+          <div class="img">
+            <product-image :src="item?.banner[0] || ''" width="120rpx" height="120rpx" />
           </div>
-          <div class="goodsOptions">
-            <div class="goodsTitle">
-              {{ item.productSnapshot.name }}
-            </div>
-            <div class="options" @click="emit('check', index)">
-              配置详情
-              <div class="i-icons-right" />
-            </div>
+        </div>
+        <div class="goodsOptions">
+          <div class="goodsTitle">
+            {{ item.name }}
+          </div>
+          <div class="options" @click="checkFn(index)">
+            配置详情
+            <div class="i-icons-right" />
+          </div>
 
-            <div class="priceAndNum">
-              <div class="price">
-                ￥{{ item.productSnapshot.sellPrice }}
-              </div>
-              <div class="Number">
-                x {{ item.totalNumber }}
-              </div>
+          <div class="priceAndNum">
+            <div class="price">
+              ￥{{ item.sellPrice }}
+            </div>
+            <div class="Number">
+              x {{ item.quantity }}
             </div>
           </div>
         </div>
-        <div v-show="!props.showborder" class="borderBottomLine" />
       </div>
+      <div v-show="!props.showborder" class="borderBottomLine" />
     </div>
   </div>
 </template>
@@ -67,6 +69,7 @@ const emit = defineEmits<{
   background: linear-gradient(135deg, rgba(#FFFFFF, 0.8), rgba(#FFFFFF, 0.08), rgba(#FFFFFF, 0.8));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
+  z-index: -1;
 }
 
 .goodsCard {
@@ -108,7 +111,7 @@ const emit = defineEmits<{
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%,-50%);
       }
     }
 

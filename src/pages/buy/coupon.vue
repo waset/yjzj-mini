@@ -1,5 +1,16 @@
 <script lang="ts" setup>
 const { couponList } = storeToRefs(useSubmitOrderStore())
+const { getCouponList } = useSubmitOrderStore()
+const page = ref<number>(1)
+onShow(async () => {
+  try {
+    // 获取优惠列表
+    await getCouponList(page.value, 15)
+  }
+  catch (error) {
+    console.error('Failed to fetch coupon list:', error)
+  }
+})
 </script>
 
 <template>

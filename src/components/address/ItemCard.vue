@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import areadata from '@/assets/json/division.json'
-
 const props = defineProps<{
   addressdata: addresslist[]
 
@@ -32,17 +30,6 @@ const editAddress = (item: addresslist) => {
 const setNowAddress = (index: number) => {
   nowAddress.value = props.addressdata[index]
   Jump('/pages/buy/submitOrder', {}, 1)
-}
-
-// 通过code获取省市区
-
-const getPcaDetails = (pcaCode: string[]) => {
-  const [p, c, a] = pcaCode
-  const province = areadata.find(item => item.value === p)
-  const city = province?.children.find(item => item.value === c)
-  const area = city?.children.find(item => item.value === a)
-
-  return `${province?.label} ${city?.label} ${area?.label}`
 }
 
 const isDefault = (item: number) => {

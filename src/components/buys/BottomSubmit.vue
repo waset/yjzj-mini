@@ -14,20 +14,19 @@ const submitOrder = () => {
 
 <template>
   <div class="bottomSubmit">
-    <div class="numAndProce">
-      <span class="fs24" style="color: #BEBEBE;">共</span>
-      <span class="fs24" style="color: #EDA522;">{{ props.number }}</span>
-      <span class="fs24" style="color: #BEBEBE;">件</span>
-      <span class="fs24">|</span>
-      <span class="fs24">合计：</span>
-      <span class="fs32">￥{{ props.pay }}</span>
-    </div>
-    <div class="submitBtn" @click="submitOrder">
-      立即购买
-    </div>
-
-    <div class="submitBtnCopy">
-      立即购买
+    <div class="align">
+      <div class="numAndProce">
+        <span class="fs24" style="color: #BEBEBE;">共</span>
+        <span class="fs24" style="color: #EDA522;">{{ props.number }}</span>
+        <span class="fs24" style="color: #BEBEBE;">件</span>
+        <span class="fs24">|</span>
+        <span class="fs24">合计：</span>
+        <span class="fs32">￥{{ props.pay }}</span>
+      </div>
+      <div class="submitBtn" @click="submitOrder">
+        <div class="submitBtnCopy" />
+        立即下单
+      </div>
     </div>
   </div>
 </template>
@@ -47,21 +46,25 @@ const submitOrder = () => {
 .bottomSubmit {
   position: fixed;
   bottom: 0;
-  height: 128rpx;
+  height: calc(128rpx + env(safe-area-inset-bottom));
   width: 100%;
   background-color: rgba($color: #fff, $alpha: 0.2);
   backdrop-filter: blur(48rpx);
-  display: flex;
-  justify-content: space-between;
   padding: 32rpx;
   box-sizing: border-box;
-
+  .align {
+    height: 64rpx;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
   .numAndProce {
     display: flex;
     align-items: center;
   }
 
-  .submitBtn {
+  .submitBtn,
+  .submitBtnCopy {
     position: relative;
     width: 230rpx;
     height: 64rpx;
@@ -112,45 +115,20 @@ const submitOrder = () => {
 
   .submitBtnCopy {
     position: absolute;
-    right: 20rpx;
-    bottom: 20rpx;
-    width: 230rpx;
-    height: 64rpx;
-    line-height: 64rpx;
-    font-size: 28rpx;
-    font-weight: 400;
-    margin-right: 40rpx;
-    color: #000;
-    text-align: center;
-    z-index: 8;
-    padding-left: 50rpx;
+    top: 8rpx;
+    left: 8rpx;
+    z-index: -2;
 
-    // background:#A7F522;
     &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 20rpx;
-      height: 64rpx;
-      background: #5F6F45;
 
-      transform: skewX(-30deg);
-      z-index: -1;
+      background: #5F6F45;
+      z-index: -2;
     }
 
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: -40rpx;
-      width: 254rpx;
-      height: 64rpx;
-      border-radius: 20rpx;
+
       background: #5F6F45;
-      z-index: -1;
+      z-index: -2;
     }
   }
 

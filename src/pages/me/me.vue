@@ -71,7 +71,7 @@ const menus = [
   {
     icon: 'i-icons-address',
     text: '收货地址',
-    path: '',
+    path: '/pages/me/address/index',
   },
 ]
 /**
@@ -82,6 +82,19 @@ function goLogin() {
     return
 
   Jump('/pages/me/login')
+}
+
+const changeMenus = (text: string) => {
+  switch (text) {
+    case '收货地址':
+      Jump('/pages/me/address/index')
+      break
+    case '优惠券':
+      Jump('/pages/buy/coupon')
+      break
+    default:
+      break
+  }
 }
 </script>
 
@@ -207,7 +220,7 @@ function goLogin() {
       <div class="wrap">
         <div class="items">
           <template v-for="(item, index) in menus" :key="index">
-            <div class="item">
+            <div class="item" @click="changeMenus(item.text)">
               <div class="left">
                 <div class="icon">
                   <div :class="item.icon" />
@@ -479,6 +492,7 @@ function goLogin() {
 
       .items {
         padding: 32rpx;
+        padding-bottom: 56rpx;
         border-radius: 32rpx;
         background-color: #000;
 

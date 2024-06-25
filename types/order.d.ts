@@ -66,7 +66,7 @@ interface Express {
   /**
    * 快递公司信息
    */
-  companyCode?: string
+  companyCode: string
   companyName?: string
   createAdminID?: number
   createdAt?: string

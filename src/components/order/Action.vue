@@ -3,9 +3,14 @@
 const props = withDefaults(defineProps<{
   status: Order['status']
   express: Order['express']
+  order: Order
 }>(), {
 })
+const emit = defineEmits<{
+  (e: 'updata'): void
+}>()
 
+const { continuePay, cancelPay } = useSubmitOrderStore()
 // 查看物流
 const showExpress = ref(false)
 // 物流弹窗内内容
@@ -30,6 +35,20 @@ function refundConfirm() {
 const cancelOrder = ref(false)
 function cancelConfirm() {
   cancelOrder.value = true
+}
+
+// 继续支付
+const continueSubmit = async () => {
+  await continuePay(props.order.id)
+}
+
+// 取消订单
+const confirmcancelOrder = async () => {
+  const code = await cancelPay(props.order.id)
+  if (code === 200) {
+    cancelOrder.value = false
+    emit('updata')
+  }
 }
 </script>
 
@@ -81,13 +100,13 @@ function cancelConfirm() {
       </div>
     </common-popup>
     <common-model v-model:show="showModel" msg="确认退款吗" icon="i-svg-warn" />
-    <common-model v-model:show="cancelOrder" msg="取消后订单将无法恢复，确认取消吗？" icon="i-svg-warn" />
+    <common-model v-model:show="cancelOrder" msg="取消后订单将无法恢复，确认取消吗？" icon="i-svg-warn" @ok="confirmcancelOrder" />
     <div v-if="props.status === OrderStatus.Wait">
       <div class="wait">
-        <div class="cancel" @click="cancelConfirm">
+        <div class="cancel" @click.stop="cancelConfirm">
           取消订单
         </div>
-        <div class="waitPay">
+        <div class="waitPay" @click.stop="continueSubmit">
           继续付款
         </div>
       </div>
@@ -96,7 +115,7 @@ function cancelConfirm() {
       <div class="ordered">
         <div v-if="props.express" class="express">
           <div class="shipped">
-            <div class="logistics" @click="viewLogistics(props.express)">
+            <div class="logistics" @click.stop="viewLogistics(props.express)">
               查看物流
             </div>
             <div class="received">
@@ -105,7 +124,7 @@ function cancelConfirm() {
           </div>
         </div>
         <div v-else class="refund">
-          <div class="text" @click="refundConfirm">
+          <div class="text" @click.stop="refundConfirm">
             退款
           </div>
         </div>
