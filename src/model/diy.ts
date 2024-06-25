@@ -1,8 +1,10 @@
 export const useDiyStore = defineStore('diy', {
   state: (): {
-    gamesList: any
+    gamesList: gamesList[]
+
   } => ({
     gamesList: [],
+
   }),
   getters: {
 
@@ -11,7 +13,9 @@ export const useDiyStore = defineStore('diy', {
     // 获取游戏列表
     async getGamesList() {
       const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 }, { auth: true })
+
       if (code === 200) {
+        this.gamesList = data
         return data
       }
     },

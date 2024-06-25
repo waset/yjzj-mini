@@ -7,27 +7,34 @@ const emit = defineEmits<{
   (e: 'selectGames'): void
   (e: 'changeSwiper', value: number): void
 }>()
+
 const { getGamePower } = useDiyStore()
 // 当前第几页 页码
 const pcurrent = ref(0)
 // 分辨率
 const power = ref<string[]>(['1080', '2k'])
 const selectPower = ref<string>('1080')
+
 // 游戏性能请求参数
 const powerParams = ref<powerParams>({
-  cpuTag2IDS: props?.params[0].product.tags2,
-  displayCardTag2IDs: props?.params[2].product.tags2,
-  gameID: props.list.length !== 0 ? props.list[pcurrent.value].id : 0,
-  resolutionType: selectPower.value === '1080' ? 1 : 2,
+
+})
+// 用于为请求配置参数  删除没有值的参数
+const copyPararms = ref<powerParams>({
+  cpuTag2IDS: [],
+  displayCardTag2IDs: [],
+  resolutionType: 1,
   page: 1,
   pageSize: 10,
+  gameID: 1,
 })
-
-const copyPararms = ref<powerParams>({ resolutionType: selectPower.value === '1080' ? 1 : 2, page: 1, pageSize: 10 })
 // 处理游戏性能请求参数
 const handleParams = () => {
-  copyPararms.value = { ...copyPararms.value, ...powerParams.value }
-
+  // copyPararms.value = { ...powerParams.value, ...copyPararms.value }
+  copyPararms.value.cpuTag2IDS = props?.params[0].product.tags2
+  copyPararms.value.displayCardTag2IDs = props?.params[2].product.tags2
+  copyPararms.value.resolutionType = selectPower.value === '1080' ? 1 : 2
+  copyPararms.value.gameID = props.list[pcurrent.value].id
   // 然后删除不需要的属性
   if (powerParams.value.cpuTag2IDS?.length === 0) {
     delete copyPararms.value.cpuTag2IDS
@@ -39,28 +46,50 @@ const handleParams = () => {
     delete copyPararms.value.gameID
   }
 }
-
+// 用于展示 fps 数值
 const FPSpower = ref({
   fpsAvg: 0,
   fpsMax: 0,
   fpsMin: 0,
 })
-// 监听分辨率选择是否变化了  变化了就请求
-watch(selectPower, async () => {
-  handleParams()
+// 重置序列号
+const reset = () => {
+  pcurrent.value = 0
+}
+// 请求游戏性能
+const getpower = async () => {
+  await handleParams()
   const arr = ref<any>([])
   arr.value = await getGamePower(copyPararms.value)
-  const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
-  FPSpower.value = {
-    fpsAvg,
-    fpsMax,
-    fpsMin,
+  if (arr.value.length === 0) {
+    FPSpower.value = {
+      fpsAvg: 0,
+      fpsMax: 0,
+      fpsMin: 0,
+    }
   }
+  else {
+    const { fpsAvg, fpsMax, fpsMin } = arr.value[0]
+    FPSpower.value = {
+      fpsAvg,
+      fpsMax,
+      fpsMin,
+    }
+  }
+}
+defineExpose({
+  getpower,
+  reset,
+})
+// 监听分辨率选择是否变化了  变化了就请求
+watch(selectPower, async () => {
+  await getpower()
 }, { immediate: true })
 
 // 监听页面是否变化  变化了就传递给父组件显示
-watch(pcurrent, () => {
-  emit('changeSwiper', pcurrent.value)
+watch(pcurrent, async (val) => {
+  emit('changeSwiper', val)
+  await getpower()
 })
 
 // 轮播图高度
@@ -112,7 +141,6 @@ const changeGame = (text: string) => {
             :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="0" offset-y-step-units="rpx" :scale-step="0.8"
             :opacity-step="0.99" overflow="visible" loop switch natural-direction
           >
-            >
             <template #item="{ item, index }">
               <div
                 class="item" :style="{
@@ -124,11 +152,12 @@ const changeGame = (text: string) => {
               >
                 <div class="box">
                   <div class="body">
-                    <div class="image">
+                    <div class="image" :class="[index === pcurrent ? 'image active' : 'image']">
                       <image
                         :src="ImageUrl(item?.cover || '')" mode="aspectFill" :style="{
                           width: '488rpx',
                           height: '248rpx',
+                          borderRadius: '30rpx',
                         }" :draggable="false" :fade-show="false"
                       />
                     </div>
@@ -164,7 +193,7 @@ const changeGame = (text: string) => {
       </div>
     </template>
     <template v-else>
-      <div class="empty">
+      <div class="empty" @click="selectGame">
         <image
           src="@/assets/background/games-power.svg" :style="{
             width: '100%',
@@ -312,6 +341,14 @@ const changeGame = (text: string) => {
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 30rpx;
+            overflow: hidden;
+
+          }
+
+          .active {
+            padding: 4rpx;
+            background: linear-gradient(125deg, rgba(#A7F522, 1), rgba(#fff, 0.1), rgba(#A7F522, 1));
           }
 
           .info {

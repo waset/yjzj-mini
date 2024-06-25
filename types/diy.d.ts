@@ -15,8 +15,8 @@ interface powerParams {
   displayCardTag2IDs?: number[]
   gameID?: number
   resolutionType?: number
-  page: number
-  pageSize: number
+  page?: number
+  pageSize?: number
 }
 
 // 性能返回值
