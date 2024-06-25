@@ -71,8 +71,6 @@ onShow(async () => {
   }
 })
 onMounted(async () => {
-  console.log(detail.value)
-
   // 商品详情进入
   if (buyType === 'buy') {
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
