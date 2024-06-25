@@ -19,7 +19,7 @@ export const useInviteStore = defineStore('invite', {
       if (code === 200) {
         // 手动添加排名
         if (data.length) {
-          data.map((item: Inviterank, index: number) => item.lv = index + 1)
+          data.forEach((item: Inviterank, index: number) => item.lv = index + 1)
         }
         this.inviterank = data
       }

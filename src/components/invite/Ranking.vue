@@ -32,7 +32,7 @@ const bordercolor = ref<string[]>([
 ])
 // 前三名榜单
 const ranktop = computed(() => {
-  if (props.inviterank.length < 2)
+  if (props.inviterank.length < 3)
     return props.inviterank
   return [
     props.inviterank[1],
@@ -42,7 +42,14 @@ const ranktop = computed(() => {
 })
 
 // 第三名到第十名榜单
-const ranklist = computed(() => props.inviterank.slice(3, props.inviterank.length >= 10 ? 10 : props.inviterank.length + 1))
+const ranklist = computed(() => {
+  if (props.inviterank.length > 3) {
+    return props.inviterank.slice(3, props.inviterank.length >= 10 ? 10 : props.inviterank.length + 1)
+  }
+  else {
+    return []
+  }
+})
 </script>
 
 <template>
