@@ -80,6 +80,7 @@ const isSelect = (item: number) => {
       color: #000;
     }
   }
+
   .selectbg {
     position: absolute;
     content: '';

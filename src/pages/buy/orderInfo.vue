@@ -15,14 +15,16 @@ const orderNo = ref<string>('')
 const firstStatus = ref<number>(1)
 
 const status = (key: number) => {
-  if (key === 6) {
-    state.value = 'fail'
-  }
-  if (key === 1) {
-    state.value = 'waiting'
-  }
-  if (key === 2) {
-    state.value = 'success'
+  switch (key) {
+    case 6:
+      state.value = 'fail'
+      break
+    case 1:
+      state.value = 'waiting'
+      break
+    case 2 :
+      state.value = 'success'
+      break
   }
 }
 
@@ -49,7 +51,6 @@ onLoad((options) => {
 onMounted(async () => {
   // 给请求 添加商品
   detail.value = await orderInfo(orderNo.value)
-  // status(detail.value.status || firstStatus.value)
   timeout.value = countdown(detail.value?.createdAt || '')
   const times = setInterval(async () => {
     timeout.value = countdown(detail.value?.createdAt || '')

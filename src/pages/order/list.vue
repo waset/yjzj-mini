@@ -13,7 +13,9 @@ const tabs = ref<{
 
 const handleTabClick = (status: Order['status']) => {
   tabsIdx.value = status
-  getOrderList(status)
+  nextTick(() => {
+    getOrderList(status)
+  })
 }
 
 onLoad((params) => {
