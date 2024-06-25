@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const { getOrderList } = useOrderStore()
-const { orders } = useOrderStore()
+const { orders, getOrderList } = useOrderStore()
 
 const tabsIdx = ref<Order['status']>(0)
 const tabs = ref<{
