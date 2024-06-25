@@ -52,14 +52,17 @@ onMounted(async () => {
   // 给请求 添加商品
   detail.value = await orderInfo(orderNo.value)
   timeout.value = countdown(detail.value?.createdAt || '')
-  const times = setInterval(async () => {
-    timeout.value = countdown(detail.value?.createdAt || '')
 
-    if (timeout.value === '已过期') {
-      clearInterval(times)
-      detail.value = await orderInfo(orderNo.value)
-      status(detail.value.status || firstStatus.value)
+  const times = setInterval(async () => {
+    async function updateTimes() {
+      timeout.value = countdown(detail.value?.createdAt || '')
+      if (timeout.value === '已过期') {
+        clearInterval(times)
+        detail.value = await orderInfo(orderNo.value)
+        status(detail.value.status || firstStatus.value)
+      }
     }
+    updateTimes()
   }, 1000)
 })
 </script>
