@@ -33,3 +33,23 @@ interface Inviterank {
   levelLevel: number
   memberNumber: number
 }
+
+interface Inviteuser_res {
+  code?: number
+  data?: Data
+  msg?: string
+  page?: Inviteuser_page
+}
+
+interface Inviteuser {
+  avatar?: string
+  id?: number
+  nickname?: string
+}
+
+interface Inviteuser_page {
+  currentPage?: number
+  LastPage?: number
+  pageSize?: number
+  total?: number
+}

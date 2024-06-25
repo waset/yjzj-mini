@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const props = withDefaults(defineProps<{
   levelall: Levelall[]
+  user: UserInfo
 }>(), {
   levelall: () => [],
 })
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<{
       />
     </div>
     <!-- 推广等级进度 -->
-    <invite-step :levelall="props.levelall" />
+    <invite-step :levelall="props.levelall" :user="props.user" />
     <div class="flex justify-center">
       <image
         style="width: 90%;"

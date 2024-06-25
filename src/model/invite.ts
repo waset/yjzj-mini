@@ -2,9 +2,11 @@ export const useInviteStore = defineStore('invite', {
   state: (): {
     levelall: Levelall[]
     inviterank: Inviterank[]
+    inviteuser: Inviteuser_res
   } => ({
     levelall: [],
     inviterank: [],
+    inviteuser: {},
   }),
   actions: {
     // 升级数据
@@ -23,6 +25,16 @@ export const useInviteStore = defineStore('invite', {
         }
         this.inviterank = data
       }
+    },
+    // 绑定邀请人
+    async bandInviter(inviteCode: string) {
+      const res = await http.post('/web/user/bind/inviter', { inviteCode })
+      return res
+    },
+    // 成为推广员
+    async becomePromoter() {
+      const res = await http.post('/web/user/become/promoter')
+      return res
     },
   },
 })

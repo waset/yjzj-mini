@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const props = withDefaults(defineProps<{
   levelall: Levelall[]
+  user: UserInfo
 }>(), {
   levelall: () => [],
 })
@@ -17,8 +18,56 @@ const list = ref<listType[]>([
   { lv: 5, icon: 'i-svg-medal-lv5' },
 ])
 
+// 邀请等级 0是未成为邀请人
+const myLevel = computed(() => {
+  if (props.user.promoter) {
+    return props.user.promoter.levelLevel
+  }
+  // 不是推广人
+  return 0
+})
+
+/**
+ * @description 计算当前段位升级的百分比
+ * @returns {string} 百分比字符串，如 "50.00%"
+ */
+const percentage = computed(() => {
+  // 计算当前等级与总等级比例
+  const gap = ((myLevel.value - 1) / (props.levelall.length - 1)) * 100
+
+  // 如果用户不是推广者状态 返回 0%
+  if (!props.user.promoterStatus) {
+    return '0%'
+  }
+
+  // 查找当前用户推广者等级对应的区间
+  const interval = props.levelall.find((item) => {
+    return item.level === props.user.promoter.levelLevel
+  })
+
+  if (!interval) {
+    return '0%'
+  }
+
+  // 计算当前段升级所需积分范围
+  const max = interval.performanceMax
+  const min = interval.performanceMin
+  const point = max - min
+
+  // 计算当前段升级已有积分占当前段升级所需积分的比例
+  const bonusPoint = (Number(props.user.promoter.cycleOrderAmount) - min) / point
+
+  // 计算当前升级占总段升级所需积分的比例
+  const bonusPointPercent = bonusPoint / (props.levelall.length - 1)
+
+  // 计算最终升级百分比并返回格式化字符串
+  const upgradePercentage = ((gap + bonusPointPercent) * 100).toFixed(2)
+  return `${upgradePercentage}%`
+})
+
 // 升级轮播滑动值
 const elSlide = ref(0)
+
 onReady(() => {
   // 元素信息
   const query = uni.createSelectorQuery().in(getCurrentInstance())
@@ -31,7 +80,7 @@ onReady(() => {
 })
 
 // 邀请升级进度
-const tempo = ref('15%')
+// const tempo = ref('15%')
 
 // 横向滚动条位置
 const leftSlide = ref(0)
@@ -83,10 +132,16 @@ function sliding(event: any) {
 
 <template>
   <div class="step">
-    <scroll-view id="scrollview" class="scroll" scroll-x scroll-with-animation :scroll-left="leftSlide" @scroll="sliding">
+    <scroll-view
+      id="scrollview" class="scroll" scroll-x scroll-with-animation :scroll-left="leftSlide"
+      @scroll="sliding"
+    >
       <div class="container">
         <template v-for="(item, index) in props.levelall" :key="index">
-          <div class="medal flex-center" style="width: 400rpx;height: 600rpx;" :style="{ marginRight: item.level !== list.length ? '48rpx' : '0' }">
+          <div
+            class="medal flex-center" style="width: 400rpx;height: 600rpx;"
+            :style="{ marginRight: item.level !== list.length ? '48rpx' : '0' }"
+          >
             <div class="icon" :class="`i-svg-medal-lv${item.level}`" />
             <div class="icon shadows" :class="`i-svg-medal-lv${item.level}`" />
             <div class="dec mt--12">
@@ -105,19 +160,25 @@ function sliding(event: any) {
         </template>
         <!-- 进度条 -->
         <div class="progress" :style="{ width: `${(list.length - 1) * 400 + (list.length - 1) * 48}rpx` }">
-          <div class="progress-bar" :style="{ width: tempo }" />
-          <div class="i-svg-invite-ellipse elllipse absolute" :style="{ left: `calc(${tempo} - 10rpx)` }" />
-        </div>
-        <!-- 进度信息 -->
-        <div class="inviteinfo flex-center" :style="{ left: `calc(${tempo} - 10rpx + 25%)` }">
-          <div class="flex">
-            <span>零零</span>
-            <span class="ml-2">当前等级</span>
-          </div>
-          <div class="mt-2">
-            积分：2000
-          </div>
-          <div class="i-svg-notch horn absolute" />
+          <div class="progress-bar" :style="{ width: `${percentage}` }" />
+          <div class="i-svg-invite-ellipse elllipse absolute" :style="{ left: `calc(${percentage} - 10rpx)` }" />
+          <!-- 进度信息 没有加入不显示 -->
+          <template v-if="myLevel !== 0">
+            <div class="inviteinfo flex-center" :style="{ left: `calc(${percentage} + 10rpx)` }">
+              <div class="flex items-center">
+                <image :src="ImageUrl(props.user.avatar)" mode="scaleToFill" class="avatar mr-2" />
+                <span class="nickname">{{ props.user.nickname }}</span>
+                <span class="level ml-2">
+                  当前等级
+                  <span class="lever-name">{{ props.user.promoter.levelName }}</span>
+                </span>
+              </div>
+              <div class="point mt-2">
+                积分：{{ props.user.promoter.cycleOrderAmount ? props.user.promoter.cycleOrderAmount : 0 }}
+              </div>
+              <div class="i-svg-notch horn absolute" />
+            </div>
+          </template>
         </div>
       </div>
     </scroll-view>
@@ -132,20 +193,23 @@ function sliding(event: any) {
 
 <style lang="scss" scoped>
 .step {
-  position:relative;
+  position: relative;
   width: 100%;
   overflow: scroll;
   .scroll {
     width: 100%;
   }
+
   .inviteinfo {
-    margin:92rpx auto -100rpx auto;
+    margin: 92rpx auto -100rpx auto;
     width: 366rpx;
     height: 140rpx;
     background: linear-gradient(90deg, rgba(254, 233, 160, 0) 0%, rgba(254, 233, 160, 0.5) 53%, rgba(254, 233, 160, 0) 100%);
     flex-direction: column;
     position: absolute;
-    top: -100rpx;
+    top: -300rpx;
+    transform: translateX(-50%);
+
     .horn {
       width: 28rpx;
       height: 16rpx;
@@ -153,9 +217,34 @@ function sliding(event: any) {
       bottom: -14rpx;
       transform: translateX(-50%);
     }
+
+    .avatar {
+      width: 48rpx;
+      height: 48rpx;
+      border-radius: 48rpx;
+    }
+
+    .nickname {
+      font-size: 28rpx;
+    }
+
+    .point {
+      font-weight: 600;
+      font-size: 28rpx;
+      color: #FFDF6D;
+    }
+
+    .level {
+      font-size: 24rpx;
+    }
+
+    .lever-name {
+      font-style: italic;
+    }
   }
-  .right-arrows{
-    position:absolute;
+
+  .right-arrows {
+    position: absolute;
     width: 64rpx;
     height: 64rpx;
     left: 676rpx;
@@ -163,8 +252,9 @@ function sliding(event: any) {
     transform: translateY(-50%);
     z-index: 10;
   }
-  .left-arrows{
-    position:absolute;
+
+  .left-arrows {
+    position: absolute;
     width: 64rpx;
     height: 64rpx;
     left: 10rpx;
@@ -173,6 +263,7 @@ function sliding(event: any) {
     z-index: 10;
   }
 }
+
 .container {
   margin-bottom: 80rpx;
   display: flex;
@@ -184,6 +275,7 @@ function sliding(event: any) {
     padding: 132rpx 0 104rpx;
     flex-direction: column;
     background: linear-gradient(180deg, rgba(254, 233, 160, 0) 0%, rgba(254, 233, 160, 0.1) 53%, rgba(254, 233, 160, 0) 100%);
+
     // transition: width 0.3s ease-in-out;
     .icon {
       width: 214rpx;
@@ -196,24 +288,27 @@ function sliding(event: any) {
       opacity: 0.2;
       margin-top: 12rpx;
     }
+
     .dec {
       .preforman {
         color: #901CCB;
         font-weight: bold;
-        font-size:28rpx;
-        font-style:normal;
+        font-size: 28rpx;
+        font-style: normal;
       }
+
       .ratio {
         color: #FFFFFF;
         font-weight: bold;
-        font-size:22rpx;
-        font-style:normal;
+        font-size: 22rpx;
+        font-style: normal;
       }
+
       .retiobe {
         color: #FFFFFF;
         font-weight: bold;
-        font-size:28rpx;
-        font-style:normal;
+        font-size: 28rpx;
+        font-style: normal;
       }
     }
   }
@@ -231,7 +326,8 @@ function sliding(event: any) {
       background: #F5B922;
       height: 16rpx;
     }
-    .elllipse{
+
+    .elllipse {
       width: 32rpx;
       height: 32rpx;
       top: calc(-18rpx + 8rpx);
