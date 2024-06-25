@@ -1,3 +1,4 @@
+const { products } = storeToRefs(useBuyStore())
 export const useSubmitOrderStore = defineStore('submitOrder', {
   state: (): {
     couponList: couponList[]
@@ -143,7 +144,16 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
           await this.wxpay(data.jsapiPayParams)
+
+          if (this.buyType === 'car') {
+            products.value.forEach((element, index) => {
+              if (element.select === true) {
+                products.value.splice(index, 1)
+              }
+            })
+          }
         }
+
         if (code === 500 && msg === '有未支付订单') {
           const pages = getCurrentPages()
           const page = pages[pages.length - 1]
