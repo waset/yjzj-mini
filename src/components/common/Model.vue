@@ -61,6 +61,7 @@ function maskClose() {
         <div class="msg">
           {{ props.msg }}
         </div>
+        <slot name="inp" />
       </div>
       <div class="footer">
         <slot name="footer">
