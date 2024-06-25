@@ -12,7 +12,8 @@ const showborder = ref<boolean>(true)
 // 合计数量
 const totalNumber = ref<number>(0)
 // 实付金额
-const payment = ref<number>(0)
+const DEFAULT_PAYMENT = 0
+const payment = ref<number>(DEFAULT_PAYMENT)
 // 控制备注弹出层显示
 const showPop = ref<boolean>(false)
 
@@ -51,7 +52,12 @@ const checkAllocation = (index: number) => {
 // 提交订单 去支付
 const submitOrderFn = async () => {
   // 提交订单接口
-  await submitOrderReq(submitOrderParams.value)
+  try {
+    await submitOrderReq(submitOrderParams.value)
+  }
+  catch (error) {
+
+  }
 }
 
 // 接受参数  选择优惠券的id 和金额
