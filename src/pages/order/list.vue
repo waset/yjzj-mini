@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { getOrderList } = useOrderStore()
-const { orders } = storeToRefs(useOrderStore())
+const { orders } = useOrderStore()
 
 const tabsIdx = ref<Order['status']>(0)
 const tabs = ref<{
@@ -11,11 +11,13 @@ const tabs = ref<{
   2: '待收货',
 })
 
-const handleTabClick = (status: Order['status']) => {
+const getList = async (status: number) => {
+  await getOrderList(status)
+}
+
+const handleTabClick = async (status: Order['status']) => {
   tabsIdx.value = status
-  nextTick(() => {
-    getOrderList(status)
-  })
+  await getList(status)
 }
 
 onLoad((params) => {
@@ -27,8 +29,8 @@ onLoad((params) => {
   }
 })
 
-onShow(() => {
-  getOrderList(tabsIdx.value)
+onShow(async () => {
+  await getList(tabsIdx.value)
 })
 </script>
 
@@ -49,8 +51,8 @@ onShow(() => {
     <div class="body">
       <div class="box">
         <template v-if="orders && orders.length">
-          <template v-for="(order, i) in orders" :key="i">
-            <order-list :order="order" @updata="getOrderList(tabsIdx)" />
+          <template v-for="(item, i) in orders" :key="i">
+            <order-list :order="item as Order" @change="handleTabClick(tabsIdx)" />
           </template>
         </template>
         <template v-else>

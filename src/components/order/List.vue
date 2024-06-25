@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   order: Order
-}>(), {
-})
+}>()
 
 const emit = defineEmits<{
-  (e: 'updata'): void
+  change: []
 }>()
 
 // 点击更多显示提示弹窗
@@ -265,7 +264,7 @@ const checkOrderInfo = () => {
               <div class="operation">
                 <order-action
                   :order="props.order" :status="props.order.status" :express="props.order.express"
-                  @add-buy-car="addBuyCar" @updata="emit('updata')"
+                  @add-buy-car="addBuyCar" @updata="emit('change')"
                 >
                   <slot />
                 </order-action>
