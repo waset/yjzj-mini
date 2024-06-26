@@ -85,7 +85,7 @@ onShow(async () => {
       <product-filter-list @confirm="confirmFn" />
     </common-popup>
     <div class="commodity_list">
-      <product-module-select />
+      <!-- <product-module-select /> -->
     </div>
 
     <div>
