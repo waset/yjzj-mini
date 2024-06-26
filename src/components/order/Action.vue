@@ -38,8 +38,10 @@ function cancelConfirm() {
 }
 
 // 继续支付
-const continueSubmit = async () => {
-  await continuePay(props.order.id)
+const continueSubmit = () => {
+  continuePay(props.order.id).then(() => {
+    emit('updata')
+  })
 }
 
 // 取消订单
