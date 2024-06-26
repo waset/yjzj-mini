@@ -136,6 +136,7 @@ interface Param {
   paramDesc: string
   paramType: string
   paramValue: string[] | number | string
+  product: Param[]
   productTypeID: number
   remark: string
   sellPrice: string

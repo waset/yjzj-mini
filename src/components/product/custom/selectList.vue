@@ -1,10 +1,15 @@
 <script setup lang="ts">
+// const props = defineProps<{
+//   parentId: number
+// }>()
 const { types } = storeToRefs(useProductStore())
 const { categorys, getCategorys, getProducts } = useProductStore()
+
+// const { getModificationList } = useDiyStore()
 /**
  * 当前产品类目
  */
-const category = ref<CategorysItem>({} as CategorysItem)
+// const category = ref<CategorysItem>({} as CategorysItem)
 /**
  * 页面参数
  */
@@ -12,13 +17,7 @@ interface PageReq {
   key: CategoryKey
 }
 const Params = ref({} as PageReq)
-/**
- * 页面加载获取数据
- */
-onLoad((params) => {
-  Params.value = params as PageReq
-  category.value = categorys[Params.value.key]
-})
+
 /**
  * 当前类目索引
  */
@@ -36,7 +35,16 @@ const getProduct = async () => {
     20,
   )
 }
+
+// const getModificationListParams = ref<Modification>({
+//   productTypeParentID: props.parentId,
+//   page: 1,
+//   pageSize: 10,
+// })
+
+// 展示选中项
 const showSelected = ref<selectItem[]>([])
+// 筛选弹窗开关
 const filte = ref(false)
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
   switch (name) {
@@ -64,6 +72,12 @@ const remove = (index: number) => {
 onShow(async () => {
   await getCategorys(Params.value.key, 1, 20)
   await getProduct()
+})
+
+onLoad(() => {
+  // Params.value = params as PageReq
+  // category.value = categorys[Params.value.key]
+
 })
 </script>
 
@@ -98,7 +112,7 @@ onShow(async () => {
 .select {
   .commodity_list {
     padding: 32rpx;
-
+    padding-bottom: 144rpx;
   }
 
 }

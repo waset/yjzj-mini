@@ -63,7 +63,7 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value
           <div
             class="item" :class="{
               active: classIndex === index,
-            }" @click=" async () => {
+            }" @click="async () => {
               classIndex = index
               await getProduct()
             }"
@@ -90,47 +90,47 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value
 </template>
 
 <style lang="scss" soped>
-  .category {
-    .classify {
-      padding-bottom: 32rpx;
+.category {
+  .classify {
+    padding-bottom: 32rpx;
 
-      .items {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
+    .items {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
 
-        .item {
-          @apply flex-center;
-          flex-direction: column;
-          padding: 0 16rpx;
+      .item {
+        @apply flex-center;
+        flex-direction: column;
+        padding: 0 16rpx;
 
-          scroll-snap-align: left;
-          scroll-snap-stop: always;
+        scroll-snap-align: left;
+        scroll-snap-stop: always;
 
-          &:first-child {
-            padding-left: 64rpx;
-          }
+        &:first-child {
+          padding-left: 64rpx;
+        }
 
-          &:last-child {
-            padding-right: 64rpx;
-          }
+        &:last-child {
+          padding-right: 64rpx;
+        }
 
+        .name {
+          font-size: 24rpx;
+          font-weight: 400;
+          line-height: 34rpx;
+          padding: 16rpx 0;
+          color: #BEBEBE;
+        }
+
+        &.active {
           .name {
-            font-size: 24rpx;
-            font-weight: 400;
-            line-height: 34rpx;
-            padding: 16rpx 0;
-            color: #BEBEBE;
-          }
-
-          &.active {
-            .name {
-              color: #FFFFFF;
-            }
+            color: #FFFFFF;
           }
         }
       }
     }
   }
+}
 </style>
