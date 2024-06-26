@@ -13,7 +13,13 @@ const rankImglist = ref<string[]>([
   ranktoplv2,
   ranktoplv3,
 ])
-
+const medalIcon = ref<string[]>([
+  'i-svg-medal-lv1',
+  'i-svg-medal-lv2',
+  'i-svg-medal-lv3',
+  'i-svg-medal-lv4',
+  'i-svg-medal-lv5',
+])
 const thIcon = ref<string[]>([
   'i-svg-th4',
   'i-svg-th5',
@@ -76,7 +82,7 @@ const ranklist = computed(() => {
               <div class="nickname">
                 {{ item.nickname }}
               </div>
-              <div :class="`i-svg-medal-lv${item.levelLevel} ml-1`" />
+              <div :class="`${medalIcon[item.levelLevel - 1]} ml-1`" />
             </div>
             <div class="flex mt-1">
               <div class="title">

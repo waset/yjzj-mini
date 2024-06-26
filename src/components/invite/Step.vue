@@ -135,8 +135,8 @@ function sliding(event: any) {
             class="medal flex-center" style="width: 400rpx;height: 600rpx;"
             :style="{ marginRight: item.level !== list.length ? '48rpx' : '0' }"
           >
-            <div class="icon" :class="`i-svg-medal-lv${item.level}`" />
-            <div class="icon shadows" :class="`i-svg-medal-lv${item.level}`" />
+            <div class="icon" :class="`${list[item.level]?.icon}`" />
+            <div class="icon shadows" :class="`${list[item.level]?.icon}`" />
             <div class="dec mt--12">
               <div class="preforman">
                 积分{{ item.performanceMin }}-{{ item.performanceMax }}
