@@ -54,22 +54,19 @@ const ranklist = computed(() => {
 
 <template>
   <div class="flex justify-center pt-20 pb-10">
-    <image
-      src="@/assets/background/invite-title2.svg"
-      mode="heightFix"
-      style="height: 44rpx;"
-    />
+    <image src="@/assets/background/invite-title2.svg" mode="heightFix" style="height: 44rpx;" />
   </div>
 
   <div class="ranking">
     <div class="award flex justify-between pb-10">
       <template v-if="ranktop && ranktop.length">
         <template v-for="(item, i) in ranktop" :key="i">
-          <div class="awardbg" :style="{ marginTop: i !== 1 ? '80rpx' : '0', backgroundImage: `url(${rankImglist[item.lv - 1]})` }">
+          <div
+            class="awardbg"
+            :style="{ marginTop: i !== 1 ? '80rpx' : '0', backgroundImage: `url(${rankImglist[item.lv - 1]})` }"
+          >
             <image
-              :src="ImageUrl(item.avatar)"
-              mode="scaleToFill"
-              class="avatar"
+              :src="ImageUrl(item.avatar)" mode="scaleToFill" class="avatar"
               :style="`border: 4rpx solid ${bordercolor[i]};`"
             />
             <div class="no">
@@ -101,22 +98,14 @@ const ranklist = computed(() => {
 
     <div class="list">
       <div class="flex justify-center">
-        <image
-          src="@/assets/background/invite-ranktop.svg"
-          mode="scaleToFill"
-          class="ranktop  mt-10 mb-4"
-        />
+        <image src="@/assets/background/invite-ranktop.svg" mode="scaleToFill" class="ranktop  mt-10 mb-4" />
       </div>
       <template v-if="ranklist && ranklist.length">
         <template v-for="(item, i) in ranklist" :key="i">
           <div class="flex items-center mt-2">
             <div :class="thIcon[i]" class="th" />
             <div class="userinfo flex items-center ml-4">
-              <image
-                :src="ImageUrl(item.avatar)"
-                mode="widthFix"
-                class="avatar"
-              />
+              <image :src="ImageUrl(item.avatar)" mode="widthFix" class="avatar" />
               <span class="text nickname">{{ item.nickname }}</span>
               <div :class="`i-svg-medal-lv${item.levelLevel}`" />
             </div>
@@ -137,14 +126,16 @@ const ranklist = computed(() => {
 .ranking {
   .award {
     padding: 0 46rpx;
+
     .awardbg {
       width: 196rpx;
       height: 336rpx;
-      background-size:cover;
-      background-repeat:no-repeat;
+      background-size: cover;
+      background-repeat: no-repeat;
       display: flex;
-      align-items:center;
-      flex-direction:column;
+      align-items: center;
+      flex-direction: column;
+
       .avatar {
         width: 134rpx;
         height: 134rpx;
@@ -153,12 +144,14 @@ const ranklist = computed(() => {
         border-radius: 134rpx;
         background-color: linear-gradient(141deg, rgba(252, 255, 86, 1), rgba(255, 178, 18, 1)) 4 4;
       }
+
       .no {
         font-weight: 400;
         font-size: 28rpx;
         line-height: 40rpx;
         color: linear-gradient(38deg, #FFF387 0%, #FFA800 100%);
       }
+
       .nickname {
         font-weight: 400;
         font-size: 24rpx;
@@ -168,11 +161,13 @@ const ranklist = computed(() => {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .title {
         font-weight: 400;
         font-size: 20rpx;
         color: #FFFFFF;
       }
+
       .text {
         font-weight: 400;
         font-size: 22rpx;
@@ -180,19 +175,24 @@ const ranklist = computed(() => {
       }
     }
   }
+
   .list {
     margin: 0 26rpx;
+
     .ranktop {
       width: 662rpx;
       height: 40rpx;
     }
+
     .th {
       width: 58rpx;
       height: 58rpx;
       margin: 0 24rpx;
     }
+
     .userinfo {
       width: 218rpx;
+
       .nickname {
         margin: 0 8rpx;
         max-width: 140rpx;
@@ -200,21 +200,25 @@ const ranklist = computed(() => {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .avatar {
         width: 48rpx;
         height: 48rpx;
-        border-radius:48rpx;
+        border-radius: 48rpx;
         flex-shrink: 0;
       }
     }
+
     .price {
       width: 172rpx;
       text-align: center;
     }
-    .num{
+
+    .num {
       width: 148rpx;
       text-align: center;
     }
+
     .text {
       font-weight: 400;
       font-size: 24rpx;
