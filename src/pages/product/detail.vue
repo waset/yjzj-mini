@@ -3,7 +3,7 @@ const { detail, isDiy, types } = storeToRefs(useProductStore())
 const { products } = storeToRefs(useBuyStore())
 const { gamesList, ModificationList } = storeToRefs(useDiyStore())
 const { getProductDetail, categorys, getCategorys } = useProductStore()
-const { getGamesList, getModificationList, configurationList, addConfiguration } = useDiyStore()
+const { getGamesList, getModificationList, configurationList, addConfiguration, setModificationListNull } = useDiyStore()
 const { addProduct } = useBuyStore()
 const productId = ref<Product['id']>()
 interface PageReq {
@@ -42,11 +42,17 @@ const searchText = ref<string>('')
 const swiperbox = ref()
 // 获取请求配置列表的参数
 const getModificationListParams = ref<Modification>({
+  productName: '',
   productTypeParentID: 0,
   productTypeID: 0,
   page: 0,
   pageSize: 10,
 })
+// 筛选条件列表 的参数
+// const filterParams = ref<>({
+
+// })
+
 // 配置弹窗的显示列表
 // const ModificationList = ref<any>([])
 // 打开的是第几项配置
@@ -60,11 +66,13 @@ const changeSwiperFn = (value: number) => {
 // 获取配置列表数据
 const getAllocationList = async () => {
   getModificationListParams.value.page += 1
-  getModificationList(getModificationListParams.value)
+  await getModificationList(getModificationListParams.value)
 }
 
 // 打开选择配置组件的弹窗
 const openSelectPop = async (index: number) => {
+  setModificationListNull()
+  // await getFilter()
   // 切换不同配置 重置请求页码
   getModificationListParams.value.page = 0
   // 要打开的第几个配置
@@ -78,14 +86,40 @@ const openSelectPop = async (index: number) => {
   await getAllocationList()
 }
 
+// 设置排序的请求参数
+const setSortGet = (name: string, value: number) => {
+  getModificationListParams.value.order = name
+  if (value === 0) {
+    getModificationListParams.value.sort = 'asc'
+  }
+  else {
+    getModificationListParams.value.sort = 'desc'
+  }
+  if (name === 'all') {
+    delete getModificationListParams.value.order
+    delete getModificationListParams.value.sort
+  }
+
+  setModificationListNull()
+  getModificationListParams.value.page = 0
+  getAllocationList()
+}
+
 // 筛选弹窗开关
 const filte = ref(false)
-const onChange: ComponentInstance['CommonSortFilter']['onChange'] = (name, value) => {
+const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name, value) => {
   switch (name) {
     case 'filte':
       filte.value = Boolean(value) || !filte.value
       break
-    default:
+    case 'all':
+      setSortGet('all', value || 0)
+      break
+    case 'price':
+      setSortGet('sell_price', value || 0)
+      break
+    case 'sales':
+      setSortGet('sell_number', value || 0)
       break
   }
 }
@@ -106,8 +140,6 @@ const replaceAllocation = (index: number) => {
   detail.value.params[openIndex.value].id = ModificationList.value[index].id
   detail.value.params[openIndex.value].product = ModificationList.value[index]
   changeAllocation.value = false
-  ModificationList.value = []
-
   swiperbox.value.getpower()
 }
 
@@ -168,6 +200,11 @@ onShow(async () => {
     }
   }
 })
+watch(() => getModificationListParams.value.productName, async () => {
+  setModificationListNull()
+  getModificationListParams.value.page = 1
+  await getModificationList(getModificationListParams.value)
+})
 </script>
 
 <template>
@@ -215,8 +252,7 @@ onShow(async () => {
         :style="{ backgroundImage: useGamesList.length !== 0 ? `url(https://file.yjzj.com/${useGamesList[current]?.cover || ''}` : `url(${StaticUrl('/images/login-bg.png')})` }"
       >
         <product-swiper-box
-          ref="swiperbox"
-          :list="useGamesList" :pcurrent="current" :params="detail.params"
+          ref="swiperbox" :list="useGamesList" :pcurrent="current" :params="detail.params"
           @select-games="showGames = true" @change-swiper="changeSwiperFn"
         />
       </div>
@@ -258,7 +294,7 @@ onShow(async () => {
       <div class="select">
         <!-- <navbar-back text="选择组件" /> -->
         <div class="header">
-          <common-search />
+          <common-search v-model:value="getModificationListParams.productName" is-input />
           <common-sort-filter :has-layout="false" @change="onChange" />
         </div>
 
@@ -388,6 +424,7 @@ onShow(async () => {
     .selectbox {
       padding-bottom: 120rpx;
     }
+
     .select {
       position: relative;
       border-radius: 16rpx;
