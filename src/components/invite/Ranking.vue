@@ -86,7 +86,7 @@ const ranklist = computed(() => {
                 返利金额：
               </div>
               <div class="text">
-                {{ }}
+                {{ item.orderAmount }}
               </div>
             </div>
             <div class="flex">

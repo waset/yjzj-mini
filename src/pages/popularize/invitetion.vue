@@ -48,7 +48,7 @@ async function become() {
   const res = await becomePromoter()
   if (res.code === 200) {
     uni.showToast({
-      title: '成为推广员成功',
+      title: '加入成功',
       icon: 'none',
     })
   }
