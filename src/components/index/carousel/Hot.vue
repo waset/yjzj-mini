@@ -3,41 +3,67 @@ const props = defineProps<{
   list: Product[]
   current: number
 }>()
+
 const emit = defineEmits<{
   'update:current': [id: number]
   'click': [item: Product, index: number]
 }>()
-const pcurrent = ref(props.current)
-watch(pcurrent, (v) => {
-  emit('update:current', v)
-})
+
+const hotSwiper = ref()
+const carouselHeight = ref(900)
+
 const colors: string[] = [
   '#A7F522',
   '#E61C44',
   '#52FFE2',
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
-const carouselHeight = ref(900)
+
+const products = ref<Product[] & {
+  color: string
+}[]>([])
+watchEffect(() => {
+  products.value = props.list.map((item, index) => {
+    return {
+      ...item,
+      color: colors[index % colors.length],
+    }
+  })
+})
+
+const current = ref(0)
+const onChange = () => {
+  current.value = hotSwiper.value?.swiper.activeIndex
+  emit('update:current', hotSwiper.value?.swiper.realIndex)
+}
 </script>
 
 <template>
   <div class="hots">
-    <carousel
-      v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="vertical"
-      :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="48" offset-y-step-units="rpx" :scale-step="0.8"
-      :opacity-step="0.99" overflow="visible" loop switch natural-direction
+    <z-swiper
+      ref="hotSwiper" v-model="products" :options="{
+        loop: true,
+        effect: 'cards',
+        // autoplay: true,
+        navigation: {
+          slot: true,
+        },
+      }" @slide-change="onChange"
     >
-      <template #item="{ item, index }">
+      <z-swiper-item v-for="(item, index) in products" :key="index">
         <div
           class="item" :style="{
-            '--color': colors[index % colors.length],
+            '--color': item.color,
             '--carousel-length': props.list.length,
             '--carousel-index': index,
             '--carousel-heigit': `${carouselHeight}rpx`,
-          }"
-          @click="emit('click', item, index)"
+          }" @click="emit('click', item, index)"
         >
-          <div class="box">
+          <div
+            class="box" :class="{
+              'is-active': index === current,
+            }"
+          >
             <div class="body">
               <div class="image">
                 <image
@@ -68,18 +94,19 @@ const carouselHeight = ref(900)
             </div>
           </div>
         </div>
-      </template>
-      <template #prev>
+      </z-swiper-item>
+
+      <template #pre-button>
         <div class="switch left">
           <div class="i-svg-hot-left" />
         </div>
       </template>
-      <template #next>
+      <template #next-button>
         <div class="switch right">
           <div class="i-svg-hot-right" />
         </div>
       </template>
-    </carousel>
+    </z-swiper>
   </div>
 </template>
 
@@ -87,6 +114,7 @@ const carouselHeight = ref(900)
   .hots {
     @apply px-[64rpx];
     --padding: 32rpx;
+    position: relative;
 
     .item {
       height: var(--carousel-heigit);
@@ -99,6 +127,8 @@ const carouselHeight = ref(900)
         position: relative;
         z-index: 0;
 
+        --path: polygon(0% 7.83%, 0% 7.83%, 0.067% 7.391%, 0.26% 6.982%, 0.565% 6.608%, 0.969% 6.276%, 1.46% 5.991%, 2.026% 5.761%, 2.652% 5.591%, 3.325% 5.488%, 4.034% 5.458%, 4.765% 5.508%, 84.092% 15.328%, 84.092% 15.328%, 85.639% 15.585%, 87.088% 15.957%, 88.426% 16.434%, 89.639% 17.007%, 90.714% 17.667%, 91.638% 18.404%, 92.398% 19.21%, 92.98% 20.074%, 93.371% 20.988%, 93.557% 21.942%, 100% 100%, 15.85% 100%, 15.85% 100%, 13.279% 99.876%, 10.84% 99.517%, 8.566% 98.941%, 6.489% 98.17%, 4.642% 97.222%, 3.058% 96.117%, 1.769% 94.874%, 0.808% 93.514%, 0.207% 92.054%, 0% 90.516%, 0% 7.83%);
+
         &::before {
           content: '';
           position: absolute;
@@ -107,8 +137,27 @@ const carouselHeight = ref(900)
           z-index: -1;
           width: calc(100% - var(--padding));
           height: calc(100% - var(--padding));
-          background: linear-gradient(180deg, var(--color) 43%, rgba(0, 0, 0, 1) 150%);
-          clip-path: polygon(0% 7.83%, 0% 7.83%, 0.067% 7.391%, 0.26% 6.982%, 0.565% 6.608%, 0.969% 6.276%, 1.46% 5.991%, 2.026% 5.761%, 2.652% 5.591%, 3.325% 5.488%, 4.034% 5.458%, 4.765% 5.508%, 84.092% 15.328%, 84.092% 15.328%, 85.639% 15.585%, 87.088% 15.957%, 88.426% 16.434%, 89.639% 17.007%, 90.714% 17.667%, 91.638% 18.404%, 92.398% 19.21%, 92.98% 20.074%, 93.371% 20.988%, 93.557% 21.942%, 100% 100%, 15.85% 100%, 15.85% 100%, 13.279% 99.876%, 10.84% 99.517%, 8.566% 98.941%, 6.489% 98.17%, 4.642% 97.222%, 3.058% 96.117%, 1.769% 94.874%, 0.808% 93.514%, 0.207% 92.054%, 0% 90.516%, 0% 7.83%);
+          background: linear-gradient(180deg, var(--color) 43%, rgba(0, 0, 0, 1) 150%),
+            linear-gradient(160deg, rgba(0, 0, 0, .8) 43%, rgba(0, 0, 0, 1) 150%);
+          clip-path: var(--path);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: var(--padding);
+          left: var(--padding);
+          z-index: -1;
+          width: calc(100% - var(--padding));
+          height: calc(100% - var(--padding));
+          background: rgba(0, 0, 0, .4);
+          clip-path: var(--path);
+        }
+
+        &.is-active {
+          &::after {
+            background: rgba(0, 0, 0, 0);
+          }
         }
 
         .body {

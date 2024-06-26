@@ -81,6 +81,7 @@ function maskClose() {
       width: 100%;
       background: rgba($color: #000, $alpha: 0.5);
       backdrop-filter: blur(4rpx);
+      overflow: hidden;
     }
 
     .wrap {

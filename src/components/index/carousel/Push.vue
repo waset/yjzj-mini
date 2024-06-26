@@ -5,31 +5,52 @@ const props = defineProps<{
 const emit = defineEmits<{
   click: [item: Product, index: number]
 }>()
-const current = ref(0)
+
 const colors: string[] = [
   '#A7F522',
   '#E61C44',
   '#52FFE2',
   '#FE63FC',
 ].sort(() => Math.random() - 0.5)
+
+const pushSwiper = ref()
 const carouselHeight = ref(900)
+
+const products = ref<Product[] & {
+  color: string
+}[]>([])
+watchEffect(() => {
+  products.value = props.list.map((item, index) => {
+    return {
+      ...item,
+      color: colors[index % colors.length],
+    }
+  })
+})
 </script>
 
 <template>
   <div class="pushs">
-    <carousel
-      v-model:current="current" indicator loop :list="props.list" :height="carouselHeight" direction="vertical"
-      :offset-x-step="280" offset-x-step-units="rpx" :offset-y-step="0" :duration="500" offset-y-step-units="rpx"
-      :scale-step="0.93" :opacity-step="0.9" overflow="visible" easing-function="linear" natural-direction
+    <z-swiper
+      ref="pushSwiper" v-model="products" :options="{
+        loop: true,
+        autoplay: true,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 14,
+      }"
     >
-      <template #item="{ item, index }">
+      <z-swiper-item
+        v-for="(item, index) in products" :key="index" :custom-style="{
+          width: '80%',
+        }"
+      >
         <div
           class="item" :style="{
-            '--color': colors[index % colors.length],
+            '--color': item.color,
             '--carousel-length': props.list.length,
             '--carousel-heigit': `${carouselHeight}rpx`,
-          }"
-          @click="emit('click', item, index)"
+          }" @click="emit('click', item, index)"
         >
           <div class="box">
             <div class="body">
@@ -67,8 +88,8 @@ const carouselHeight = ref(900)
             </div>
           </div>
         </div>
-      </template>
-    </carousel>
+      </z-swiper-item>
+    </z-swiper>
   </div>
 </template>
 
@@ -76,16 +97,12 @@ const carouselHeight = ref(900)
   .pushs {
     --padding: 48rpx;
     --bottom: 40rpx;
-    padding: 0 var(--padding);
-    padding-bottom: var(--bottom);
-    overflow: hidden;
 
     .item {
       height: 100%;
       padding-bottom: calc(var(--bottom) * 2);
 
       .box {
-        padding: 0 var(--padding);
         height: 100%;
         position: relative;
         z-index: 0;
@@ -150,6 +167,7 @@ const carouselHeight = ref(900)
             .desc {
               font-size: 28rpx;
               line-height: 40rpx;
+              min-height: 80rpx;
               margin: 16rpx 0;
 
               display: -webkit-box;

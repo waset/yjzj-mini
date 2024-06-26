@@ -29,8 +29,7 @@ const handleClick = (item: Product) => {
             class="box" :class="{
               col: layout === 'grids',
               row: layout === 'rows',
-            }"
-            @click="handleClick(item)"
+            }" @click="handleClick(item)"
           >
             <div class="image">
               <product-image :src="item.banner[0]" width="300rpx" radius="16rpx" />
@@ -52,7 +51,7 @@ const handleClick = (item: Product) => {
                 </div>
                 <div class="btns">
                   <div class="btn">
-                    <div class="i-icons-buy" style="color: #000;" />
+                    <div class="i-icons-buy" />
                   </div>
                 </div>
               </div>
@@ -65,129 +64,132 @@ const handleClick = (item: Product) => {
 </template>
 
 <style lang="scss" scoped>
-  .list {
-    .wrap {
-      padding: 32rpx;
-      gap: 16rpx;
+.list {
+  .wrap {
+    padding: 32rpx;
+    gap: 16rpx;
 
-      &.grids {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    &.grids {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-      &.rows {
+    &.rows {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .bg {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 16rpx;
+      width: 100%;
+
+      .box {
+        border-radius: 16rpx;
+        background: #000;
+        padding: 16rpx;
+
         display: flex;
         align-items: center;
-        justify-content: center;
-        flex-direction: column;
-      }
+        justify-content: space-between;
+        gap: 32rpx;
 
-      .bg {
-        background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
-        padding: 2rpx;
-        border-radius: 16rpx;
-        width: 100%;
-
-        .box {
-          border-radius: 16rpx;
-          background: #000;
-          padding: 16rpx;
-
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 32rpx;
-
-          &.col {
-            flex-direction: column;
-            height: 100%;
-
-            .info{
-              width: 100%;
-              justify-content: space-between;
-            }
-          }
-
-          &.row {
-            flex-direction: row;
-          }
-
-          .image {
-            position: relative;
-
-            .badge {
-              position: absolute;
-              top: 0;
-              left: 0;
-              padding: 4rpx 0;
-              padding-left: 24rpx;
-              padding-right: 50rpx;
-              text-align: left;
-              border-radius: 16rpx 0 16rpx 0;
-              background: rgba(#333, 0.8);
-              color: rgba(255, 255, 255, 0.9);
-              font-size: 24rpx;
-              line-height: 40rpx;
-              clip-path: polygon( 0% 34%,0% 34%,0.159% 27.926%,0.618% 22.797%,1.353% 18.015%,2.339% 13.647%,3.55% 9.763%,4.963% 6.431%,6.551% 3.721%,8.29% 1.699%,10.155% 0.436%,12.121% 0%,100% 0%,100% 0%,99.65% 0.436%,98.7% 1.771%,97.3% 4.05%,95.6% 7.314%,93.75% 11.607%,91.9% 16.971%,90.2% 23.45%,88.8% 31.086%,87.85% 39.921%,87.5% 50%,87.5% 50%,87.129% 63.55%,86.124% 74.4%,84.641% 82.85%,82.841% 89.2%,80.882% 93.75%,78.924% 96.8%,77.124% 98.65%,75.641% 99.6%,74.635% 99.95%,74.265% 100%,0% 100%,0% 33.333% );
-            }
-          }
+        &.col {
+          flex-direction: column;
+          height: 100%;
 
           .info {
+            width: 100%;
+            justify-content: space-between;
+          }
+        }
+
+        &.row {
+          flex-direction: row;
+        }
+
+        .image {
+          position: relative;
+
+          .badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 4rpx 0;
+            padding-left: 24rpx;
+            padding-right: 50rpx;
+            text-align: left;
+            border-radius: 16rpx 0 16rpx 0;
+            background: rgba(#333, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 24rpx;
+            line-height: 40rpx;
+            clip-path: polygon(0% 34%, 0% 34%, 0.159% 27.926%, 0.618% 22.797%, 1.353% 18.015%, 2.339% 13.647%, 3.55% 9.763%, 4.963% 6.431%, 6.551% 3.721%, 8.29% 1.699%, 10.155% 0.436%, 12.121% 0%, 100% 0%, 100% 0%, 99.65% 0.436%, 98.7% 1.771%, 97.3% 4.05%, 95.6% 7.314%, 93.75% 11.607%, 91.9% 16.971%, 90.2% 23.45%, 88.8% 31.086%, 87.85% 39.921%, 87.5% 50%, 87.5% 50%, 87.129% 63.55%, 86.124% 74.4%, 84.641% 82.85%, 82.841% 89.2%, 80.882% 93.75%, 78.924% 96.8%, 77.124% 98.65%, 75.641% 99.6%, 74.635% 99.95%, 74.265% 100%, 0% 100%, 0% 33.333%);
+          }
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          gap: 16rpx;
+          flex: 1;
+          height: 100%;
+
+          .title {
+            align-items: flex-start;
+            color: #fff;
+            font-size: 28rpx;
+            line-height: 40rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+            overflow-wrap: break-word;
+          }
+
+          .desc {
+            font-size: 24rpx;
+            color: #BEBEBE;
+            text-align: left;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+          }
+
+          .more {
+            // background: red;
+            width: 100%;
             display: flex;
-            flex-direction: column;
             gap: 16rpx;
-            flex: 1;
-            height: 100%;
 
-            .title {
-              align-items: flex-start;
-              color: #fff;
+            .price {
+              background-image: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
               font-size: 28rpx;
-              line-height: 40rpx;
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 2;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              word-break: break-all;
-              overflow-wrap: break-word;
-            }
-
-            .desc {
-              font-size: 24rpx;
-              color: #BEBEBE;
+              font-weight: bold;
+              flex: 1;
               text-align: left;
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 1;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              word-break: break-all;
+              padding: 20rpx 36rpx 20rpx 24rpx;
             }
 
-            .more {
-              // background: red;
-              width: 100%;
+            .btns {
+              width: 80rpx;
+              height: 80rpx;
               display: flex;
-              gap: 16rpx;
+              justify-content: center;
+              align-items: center;
+              border-radius: 60rpx;
 
-              .price {
-                background-image: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
-                font-size: 28rpx;
-                font-weight: bold;
-                flex:1;
-                text-align: left;
-                padding: 20rpx 36rpx 20rpx 24rpx;
-              }
-
-              .btns {
-                width: 80rpx;
-                height: 80rpx;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+              .btn {
+                color: #000;
                 background-color: #A7f522;
-                border-radius: 60rpx;
               }
             }
           }
@@ -195,4 +197,5 @@ const handleClick = (item: Product) => {
       }
     }
   }
+}
 </style>

@@ -23,7 +23,7 @@ export const useProductStore = defineStore('product', {
     isDiy: (state) => {
       if (!state.detail)
         return false
-      return state.detail.typeParentID === 6
+      return product_is_diy(state.detail)
     },
   },
   actions: {

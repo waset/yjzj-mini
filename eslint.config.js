@@ -4,6 +4,11 @@ import unocss from '@unocss/eslint-plugin'
 export default uni(
   unocss.configs.flat,
   {
+    ignores: [
+      'src/assets/json/division.json',
+    ],
+  },
+  {
     rules: {
       'no-console': 'warn',
       'unocss/order': 'off',

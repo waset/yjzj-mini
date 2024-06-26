@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
 const { selectAll, deletes } = useBuyStore()
+const { changeBuyType } = useSubmitOrderStore()
 // 当前滑块索引
 const slidIdx = ref<number | null>(null)
 // 管理模式
@@ -41,6 +42,12 @@ function deleteProduct() {
     management.value = false
   del_ids.value = []
 }
+
+//  下单
+const submitorder = () => {
+  changeBuyType('car')
+  Jump('/pages/buy/submitOrder')
+}
 </script>
 
 <template>
@@ -50,8 +57,8 @@ function deleteProduct() {
       <div v-if="showConfigs" class="wrap">
         <template v-for="(item, index) in showConfigs.params" :key="index">
           <div class="item">
-            <div v-if="item.banner" class="image">
-              <product-image :src="item.banner[0]" width="60rpx" height="60rpx" />
+            <div v-if="product_is_diy(showConfigs) && item.product.banner" class="image">
+              <product-image :src="item.product.banner[0]" :background="false" width="100rpx" height="100rpx" />
             </div>
             <div class="info">
               <div class="top">
@@ -64,7 +71,12 @@ function deleteProduct() {
                 </div>
               </div>
               <div class="desc">
-                {{ item.name || item.paramValue }}
+                <template v-if="product_is_diy(showConfigs)">
+                  {{ item.product.name }}
+                </template>
+                <template v-else>
+                  {{ item.name || item.paramValue }}
+                </template>
               </div>
             </div>
           </div>
@@ -134,7 +146,7 @@ function deleteProduct() {
         </div>
         <div class="btns">
           <template v-if="!management">
-            <div class="btn bg-green">
+            <div class="btn bg-green" @click="submitorder">
               结算
             </div>
           </template>
@@ -150,37 +162,50 @@ function deleteProduct() {
 </template>
 
 <style lang="scss" scoped>
-  $top-height: 112rpx;
-  $bottom-height: 156rpx;
+$top-height: 112rpx;
+$bottom-height: 156rpx;
 
-  .buy {
-    position: relative;
-    height: calc(var(--body-min-height) - $top-height - $bottom-height);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+.buy {
+  position: relative;
+  height: calc(var(--body-min-height) - $top-height - $bottom-height);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
-    .top {
-      padding: 32rpx;
-      padding-bottom: 0;
-      position: fixed;
-      top: var(--navbar-height-all);
-      left: 0;
-      right: 0;
-      height: $top-height;
-      background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
-      backdrop-filter: blur(48rpx);
-      z-index: 1;
+  .top {
+    padding: 32rpx;
+    padding-bottom: 0;
+    position: fixed;
+    top: var(--navbar-height-all);
+    left: 0;
+    right: 0;
+    height: $top-height;
+    background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
+    backdrop-filter: blur(48rpx);
+    z-index: 1;
 
-      .wrap {
-        padding: 16rpx 32rpx;
-        border-radius: 8rpx;
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.5), rgba(132, 132, 132, 0.5));
+    .wrap {
+      padding: 16rpx 32rpx;
+      border-radius: 8rpx;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.5), rgba(132, 132, 132, 0.5));
 
-        @apply flex-between;
+      @apply flex-between;
 
-        .left {
-          font-weight: 400;
+      .left {
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #FFFFFF;
+        line-height: 40rpx;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+
+      .right {
+        @apply flex-center;
+
+        .text {
+          font-weight: 500;
           font-size: 28rpx;
           color: #FFFFFF;
           line-height: 40rpx;
@@ -188,168 +213,155 @@ function deleteProduct() {
           font-style: normal;
           text-transform: none;
         }
-
-        .right {
-          @apply flex-center;
-
-          .text {
-            font-weight: 500;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-          }
-        }
-      }
-    }
-
-    .body {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-
-      .top-wrap {
-        height: $top-height;
-      }
-
-      .body-wrap {
-        flex: 1;
-      }
-
-      .bottom-wrap {
-        height: $bottom-height;
-      }
-    }
-
-    .bottom {
-      padding: 0 32rpx;
-      position: fixed;
-      bottom: var(--tabbar-height-all);
-      left: 0;
-      right: 0;
-      background: linear-gradient(180deg, rgba(19, 19, 19, .1) 100%, rgba(0, 0, 0, .8) 43%);
-      backdrop-filter: blur(48rpx);
-
-      .wrap {
-        flex-wrap: nowrap;
-        @apply flex-between;
-
-        .selectAll {
-          @apply flex-center;
-          height: $bottom-height;
-
-          .select {
-            @apply flex-center;
-            color: #000;
-            font-size: 32rpx;
-
-            width: 48rpx;
-            height: 48rpx;
-            border-radius: 50%;
-            border: 2rpx solid #FFFFFF;
-
-            &.all {
-              $color: #a7f522;
-              background-color: $color;
-              border-color: $color;
-            }
-          }
-
-          .text {
-            font-weight: 500;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-            padding: 0 16rpx;
-          }
-        }
-
-        .info {
-          flex: 1;
-          text-align: right;
-          padding: 0 16rpx;
-
-          .details {
-            font-size: 24rpx;
-            line-height: 40rpx;
-            font-weight: 400;
-            padding-bottom: 8rpx;
-          }
-
-          .total {
-            font-size: 28rpx;
-            line-height: 40rpx;
-            font-weight: 600;
-          }
-        }
-
-        .btns {
-          .btn {
-            padding: 20rpx 68rpx;
-            border-radius: 8rpx;
-            font-size: 32rpx;
-            font-weight: bold;
-            line-height: 40rpx;
-            color: #333;
-          }
-        }
       }
     }
   }
 
-  .configs {
-    .wrap {
-      .item {
-        @apply flex-between;
-        background: rgba(132, 132, 132, 0.2);
-        border-radius: 8rpx 8rpx 8rpx 8rpx;
-        margin-bottom: 32rpx;
-        padding: 22rpx 24rpx;
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 
-        .image {
-          margin-right: 20rpx;
+    .top-wrap {
+      height: $top-height;
+    }
+
+    .body-wrap {
+      flex: 1;
+    }
+
+    .bottom-wrap {
+      height: $bottom-height;
+    }
+  }
+
+  .bottom {
+    padding: 0 32rpx;
+    position: fixed;
+    bottom: var(--tabbar-height-all);
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(19, 19, 19, .1) 100%, rgba(0, 0, 0, .8) 43%);
+    backdrop-filter: blur(48rpx);
+
+    .wrap {
+      flex-wrap: nowrap;
+      @apply flex-between;
+
+      .selectAll {
+        @apply flex-center;
+        height: $bottom-height;
+
+        .select {
+          @apply flex-center;
+          color: #000;
+          font-size: 32rpx;
+
+          width: 48rpx;
+          height: 48rpx;
+          border-radius: 50%;
+          border: 2rpx solid #FFFFFF;
+
+          &.all {
+            $color: #a7f522;
+            background-color: $color;
+            border-color: $color;
+          }
         }
 
-        .info {
-          flex: 1;
+        .text {
+          font-weight: 500;
+          font-size: 28rpx;
+          color: #FFFFFF;
+          line-height: 40rpx;
+          text-align: left;
+          font-style: normal;
+          text-transform: none;
+          padding: 0 16rpx;
+        }
+      }
 
-          .top {
-            @apply flex-between;
+      .info {
+        flex: 1;
+        text-align: right;
+        padding: 0 16rpx;
 
-            .type {
-              flex: 1;
-              font-size: 32rpx;
-              font-weight: 400;
-              line-height: 40rpx;
-              color: rgba(167, 245, 34, 1);
-            }
+        .details {
+          font-size: 24rpx;
+          line-height: 40rpx;
+          font-weight: 400;
+          padding-bottom: 8rpx;
+        }
 
-            .num {
-              font-family: PingFang SC;
-              font-size: 28rpx;
-              font-weight: 400;
-              line-height: 40rpx;
-              color: rgba(190, 190, 190, 1);
-            }
+        .total {
+          font-size: 28rpx;
+          line-height: 40rpx;
+          font-weight: 600;
+        }
+      }
+
+      .btns {
+        .btn {
+          padding: 20rpx 68rpx;
+          border-radius: 8rpx;
+          font-size: 32rpx;
+          font-weight: bold;
+          line-height: 40rpx;
+          color: #333;
+        }
+      }
+    }
+  }
+}
+
+.configs {
+  .wrap {
+    .item {
+      @apply flex-between;
+      background: rgba(132, 132, 132, 0.2);
+      border-radius: 8rpx 8rpx 8rpx 8rpx;
+      margin-bottom: 32rpx;
+      padding: 22rpx 24rpx;
+
+      .image {
+        margin-right: 20rpx;
+      }
+
+      .info {
+        flex: 1;
+
+        .top {
+          @apply flex-between;
+
+          .type {
+            flex: 1;
+            font-size: 32rpx;
+            font-weight: 400;
+            line-height: 40rpx;
+            color: rgba(167, 245, 34, 1);
           }
 
-          .desc {
-            padding-top: 16rpx;
+          .num {
+            font-family: PingFang SC;
             font-size: 28rpx;
             font-weight: 400;
             line-height: 40rpx;
             color: rgba(190, 190, 190, 1);
           }
         }
+
+        .desc {
+          padding-top: 16rpx;
+          font-size: 28rpx;
+          font-weight: 400;
+          line-height: 40rpx;
+          color: rgba(190, 190, 190, 1);
+        }
       }
     }
   }
+}
 </style>
 
 <route lang="json">
