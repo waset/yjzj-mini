@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { orders, getOrderList } = useOrderStore()
+const { orders } = storeToRefs(useOrderStore())
+const { getOrderList } = useOrderStore()
 
 const tabsIdx = ref<Order['status']>(0)
 const tabs = ref<{
@@ -50,8 +51,13 @@ onShow(async () => {
     <div class="body">
       <div class="box">
         <template v-if="orders && orders.length">
-          <template v-for="(item, i) in orders" :key="i">
-            <order-list :order="item as Order" @change="handleTabClick(tabsIdx)" />
+          <template v-for="(item, index) in orders" :key="index">
+            <order-list
+              :order="(item as Order)" @change="() => {
+                console.log('刷新');
+                handleTabClick(tabsIdx)
+              }"
+            />
           </template>
         </template>
         <template v-else>

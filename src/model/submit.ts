@@ -140,19 +140,27 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
-          await this.wxpay(data.jsapiPayParams)
+          // TODO wxpay.then->支付成功回调，fail->支付失败回调
+          this.wxpay(data.jsapiPayParams)
           products.value = products.value.filter(element => !element.select)
         }
-
-        if (code === 500 && msg === '有未支付订单') {
-          const pages = getCurrentPages()
-          const page = pages[pages.length - 1]
-          const nowpage = page.route
-          if (nowpage !== 'pages/order/list') {
-            Jump('/pages/order/list')
-          }
+        else if (code === 500 && msg === '有未支付订单') {
+          uni.showToast({
+            title: msg,
+            icon: 'error',
+            success: () => {
+              const pages = getCurrentPages()
+              const page = pages[pages.length - 1]
+              const nowpage = page.route
+              if (nowpage !== 'pages/order/list') {
+                setTimeout(() => {
+                  Jump('/pages/order/list')
+                }, 1000)
+              }
+            },
+          })
         }
-        if (code !== 200) {
+        else {
           return uni.showToast({
             title: '下单失败,请重试',
             icon: 'error',
@@ -178,13 +186,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 resolve(res)
               },
               fail: (err) => {
-                const pages = getCurrentPages()
-                const page = pages[pages.length - 1]
-                const nowpage = page.route
-                if (nowpage !== 'pages/order/list') {
-                  Jump('/pages/order/list')
-                }
-
                 reject(err)
               },
               complete: () => {
@@ -205,7 +206,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     async continuePay(id: number) {
       const { data } = await http.post('/web/order/pay/continue', { id }, { auth: true })
 
-      this.wxpay(data.jsapiPayParams)
+      return this.wxpay(data.jsapiPayParams)
     },
     // 取消支付
     async cancelPay(id: number) {
