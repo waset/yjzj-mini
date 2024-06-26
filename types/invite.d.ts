@@ -7,7 +7,7 @@ interface Levelall {
   /**
    * 返佣比例
    */
-  rebateRatio: number | string
+  rebateRatio: number
   /**
    * 等级
    */
@@ -21,7 +21,7 @@ interface Levelall {
 // 榜单
 interface Inviterank {
   avatar: string
-  levellevel: number
+  levelLevel: number
   nickname: string
   levelName: string
   orderNumber: number
@@ -30,7 +30,6 @@ interface Inviterank {
    * 排名
    */
   lv: number
-  levelLevel: number
   memberNumber: number
 }
 

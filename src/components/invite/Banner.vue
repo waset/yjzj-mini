@@ -9,6 +9,7 @@ function band() {
 function become() {
   emits('become')
 }
+const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.nickname : '---')
 </script>
 
 <template>
@@ -19,8 +20,7 @@ function become() {
         <image class="icon2" :src="StaticUrl('/svg/invite-icon2.svg')" mode="widthFix" />
       </div>
       <div class="flex-center mt-10 ml-6 mr-6">
-        <span class="my-inviter">我的邀请人：{{ props.user?.inviteUserInfo ? user.inviteUserInfo?.nickname : '---'
-        }}</span>
+        <span class="my-inviter">我的邀请人：{{ inviterText }}</span>
         <span class="btn-inviter" @click="band">{{ props.user.promoterStatus === 1 ? '换绑' : '绑定邀请人 ' }}</span>
       </div>
       <div class="flex justify-center mt-2">

@@ -18,17 +18,25 @@ function bandinvite() {
 
 // 确认绑定
 async function confirm() {
-  const res = await bandInviter(code.value)
-  if (res.code === 200) {
-    uni.showToast({
-      title: '绑定成功',
-      icon: 'none',
-    })
-    await getUserInfo()
+  try {
+    const res = await bandInviter(code.value)
+    if (res.code === 200) {
+      uni.showToast({
+        title: '绑定成功',
+        icon: 'none',
+      })
+      await getUserInfo()
+    }
+    else {
+      uni.showToast({
+        title: res.msg,
+        icon: 'none',
+      })
+    }
   }
-  else {
+  catch {
     uni.showToast({
-      title: res.msg,
+      title: '网络错误',
       icon: 'none',
     })
   }

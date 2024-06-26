@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   levelall: Levelall[]
   user: UserInfo
-}>(), {
-  levelall: () => [],
-})
+}>()
+
 interface listType {
   lv: number
   icon: string
@@ -19,13 +18,7 @@ const list = ref<listType[]>([
 ])
 
 // 邀请等级 0是未成为邀请人
-const myLevel = computed(() => {
-  if (props.user.promoter) {
-    return props.user.promoter.levelLevel
-  }
-  // 不是推广人
-  return 0
-})
+const myLevel = computed(() => props.user.promoter?.levelLevel || 0)
 
 /**
  * @description 计算当前段位升级的百分比
@@ -131,7 +124,7 @@ function sliding(event: any) {
 </script>
 
 <template>
-  <div class="step">
+  <div class="step-view">
     <scroll-view
       id="scrollview" class="scroll" scroll-x scroll-with-animation :scroll-left="leftSlide"
       @scroll="sliding"
@@ -163,22 +156,20 @@ function sliding(event: any) {
           <div class="progress-bar" :style="{ width: `${percentage}` }" />
           <div class="i-svg-invite-ellipse elllipse absolute" :style="{ left: `calc(${percentage} - 10rpx)` }" />
           <!-- 进度信息 没有加入不显示 -->
-          <template v-if="myLevel !== 0">
-            <div class="inviteinfo flex-center" :style="{ left: `calc(${percentage} + 10rpx)` }">
-              <div class="flex items-center">
-                <image :src="ImageUrl(props.user.avatar)" mode="scaleToFill" class="avatar mr-2" />
-                <span class="nickname">{{ props.user.nickname }}</span>
-                <span class="level ml-2">
-                  当前等级
-                  <span class="lever-name">{{ props.user.promoter.levelName }}</span>
-                </span>
-              </div>
-              <div class="point mt-2">
-                积分：{{ props.user.promoter.cycleOrderAmount ? props.user.promoter.cycleOrderAmount : 0 }}
-              </div>
-              <div class="i-svg-notch horn absolute" />
+          <div v-if="myLevel !== 0" class="inviteinfo flex-center" :style="{ left: `calc(${percentage} + 10rpx)` }">
+            <div class="flex items-center">
+              <image :src="ImageUrl(props.user.avatar)" mode="scaleToFill" class="avatar mr-2" />
+              <span class="nickname">{{ props.user.nickname }}</span>
+              <span class="level ml-2">
+                当前等级
+                <span class="lever-name">{{ props.user.promoter.levelName }}</span>
+              </span>
             </div>
-          </template>
+            <div class="point mt-2">
+              积分：{{ props.user.promoter.cycleOrderAmount ? props.user.promoter.cycleOrderAmount : 0 }}
+            </div>
+            <div class="i-svg-notch horn absolute" />
+          </div>
         </div>
       </div>
     </scroll-view>
@@ -192,10 +183,11 @@ function sliding(event: any) {
 </template>
 
 <style lang="scss" scoped>
-.step {
+.step-view {
   position: relative;
   width: 100%;
   overflow: scroll;
+
   .scroll {
     width: 100%;
   }

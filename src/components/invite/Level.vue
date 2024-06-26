@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   user: UserInfo
 }>(), {
   levelall: () => [],
+  user: () => ({} as UserInfo),
 })
 </script>
 
