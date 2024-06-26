@@ -113,7 +113,7 @@ const ranklist = computed(() => {
             <div class="userinfo flex items-center ml-4">
               <image :src="ImageUrl(item.avatar)" mode="widthFix" class="avatar" />
               <span class="text nickname">{{ item.nickname }}</span>
-              <div :class="`i-svg-medal-lv${item.levelLevel}`" />
+              <div :class="medalIcon[item.levelLevel - 1]" />
             </div>
             <div class="text price">
               {{ item.orderAmount }}
