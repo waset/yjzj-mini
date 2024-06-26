@@ -3,7 +3,7 @@ export const useOrderStore = defineStore('orders', {
     orders: Order[]
     express: Express
   } => ({
-    orders: [],
+    orders: [] as Order[],
     express: {} as Express,
   }),
 

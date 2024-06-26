@@ -1,8 +1,11 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   order: Order
-}>(), {
-})
+}>()
+
+const emits = defineEmits<{
+  change: [order: Order]
+}>()
 
 // 点击更多显示提示弹窗
 const more = ref([
@@ -10,28 +13,7 @@ const more = ref([
     name: 'detail',
     label: '查看明细',
   },
-  {
-    name: 'again',
-    label: '再来一单',
-  },
 ])
-
-const { detail } = storeToRefs(useProductStore())
-const { addProduct } = useBuyStore()
-
-// 加入购物车
-const addBuyCar = () => {
-  addProduct({
-    ...detail.value,
-    quantity: 1,
-    select: false,
-    delete: false,
-  })
-  uni.showToast({
-    title: '添加成功',
-    icon: 'success',
-  })
-}
 
 // 是否展示下拉菜单
 const showDropSwitch = ref(false)
@@ -56,11 +38,6 @@ const DropFn = (name: string) => {
     case 'detail':
       // 查看明细
       showDetailDialogFn()
-      break
-
-    case 'again':
-      // 再来一单
-      addBuyCar()
       break
   }
 }
@@ -261,7 +238,7 @@ const filterOrder = (status: Order['status']) => {
                   <div class="operation">
                     <order-action
                       :order="props.order" :status="props.order.status" :express="props.order.express"
-                      @add-buy-car="addBuyCar"
+                      @updata="emits('change', props.order)"
                     >
                       <slot />
                     </order-action>

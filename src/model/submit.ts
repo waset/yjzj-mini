@@ -1,3 +1,4 @@
+const { products } = storeToRefs(useBuyStore())
 export const useSubmitOrderStore = defineStore('submitOrder', {
   state: (): {
     couponList: couponList[]
@@ -25,7 +26,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       // 转换的时间戳加上十分钟的时间
       // 转换的减去当前时间戳
       // 在转换为是时分秒
-
       // 转换为时间戳
 
       function convertToTimestamp(dateStr: string) {
@@ -51,19 +51,9 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         return date.getTime()
       }
 
-      // 输出时间戳
-
-      // const convertToTimestamp = (dateTimeStr: string): number => {
-      //   const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
-      //   const date = new Date(isoDateTimeStr)
-      //   const timestamp = date.getTime()
-      //   return timestamp
-      // }
-
       function convertMillisecondsToHMS(milliseconds: number) {
         // 将毫秒转换为秒
         let seconds = Math.floor(milliseconds / 1000)
-
         // 计算小时数
         const hours = Math.floor(seconds / 3600)
         seconds %= 3600
@@ -77,6 +67,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
           seconds,
         }
       }
+
       // 毫秒转时分秒
       function formatMillisecondsToHMS(milliseconds: number) {
         const hms = convertMillisecondsToHMS(milliseconds)
@@ -108,7 +99,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     async canUseCoupon(userAddressID: number, productIDs?: number[], productConfigIDs?: string[]) {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
-
         if (code === 200) {
           this.canUseCouponNum = 0
           data.forEach((item) => {
@@ -142,17 +132,36 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
-          await this.wxpay(data.jsapiPayParams)
-        }
-        if (code === 500 && msg === '有未支付订单') {
-          const pages = getCurrentPages()
-          const page = pages[pages.length - 1]
-          const nowpage = page.route
-          if (nowpage !== 'pages/order/list') {
+          // TODO wxpay.then->支付成功回调，fail->支付失败回调
+          products.value = products.value.filter(element => !element.select)
+          this.wxpay(data.jsapiPayParams).then(() => {
+            // 支付成功跳转的订单列表
             Jump('/pages/order/list')
-          }
+          }).catch(() => {
+            // 支付失败提示
+            uni.showToast({
+              title: '支付失败',
+              icon: 'error',
+            })
+          })
         }
-        if (code !== 200) {
+        else if (code === 500 && msg === '有未支付订单') {
+          uni.showToast({
+            title: msg,
+            icon: 'error',
+            success: () => {
+              const pages = getCurrentPages()
+              const page = pages[pages.length - 1]
+              const nowpage = page.route
+              if (nowpage !== 'pages/order/list') {
+                setTimeout(() => {
+                  Jump('/pages/order/list')
+                }, 1000)
+              }
+            },
+          })
+        }
+        else {
           return uni.showToast({
             title: '下单失败,请重试',
             icon: 'error',
@@ -178,13 +187,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 resolve(res)
               },
               fail: (err) => {
-                const pages = getCurrentPages()
-                const page = pages[pages.length - 1]
-                const nowpage = page.route
-                if (nowpage !== 'pages/order/list') {
-                  Jump('/pages/order/list')
-                }
-
                 reject(err)
               },
               complete: () => {
@@ -205,7 +207,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     async continuePay(id: number) {
       const { data } = await http.post('/web/order/pay/continue', { id }, { auth: true })
 
-      this.wxpay(data.jsapiPayParams)
+      return this.wxpay(data.jsapiPayParams)
     },
     // 取消支付
     async cancelPay(id: number) {
