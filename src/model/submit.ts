@@ -51,14 +51,6 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         return date.getTime()
       }
 
-      // 输出时间戳
-      // const convertToTimestamp = (dateTimeStr: string): number => {
-      //   const isoDateTimeStr = dateTimeStr.replace(' ', 'T')
-      //   const date = new Date(isoDateTimeStr)
-      //   const timestamp = date.getTime()
-      //   return timestamp
-      // }
-
       function convertMillisecondsToHMS(milliseconds: number) {
         // 将毫秒转换为秒
         let seconds = Math.floor(milliseconds / 1000)
@@ -141,8 +133,17 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
           // TODO wxpay.then->支付成功回调，fail->支付失败回调
-          this.wxpay(data.jsapiPayParams)
           products.value = products.value.filter(element => !element.select)
+          this.wxpay(data.jsapiPayParams).then(() => {
+            // 支付成功跳转的订单列表
+            Jump('/pages/order/list')
+          }).catch(() => {
+            // 支付失败提示
+            uni.showToast({
+              title: '支付失败',
+              icon: 'error',
+            })
+          })
         }
         else if (code === 500 && msg === '有未支付订单') {
           uni.showToast({
