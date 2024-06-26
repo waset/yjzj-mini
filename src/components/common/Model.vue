@@ -61,6 +61,7 @@ function maskClose() {
         <div class="msg">
           {{ props.msg }}
         </div>
+        <slot name="inp" />
       </div>
       <div class="footer">
         <slot name="footer">
@@ -81,7 +82,7 @@ function maskClose() {
 
 <style lang="scss" scoped>
   .model {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

@@ -1,7 +1,8 @@
 import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
+import type { App } from 'vue'
 
-export default (app: any) => {
+export default (app: App) => {
   /**
    * Pinia 的持久化存储
    *

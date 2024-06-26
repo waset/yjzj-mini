@@ -104,6 +104,9 @@ interface Product {
   typeParentID: number
   unOrderArea: null
   updatedAt: string
+  quantity?: number
+  select?: boolean
+  delete?: boolean
 }
 
 interface Brand {
@@ -117,6 +120,7 @@ interface CreateAdmin {
 }
 
 interface Param {
+  product: Product
   banner: string[] | null
   content: string[] | string
   createdAt: string
