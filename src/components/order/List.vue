@@ -147,7 +147,7 @@ const filterOrder = (status: Order['status']) => {
                   </div>
                   <div class="price">
                     <span>￥</span>
-                    <span>{{ detailInfo.sellPrice }}</span>
+                    <span>{{ detailInfo.payPrice }}</span>
                   </div>
                 </div>
               </div>
@@ -193,7 +193,7 @@ const filterOrder = (status: Order['status']) => {
               </div>
             </div>
           </div>
-          <div class="service">
+          <!-- <div class="service">
             <div class="body">
               <div class="title">
                 遇到问题？
@@ -205,7 +205,7 @@ const filterOrder = (status: Order['status']) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </common-popup>
