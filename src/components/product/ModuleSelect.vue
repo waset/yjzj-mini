@@ -53,6 +53,7 @@ const reachBottom = () => {
         </div>
       </div>
     </div>
+    <div class="empty" />
   </scroll-view>
 
   <div class="bottom">
@@ -90,6 +91,9 @@ const reachBottom = () => {
 
 .scroll-view {
   height: 626rpx;
+  .empty {
+    height: 40rpx;
+  }
 }
 
 .select {
