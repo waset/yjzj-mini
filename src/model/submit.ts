@@ -215,6 +215,12 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
 
       return code
     },
+    // 取消订单（退款）
+    async refund(id: number) {
+      const { code } = await http.post<cancelPayRes>('/web/order/cancel', { id }, { auth: true })
+
+      return code
+    },
 
   },
 

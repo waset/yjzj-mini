@@ -44,6 +44,7 @@ interface orderDetail {
   orderID: number
   parentNO: string
 
+  productConfigSnapshot: ProductConfigSnapshot
   payPrice: string
   productConfigID: number
   productID: number
@@ -60,6 +61,20 @@ interface orderDetail {
   updatedAt: string
   userID: number
   userTicketID: number
+}
+
+interface ProductConfigSnapshot {
+  createAdminID?: number
+  createdAt?: string
+  createUserID?: number
+  deletedAt?: null
+  id?: number
+  no?: string
+  params?: null
+  shareCode?: string
+  status?: number
+  uniqueCode?: string
+  updatedAt?: string
 }
 
 interface Express {

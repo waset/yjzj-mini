@@ -11,15 +11,6 @@ const tabs = ref<{
   2: '待收货',
 })
 
-const getList = async (status: number) => {
-  await getOrderList(status)
-}
-
-const handleTabClick = async (status: Order['status']) => {
-  tabsIdx.value = status
-  await getList(status)
-}
-
 onLoad((params) => {
   const req = params as {
     status?: Order['status']
@@ -28,6 +19,15 @@ onLoad((params) => {
     tabsIdx.value = req.status
   }
 })
+
+const getList = async (status: number) => {
+  await getOrderList(status)
+}
+
+const handleTabClick = async (status: Order['status']) => {
+  tabsIdx.value = status
+  await getList(status)
+}
 
 onShow(async () => {
   await getList(tabsIdx.value)
@@ -54,7 +54,6 @@ onShow(async () => {
           <template v-for="(item, index) in orders" :key="index">
             <order-list
               :order="(item as Order)" @change="() => {
-                console.log('刷新');
                 handleTabClick(tabsIdx)
               }"
             />

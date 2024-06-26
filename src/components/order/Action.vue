@@ -10,7 +10,7 @@ const emit = defineEmits<{
   (e: 'updata'): void
 }>()
 
-const { continuePay, cancelPay } = useSubmitOrderStore()
+const { continuePay, cancelPay, refund } = useSubmitOrderStore()
 // 查看物流
 const showExpress = ref(false)
 // 物流弹窗内内容
@@ -50,6 +50,25 @@ const confirmcancelOrder = async () => {
   if (code === 200) {
     cancelOrder.value = false
     emit('updata')
+  }
+}
+
+// 退款
+const refundApply = async () => {
+  // 关闭弹窗
+  showModel.value = false
+  // 退款
+  const code = await refund(props.order.id)
+  if (code === 200) {
+    cancelOrder.value = false
+    emit('updata')
+  }
+  else {
+    uni.showToast({
+      title: '退款失败，请联系客服处理',
+      icon: 'none',
+      duration: 2000,
+    })
   }
 }
 </script>
@@ -101,7 +120,7 @@ const confirmcancelOrder = async () => {
         </div>
       </div>
     </common-popup>
-    <common-model v-model:show="showModel" msg="确认退款吗" icon="i-svg-warn" />
+    <common-model v-model:show="showModel" msg="确认退款吗" icon="i-svg-warn" @ok="refundApply" />
     <common-model v-model:show="cancelOrder" msg="取消后订单将无法恢复，确认取消吗？" icon="i-svg-warn" @ok="confirmcancelOrder" />
     <div v-if="props.status === OrderStatus.Wait">
       <div class="wait">
@@ -119,9 +138,6 @@ const confirmcancelOrder = async () => {
           <div class="shipped">
             <div class="logistics" @click.stop="viewLogistics(props.express)">
               查看物流
-            </div>
-            <div class="received">
-              确认收货
             </div>
           </div>
         </div>
