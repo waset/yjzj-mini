@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { detail, isDiy, types } = storeToRefs(useProductStore())
 const { products } = storeToRefs(useBuyStore())
-const { gamesList } = storeToRefs(useDiyStore())
+const { gamesList, ModificationList } = storeToRefs(useDiyStore())
 const { getProductDetail, categorys, getCategorys } = useProductStore()
 const { getGamesList, getModificationList, configurationList, addConfiguration } = useDiyStore()
 const { addProduct } = useBuyStore()
@@ -44,11 +44,11 @@ const swiperbox = ref()
 const getModificationListParams = ref<Modification>({
   productTypeParentID: 0,
   productTypeID: 0,
-  page: 1,
+  page: 0,
   pageSize: 10,
 })
 // 配置弹窗的显示列表
-const ModificationList = ref<any>([])
+// const ModificationList = ref<any>([])
 // 打开的是第几项配置
 const openIndex = ref<number>(0)
 
@@ -59,13 +59,18 @@ const changeSwiperFn = (value: number) => {
 
 // 获取配置列表数据
 const getAllocationList = async () => {
-  ModificationList.value = await getModificationList(getModificationListParams.value)
+  getModificationListParams.value.page += 1
+  getModificationList(getModificationListParams.value)
 }
 
 // 打开选择配置组件的弹窗
 const openSelectPop = async (index: number) => {
+  // 切换不同配置 重置请求页码
+  getModificationListParams.value.page = 0
+  // 要打开的第几个配置
   openIndex.value = index
   changeAllocation.value = true
+
   getModificationListParams.value.productTypeParentID = categorys.components.value
   await getCategorys('components', 1, 20)
   getModificationListParams.value.productTypeID = types.value[index].id
@@ -134,7 +139,6 @@ const selectAction = (item: gamesList) => {
     assignment.value.push(item)
   }
 }
-
 // 确认选择的游戏
 const confirmGames = () => {
   useGamesList.value = JSON.parse(JSON.stringify(assignment.value))
@@ -142,7 +146,6 @@ const confirmGames = () => {
   swiperbox.value.reset()
   showGames.value = false
 }
-
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.id) {
@@ -154,7 +157,6 @@ onShow(async () => {
   const gemelist = await getGamesList() || []
   useGamesList.value = gemelist
   assignment.value = JSON.parse(JSON.stringify(gemelist))
-
   if (productId.value) {
     await getProductDetail(productId.value)
   }
@@ -253,26 +255,27 @@ onShow(async () => {
     </common-popup>
 
     <common-popup :show="changeAllocation" name="修改配置" height="80%" @close="changeAllocation = false">
-      <div>
-        <div class="select">
-          <navbar-back text="选择组件" />
+      <div class="select">
+        <!-- <navbar-back text="选择组件" /> -->
+        <div class="header">
           <common-search />
           <common-sort-filter :has-layout="false" @change="onChange" />
-          <div v-if="showSelected.length" class="showSelected">
-            <div>筛选条件：</div>
-            <div v-for="(item, index) in showSelected" :key="index" class="selectedItem">
-              {{
-                item.name
-              }}
-              <div class="i-icons-closed" @click="remove(index)" />
-            </div>
+        </div>
+
+        <div v-if="showSelected.length" class="showSelected">
+          <div>筛选条件：</div>
+          <div v-for="(item, index) in showSelected" :key="index" class="selectedItem">
+            {{
+              item.name
+            }}
+            <div class="i-icons-closed" @click="remove(index)" />
           </div>
-          <common-popup :show="filte" name="筛选" @close="filte = false">
-            <product-filter-list @confirm="confirmFn" />
-          </common-popup>
-          <div class="commodity_list">
-            <product-module-select :list="ModificationList" @confirm="replaceAllocation" />
-          </div>
+        </div>
+        <common-popup :show="filte" name="筛选" @close="filte = false">
+          <product-filter-list @confirm="confirmFn" />
+        </common-popup>
+        <div class="commodity_list">
+          <product-module-select :list="ModificationList" @confirm="replaceAllocation" @loadmore="getAllocationList" />
         </div>
       </div>
     </common-popup>

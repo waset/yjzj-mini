@@ -4,6 +4,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{
   (e: 'confirm', index: number): void
+  (e: 'loadmore'): void
 }>()
 const selectIndex = ref<number>(0)
 
@@ -14,39 +15,46 @@ const isSelect = (index: number) => {
 const okfn = () => {
   emit('confirm', selectIndex.value)
 }
+// 触底加载
+const reachBottom = () => {
+  emit('loadmore')
+}
 </script>
 
 <template>
-  <div v-for="(item, index) in props.list" :key="index">
-    <div class="select" @click="selectIndex = index">
-      <div v-if="isSelect(index)" class="selectbg" />
-      <div v-if="isSelect(index)" class="selected">
-        <div class="i-icons-correct" />
-      </div>
-      <div v-if="!isSelect(index)" class="line topLine" />
-      <div v-if="!isSelect(index)" class="line bottomLine" />
-      <div class="goodsImg">
-        <image class="img" :src="ImageUrl(item.banner[0])" mode="scaleToFill" />
-      </div>
-      <div class="goodsInfo">
-        <div class="row1 fs28">
-          {{ item.name }}
+  <scroll-view :scroll-y="true" class="scroll-view" @scrolltolower="reachBottom">
+    <div v-for="(item, index) in props.list" :key="index">
+      <div class="select" @click="selectIndex = index">
+        <div v-if="isSelect(index)" class="selectbg" />
+        <div v-if="isSelect(index)" class="selected">
+          <div class="i-icons-correct" />
         </div>
-        <div class="row2 fs20">
-          {{ item.description }}
+        <div v-if="!isSelect(index)" class="line topLine" />
+        <div v-if="!isSelect(index)" class="line bottomLine" />
+        <div class="goodsImg">
+          <image class="img" :src="ImageUrl(item.banner[0])" mode="scaleToFill" />
         </div>
-        <div class="row3">
-          <div class="fs24 check">
-            查看详情
-            <div class="i-icons-right" />
+        <div class="goodsInfo">
+          <div class="row1 fs28">
+            {{ item.name }}
           </div>
-          <div class="fs32 price">
-            ￥{{ item.sellPrice }}
+          <div class="row2 fs20">
+            {{ item.description }}
+          </div>
+          <div class="row3">
+            <div class="fs24 check">
+              查看详情
+              <div class="i-icons-right" />
+            </div>
+            <div class="fs32 price">
+              ￥{{ item.sellPrice }}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </scroll-view>
+
   <div class="bottom">
     <div class="center">
       <div class="left" />
@@ -78,6 +86,10 @@ const okfn = () => {
 
 .fs32 {
   font-size: 32rpx;
+}
+
+.scroll-view {
+  height: 626rpx;
 }
 
 .select {

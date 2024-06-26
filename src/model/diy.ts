@@ -1,10 +1,11 @@
 export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
+    ModificationList: any
 
   } => ({
     gamesList: [],
-
+    ModificationList: [],
   }),
   getters: {
 
@@ -30,7 +31,7 @@ export const useDiyStore = defineStore('diy', {
     async getModificationList(params: Modification) {
       const { code, data } = await http.post('/web/product/list/by/params', params, { auth: true })
       if (code === 200) {
-        return data
+        return this.ModificationList = [...this.ModificationList, ...data]
       }
     },
     // 获取配置单列表
