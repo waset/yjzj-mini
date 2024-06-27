@@ -142,6 +142,19 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
             uni.showToast({
               title: '支付失败',
               icon: 'error',
+
+              duration: 2000,
+              // 跳转订单列表
+              success: () => {
+                const pages = getCurrentPages()
+                const page = pages[pages.length - 1]
+                const nowpage = page.route
+                if (nowpage !== 'pages/order/list') {
+                  setTimeout(() => {
+                    Jump('/pages/order/list')
+                  }, 1000)
+                }
+              },
             })
           })
         }

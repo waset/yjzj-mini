@@ -23,7 +23,7 @@ const checkFn = (index: number) => {
         <div class="goodsImg">
           <div class="i-svg-product-bg" />
           <div class="img">
-            <product-image :src="item?.banner[0] || ''" width="120rpx" height="120rpx" />
+            <product-image :src="item?.banner[0] || ''" width="160rpx" height="160rpx" />
           </div>
         </div>
         <div class="goodsOptions">
@@ -111,7 +111,7 @@ const checkFn = (index: number) => {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
       }
     }
 
@@ -120,6 +120,13 @@ const checkFn = (index: number) => {
       height: 144rpx;
 
       .goodsTitle {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+
         font-weight: 500;
         font-size: 28rpx;
         color: #fff;

@@ -168,7 +168,6 @@ const handleClick = (item: Product) => {
             // background: red;
             width: 100%;
             display: flex;
-            gap: 16rpx;
 
             .price {
               background-image: linear-gradient(83deg, rgba(39, 39, 39, 0) -0.81%, rgba(190, 190, 190, 0.4) 29%, rgba(190, 190, 190, 0.4) 64.01%, rgba(39, 39, 39, 0) 92.9%);
@@ -188,8 +187,14 @@ const handleClick = (item: Product) => {
               border-radius: 60rpx;
 
               .btn {
-                color: #000;
-                background-color: #A7f522;
+                @apply flex-center;
+
+                width: 80rpx;
+                height: 80rpx;
+                font-size: 40rpx;
+                color: #333;
+                background: #A7F522;
+                border-radius: 48rpx 48rpx 48rpx 48rpx;
               }
             }
           }
