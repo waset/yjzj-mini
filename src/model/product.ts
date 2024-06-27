@@ -72,6 +72,12 @@ export const useProductStore = defineStore('product', {
 
       if (code === 200)
         return { data, page }
+      else {
+        uni.showToast({
+          title: '列表请求失败,请重试',
+          icon: 'error',
+        })
+      }
     },
   },
 })
