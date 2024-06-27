@@ -250,7 +250,7 @@ onMounted(() => {
             <input v-model="addReqParams.phone" type="text" :maxlength="11">
           </div>
           <div class="row">
-            <div>收获地址</div>
+            <div>收货地址</div>
             <picker
               mode="multiSelector" :value="multiIndex" :range="newAddressList" range-key="label"
               @change="bindPickerChange" @columnchange="pickerColumnchange"
