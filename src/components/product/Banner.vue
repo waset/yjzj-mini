@@ -27,10 +27,10 @@ const banner_images = computed<string[]>(() => {
       </div>
       <div class="body">
         <template v-if="props.list && props.list.length">
-          <div class="indicator">
+          <scroll-view scroll-y class="indicator" :scroll-into-view="`item-${current}`">
             <template v-for="(item, index) in banner_images" :key="index">
               <div
-                class="item" :class="{
+                :id="`item-${index}`" class="item" :class="{
                   active: current === index,
                 }"
               >
@@ -46,10 +46,10 @@ const banner_images = computed<string[]>(() => {
                 </div>
               </div>
             </template>
-          </div>
+          </scroll-view>
           <div class="carousel">
             <carousel
-              v-model:current="current" :list="banner_images" autoplay loop :height="500"
+              v-model:current="current" :list="banner_images" loop :height="500"
               easing-function="linear" :duration="500"
             />
             <div class="statement">
@@ -62,8 +62,7 @@ const banner_images = computed<string[]>(() => {
             <image
               src="@/assets/background/product-detail.svg" :style="{
                 width: '100%',
-              }"
-              mode="scaleToFill"
+              }" mode="scaleToFill"
             />
           </div>
         </template>
@@ -144,7 +143,6 @@ const banner_images = computed<string[]>(() => {
           @apply flex-start;
           flex-direction: column;
           overflow: hidden;
-          overflow-y: scroll;
 
           padding: 16rpx;
           height: 456rpx;
@@ -153,7 +151,7 @@ const banner_images = computed<string[]>(() => {
           background: linear-gradient(180deg, rgba(48, 48, 48, 1) 26%, rgba(94, 94, 94, 1) 48%, rgba(94, 94, 94, 1) 51%, rgba(48, 48, 48, 1) 77%);
 
           .item {
-            position: relative;
+            @apply flex-center;
 
             .img {
               display: block;
@@ -186,7 +184,7 @@ const banner_images = computed<string[]>(() => {
           }
         }
 
-        .empty{
+        .empty {
           width: 100%;
           @apply flex-center;
         }

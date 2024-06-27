@@ -79,6 +79,9 @@ onShow(async () => {
 onMounted(async () => {
   // 商品详情进入
   if (buyType === 'buy') {
+    if (!detail.value) {
+      return
+    }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id, number: 1, relationType: 1 })
     totalNumber.value = 1
@@ -182,111 +185,111 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
-$top-height: 112rpx;
-$bottom-height: 156rpx;
+  $top-height: 112rpx;
+  $bottom-height: 156rpx;
 
-$Be: #BEBEBE;
+  $Be: #BEBEBE;
 
-.body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-
-  .addressBox {
-    width: 686rpx;
-    margin: 32rpx auto
-  }
-
-  .top-wrap {
-    height: $top-height;
-  }
-
-  .body-wrap {
-    flex: 1;
-  }
-
-  .bottom-wrap {
-    height: $bottom-height;
-  }
-
-  .CouponsAndNotes {
-    width: 686rpx;
-    height: 112rpx;
+  .body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin: 32rpx auto;
-    font-size: 28rpx;
-    box-sizing: border-box;
-    padding-left: 32rpx;
+    flex: 1;
+    overflow: hidden;
 
-    .counpons {
-      display: flex;
-      justify-content: space-between;
+    .addressBox {
+      width: 686rpx;
+      margin: 32rpx auto
     }
 
-    .notes {
-      margin-top: 32rpx;
-      display: flex;
-      justify-content: space-between;
-
+    .top-wrap {
+      height: $top-height;
     }
 
-    .beColor {
-      color: #BEBEBE;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .body-wrap {
+      flex: 1;
+    }
 
-      .red {
-        color: #F53F3F;
+    .bottom-wrap {
+      height: $bottom-height;
+    }
+
+    .CouponsAndNotes {
+      width: 686rpx;
+      height: 112rpx;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 32rpx auto;
+      font-size: 28rpx;
+      box-sizing: border-box;
+      padding-left: 32rpx;
+
+      .counpons {
+        display: flex;
+        justify-content: space-between;
       }
 
-      .text {
+      .notes {
+        margin-top: 32rpx;
+        display: flex;
+        justify-content: space-between;
+
+      }
+
+      .beColor {
+        color: #BEBEBE;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        .badge {
-          width: 32rpx;
-          height: 32rpx;
-          border-radius: 50%;
-          background-color: #F53F3F;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-          font-size: 20rpx;
-          margin-left: 8rpx;
+        .red {
+          color: #F53F3F;
         }
 
+        .text {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .badge {
+            width: 32rpx;
+            height: 32rpx;
+            border-radius: 50%;
+            background-color: #F53F3F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20rpx;
+            margin-left: 8rpx;
+          }
+
+        }
+
+        .text1 {
+          max-width: 400rpx;
+          max-height: 80rpx;
+          font-size: 28rpx;
+          overflow: hidden;
+          word-break: break-all; // 如果文本为一段很长的英文，使用后能使一个单词能够在换行时进行拆分
+          text-overflow: ellipsis; // 当对象内文本溢出时显示省略标记（…）
+          display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示
+          -webkit-line-clamp: 2;
+          /* 控制显示的行数，表示展示X行后多余的缩略展示 */
+          -webkit-box-orient: vertical; // 设置或检索伸缩盒对象的子元素的排列方式
+
+        }
+
+        .i-icons-right {
+          font-size: 32rpx;
+          width: 32rpx;
+          height: 32rpx;
+        }
       }
 
-      .text1 {
-        max-width: 400rpx;
-        max-height: 80rpx;
-        font-size: 28rpx;
-        overflow: hidden;
-        word-break: break-all; // 如果文本为一段很长的英文，使用后能使一个单词能够在换行时进行拆分
-        text-overflow: ellipsis; // 当对象内文本溢出时显示省略标记（…）
-        display: -webkit-box; // 将对象作为弹性伸缩盒子模型显示
-        -webkit-line-clamp: 2;
-        /* 控制显示的行数，表示展示X行后多余的缩略展示 */
-        -webkit-box-orient: vertical; // 设置或检索伸缩盒对象的子元素的排列方式
-
-      }
-
-      .i-icons-right {
-        font-size: 32rpx;
-        width: 32rpx;
-        height: 32rpx;
-      }
     }
 
   }
-
-}
 </style>
 <!--
 <route lang="json">

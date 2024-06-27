@@ -3,7 +3,7 @@ export const useProductStore = defineStore('product', {
     categorys: Categorys
     types: ProductType[]
     products: Product[]
-    detail: Product
+    detail: Product | null
   } => ({
     // 产品类目
     categorys: {
@@ -17,7 +17,7 @@ export const useProductStore = defineStore('product', {
     types: [],
     // 这里存放数据
     products: [],
-    detail: {} as Product,
+    detail: null,
   }),
   getters: {
     isDiy: (state) => {
@@ -52,12 +52,14 @@ export const useProductStore = defineStore('product', {
     // 获取产品详情
     async getProductDetail(id?: number) {
       if (!id) {
+        this.detail = null
         return
       }
       const { data, code } = await http.post<Product>('/web/product/info', { id }, { auth: false })
 
-      if (code === 200)
+      if (code === 200) {
         this.detail = data
+      }
     },
   },
 })

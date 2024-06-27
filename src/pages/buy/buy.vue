@@ -167,7 +167,6 @@ $bottom-height: 156rpx;
 
 .buy {
   position: relative;
-  height: calc(var(--body-min-height) - $top-height - $bottom-height);
   display: flex;
   flex-direction: column;
   overflow: hidden;
