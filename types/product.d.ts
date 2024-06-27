@@ -39,6 +39,14 @@ interface GetProductParams {
    */
   name?: string
 }
+
+interface GetrecommendPar {
+  CPUType: string
+  productTypeParentID: number
+  sellPriceMax: number
+  sellPriceMin: number
+}
+
 interface Product {
   banner: string[]
   brand: Brand

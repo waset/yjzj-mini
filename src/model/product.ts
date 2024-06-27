@@ -4,6 +4,7 @@ export const useProductStore = defineStore('product', {
     types: ProductType[]
     products: Product[]
     detail: Product
+    recommendlist: Product[]
   } => ({
     // 产品类目
     categorys: {
@@ -18,6 +19,7 @@ export const useProductStore = defineStore('product', {
     // 这里存放数据
     products: [],
     detail: {} as Product,
+    recommendlist: [], // 智能推荐
   }),
   getters: {
     isDiy: (state) => {
@@ -58,6 +60,18 @@ export const useProductStore = defineStore('product', {
 
       if (code === 200)
         this.detail = data
+    },
+
+    // 获取智能推荐列表
+    async recommendList(params: GetrecommendPar, pages: number, pageSize: number) {
+      const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
+        ...params,
+        page: pages,
+        pageSize,
+      }, { auth: false })
+
+      if (code === 200)
+        return { data, page }
     },
   },
 })

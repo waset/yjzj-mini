@@ -95,7 +95,7 @@ const setPrice = (item: pricelist) => {
   x1.value = sub(item.end)
 }
 
-const select = ref<'intel' | 'amd'>('intel')
+const select = ref<'Intel' | 'AMD'>('Intel')
 </script>
 
 <template>
@@ -150,16 +150,15 @@ const select = ref<'intel' | 'amd'>('intel')
             CPU平台
           </div>
           <div class="itembox">
-            <div class="cpuitem" @click="select = 'intel'">
+            <div class="cpuitem" @click="select = 'Intel'">
               <div class="i-svg-intericon" />
-
-              <div v-if="select === 'intel'" class="triangle">
+              <div v-if="select === 'Intel'" class="triangle">
                 <div class="i-icons-correct" />
               </div>
             </div>
-            <div class="cpuitem" @click="select = 'amd'">
-              <div class="i-icons-amd" />
-              <div v-if="select === 'amd'" class="triangle">
+            <div class="cpuitem" @click="select = 'AMD'">
+              <div class="i-svg-amd" />
+              <div v-if="select === 'AMD'" class="triangle">
                 <div class="i-icons-correct" />
               </div>
             </div>
@@ -168,7 +167,7 @@ const select = ref<'intel' | 'amd'>('intel')
       </div>
     </div>
 
-    <div class="btn">
+    <div class="btn" @click="Jump('/pages/recommend/recommendlist', { start: starPrice, end: endPrice, cpu: select })">
       开始只能推荐
     </div>
   </div>
@@ -496,6 +495,7 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
   transform: translateX(-50%);
   bottom: calc(38rpx + env(safe-area-inset-bottom));
 }
+
 .btn:active {
   background-color: #7bbd09;
 }
