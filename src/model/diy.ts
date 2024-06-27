@@ -2,14 +2,10 @@ export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
     ModificationList: any
-
   } => ({
     gamesList: [],
     ModificationList: [],
   }),
-  getters: {
-
-  },
   actions: {
     // 制空数据列表
     setModificationListNull() {
@@ -17,7 +13,7 @@ export const useDiyStore = defineStore('diy', {
     },
     // 获取游戏列表
     async getGamesList() {
-      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 })
+      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 }, { auth: false })
 
       if (code === 200) {
         this.gamesList = data
@@ -26,14 +22,14 @@ export const useDiyStore = defineStore('diy', {
     },
     // 获取游戏性能
     async getGamePower(params: powerParams) {
-      const { code, data } = await http.post<FpsPowerRes[]>('/web/game/performance/list', params)
+      const { code, data } = await http.post<FpsPowerRes[]>('/web/game/performance/list', params, { auth: false })
       if (code === 200) {
         return data
       }
     },
     // 获取改配的列表`
     async getModificationList(params: Modification) {
-      const { code, data } = await http.post('/web/product/list/by/params', params)
+      const { code, data } = await http.post('/web/product/list/by/params', params, { auth: false })
       if (code === 200) {
         this.ModificationList = [...this.ModificationList, ...data]
       }
@@ -41,7 +37,7 @@ export const useDiyStore = defineStore('diy', {
 
     // 获取配置单列表
     async configurationList(params: configurationListReq) {
-      await http.post('/web/product/config/list', params)
+      await http.post('/web/product/config/list', params, { auth: false })
     },
 
     // 新增配置单
@@ -55,10 +51,8 @@ export const useDiyStore = defineStore('diy', {
 
     // 获取配置的筛选条件
     async getFilter() {
-      await http.post('/web/product/type/param/list', { ids: [2000] })
+      await http.post('/web/product/type/param/list', { ids: [2000] }, { auth: false })
     },
 
   },
-
-  // persist: true,
 })

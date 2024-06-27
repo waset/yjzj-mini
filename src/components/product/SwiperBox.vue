@@ -34,7 +34,7 @@ const handleParams = () => {
   copyPararms.value.cpuTag2IDS = props?.params[0].product.tags2
   copyPararms.value.displayCardTag2IDs = props?.params[2].product.tags2
   copyPararms.value.resolutionType = selectPower.value === '1080' ? 1 : 2
-  copyPararms.value.gameID = props.list[pcurrent.value].id
+  copyPararms.value.gameID = props.list[pcurrent.value]?.id
   // 然后删除不需要的属性
   if (powerParams.value.cpuTag2IDS?.length === 0) {
     delete copyPararms.value.cpuTag2IDS
@@ -58,7 +58,7 @@ const reset = () => {
 }
 // 请求游戏性能
 const getpower = async () => {
-  await handleParams()
+  handleParams()
   const arr = ref<any>([])
   arr.value = await getGamePower(copyPararms.value)
   if (arr.value.length === 0) {

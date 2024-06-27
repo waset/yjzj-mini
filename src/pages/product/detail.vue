@@ -35,6 +35,17 @@ const showGames = ref<boolean>(false)
 // const swiperList = ref<gamesList[]>([])
 //  用于展示轮播图的游戏列表
 const useGamesList = ref<gamesList[]>([])
+// swiper 当前背景
+const gameBg = computed(() => {
+  let img = ''
+  if (useGamesList.value.length !== 0) {
+    img = ImageUrl(useGamesList.value[current.value].cover)
+  }
+  else {
+    img = StaticUrl('/images/login-bg.png')
+  }
+  return `url(${img})`
+})
 // 用于确定时赋值的游戏列表
 const assignment = ref<gamesList[]>([])
 // 搜索文字
@@ -247,10 +258,7 @@ watch(() => getModificationListParams.value.productName, async () => {
     </div>
 
     <div v-if="isDiy" class="swiper">
-      <div
-        class="content"
-        :style="{ backgroundImage: useGamesList.length !== 0 ? `url(https://file.yjzj.com/${useGamesList[current]?.cover || ''}` : `url(${StaticUrl('/images/login-bg.png')})` }"
-      >
+      <div class="content" :style="{ '--bg-img': gameBg }">
         <product-swiper-box
           ref="swiperbox" :list="useGamesList" :pcurrent="current" :params="detail.params"
           @select-games="showGames = true" @change-swiper="changeSwiperFn"
@@ -409,7 +417,9 @@ watch(() => getModificationListParams.value.productName, async () => {
         padding: 32rpx 22rpx;
         border-radius: 32rpx;
         background-size: cover;
-        background-position: left
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-image: var(--bg-img);
       }
     }
 
