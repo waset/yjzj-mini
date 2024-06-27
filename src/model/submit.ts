@@ -4,19 +4,17 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     couponList: couponList[]
     canUseCouponNum: number
     provider: string
-    buyType: string
-
+    buyType: 'buy' | 'car'
   } => ({
     couponList: [],
     canUseCouponNum: 0,
     provider: '',
-    buyType: '',
-
+    buyType: 'buy',
   }),
   getters: {
   },
   actions: {
-    changeBuyType(type: string) {
+    changeBuyType(type: 'buy' | 'car') {
       this.buyType = type
     },
 
