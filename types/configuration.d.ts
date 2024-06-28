@@ -2,14 +2,6 @@
  * 配置单类型定义
  */
 interface Configuration {
-  code?: number
-  data?: Datum[]
-  extra?: null
-  msg?: string
-  page?: Page
-}
-
-interface Datum {
   cartNumber?: number
   collectNumber?: number
   createAdmin?: CreateAdmin
@@ -20,7 +12,7 @@ interface Datum {
   id?: number
   isCollect?: number
   no?: string
-  params?: DatumParam[]
+  params?: ConfigurationParam[]
   products?: Product[]
   sellNumber?: number
   sellPrice?: string
@@ -35,62 +27,10 @@ interface CreateAdmin {
   userName?: string
 }
 
-interface DatumParam {
+interface ConfigurationParam {
   num: number
   pID: number
 }
-
-interface Product {
-  banner: string[]
-  configNO: string
-  configUniqueCode: string
-  content: string[]
-  createAdminID: number
-  createdAt: string
-  deletedAt: null
-  description: string
-  freezeNumber: number
-  id: number
-  maxBuyNumber: number
-  mergeProductIDs: null
-  name: string
-  no: string
-  onceMaxNumber: number
-  onceMinNumber: number
-  params: ProductParam[]
-  priceType: number
-  rebateType: number
-  rebateValue: number
-  sellNumber: number
-  sellPrice: string
-  sort: number
-  status: number
-  stockNumber: number
-  tagPrice: string
-  tags: number[] | null
-  tags2: null
-  tagTitle: string
-  typeID: number
-  typeName: string
-  unOrderArea: null
-  updatedAt: string
-}
-
-interface ProductParam {
-  createdAt: string
-  deletedAt: null
-  formProductID: number
-  id: number
-  number: number
-  paramDesc: string
-  paramID: number
-  paramType: string
-  paramValue: any[] | string
-  productID: number
-  productTypeID: number
-  updatedAt: string
-}
-
 interface Page {
   currentPage?: number
   LastPage?: number
