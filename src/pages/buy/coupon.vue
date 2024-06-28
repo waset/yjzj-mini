@@ -17,11 +17,10 @@ onShow(async () => {
 const show = ref<boolean>(false)
 const rule = ref('')
 const showrule = (index: number) => {
+  show.value = !show.value
   if (show.value) {
-    return show.value = false
+    rule.value = couponList.value[index].ticketInfo.instruction || ''
   }
-  rule.value = couponList.value[index].ticketInfo.instruction || ''
-  show.value = true
 }
 
 // 更新优惠券列表
