@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { getConfiguration } = useConfigurationStore()
+const { getList: getConfiguration, del: deleteConfiguration } = useConfigurationStore()
 const { configurations } = storeToRefs(useConfigurationStore())
 
 // 获取配置列表
@@ -10,6 +10,30 @@ const getList = async () => {
 onShow(async () => {
   await getList()
 })
+
+const deleteFn = async (no: Required<Configuration>['no']) => {
+  // 删除配置单
+  const code = await deleteConfiguration(no)
+  if (code === 200) {
+    uni.showToast({
+      title: '删除成功',
+      icon: 'none',
+      duration: 2000,
+      success: () => {
+        setTimeout(() => {
+          getList()
+        }, 1000)
+      },
+    })
+  }
+  else {
+    uni.showToast({
+      title: '删除配置单失败，请稍后再试',
+      icon: 'none',
+      duration: 2000,
+    })
+  }
+}
 </script>
 
 <template>
@@ -18,20 +42,35 @@ onShow(async () => {
   <div class="configuration">
     <div class="body">
       <div class="box">
-        <template v-if="configurations && configurations.length">
-          <template v-for="(configuration, index) in configurations" :key="index">
-            <configure-list :configuration="configuration" />
+        <div v-if="configurations && configurations.length" class="list-box">
+          <template v-for="(item, index) in configurations" :key="index">
+            <configure-list :configuration="item" @del="(no) => deleteFn(no)" />
           </template>
-        </template>
-        <template v-else>
+        </div>
+        <div v-else class="empty-box">
           <div class="empty">
             <common-empty text="您还没有配置单哦" />
           </div>
-        </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.configuration {
+
+  .body {
+
+    .box {
+
+      .list-box {
+        display: flex;
+        flex-direction: column;
+
+        gap: 32rpx;
+      }
+    }
+  }
+}
 </style>
