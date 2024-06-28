@@ -168,7 +168,7 @@ const select = ref<'Intel' | 'AMD'>('Intel')
     </div>
 
     <div class="btn" @click="Jump('/pages/recommend/recommendlist', { start: starPrice, end: endPrice, cpu: select })">
-      开始只能推荐
+      开始智能推荐
     </div>
   </div>
 </template>

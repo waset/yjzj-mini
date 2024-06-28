@@ -59,7 +59,7 @@ const getProduct = async () => {
   lastpage.value = data?.page?.lastPage || 1000
 }
 onLoad((params) => {
-  if (params?.value.cpu) {
+  if (params?.cpu) {
     Params.value.cpu = params?.cpu
     Params.value.start = params?.start
     Params.value.end = params?.end
