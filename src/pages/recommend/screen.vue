@@ -411,7 +411,7 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 110rpx;
+        font-size: 145rpx;
         color: #272727;
 
         .i-icons-correct {
