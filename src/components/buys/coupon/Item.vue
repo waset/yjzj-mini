@@ -40,7 +40,8 @@ const compareTime = (targetTime: string) => {
 
   // 获取当前时间的时间戳（单位：毫秒）
   const currentTimestamp = Date.now()
-
+  if (!targetTime)
+    return '#8E8B84' // 处理空或无效的时间输入
   // 比较目标时间戳与当前时间戳
   if (targetTimestamp > currentTimestamp) {
     return '#D3AC4D'
