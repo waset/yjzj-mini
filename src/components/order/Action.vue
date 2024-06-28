@@ -60,7 +60,6 @@ const refundApply = async () => {
   // 退款
   const code = await refund(props.order.id)
   if (code === 200) {
-    cancelOrder.value = false
     emit('updata')
   }
   else {
