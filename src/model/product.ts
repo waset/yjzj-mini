@@ -64,17 +64,22 @@ export const useProductStore = defineStore('product', {
 
     // 获取智能推荐列表
     async recommendList(params: GetrecommendPar, pages: number, pageSize: number) {
-      const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
-        ...params,
-        page: pages,
-        pageSize,
-      }, { auth: false })
-
-      if (code === 200)
-        return { data, page }
-      else {
+      try {
+        const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
+          ...params,
+          page: pages,
+          pageSize,
+        }, { auth: false })
+        if (code === 200) {
+          return { data, page }
+        }
+        else {
+          throw new Error('列表请求失败')
+        }
+      }
+      catch (error) {
         uni.showToast({
-          title: '列表请求失败,请重试',
+          title: '请求失败',
           icon: 'error',
         })
       }
