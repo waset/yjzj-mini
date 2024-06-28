@@ -59,7 +59,19 @@ const percentage = computed(() => {
 })
 
 // 升级轮播滑动值
-const elSlide = ref(0)
+const elSlide = ref<number>(0)
+
+// 横向滚动条位置
+const leftSlide = ref(0)
+
+// 当前的滑动位置
+const autoSlide = ref(0)
+
+// 是否滑倒最左边了
+const isTouchLeft = ref(false)
+
+// 是否滑倒最右边了
+const isTouchRight = ref(false)
 
 onReady(() => {
   // 元素信息
@@ -68,24 +80,22 @@ onReady(() => {
     .select('#scrollview')
     .fields({ size: true, scrollOffset: true }, (data: any) => {
       elSlide.value = data.scrollWidth - data.width
+      localize(elSlide.value)
     })
     .exec()
 })
 
-// 邀请升级进度
-// const tempo = ref('15%')
-
-// 横向滚动条位置
-const leftSlide = ref(0)
-
-// 手动滑动距离
-const autoSlide = ref(0)
-
-// 是否滑倒最左边了
-const isTouchLeft = ref(false)
-
-// 是否滑倒最右边了
-const isTouchRight = ref(false)
+// 初始化位置
+function localize(elSlide: number) {
+  if (percentage.value && elSlide) {
+    const per = percentage.value
+    const gap = Number(per.slice(0, per.length - 1)) / 100
+    leftSlide.value = elSlide * gap
+    // 左右箭头到底不显示
+    isTouchLeft.value = leftSlide.value === 0
+    isTouchRight.value = leftSlide.value === elSlide
+  }
+}
 
 // 向右滑动
 function slideRight() {
@@ -135,8 +145,8 @@ function sliding(event: any) {
             class="medal flex-center" style="width: 400rpx;height: 600rpx;"
             :style="{ marginRight: item.level !== list.length ? '48rpx' : '0' }"
           >
-            <div class="icon" :class="`${list[item.level]?.icon}`" />
-            <div class="icon shadows" :class="`${list[item.level]?.icon}`" />
+            <div class="icon" :class="`${list[item.level - 1]?.icon}`" />
+            <div class="icon shadows" :class="`${list[item.level - 1]?.icon}`" />
             <div class="dec mt--12">
               <div class="preforman">
                 积分{{ item.performanceMin }}-{{ item.performanceMax }}
