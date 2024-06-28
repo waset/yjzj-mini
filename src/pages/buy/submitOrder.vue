@@ -2,7 +2,7 @@
 const { nowAddress } = storeToRefs(useAddressStore())
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
-const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
+const { canUseCouponNum, canusecouponList } = storeToRefs(useSubmitOrderStore())
 const { getCouponList, submitOrderReq, canUseCoupon, buyType } = useSubmitOrderStore()
 const page = ref<number>(1)
 
@@ -116,6 +116,7 @@ onMounted(async () => {
 
     submitOrderParams.value.details = arr.value
     // 查询可用的优惠券
+    canusecouponList.value = []
     await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
   }
 })
