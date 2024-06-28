@@ -3,7 +3,7 @@ const { addressList } = storeToRefs(useAddressStore())
 const { getAddressList, newAddress, delAddress, editAddress } = useAddressStore()
 
 // ===== data ===================================
-
+const back = ref<boolean>(false)
 const page = ref<number>(1)
 
 // 新增地址请求参数
@@ -220,6 +220,12 @@ onMounted(() => {
   // 初始化数据
   initAddress()
 })
+
+onLoad((options) => {
+  if (options?.back) {
+    back.value = options.back
+  }
+})
 </script>
 
 <template>
@@ -231,8 +237,8 @@ onMounted(() => {
         <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-union" />
       </div>
       <address-item-card
-        :addressdata="addressList" @delete-address="delAddressFn" @set-default="setDefaultFn"
-        @edit-address="editAddressFn"
+        :select="back" :addressdata="addressList" @delete-address="delAddressFn"
+        @set-default="setDefaultFn" @edit-address="editAddressFn"
       />
       <div class="newAddress" @click="newAdd()">
         新增收货地址
