@@ -118,7 +118,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', params, { auth: true })
         if (code === 200)
-          this.couponList = data
+          this.couponList = [...this.couponList, ...data]
       }
       catch {
         uni.showToast({
@@ -127,6 +127,23 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         })
       }
     },
+    // 兑换卡券
+    async exchangeCoupon(params: couponReq) {
+      try {
+        const { code } = await http.post<couponList[]>('/web/user/ticket/get', params, { auth: true })
+
+        if (code === 200) {
+          return true
+        }
+      }
+      catch {
+        uni.showToast({
+          title: '网络错误,请稍后重试',
+          icon: 'error',
+        })
+      }
+    },
+
     //  下单
     async submitOrderReq(params: submitOrderReq) {
       try {
