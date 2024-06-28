@@ -42,16 +42,20 @@ const deleteFn = async (no: Required<Configuration>['no']) => {
   <div class="configuration">
     <div class="body">
       <div class="box">
-        <div v-if="configurations && configurations.length" class="list-box">
-          <template v-for="(item, index) in configurations" :key="index">
-            <configure-list :configuration="item" @del="(no) => deleteFn(no)" />
-          </template>
-        </div>
-        <div v-else class="empty-box">
-          <div class="empty">
-            <common-empty text="您还没有配置单哦" />
+        <template v-if="configurations && configurations.length">
+          <div class="list-box">
+            <template v-for="(item, index) in configurations" :key="index">
+              <configure-list :configuration="item" @del="(no) => deleteFn(no)" />
+            </template>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div class="empty-box">
+            <div class="empty">
+              <common-empty text="您还没有配置单哦" />
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>

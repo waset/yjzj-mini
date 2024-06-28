@@ -29,78 +29,80 @@ const deleteFn = () => {
 <template>
   <div class="list">
     <common-model v-model:show="showModel" msg="确认删除配置单吗" icon="i-svg-warn" @ok="deleteFn" />
-    <div v-if="props.configuration" class="context">
-      <div class="bg">
-        <div class="box">
-          <div class="top">
-            <div class="left">
-              <div class="no">
-                {{ props.configuration.no }}
-              </div>
-            </div>
-            <div class="right">
-              <div class="collection">
-                <div class="i-svg-collection" />
-                <div class="count">
-                  {{ props.configuration.collectNumber }}
+    <div class="context">
+      <template v-if="props.configuration">
+        <div class="bg">
+          <div class="box">
+            <div class="top">
+              <div class="left">
+                <div class="no">
+                  {{ props.configuration.no }}
                 </div>
               </div>
-              <div class="purchase">
-                <div class="i-svg-purchase" />
-                <div class="count">
-                  {{ props.configuration.cartNumber }}
+              <div class="right">
+                <div class="collection">
+                  <div class="i-svg-collection" />
+                  <div class="count">
+                    {{ props.configuration.collectNumber }}
+                  </div>
                 </div>
-              </div>
-              <div class="deal">
-                <div class="i-svg-deal" />
-                <div class="count">
-                  {{ props.configuration.sellNumber }}
+                <div class="purchase">
+                  <div class="i-svg-purchase" />
+                  <div class="count">
+                    {{ props.configuration.cartNumber }}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="info">
-            <div class="left">
-              <div class="img">
-                <product-image :src="getbanner() || ''" width="200rpx" radius="16rpx" />
-              </div>
-            </div>
-            <div class="right">
-              <template v-for="(product, i) in props.configuration.products" :key="i">
-                <div class="text">
-                  {{ product.name }}
-                </div>
-              </template>
-            </div>
-          </div>
-          <div class="line" />
-          <div class="bottom">
-            <div class="func">
-              <div class="dele" @click="showDeleteConfirm">
-                <div class="i-icons-del" />
-                <div class="text">
-                  删除
-                </div>
-              </div>
-              <div class="share">
-                <div class="i-icons-share" />
-                <div class="text">
-                  分享
+                <div class="deal">
+                  <div class="i-svg-deal" />
+                  <div class="count">
+                    {{ props.configuration.sellNumber }}
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="operation">
-              <div class="price">
-                <span>￥</span>
-                <span>{{ props.configuration.sellPrice }}</span>
+            <div class="info">
+              <div class="left">
+                <div class="img">
+                  <product-image :src="getbanner() || ''" width="200rpx" radius="16rpx" />
+                </div>
               </div>
-              <div class="btn">
-                改配
+              <div class="right">
+                <template v-for="(product, i) in props.configuration.products" :key="i">
+                  <div class="text">
+                    {{ product.name }}
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div class="line" />
+            <div class="bottom">
+              <div class="func">
+                <div class="dele" @click="showDeleteConfirm">
+                  <div class="i-icons-del" />
+                  <div class="text">
+                    删除
+                  </div>
+                </div>
+                <div class="share">
+                  <div class="i-icons-share" />
+                  <div class="text">
+                    分享
+                  </div>
+                </div>
+              </div>
+              <div class="operation">
+                <div class="price">
+                  <span>￥</span>
+                  <span>{{ props.configuration.sellPrice }}</span>
+                </div>
+                <div class="btn">
+                  改配
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
