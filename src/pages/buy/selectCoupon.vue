@@ -42,14 +42,13 @@ const updateCouponFn = async () => {
       <template v-if="canusecouponList.length === 0">
         <common-empty text="当前暂无优惠券" icon="i-svg-nocoupon" />
       </template>
-      <buys-coupon-item :coupn="canusecouponList" :is-select="true" @click="showrule" @change="selectItem" />
+      <buys-coupon-item :coupn="canusecouponList" @click="showrule" @change="selectItem" />
     </div>
     <common-popup v-model:show="show" name="规则说明">
       <div class="h-full text-center lh-[40rpx]">
         {{ rule }}
       </div>
     </common-popup>
-
     <div class="confirm">
       <div>
         优惠金额：￥{{ price }}

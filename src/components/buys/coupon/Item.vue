@@ -5,7 +5,7 @@ interface Props {
   maxwidth?: number
 }
 const props = withDefaults(defineProps<Props>(), {
-  isSelect: false,
+  isSelect: true,
   maxwidth: 500,
 })
 
@@ -155,16 +155,18 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="right">
-          <template v-if="selectId === item.ticketInfo?.id">
-            <div class="Default">
-              <div class="icon i-icons-correct" />
-            </div>
-          </template>
-          <template v-else>
-            <div class="noDefault" />
-          </template>
-        </div>
+        <template v-if="!isSelect">
+          <div class="right">
+            <template v-if="selectId === item.ticketInfo?.id">
+              <div class="Default">
+                <div class="icon i-icons-correct" />
+              </div>
+            </template>
+            <template v-else>
+              <div class="noDefault" />
+            </template>
+          </div>
+        </template>
       </div>
     </template>
   </div>
