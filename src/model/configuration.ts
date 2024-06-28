@@ -7,7 +7,7 @@ export const useConfigurationStore = defineStore('configuration', {
 
   actions: {
     // 获取配置单
-    async getConfiguration(page: number = 1, pageSize: number = 1000) {
+    async getList(page: number = 1, pageSize: number = 1000) {
       const { data, code } = await http.post<Configuration[]>('/web/user/product/config/list', {
         page,
         pageSize,
@@ -19,13 +19,12 @@ export const useConfigurationStore = defineStore('configuration', {
     },
 
     // 删除配置单
-    async deleteConfiguration() {
-      const { data, code } = await http.post<Configuration[]>('/web/user/product/config/unCollect', {
-      }, { auth: true })
+    async del(productConfigNO: string) {
+      const { code } = await http.post<Configuration>('/web/user/product/config/unCollect', {
+        productConfigNO,
+      })
 
-      if (code === 200) {
-        this.configurations = data
-      }
+      return code
     },
 
   },
