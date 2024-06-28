@@ -27,7 +27,7 @@ const reachBottom = () => {
       <div class="select" @click="selectIndex = index">
         <div v-if="isSelect(index)" class="selectbg" />
         <div v-if="isSelect(index)" class="selected">
-          <div class="i-icons-correct" />
+          <div class="icon i-icons-correct" />
         </div>
         <div v-if="!isSelect(index)" class="line topLine" />
         <div v-if="!isSelect(index)" class="line bottomLine" />
@@ -91,6 +91,7 @@ const reachBottom = () => {
 
 .scroll-view {
   height: 626rpx;
+
   .empty {
     height: 40rpx;
   }
@@ -118,7 +119,7 @@ const reachBottom = () => {
     background-color: #A7F522;
     clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
 
-    .i-icons-correct {
+    .icon {
       color: #000;
     }
   }

@@ -13,7 +13,7 @@ function JumpDetail() {
     <navbar-home text="智能推荐" />
     <div class="body">
       <div class="wrap left">
-        <div class="item movein" @click="() => { Jump('/pages/product/detail') }">
+        <div class="item movein" @click="() => { Jump('/pages/recommend/screen') }">
           <image class="image bounce" :src="StaticUrl('/images/custom_left.png')" mode="scaleToFill" />
         </div>
       </div>

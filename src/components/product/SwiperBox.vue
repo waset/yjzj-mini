@@ -133,7 +133,7 @@ const changeGame = (text: string) => {
       <div>
         <div class="searchBox" @click="selectGame">
           <span> 选择喜欢的游戏,查看当前配置的性能数据</span>
-          <div class="i-icons-left" />
+          <div class="icon i-icons-left" />
         </div>
         <div class="swiper">
           <carousel
@@ -182,7 +182,7 @@ const changeGame = (text: string) => {
               {{ list[pcurrent].name }}
             </div>
             <div class="length">
-              <div class="i-icons-left" @click="changeGame('pre')" />
+              <div class="icon i-icons-left" @click="changeGame('pre')" />
               <div class="length-text">
                 {{ `${pcurrent + 1}/${list.length}` }}
               </div>
@@ -266,7 +266,7 @@ const changeGame = (text: string) => {
     margin: 0 auto;
     font-size: 28rpx;
 
-    .i-icons-left {
+    .icon {
       transform: rotate(-90deg);
 
     }
