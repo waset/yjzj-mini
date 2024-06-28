@@ -19,34 +19,11 @@ const Params = ref<param>({
 
 const lastpage = ref<number>(1000)
 const page = ref<number>(0)
+// 获取最大值最小值
+const maxs = () => Math.max(Number(Params.value.start), Number(Params.value.end))
+const min = () => Math.min(Number(Params.value.start), Number(Params.value.end))
 
-const maxs = () => {
-  let max = 0
-  if (Number(Params.value.start) > Number(Params.value.end)) {
-    max = Number(Params.value.start)
-  }
-  else if (Number(Params.value.start) < Number(Params.value.end)) {
-    max = Number(Params.value.end)
-  }
-  else {
-    max = Number(Params.value.end)
-  }
-  return max
-}
-const min = () => {
-  let min = 0
-  if (Number(Params.value.start) > Number(Params.value.end)) {
-    min = Number(Params.value.end)
-  }
-  else if (Number(Params.value.start) < Number(Params.value.end)) {
-    min = Number(Params.value.start)
-  }
-  else {
-    min = Number(Params.value.end)
-  }
-  return min
-}
-
+// 请求商品列表
 const getProduct = async () => {
   const data = await recommendList({
     productTypeParentID: categorys.diy.value,

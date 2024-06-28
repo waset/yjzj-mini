@@ -52,34 +52,10 @@ const list = ref<pricelist[]>([{
 }])
 
 // 计算中间背景开始的长度
-const bgLeft = computed(() => {
-  let left = 0
-  if (saveX2.value > saveX.value) {
-    left = saveX.value
-  }
-  else if (saveX2.value < saveX.value) {
-    left = saveX2.value
-  }
-  else {
-    left = 0
-  }
-  return left
-})
+const bgLeft = computed(() => Math.min(saveX2.value, saveX.value))
 
 // 中间背景的长度
-const bgWidth = computed(() => {
-  let result = 0
-  if (saveX2.value > saveX.value) {
-    result = saveX2.value - saveX.value
-  }
-  else if (saveX2.value < saveX.value) {
-    result = saveX.value - saveX2.value
-  }
-  else {
-    result = 0
-  }
-  return result
-})
+const bgWidth = computed(() => Math.abs(saveX2.value - saveX.value))
 
 // 计算价格区间
 const sub = (price: number) => {
@@ -103,14 +79,14 @@ const select = ref<'Intel' | 'AMD'>('Intel')
     <navbar-back text="筛选条件" />
     <div>
       <div class="box">
-        <div class="budget">
+        <div class="budget relative">
           <div class="content">
             预算范围
           </div>
 
           <div id="setupbox" class="setupbox">
             <movable-area class="langLine">
-              <div class="bg" :style="{ left: `${bgLeft}px`, width: `${bgWidth}px` }" />
+              <div class="bg" :style="{ left: `${bgLeft * 2}rpx`, width: `${bgWidth * 2}rpx` }" />
               <movable-view :x="x" :y="y" direction="horizontal" class="circle" @change="startChange">
                 <div class="text">
                   {{ starPrice }}
@@ -180,14 +156,13 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
 
 .box,
 .cpubox {
-  position: relative;
+  @apply relative;
   width: 680rpx;
   margin: 0 auto;
 }
 
 .budget {
   margin-top: 30rpx;
-  position: relative;
   width: 680rpx;
   height: 410rpx;
   padding: 34rpx;
@@ -260,14 +235,12 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
   .price {
     width: 100%;
     margin-top: 70rpx;
-    display: flex;
-    flex-wrap: wrap;
+    @apply flex flex-wrap;
 
     .priceItem {
       margin-bottom: 16rpx;
       width: 33.33%;
-      display: flex;
-      justify-content: center;
+      @apply flex-center;
 
       .item {
         width: 180rpx;
