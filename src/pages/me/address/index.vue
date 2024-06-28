@@ -249,7 +249,7 @@ onLoad((options) => {
         <div class="inputBox">
           <div class="row">
             <div>收货人</div>
-            <input v-model="addReqParams.username" type="text">
+            <input v-model="addReqParams.username" class="inp" type="text">
           </div>
           <div class="row">
             <div>联系电话</div>
