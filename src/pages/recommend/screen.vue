@@ -151,15 +151,15 @@ const select = ref<'Intel' | 'AMD'>('Intel')
           </div>
           <div class="itembox">
             <div class="cpuitem" @click="select = 'Intel'">
-              <div class="i-svg-intericon" />
+              <div class="icon i-svg-intericon" />
               <div v-if="select === 'Intel'" class="triangle">
-                <div class="i-icons-correct" />
+                <div class="icons i-icons-correct" />
               </div>
             </div>
             <div class="cpuitem" @click="select = 'AMD'">
-              <div class="i-svg-amd" />
+              <div class="icon i-svg-amd" />
               <div v-if="select === 'AMD'" class="triangle">
-                <div class="i-icons-correct" />
+                <div class="icons i-icons-correct" />
               </div>
             </div>
           </div>
@@ -413,12 +413,6 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
         align-items: center;
         font-size: 145rpx;
         color: #272727;
-
-        .i-icons-correct {
-          font-size: 28rpx;
-          color: #fff;
-        }
-
         &::after {
           content: '';
           position: absolute;
@@ -455,10 +449,12 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
           overflow: hidden;
           border-bottom-right-radius: 16rpx;
 
-          .i-icons-correct {
+          .icons {
             position: absolute;
             bottom: 2rpx;
             right: 16rpx;
+            font-size: 28rpx;
+            color: #fff;
           }
 
           &::after {
