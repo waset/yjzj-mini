@@ -167,12 +167,12 @@ const changeGame = (text: string) => {
             </template>
             <template #prev>
               <div class="switch left">
-                <div class="i-icons-swiperleft" />
+                <div class="i-icons-swiper-left" />
               </div>
             </template>
             <template #next>
               <div class="switch right">
-                <div class="i-icons-swiperright" />
+                <div class="i-icons-swiper-right" />
               </div>
             </template>
           </carousel>
