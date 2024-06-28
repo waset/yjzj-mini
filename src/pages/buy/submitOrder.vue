@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const { nowAddress } = storeToRefs(useAddressStore())
+const { getAddressList } = useAddressStore()
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
 const { canUseCouponNum, canusecouponList } = storeToRefs(useSubmitOrderStore())
@@ -74,6 +75,12 @@ onShow(async () => {
   }
   catch (error) {
     console.error('Failed to fetch coupon list:', error)
+  }
+})
+
+onLoad(async () => {
+  if (nowAddress.value.id === 0) {
+    await getAddressList(1, 20)
   }
 })
 onMounted(async () => {
