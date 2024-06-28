@@ -123,7 +123,7 @@ function onClick() {
                 </div>
                 <div class="current">
                   <span>￥</span>
-                  <span>{{ props.product.tagPrice }}</span>
+                  <span>{{ props.product.sellPrice }}</span>
                 </div>
               </div>
               <div v-if="!isManagement" class="num">
