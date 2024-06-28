@@ -4,7 +4,7 @@ export const useProductStore = defineStore('product', {
     types: ProductType[]
     products: Product[]
     detail: Product
-    recommendlist: Product[]
+
   } => ({
     // 产品类目
     categorys: {
@@ -19,7 +19,7 @@ export const useProductStore = defineStore('product', {
     // 这里存放数据
     products: [],
     detail: {} as Product,
-    recommendlist: [], // 智能推荐
+
   }),
   getters: {
     isDiy: (state) => {
