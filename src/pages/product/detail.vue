@@ -213,29 +213,27 @@ watch(() => getModificationListParams.value.productName, async () => {
     <div class="banner">
       <product-banner :list="detail.banner" />
     </div>
-    <template v-if="isDiy">
-      <div class="top">
-        <div class="wrap">
-          <div class="title">
-            {{ detail.name || '自由定制' }}
+    <div class="top">
+      <div class="wrap">
+        <div class="title">
+          {{ detail.name || '自由定制' }}
+        </div>
+        <div class="desc">
+          {{ detail.description }}
+        </div>
+        <div class="more">
+          <div class="price">
+            <span>￥</span>
+            <span>{{ detail.tagPrice || 0 }}</span>
           </div>
-          <div class="desc">
-            {{ detail.description }}
-          </div>
-          <div class="more">
-            <div class="price">
-              <span>￥</span>
-              <span>{{ detail.tagPrice || 0 }}</span>
-            </div>
-            <div class="btns">
-              <div class="btn">
-                <div class="i-icons-share" />
-              </div>
+          <div class="btns">
+            <div class="btn">
+              <div class="i-icons-share" />
             </div>
           </div>
         </div>
       </div>
-    </template>
+    </div>
 
     <div class="info">
       <template v-if="isDiy">
