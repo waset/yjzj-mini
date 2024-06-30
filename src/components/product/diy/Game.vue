@@ -71,6 +71,10 @@ const upOptional = () => {
 onMounted(async () => {
   const gemelist = await getGamesList() || []
   useGamesList.value = gemelist
+  /**
+   * TODO:@sampson762
+   * @see https://vueuse.org/core/useCloned/
+   */
   assignment.value = JSON.parse(JSON.stringify(gemelist))
 })
 
@@ -175,7 +179,7 @@ defineExpose({
           background-color: #A7F522;
           clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
 
-          .icon  {
+          .icon {
             color: #000;
           }
         }
