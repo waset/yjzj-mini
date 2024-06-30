@@ -11,7 +11,6 @@ const emits = defineEmits<{
   editAddress: [item: addresslist]
 }>()
 
-const { nowAddress } = storeToRefs(useAddressStore())
 const { changeAddress } = useAddressStore()
 
 // 调用父组件中的删除
@@ -31,7 +30,6 @@ const editAddress = (item: addresslist) => {
 // 设置当前地址
 const setNowAddress = (index: number) => {
   changeAddress(props.addressdata[index].id)
-  nowAddress.value = props.addressdata[index]
   if (props.ischoose)
     Jump('/pages/buy/submitOrder', {}, 1)
 }

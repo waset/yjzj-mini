@@ -25,9 +25,9 @@ export const useAddressStore = defineStore('address', {
     // 当前选择的地址 如没有选择则返回默认地址
     defaultAddress(state) {
       if (state.chooseid) {
-        return state.addressList.find(item => item.id === state.chooseid)
+        return state.addressList.find(item => item.id === state.chooseid) || state.nowAddress
       }
-      return state.addressList.find(item => item.isDefault === 1)
+      return state.addressList.find(item => item.isDefault === 1) || state.nowAddress
     },
   },
   actions: {
@@ -54,23 +54,6 @@ export const useAddressStore = defineStore('address', {
     // 删除地址
     async delAddress(id: number) {
       const { code } = await http.post<delReq>('/web/user/address/delete', { id }, { auth: true })
-      if (id === this.nowAddress.id) {
-        this.nowAddress = {
-          address: '',
-          cityCode: '',
-          countryCode: '',
-          createdAt: '',
-          deletedAt: null,
-          id: 0,
-          isDefault: 0,
-          phone: '',
-          provinceCode: '',
-          status: 0,
-          updatedAt: '',
-          userID: 0,
-          username: '',
-        }
-      }
       return code
     },
     // 修改地址

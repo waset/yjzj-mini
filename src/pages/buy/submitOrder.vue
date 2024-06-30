@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { nowAddress } = storeToRefs(useAddressStore())
+const { defaultAddress } = storeToRefs(useAddressStore())
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
@@ -22,7 +22,7 @@ const submitOrderParams = ref<submitOrderReq>({
   inviteCode: '',
   details: [],
   userTicketID: 0,
-  userAddressID: nowAddress.value.id,
+  userAddressID: defaultAddress.value.id,
   payType: 'wechat',
   payMethod: 'mp',
   remark: '',
@@ -116,7 +116,7 @@ onMounted(async () => {
 
     submitOrderParams.value.details = arr.value
     // 查询可用的优惠券
-    await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
+    await canUseCoupon(defaultAddress.value.id, productIDs.value, undefined)
   }
 })
 </script>
