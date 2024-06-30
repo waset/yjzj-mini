@@ -2,6 +2,7 @@ export const useAddressStore = defineStore('address', {
   state: (): {
     addressList: addresslist[]
     nowAddress: addresslist
+    chooseid?: addresslist['id']
   } => ({
     addressList: [], // 收货地址列表
     nowAddress: {
@@ -21,9 +22,19 @@ export const useAddressStore = defineStore('address', {
     }, // 当前选择的地址
   }),
   getters: {
-
+    // 当前选择的地址 如没有选择则返回默认地址
+    defaultAddress(state) {
+      if (state.chooseid) {
+        return state.addressList.find(item => item.id === state.chooseid)
+      }
+      return state.addressList.find(item => item.isDefault === 1)
+    },
   },
   actions: {
+    // 下单时重新选择地址
+    changeAddress(id: addresslist['id']) {
+      this.chooseid = id
+    },
     // 获取收获地址列表
     async getAddressList(page: number, pageSize: number) {
       const { data, code } = await http.post<addresslist[]>('/web/user/address/list', { page, pageSize }, { auth: true })
@@ -71,24 +82,6 @@ export const useAddressStore = defineStore('address', {
           icon: 'error',
         })
       }
-    },
-
-    async demoAddress() {
-      this.addressList.push({
-        address: '3213',
-        cityCode: '110100000000',
-        countryCode: '110101000000',
-        createdAt: '2024-06-13 11:34:18',
-        deletedAt: null,
-        id: 108,
-        isDefault: 1,
-        phone: '213213',
-        provinceCode: '110000000000',
-        status: 1,
-        updatedAt: '2024-06-13 11:34:18',
-        userID: 104,
-        username: 'sun',
-      })
     },
 
   },
