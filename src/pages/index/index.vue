@@ -72,7 +72,7 @@ async function getProductsByType(type: number) {
 <style lang="scss" scoped>
   .index {
     margin-top: calc((var(--navbar-height-all) - var(--navbar-top)) * -1);
-
+    overflow: hidden;
     .about {
       @apply flex-center;
 
