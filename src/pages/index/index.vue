@@ -55,7 +55,7 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
+    <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/diy', { product_id: item.id })" />
 
     <index-product-switch-type
       v-model:current="notebook_type" :list="types"

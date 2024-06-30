@@ -1,16 +1,72 @@
+type DiyType = {
+  text: string
+  icons: string
+  type: DiyComponent
+  typeID: number
+}[]
+const DiyICons: DiyType = [
+  {
+    text: '请选择CPU',
+    icons: 'i-icons-cpu',
+    type: 'cpu',
+    typeID: 13,
+  },
+  {
+    text: '请选择主板',
+    icons: 'i-icons-mainboard',
+    type: 'motherboard',
+    typeID: 14,
+  },
+  {
+    text: '请选择显卡',
+    icons: 'i-icons-graphics-card',
+    type: 'graphicsCard',
+    typeID: 15,
+  },
+  {
+    text: '请选择硬盘',
+    icons: 'i-icons-hard-disk',
+    type: 'hardDisk',
+    typeID: 17,
+  },
+  {
+    text: '请选择机箱',
+    icons: 'i-icons-crate',
+    type: 'chassis',
+    typeID: 18,
+  },
+  {
+    text: '请选择电源',
+    icons: 'i-icons-power-supply',
+    type: 'powerSupply',
+    typeID: 20,
+  },
+  {
+    text: '请选择散热',
+    icons: 'i-icons-heat-dissipation',
+    type: 'cpuHeatSink',
+    typeID: 19,
+  },
+  {
+    text: '请选择内存',
+    icons: 'i-icons-storage',
+    type: 'memory',
+    typeID: 16,
+  },
+]
+
 export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
     ModificationList: any
+    diytype: DiyType
   } => ({
     gamesList: [],
     ModificationList: [],
+    diytype: DiyICons,
+
   }),
   actions: {
-    // 制空数据列表
-    setModificationListNull() {
-      this.ModificationList = []
-    },
     // 获取游戏列表
     async getGamesList() {
       const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 }, { auth: false })
@@ -29,6 +85,9 @@ export const useDiyStore = defineStore('diy', {
     },
     // 获取改配的列表`
     async getModificationList(params: Modification) {
+      if (params.page === 1) {
+        this.ModificationList = []
+      }
       const { code, data } = await http.post('/web/product/list/by/params', params, { auth: false })
       if (code === 200) {
         this.ModificationList = [...this.ModificationList, ...data]
@@ -52,6 +111,14 @@ export const useDiyStore = defineStore('diy', {
     // 获取配置的筛选条件
     async getFilter() {
       await http.post('/web/product/type/param/list', { ids: [2000] }, { auth: false })
+    },
+
+    // 获取配置的筛选条件
+    async getAllParams(params: getAllParams) {
+      const { code, data } = await http.post<AllParamsRes[]>('/web/product/type/param/children', params, { auth: false })
+      if (code === 200) {
+        return data
+      }
     },
 
   },

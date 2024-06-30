@@ -82,6 +82,7 @@ interface Product {
    * 产品参数
    */
   params: Param[]
+  configuration: Configuration
   priceType: number
   sellNumber: number
   /**
@@ -107,6 +108,19 @@ interface Product {
   quantity?: number
   select?: boolean
   delete?: boolean
+}
+
+type DiyComponent = keyof Configuration
+
+interface Configuration {
+  chassis: Param
+  cpu: Param
+  cpuHeatSink: Param
+  graphicsCard: Param
+  hardDisk: Param
+  memory: Param
+  motherboard: Param
+  powerSupply: Param
 }
 
 interface Brand {

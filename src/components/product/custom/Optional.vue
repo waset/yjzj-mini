@@ -22,15 +22,19 @@ const reachBottom = () => {
 </script>
 
 <template>
-  <scroll-view :scroll-y="true" class="scroll-view" @scrolltolower="reachBottom">
-    <div v-for="(item, index) in props.list" :key="index">
+  <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
+    <template v-for="(item, index) in props.list" :key="index">
       <div class="select" @click="selectIndex = index">
-        <div v-if="isSelect(index)" class="selectbg" />
-        <div v-if="isSelect(index)" class="selected">
-          <div class="i-icons-correct" />
-        </div>
-        <div v-if="!isSelect(index)" class="line topLine" />
-        <div v-if="!isSelect(index)" class="line bottomLine" />
+        <template v-if="isSelect(index)">
+          <div class="selectbg" />
+          <div class="selected">
+            <div class="icon i-icons-correct" />
+          </div>
+        </template>
+        <template v-else>
+          <div class="line topLine" />
+          <div class="line bottomLine" />
+        </template>
         <div class="goodsImg">
           <image class="img" :src="ImageUrl(item.banner[0])" mode="scaleToFill" />
         </div>
@@ -52,7 +56,7 @@ const reachBottom = () => {
           </div>
         </div>
       </div>
-    </div>
+    </template>
     <div class="empty" />
   </scroll-view>
 
@@ -118,7 +122,7 @@ const reachBottom = () => {
     background-color: #A7F522;
     clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
 
-    .i-icons-correct {
+    .icon {
       color: #000;
     }
   }
@@ -157,7 +161,7 @@ const reachBottom = () => {
     width: 160rpx;
     height: 160rpx;
     margin-right: 16rpx;
-    background: url(../../assets/svg/product_bg.svg) no-repeat;
+    background: url(../../assets/svg/product-bg.svg) no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
