@@ -1,11 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  list: Product[]
-}>()
 const emit = defineEmits<{
   (e: 'confirm', index: number): void
   (e: 'loadmore'): void
 }>()
+const { ModificationList } = storeToRefs(useDiyStore())
 const selectIndex = ref<number>(0)
 
 const isSelect = (index: number) => {
@@ -13,7 +11,7 @@ const isSelect = (index: number) => {
 }
 
 const okfn = () => {
-  emit('confirm', selectIndex.value)
+  // emit('confirm', selectIndex.value)
 }
 // 触底加载
 const reachBottom = () => {
@@ -23,20 +21,17 @@ const reachBottom = () => {
 
 <template>
   <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
-    <template v-for="(item, index) in props.list" :key="index">
+    <template v-for="(item, index) in ModificationList" :key="index">
       <div class="select" @click="selectIndex = index">
         <template v-if="isSelect(index)">
-          <div class="selectbg" />
-          <div class="selected">
-            <div class="icon i-icons-correct" />
-          </div>
+          <product-custom-singlebg />
         </template>
         <template v-else>
           <div class="line topLine" />
           <div class="line bottomLine" />
         </template>
         <div class="goodsImg">
-          <image class="img" :src="ImageUrl(item.banner[0])" mode="scaleToFill" />
+          <product-image :src="ImageUrl(item.banner[0])" />
         </div>
         <div class="goodsInfo">
           <div class="row1 fs28">
@@ -101,113 +96,71 @@ const reachBottom = () => {
 }
 
 .select {
-  position: relative;
-  border-radius: 16rpx;
-  height: 192rpx;
-  background-color: rgba(#000, 0.2);
-  padding: 16rpx;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32rpx;
-  z-index: 9;
-
-  .selected {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 69rpx;
-    height: 69rpx;
-    background-color: #A7F522;
-    clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
-
-    .icon {
-      color: #000;
-    }
-  }
-
-  .selectbg {
-    position: absolute;
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: url(../../assets/svg/compon-select.svg) no-repeat;
-    background-size: 109% 105%;
-    border-radius: 16rpx;
-    opacity: 0.2;
-    z-index: -1;
-  }
-
-  .line {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    height: 2rpx;
-    background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
-  }
-
-  .topLine {
-    top: 0;
-  }
-
-  .bottomLine {
-    bottom: 0;
-  }
-
-  .goodsImg {
-    width: 160rpx;
-    height: 160rpx;
-    margin-right: 16rpx;
-    background: url(../../assets/svg/product-bg.svg) no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .img {
-      width: 100rpx;
-      height: 100rpx;
-    }
-  }
-
-  .goodsInfo {
-    flex: 1;
-    height: 100%;
-
-    .row1 {
-      font-weight: 600;
-
-    }
-
-    .row1,
-    .row2 {
-      width: 400rpx;
-      color: #f5f5f5;
-      margin-bottom: 10rpx;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .row3 {
-      margin-top: 32rpx;
+      position: relative;
+      border-radius: 16rpx;
+      height: 192rpx;
+      background-color: rgba(#000, 0.2);
+      padding: 16rpx;
+      box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 32rpx;
+      z-index: 9;
 
-      .price {
-        color: #A7F522;
-        font-weight: 600;
+      .line {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        height: 2rpx;
+        background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
       }
 
-      .check {
-        color: #BEBEBE;
+      .topLine {
+        top: 0;
+      }
+
+      .bottomLine {
+        bottom: 0;
+      }
+
+      .goodsInfo {
+        flex: 1;
+        height: 100%;
+        padding-left: 20rpx;
+
+        .row1 {
+          font-weight: 600;
+
+        }
+
+        .row1,
+        .row2 {
+          width: 400rpx;
+          color: #f5f5f5;
+          margin-bottom: 10rpx;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .row3 {
+          margin-top: 32rpx;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .price {
+            color: #A7F522;
+            font-weight: 600;
+          }
+
+          .check {
+            color: #BEBEBE;
+          }
+        }
       }
     }
-  }
-}
 
 .bottom {
   padding: 32rpx 0;
