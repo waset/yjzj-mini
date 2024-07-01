@@ -22,34 +22,49 @@ const reachBottom = () => {
 <template>
   <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
     <template v-for="(item, index) in ModificationList" :key="index">
-      <div class="select" @click="selectIndex = index">
-        <template v-if="isSelect(index)">
-          <product-custom-singlebg />
-        </template>
-        <template v-else>
-          <div class="line topLine" />
-          <div class="line bottomLine" />
-        </template>
-        <div class="goodsImg">
-          <product-image :src="ImageUrl(item.banner[0])" />
-        </div>
-        <div class="goodsInfo">
-          <div class="row1 fs28">
-            {{ item.name }}
+      <div class="card mb-4">
+        <div
+          :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="() => {
+            if (item.errors.length !== 0) {
+              return
+            }
+            selectIndex = index
+          }"
+        >
+          <template v-if="isSelect(index)">
+            <product-custom-singlebg />
+          </template>
+          <template v-else>
+            <div class="topLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
+            <div class="bottomLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
+          </template>
+          <div class="goodsImg">
+            <product-image :src="ImageUrl(item.banner[0])" />
           </div>
-          <div class="row2 fs20">
-            {{ item.description }}
-          </div>
-          <div class="row3">
-            <div class="fs24 check">
-              查看详情
-              <div class="i-icons-right" />
+          <div class="goodsInfo">
+            <div class="row1 fs28">
+              {{ item.name }}
             </div>
-            <div class="fs32 price">
-              ￥{{ item.sellPrice }}
+            <div class="row2 fs20">
+              {{ item.description }}
+            </div>
+            <div class="row3">
+              <div class="fs24 check">
+                查看详情
+                <div class="i-icons-right" />
+              </div>
+              <div class="fs32 price">
+                ￥{{ item.sellPrice }}
+              </div>
             </div>
           </div>
         </div>
+        <template v-if="item.errors.length !== 0">
+          <div class="error mt-1">
+            <div class="icon i-icons-info" />
+            <div>{{ item.errors[0]?.message || '' }}</div>
+          </div>
+        </template>
       </div>
     </template>
     <div class="empty" />
@@ -90,77 +105,112 @@ const reachBottom = () => {
 
 .scroll-view {
   height: 626rpx;
+
   .empty {
     height: 40rpx;
   }
 }
 
-.select {
-      position: relative;
-      border-radius: 16rpx;
-      height: 192rpx;
-      background-color: rgba(#000, 0.2);
-      padding: 16rpx;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32rpx;
-      z-index: 9;
+.card {
+  .select {
+    position: relative;
+    border-radius: 16rpx;
+    height: 192rpx;
+    background-color: rgba(#000, 0.2);
+    padding: 16rpx;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-      .line {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        height: 2rpx;
-        background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
+    z-index: 9;
+
+    .line {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      height: 2rpx;
+      background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
+    }
+
+    .lineGrey {
+      background: linear-gradient(to right, rgba(#E3E3E3, 0), #bebebe, rgba(#E3E3E3, 0));
+    }
+
+    .topLine {
+      top: 0;
+    }
+
+    .bottomLine {
+      bottom: 0;
+    }
+
+    .goodsInfo {
+      flex: 1;
+      height: 100%;
+      padding-left: 20rpx;
+
+      .row1 {
+        font-weight: 600;
+
       }
 
-      .topLine {
-        top: 0;
+      .row1,
+      .row2 {
+        width: 400rpx;
+        color: #f5f5f5;
+        margin-bottom: 10rpx;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
-      .bottomLine {
-        bottom: 0;
-      }
+      .row3 {
+        margin-top: 32rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-      .goodsInfo {
-        flex: 1;
-        height: 100%;
-        padding-left: 20rpx;
-
-        .row1 {
+        .price {
+          color: #A7F522;
           font-weight: 600;
-
         }
 
-        .row1,
-        .row2 {
-          width: 400rpx;
-          color: #f5f5f5;
-          margin-bottom: 10rpx;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .row3 {
-          margin-top: 32rpx;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          .price {
-            color: #A7F522;
-            font-weight: 600;
-          }
-
-          .check {
-            color: #BEBEBE;
-          }
+        .check {
+          color: #BEBEBE;
         }
       }
     }
+  }
+
+  .errcss {
+
+    .row1,
+    .row2,
+    .row3 {
+      color: #8D8D8D !important;
+
+      .check,
+      .price {
+        color: #8D8D8D !important;
+      }
+    }
+  }
+
+  .error {
+    @apply flex;
+    align-items: center;
+    color: #A7F522;
+    font-size: 24rpx;
+
+    .icon {
+      width: 40rpx;
+      height: 40rpx;
+    }
+
+  }
+
+}
 
 .bottom {
   padding: 32rpx 0;

@@ -14,8 +14,6 @@ const getAllocationList = async () => {
 }
 
 const getAllocationListByParams = async (data: Modification) => {
-  console.log(123123)
-
   ModificationList.value = []
   getModificationListParams.value = data
   getModificationListParams.value.page = 1
