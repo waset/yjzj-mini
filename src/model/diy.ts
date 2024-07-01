@@ -90,6 +90,31 @@ export const useDiyStore = defineStore('diy', {
       }
       const { code, data } = await http.post('/web/product/list/by/params', params, { auth: false })
       if (code === 200) {
+        const { detail } = useProductStore()
+        const { cloned } = useCloned(detail)
+        const _params: {
+          num: number
+          product: any
+          tagTitle: string
+          typeID: number
+        }[] = []
+        cloned.value?.params.forEach((item) => {
+          _params.push({
+            num: 1,
+            product: item.product,
+            tagTitle: item.desc,
+            typeID: Number(item.content),
+          })
+        })
+
+        data.forEach((item: any, index: number) => {
+          const errs = getCompactErrors(_params, index, item)
+
+          const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+
+          data[index].errors = uniqueData
+        })
+
         this.ModificationList = [...this.ModificationList, ...data]
       }
     },
@@ -123,3 +148,22 @@ export const useDiyStore = defineStore('diy', {
 
   },
 })
+
+function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
+  if (paramsIndex < 0)
+    return []
+  const { cloned } = useCloned(sourceParams)
+  cloned.value[paramsIndex] = {
+    tagTitle: data.typeName,
+    typeID: data.typeID, // 商品类型ID
+    product: {
+      id: data.id,
+      sellPrice: data.sellPrice,
+      banner: data.banner,
+      params: data.params,
+      name: data.name,
+    },
+    num: 1,
+  }
+  return createErrors(cloned.value)
+}
