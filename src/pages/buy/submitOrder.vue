@@ -128,7 +128,9 @@ onMounted(async () => {
       <buys-address-card />
     </div>
 
-    <buys-submit-goods-item :list="nowGoods" :goods="detail" :showborder="showborder" @checked="checkAllocation" />
+    <div class="productBox">
+      <buys-submit-goods-item :list="nowGoods" :goods="detail" :showborder="showborder" @checked="checkAllocation" />
+    </div>
 
     <div class="CouponsAndNotes">
       <div class="counpons" @click="Jump('/pages/buy/selectCoupon', {}, 1)">
@@ -141,12 +143,19 @@ onMounted(async () => {
           </template>
 
           <template v-if="couponPrice === ''">
-            <div class="text">
-              待使用
-              <div class="badge">
-                {{ canUseCouponNum }}
+            <template v-if="canUseCouponNum === 0">
+              <div class="text">
+                暂无可用
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div class="text">
+                待使用
+                <div class="badge">
+                  {{ canUseCouponNum }}
+                </div>
+              </div>
+            </template>
           </template>
 
           <div class="icon i-icons-right" />
@@ -162,8 +171,14 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <buys-settlement-card :number="totalNumber" :pay="payment" :coupon="couponPrice" />
-    <buys-bottom-submit :number="totalNumber" :pay="payment" @submit-order="submitOrderFn" />
+
+    <div class="orderBox">
+      <buys-settlement-card :number="totalNumber" :pay="payment" :coupon="couponPrice" />
+    </div>
+
+    <div class="bottomBox">
+      <buys-bottom-submit :number="totalNumber" :pay="payment" @submit-order="submitOrderFn" />
+    </div>
 
     <common-popup :show="showPop" name="备注" height="70%" @close="showPop = false">
       <div>
@@ -173,9 +188,9 @@ onMounted(async () => {
 
     <common-popup :show="allocationShow" name="配置详情" @close="allocationShow = false">
       <div>
-        <div v-for="(item, index) in allocationList" :key="index">
+        <template v-for="(item, index) in allocationList" :key="index">
           <buys-submit-allocation-card :params="item" />
-        </div>
+        </template>
       </div>
     </common-popup>
   </div>
@@ -190,12 +205,29 @@ $Be: #BEBEBE;
 .body {
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex: 1;
+
+  padding: 32rpx 0;
+
   overflow: hidden;
+
+  gap: 32rpx;
 
   .addressBox {
     width: 686rpx;
-    margin: 32rpx auto
+    // margin: 32rpx auto
+  }
+
+  .productBox {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16rpx;
+  }
+
+  .bottomBox {
+    width: 100%;
   }
 
   .top-wrap {
@@ -212,14 +244,18 @@ $Be: #BEBEBE;
 
   .CouponsAndNotes {
     width: 686rpx;
-    height: 112rpx;
+    height: auto;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 32rpx auto;
+
+    // margin: 32rpx auto;
     font-size: 28rpx;
     box-sizing: border-box;
-    padding-left: 32rpx;
+    padding: 0 32rpx;
+
+    gap: 32rpx;
 
     .counpons {
       display: flex;
@@ -227,9 +263,11 @@ $Be: #BEBEBE;
     }
 
     .notes {
-      margin-top: 32rpx;
+      // margin-top: 32rpx;
       display: flex;
       justify-content: space-between;
+      height: 100%;
+      align-items: center;
 
     }
 

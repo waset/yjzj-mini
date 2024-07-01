@@ -74,11 +74,13 @@ const props = defineProps<{
 
     .rightbox {
       margin-left: 20rpx;
-      height: 160rpx;
       width: 416rpx;
+
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
+      gap: 16rpx;
 
       .title {
         font-weight: 600;
@@ -87,6 +89,7 @@ const props = defineProps<{
 
       .text {
         font-size: 24rpx;
+        color: #bebebe;
       }
     }
   }

@@ -49,7 +49,7 @@ const tabs = reactive(['详情', '参数'])
         <div class="param">
           <div class="bg">
             <div class="wrap">
-              <template v-if="props.info.content && props.info.content.length">
+              <template v-if="props.info.params && props.info.params.length">
                 <div class="box">
                   <template v-for="(item, index) in props.info.params" :key="index">
                     <div class="item">

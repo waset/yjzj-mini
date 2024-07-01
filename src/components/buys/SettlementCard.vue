@@ -62,7 +62,9 @@ const props = defineProps<{
       <div style="color: #fff;">
         实付金额
       </div>
-      <div>￥{{ props.pay }}</div>
+      <div style="color: #a7f522;font-weight: bold;">
+        ￥{{ props.pay }}
+      </div>
     </div>
   </div>
 </template>
@@ -73,7 +75,9 @@ $Be: #BEBEBE;
 
 .settlementCard {
   position: relative;
-  margin: 32rpx auto;
+  // margin: 32rpx auto;
+  padding: 0 32rpx 32rpx 32rpx;
+
   border-radius: 32rpx;
   width: 686rpx;
   background-image: linear-gradient(135deg, #4C4A4B, rgba(#0D0D0D, 0.8), rgba(#0D0D0D, 0.9), #373737);
@@ -81,7 +85,7 @@ $Be: #BEBEBE;
   .circle {
     position: absolute;
     width: 44rpx;
-    height: 36rpx;
+    height: 44rpx;
     border-radius: 20rpx;
     top: 30rpx;
     right: 36rpx;
@@ -100,7 +104,7 @@ $Be: #BEBEBE;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    padding-left: 32rpx;
+    padding: 0 32rpx;
     margin-top: 16rpx;
 
     .BEC {
@@ -118,11 +122,11 @@ $Be: #BEBEBE;
     width: 622rpx;
     height: 56rpx;
     font-size: 32rpx;
-    font-weight: 600;
+    font-weight: normal;
     color: #A7F522;
     display: flex;
     align-items: center;
-    padding-left: 32rpx;
+    padding: 0 32rpx;
     box-sizing: border-box;
     justify-content: space-between;
   }
@@ -162,9 +166,9 @@ $Be: #BEBEBE;
     color: #fff;
     font-size: 32rpx;
     font-weight: 600;
-    margin-top: 22rpx;
-    margin-left: 64rpx;
-    margin-bottom: 46rpx;
+    margin-top: 20rpx;
+    margin-left: 32rpx;
+    margin-bottom: 40rpx;
   }
 
 }
