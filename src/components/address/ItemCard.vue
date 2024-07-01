@@ -1,16 +1,17 @@
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   addressdata: addresslist[]
-
-}>()
-
+  ischoose: boolean
+}>(), {
+  ischoose: false,
+})
 const emits = defineEmits<{
   deleteAddress: [id: number]
   setDefault: [item: addresslist, index: number]
   editAddress: [item: addresslist]
 }>()
 
-const { nowAddress } = storeToRefs(useAddressStore())
+const { changeAddress } = useAddressStore()
 
 // 调用父组件中的删除
 const delAddressFn = (id: number) => {
@@ -28,8 +29,9 @@ const editAddress = (item: addresslist) => {
 
 // 设置当前地址
 const setNowAddress = (index: number) => {
-  nowAddress.value = props.addressdata[index]
-  Jump('/pages/buy/submitOrder', {}, 1)
+  changeAddress(props.addressdata[index].id)
+  if (props.ischoose)
+    Jump('/pages/buy/submitOrder', {}, 1)
 }
 
 const isDefault = (item: number) => {

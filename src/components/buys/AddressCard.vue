@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-const { nowAddress } = storeToRefs(useAddressStore())
+const { defaultAddress } = storeToRefs(useAddressStore())
+
 // 通过code获取省市区
 onShow(() => {
 
@@ -9,28 +10,30 @@ onShow(() => {
 <template>
   <div class="addressCard">
     <div class="center_info">
-      <div v-if="nowAddress.username" class="nameMobile">
-        <div style="display: flex; align-items: center; gap: 8rpx;">
-          <div class="usernameRow">
-            <div class="icon i-icons-address" /> {{ nowAddress.username }}
+      <template v-if="defaultAddress?.username">
+        <div class="nameMobile">
+          <div style="display: flex; align-items: center; gap: 8rpx;">
+            <div class="usernameRow">
+              <div class="icon i-icons-address" /> {{ defaultAddress.username }}
+            </div>
+            <div style="font-size: 28rpx;">
+              {{ defaultAddress.phone }}
+            </div>
+            <div v-if="defaultAddress.isDefault === 1" class="isdefault">
+              默认
+            </div>
           </div>
-          <div style="font-size: 28rpx;">
-            {{ nowAddress.phone }}
-          </div>
-          <div v-if="nowAddress.isDefault === 1" class="isdefault">
-            默认
-          </div>
+          <div class="i-icons-right" />
         </div>
-        <div class="i-icons-right" />
-      </div>
+      </template>
       <div v-else class="addressInfoTips" style="width: 156rpx;">
         <div class="icon i-icons-address" />
         <div>收货地址</div>
       </div>
-      <div v-if="!nowAddress.provinceCode" class="shadel" />
-      <div v-if="nowAddress.provinceCode" style="font-size: 28rpx;padding-left: 57rpx">
-        <span>{{ getPcaDetails([nowAddress.provinceCode, nowAddress.cityCode, nowAddress.countryCode]) }}- {{
-          nowAddress.address }}</span>
+      <div v-if="!defaultAddress?.provinceCode" class="shadel" />
+      <div v-if="defaultAddress?.provinceCode" style="font-size: 28rpx;padding-left: 57rpx">
+        <span>{{ getPcaDetails([defaultAddress.provinceCode, defaultAddress.cityCode, defaultAddress.countryCode]) }}- {{
+          defaultAddress.address }}</span>
       </div>
       <div v-else class="addressInfoTips">
         <div> 请选择/添加收货地址</div>

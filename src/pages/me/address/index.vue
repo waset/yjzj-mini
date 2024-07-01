@@ -220,6 +220,14 @@ onMounted(() => {
   // 初始化数据
   initAddress()
 })
+const ischoose = ref<boolean>(false)
+
+// 下单时传递一个type 参数，表示从下单页面跳转过来的
+onLoad((params) => {
+  if (params?.type) {
+    ischoose.value = true
+  }
+})
 </script>
 
 <template>
@@ -231,6 +239,7 @@ onMounted(() => {
         <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-union" />
       </div>
       <address-item-card
+        :ischoose="ischoose"
         :addressdata="addressList" @delete-address="delAddressFn" @set-default="setDefaultFn"
         @edit-address="editAddressFn"
       />
@@ -243,7 +252,7 @@ onMounted(() => {
         <div class="inputBox">
           <div class="row">
             <div>收货人</div>
-            <input v-model="addReqParams.username" type="text">
+            <input v-model="addReqParams.username" class="inp" type="text">
           </div>
           <div class="row">
             <div>联系电话</div>
