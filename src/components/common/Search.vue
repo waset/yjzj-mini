@@ -3,9 +3,11 @@ const props = withDefaults(defineProps<{
   value?: string
   isInput?: boolean
   placeholder?: string
+  padding?: string
 }>(), {
   isInput: false,
   placeholder: '输入关键字搜索想要的商品',
+  padding: '48rpx 32rpx',
 })
 const emits = defineEmits<{
   'update:value': [value: string]
@@ -21,7 +23,7 @@ const onKeyInput = (event: any) => {
 </script>
 
 <template>
-  <div class="search">
+  <div class="search" :style="{ padding: props.padding }">
     <div class="box">
       <template v-if="props.isInput">
         <input class="input" :value="props.value" type="text" :placeholder="props.placeholder" @input="onKeyInput">
@@ -38,7 +40,6 @@ const onKeyInput = (event: any) => {
 
 <style lang="scss" scoped>
 .search {
-  padding: 48rpx 32rpx;
 
   .box {
     @apply flex-between;
@@ -49,6 +50,7 @@ const onKeyInput = (event: any) => {
     background: rgba(0, 0, 0, 0.2);
     border: 1rpx solid rgba(167, 245, 34, .6);
     border-radius: 160rpx;
+
     .input {
       flex: 1;
     }
