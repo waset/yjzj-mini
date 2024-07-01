@@ -33,7 +33,7 @@ function delModel(ids: BuyProduct['id'][]) {
   del_ids.value = ids
   showModel.value = true
 }
-//
+// 删除商品
 function deleteProduct() {
   deletes(del_ids.value)
   showModel.value = false
