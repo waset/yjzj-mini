@@ -13,8 +13,11 @@ const getAllocationList = async () => {
   await getModificationList(getModificationListParams.value)
 }
 
-const getAllocationListByParams = async () => {
+const getAllocationListByParams = async (data: Modification) => {
+  console.log(123123)
+
   ModificationList.value = []
+  getModificationListParams.value = data
   getModificationListParams.value.page = 1
   await getModificationList(getModificationListParams.value)
 }
@@ -108,8 +111,9 @@ defineExpose({
           <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
         </div>
         <product-custom-filter-list
-          ref="ProductCustomFilterListRef" v-model:value="getModificationListParams"
-          @update:value="getAllocationListByParams()"
+          ref="ProductCustomFilterListRef" v-model:value="getModificationListParams" @change="(data) => {
+            getAllocationListByParams(data)
+          }"
         />
         <div class="commodity_list">
           <product-custom-optional @loadmore="reachBottom()" />

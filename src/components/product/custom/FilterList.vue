@@ -4,6 +4,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{
   'update:value': [value: Modification]
+  'change': [value: Modification]
 }>()
 
 const { getAllParams } = useDiyStore()
@@ -77,6 +78,10 @@ const confirmFn = () => {
   })
 
   emit('update:value', {
+    ...props.value,
+    params: res,
+  })
+  emit('change', {
     ...props.value,
     params: res,
   })
