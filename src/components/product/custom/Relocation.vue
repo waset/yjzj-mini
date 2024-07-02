@@ -38,6 +38,7 @@ const setSortGet = (name: string, value: number) => {
 }
 
 const ProductCustomFilterListRef = ref<ComponentInstance['ProductCustomFilterList']>()
+const ProductCustomOptionalRef = ref<ComponentInstance['ProductCustomOptional']>()
 
 // 筛选
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name, value) => {
@@ -64,11 +65,13 @@ const reachBottom = () => {
 const hasShowOptional = ref(false)
 
 const OptionalType = ref<DiyComponent | null>(null)
-
+// const paramsId = ref<any>(0)
 /**
  * 设置选配类型及获取其列表
  */
-const showOptional = async (id: number, type: DiyComponent) => {
+const showOptional = async (id: number, type: DiyComponent, paramValue: any) => {
+  // paramsId.value = paramValue
+  ProductCustomOptionalRef?.value?.setId(paramValue)
   OptionalType.value = type
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
@@ -78,9 +81,6 @@ const showOptional = async (id: number, type: DiyComponent) => {
   })
 }
 
-const confirmOptions = () => {
-
-}
 defineExpose({
   showOptional,
 })
@@ -114,59 +114,7 @@ defineExpose({
           }"
         />
         <div class="commodity_list">
-          <product-custom-optional @loadmore="reachBottom()" />
-          <!-- <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
-            <template v-for="(item, index) in ModificationList" :key="index">
-              <div class="select" @click="selectIndex = index">
-                <template v-if="isSelect(index)">
-                  <product-custom-singlebg />
-                  <div class="selected">
-                    <div class="icon i-icons-correct" />
-                  </div>
-                </template>
-<template v-else>
-                  <div class="line topLine" />
-                  <div class="line bottomLine" />
-                </template>
-<div class="goodsImg">
-  <product-image :src="ImageUrl(item.banner[0])" />
-</div>
-<div class="goodsInfo">
-  <div class="row1 text-[28rpx]">
-    {{ item.name }}
-  </div>
-  <div class="row2 text-[20rpx]">
-    {{ item.description }}
-  </div>
-  <div class="row3">
-    <div class="text-[24rpx] check">
-      查看详情
-      <div class="i-icons-right" />
-    </div>
-    <div class="text-[32rpx] price">
-      ￥{{ item.sellPrice }}
-    </div>
-  </div>
-</div>
-</div>
-</template>
-<div class="empty" />
-</scroll-view> -->
-
-          <div class="bottom">
-            <div class="center">
-              <div class="left" />
-              <div class="right">
-                <div class="cancel">
-                  取消
-                </div>
-                <div class="confirm" @click="confirmOptions">
-                  确定
-                  <div class="confirm2" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <product-custom-optional ref="ProductCustomOptionalRef" @change="hasShowOptional = false" @loadmore="reachBottom()" />
         </div>
       </div>
     </common-popup>

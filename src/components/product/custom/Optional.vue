@@ -1,37 +1,58 @@
 <script setup lang="ts">
 const emit = defineEmits<{
   (e: 'confirm', index: number): void
+  (e: 'change', flag: boolean): void
   (e: 'loadmore'): void
 }>()
+const { detail } = storeToRefs(useProductStore())
 const { ModificationList } = storeToRefs(useDiyStore())
-const selectIndex = ref<number>(0)
+const saveId = ref<number>(0)
 
-const isSelect = (index: number) => {
-  return index === selectIndex.value
+const setId = (id: number) => {
+  saveId.value = id
 }
-
+const obj = ref<any>()
 const okfn = () => {
-  // emit('confirm', selectIndex.value)
+  ModificationList.value.forEach((item: any) => {
+    if (item.id === saveId.value) {
+      obj.value = item
+    }
+  })
+  // TODO: 增加互斥规则
+  //
+  Object.entries(detail.value?.configuration || {}).forEach(([_, params]) => {
+    if (params.paramDesc === obj.value.typeName) {
+      params.product = obj.value
+      params.paramValue = obj.value.id
+    }
+  })
+
+  emit('change', false)
 }
+
+const selectFn = (item: any) => {
+  if (item.errors.length !== 0) {
+    return false
+  }
+  saveId.value = item.id
+}
+
 // 触底加载
 const reachBottom = () => {
   emit('loadmore')
 }
+
+defineExpose({
+  setId,
+})
 </script>
 
 <template>
   <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
     <template v-for="(item, index) in ModificationList" :key="index">
       <div class="card mb-4">
-        <div
-          :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="() => {
-            if (item.errors.length !== 0) {
-              return
-            }
-            selectIndex = index
-          }"
-        >
-          <template v-if="isSelect(index)">
+        <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
+          <template v-if="saveId === item.id">
             <product-custom-singlebg />
           </template>
           <template v-else>
@@ -77,7 +98,7 @@ const reachBottom = () => {
         <div class="cancel">
           取消
         </div>
-        <div class="confirm" @click="okfn">
+        <div class="confirm" @click="okfn()">
           确定
           <div class="confirm2" />
         </div>
