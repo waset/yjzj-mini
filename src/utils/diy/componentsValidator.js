@@ -468,6 +468,9 @@ export function getComponents(components, componentNames) {
     res[idx] = null
     for (let i = 0, l = components.length; i < l; i++) {
       const item = components[i]
+      if (!item) {
+        break
+      }
       const tagTitle = item.tagTitle
       if (name === tagTitle && item.product.params) {
         res[idx] = item
