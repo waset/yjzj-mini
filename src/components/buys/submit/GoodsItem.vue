@@ -10,8 +10,6 @@ const emit = defineEmits<{
 const checkFn = (index: number) => {
   emit('checked', index)
 }
-
-console.log(props.list)
 </script>
 
 <template>
