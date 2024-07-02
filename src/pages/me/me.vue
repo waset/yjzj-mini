@@ -21,7 +21,7 @@ const orderTypes = [
     icon: 'i-icons-delivery',
     text: '全部',
     num: () => {
-      return orders.value.length || 0
+      return 0
     },
     click: () => {
       Jump('/pages/order/list', {
@@ -62,16 +62,23 @@ const menus = [
     icon: 'i-icons-setting',
     text: '配置单',
     path: '/pages/me/configList/configuration',
+    click: () => {
+      Jump('/pages/me/configList/configuration')
+    },
   },
   {
     icon: 'i-icons-coupon',
     text: '优惠券',
-    path: '',
+    click: () => {
+      Jump('/pages/buy/coupon')
+    },
   },
   {
     icon: 'i-icons-address',
     text: '收货地址',
-    path: '/pages/me/address/index',
+    click: () => {
+      Jump('/pages/me/address/index')
+    },
   },
 ]
 /**
@@ -82,22 +89,6 @@ function goLogin() {
     return
 
   Jump('/pages/me/login')
-}
-
-const changeMenus = (text: string) => {
-  switch (text) {
-    case '配置单':
-      Jump('/pages/me/configList/configuration')
-      break
-    case '收货地址':
-      Jump('/pages/me/address/index')
-      break
-    case '优惠券':
-      Jump('/pages/buy/coupon')
-      break
-    default:
-      break
-  }
 }
 </script>
 
@@ -223,7 +214,7 @@ const changeMenus = (text: string) => {
       <div class="wrap">
         <div class="items">
           <template v-for="(item, index) in menus" :key="index">
-            <div class="item" @click="changeMenus(item.text)">
+            <div class="item" @click="item.click">
               <div class="left">
                 <div class="icon">
                   <div :class="item.icon" />
