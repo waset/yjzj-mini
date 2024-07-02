@@ -87,7 +87,6 @@ interface configurationListReq {
 
 // 新增配置单
 interface addConfiguration {
-
   params: ParamConfig[]
   shareCode?: string
   createUserID?: number
@@ -95,8 +94,8 @@ interface addConfiguration {
 }
 
 interface ParamConfig {
-  productID: number
-  number: number
+  pID: number
+  num: number
 }
 
 // 下单
