@@ -78,7 +78,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 <template>
   <div class="menu">
     <navbar-home text="菜单" />
-    <common-search />
+    <common-search @clicking="Jump('/pages/search/search')" />
     <div class="wrap">
       <div class="left">
         <scroll-view scroll-y scroll-with-animation class="menu-scroll scroll" :scroll-top="leftScrollTop">
