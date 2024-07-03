@@ -23,7 +23,7 @@ interface Configuration {
   deletedAt?: null
   id?: number
   isCollect?: number
-  no?: string | ''
+  no?: string
   params?: ConfigurationParam[]
   products?: Product[]
   sellNumber?: number
