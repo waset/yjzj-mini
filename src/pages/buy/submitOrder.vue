@@ -139,7 +139,7 @@ const paym = computed(() => {
     <buys-submit-goods-item :list="nowGoods" :goods="detail" :showborder="showborder" @checked="checkAllocation" />
 
     <div class="CouponsAndNotes">
-      <div class="counpons" @click="Jump('/pages/buy/selectCoupon', {}, 1)">
+      <div class="counpons" @click="Jump('/pages/buy/selectCoupon')">
         <div>优惠券</div>
         <div class="beColor">
           <template v-if="couponPrice !== ''">
