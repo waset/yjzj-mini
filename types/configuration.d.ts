@@ -6,6 +6,13 @@ interface ConfigurationListReq {
   page: number
   pageSize: number
 }
+
+interface ConfigurationListRes {
+  code: number
+  data: Configuration[]
+  msg: string
+  page: ConfigPage
+}
 interface Configuration {
   cartNumber?: number
   collectNumber?: number
@@ -37,8 +44,8 @@ interface ConfigurationParam {
   pID: number
 }
 interface ConfigPage {
-  page: number
-  LastPage: number
+  currentPage: number
+  lastPage: number
   pageSize: number
   total: number
 }

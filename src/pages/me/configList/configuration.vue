@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { getList: getConfiguration, del: deleteConfiguration } = useConfigurationStore()
-const { configurations } = storeToRefs(useConfigurationStore())
+const { configurations, lastPage } = storeToRefs(useConfigurationStore())
 
 const params = ref<ConfigurationListReq>({
   page: 1,
@@ -9,7 +9,12 @@ const params = ref<ConfigurationListReq>({
 
 // 获取配置列表
 const getList = async () => {
-  await getConfiguration(params.value)
+  try {
+    await getConfiguration(params.value)
+  }
+  catch (error) {
+    console.error('获取配置列表失败:', error)
+  }
 }
 
 onShow(async () => {
@@ -44,6 +49,20 @@ const search = async (val: string) => {
   params.value.no = val || undefined
   await getList()
 }
+
+// 触底加载更多
+onReachBottom(() => {
+  if (params.value.page < lastPage.value) {
+    params.value.page += 1
+    getList()
+  }
+  else {
+    uni.showToast({
+      title: '没有更多了',
+      icon: 'none',
+    })
+  }
+})
 </script>
 
 <template>
