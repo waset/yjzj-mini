@@ -96,7 +96,7 @@ interface Product {
    * 产品参数
    */
   params: Param[]
-  configuration: Configuration
+  configuration: ConfigurationList
   priceType: number
   sellNumber: number
   /**
@@ -124,9 +124,9 @@ interface Product {
   delete?: boolean
 }
 
-type DiyComponent = keyof Configuration
+type DiyComponent = keyof ConfigurationList
 
-interface Configuration {
+interface ConfigurationList {
   chassis: Param
   cpu: Param
   cpuHeatSink: Param
