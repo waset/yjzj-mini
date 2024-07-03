@@ -2,12 +2,14 @@ const { products } = storeToRefs(useBuyStore())
 export const useSubmitOrderStore = defineStore('submitOrder', {
   state: (): {
     couponList: couponList[]
+    canusecouponList: couponList[]
     canUseCouponNum: number
     provider: string
     buyType: string
 
   } => ({
     couponList: [],
+    canusecouponList: [],
     canUseCouponNum: 0,
     provider: '',
     buyType: '',
@@ -101,6 +103,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
         if (code === 200) {
           this.canUseCouponNum = 0
+          this.canusecouponList = [...this.canusecouponList, ...data]
           data.forEach((item) => {
             if (item.ticketInfo.status === 1) {
               this.canUseCouponNum += 1
@@ -118,7 +121,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', params, { auth: true })
         if (code === 200)
-          this.couponList = data
+          this.couponList = [...this.couponList, ...data]
       }
       catch {
         uni.showToast({
@@ -127,6 +130,23 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         })
       }
     },
+    // 兑换卡券
+    async exchangeCoupon(params: couponReq) {
+      try {
+        const { code } = await http.post<couponList[]>('/web/user/ticket/get', params, { auth: true })
+
+        if (code === 200) {
+          return true
+        }
+      }
+      catch {
+        uni.showToast({
+          title: '网络错误,请稍后重试',
+          icon: 'error',
+        })
+      }
+    },
+
     //  下单
     async submitOrderReq(params: submitOrderReq) {
       try {
