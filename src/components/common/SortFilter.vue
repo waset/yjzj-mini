@@ -53,12 +53,12 @@ const fns = ref<{ [key in keys]: List[] }>({
       isShow: !props.hasLayout,
       click: (index: number) => switchTab('right', index),
     },
-    {
-      name: 'filte',
-      label: '',
-      icons: ['i-icons-screen'],
-      click: (index: number) => switchTab('right', index),
-    },
+    // {
+    //   name: 'filte',
+    //   label: '',
+    //   icons: ['i-icons-screen'],
+    //   click: (index: number) => switchTab('right', index),
+    // },
   ],
 })
 
