@@ -39,7 +39,9 @@ const changeSwiperFn = (value: number) => {
 
 // 确认选择的游戏
 const confirmGames = () => {
-  useGamesList.value = JSON.parse(JSON.stringify(assignment.value))
+  const { cloned } = useCloned(assignment.value)
+
+  useGamesList.value = cloned.value
   // 重置序列号
   swiperbox.value?.reset()
   showGames.value = false
@@ -77,10 +79,6 @@ onMounted(async () => {
    */
   const { cloned } = useCloned(gemelist)
   assignment.value = cloned.value
-})
-
-onUnmounted(() => {
-  //
 })
 
 defineExpose({
