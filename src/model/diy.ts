@@ -126,7 +126,10 @@ export const useDiyStore = defineStore('diy', {
 
     // 新增配置单
     async addConfiguration(params: addConfiguration) {
-      await http.post('/web/product/config/add', params)
+      const { code, data } = await http.post('/web/product/config/add', params)
+      if (code === 200) {
+        this.collectionConfig(data.no)
+      }
     },
     // 下单
     async submit(params: submitReq) {
@@ -144,6 +147,12 @@ export const useDiyStore = defineStore('diy', {
       if (code === 200) {
         return data
       }
+    },
+
+    // 收藏配置单
+    // /web/product/config/add
+    async collectionConfig(No: string) {
+      await http.post('/web/user/product/config/collect', { productConfigNo: No })
     },
 
   },
