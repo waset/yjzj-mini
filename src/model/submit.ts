@@ -131,7 +131,11 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
           // TODO wxpay.then->支付成功回调，fail->支付失败回调
-          products.value = products.value.filter(element => !element.select)
+          if (this.buyType === 'car') {
+            // 当前是购物车下单时才能删除购物车中的选中
+            products.value = products.value.filter(element => !element.select)
+          }
+
           this.wxpay(data.jsapiPayParams).then(() => {
             // 支付成功跳转的订单列表
             Jump('/pages/buy/orderInfo', { id: data.orderID })
