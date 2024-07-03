@@ -257,7 +257,6 @@ onMounted(() => {
 onLoad((options) => {
   if (options?.back) {
     back.value = options.back
-    console.log(back.value)
   }
 })
 </script>
