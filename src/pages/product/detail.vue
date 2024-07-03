@@ -13,7 +13,29 @@ onLoad(async (params) => {
     productId.value = Number(req.id)
   }
 })
+const { addProduct } = useBuyStore()
+/**
+ * 加入购物车
+ */
+const addBuyCar = () => {
+  if (!detail.value) {
+    return
+  }
+  addProduct({
+    quantity: 1,
+    select: false,
+    delete: false,
+    ...detail.value,
+  })
+  uni.showToast({
+    title: '添加成功',
+    icon: 'success',
+  })
+}
 
+const buyNow = () => {
+  Jump('/pages/buy/submitOrder')
+}
 onShow(async () => {
   await getProductDetail(productId.value)
 })
@@ -29,6 +51,10 @@ onShow(async () => {
     <div class="info">
       <product-info :info="detail" />
     </div>
+  </div>
+
+  <div class="bottom">
+    <product-operation @add-car="addBuyCar" @buy-now="buyNow" />
   </div>
 </template>
 
