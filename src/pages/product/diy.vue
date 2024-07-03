@@ -21,7 +21,7 @@ const { addConfiguration, collectionConfig } = useDiyStore()
  */
 const buyNow = async () => {
   const params = ref<addConfiguration>({ params: [] })
-  Object.entries(detail.value?.configuration || {}).forEach(([_, item]) => {
+  Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
   // detail.value.configuration
@@ -87,7 +87,7 @@ const addBuyCar = () => {
 
     <div class="info">
       <product-diy-configur
-        :params="detail?.configuration" @up-config="(list) => {
+        :params="detail?.params" @up-config="(list) => {
           DiyGameRef?.upOptional()
         }"
       />

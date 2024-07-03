@@ -20,7 +20,7 @@ const okfn = () => {
   })
   // TODO: 增加互斥规则
   //
-  Object.entries(detail.value?.configuration || {}).forEach(([_, params]) => {
+  Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
     if (params.paramDesc === obj.value.typeName) {
       params.product = obj.value
       params.paramValue = obj.value.id

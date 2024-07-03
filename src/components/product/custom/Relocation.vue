@@ -64,15 +64,11 @@ const reachBottom = () => {
 
 const hasShowOptional = ref(false)
 
-const OptionalType = ref<DiyComponent | null>(null)
-// const paramsId = ref<any>(0)
 /**
  * 设置选配类型及获取其列表
  */
-const showOptional = async (id: number, type: DiyComponent, paramValue: any) => {
-  // paramsId.value = paramValue
+const showOptional = async (id: number, paramValue: any) => {
   ProductCustomOptionalRef?.value?.setId(paramValue)
-  OptionalType.value = type
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
   getModificationListParams.value.productTypeParentID = 4

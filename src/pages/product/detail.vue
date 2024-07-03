@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
-
+const { changeBuyType } = useSubmitOrderStore()
 const productId = ref<Product['id']>()
 interface PageReq {
   id: Product['id']
@@ -34,6 +34,7 @@ const addBuyCar = () => {
 }
 
 const buyNow = () => {
+  changeBuyType('buy')
   Jump('/pages/buy/submitOrder')
 }
 onShow(async () => {

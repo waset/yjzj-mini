@@ -1,12 +1,62 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
-const { diytype } = storeToRefs(useDiyStore())
+const DiyType = [
+  {
+    text: '请选择CPU',
+    icons: 'i-icons-cpu',
+    type: 'CPU',
+    typeID: 13,
+  },
+  {
+    text: '请选择主板',
+    icons: 'i-icons-mainboard',
+    type: '主板',
+    typeID: 14,
+  },
+  {
+    text: '请选择显卡',
+    icons: 'i-icons-graphics-card',
+    type: '显卡',
+    typeID: 15,
+  },
+  {
+    text: '请选择内存',
+    icons: 'i-icons-storage',
+    type: '内存',
+    typeID: 16,
+  },
+  {
+    text: '请选择硬盘',
+    icons: 'i-icons-hard-disk',
+    type: '硬盘',
+    typeID: 17,
+  },
+  {
+    text: '请选择机箱',
+    icons: 'i-icons-crate',
+    type: '机箱',
+    typeID: 18,
+  },
+
+  {
+    text: '请选择散热',
+    icons: 'i-icons-heat-dissipation',
+    type: 'CPU散热器',
+    typeID: 19,
+  },
+  {
+    text: '请选择电源',
+    icons: 'i-icons-power-supply',
+    type: '电源',
+    typeID: 20,
+  },
+]
 
 const productCustomRelocationRef = ref<ComponentInstance['ProductCustomRelocation']>()
 // 打开选择配置组件的弹窗
 const openSelectPop = async (index: number, paramValue: string | number | string[] | undefined) => {
-  const { type, typeID } = diytype.value[index]
-  productCustomRelocationRef.value?.showOptional(typeID, type, paramValue)
+  const { typeID } = DiyType[index]
+  productCustomRelocationRef.value?.showOptional(typeID, paramValue)
 }
 
 // // 替换 选配 组件
@@ -28,20 +78,20 @@ const openSelectPop = async (index: number, paramValue: string | number | string
   <div class="diy">
     <div class="top">
       <div class="wrap">
-        <template v-for="(item, index) in diytype" :key="index">
+        <template v-for="(item, index) in DiyType" :key="index">
           <div class="line">
             <div :class="item.icons" class="icon_style" />
 
             <div class="text">
-              <template v-if="detail?.configuration && detail?.configuration[item.type]">
-                {{ detail?.configuration[item.type].product.name }}
+              <template v-if="detail?.params && detail?.params[index].paramDesc === item.type">
+                {{ detail?.params[index].product.name }}
               </template>
               <template v-else>
                 {{ item.text }}
               </template>
             </div>
 
-            <div class="alter" @click="openSelectPop(index, detail?.configuration[item.type].paramValue)">
+            <div class="alter" @click="openSelectPop(index, detail?.params[index].paramValue)">
               <div class="i-icons-edit alter_icon" />
               改配
             </div>

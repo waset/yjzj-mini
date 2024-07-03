@@ -18,7 +18,7 @@ const price = ref<string>('0')
 
 // 选择优惠券
 const selectItem = (index: number) => {
-  selectId.value = couponList.value[index]?.ticketInfo?.id ?? 0
+  selectId.value = couponList.value[index]?.id ?? 0
   price.value = couponList.value[index]?.ticketInfo?.discountPrice ?? '0'
 }
 
