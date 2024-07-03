@@ -40,6 +40,7 @@ export const useProductStore = defineStore('product', {
       if (code === 200)
         this.types = data
     },
+
     // 获取产品列表
     async getProducts(params: GetProductParams, pages: number, pageSize: number, isconcat: boolean = false) {
       const { data, code, page } = await http.post<Product_res>('/web/product/list', {
@@ -57,6 +58,7 @@ export const useProductStore = defineStore('product', {
         }
       }
     },
+
     // 获取产品详情
     async getProductDetail(id?: number) {
       if (!id) {
@@ -93,28 +95,6 @@ export const useProductStore = defineStore('product', {
       }
     },
 
-    // 获取智能推荐列表
-    async recommendList(params: GetrecommendPar, pages: number, pageSize: number) {
-      try {
-        const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
-          ...params,
-          page: pages,
-          pageSize,
-        }, { auth: false })
-        if (code === 200) {
-          return { data, page }
-        }
-        else {
-          throw new Error('列表请求失败')
-        }
-      }
-      catch (error) {
-        uni.showToast({
-          title: '请求失败',
-          icon: 'error',
-        })
-      }
-    },
   },
 })
 
