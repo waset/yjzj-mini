@@ -134,13 +134,12 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
           products.value = products.value.filter(element => !element.select)
           this.wxpay(data.jsapiPayParams).then(() => {
             // 支付成功跳转的订单列表
-            Jump('/pages/order/list')
+            Jump('/pages/buy/orderInfo', { id: data.orderID })
           }).catch(() => {
             // 支付失败提示
             uni.showToast({
               title: '支付失败',
               icon: 'error',
-
               duration: 2000,
               // 跳转订单列表
               success: () => {
@@ -149,7 +148,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 const nowpage = page.route
                 if (nowpage !== 'pages/order/list') {
                   setTimeout(() => {
-                    Jump('/pages/order/list')
+                    Jump('/pages/buy/orderInfo', { id: data.orderID })
                   }, 1000)
                 }
               },
@@ -209,8 +208,11 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       })
     },
     // 订单详情
-    async orderInfo(id: string) {
-      const { data } = await http.post<orderinfoData>('/web/order/info', { NO: id }, { auth: true })
+    async orderInfo(id?: number) {
+      if (id) {
+        id = Number(id)
+      }
+      const { data } = await http.post<orderinfoData>('/web/order/info', { id }, { auth: true })
 
       return data
     },

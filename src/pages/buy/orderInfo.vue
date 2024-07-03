@@ -10,7 +10,7 @@ const detail = ref<orderinfoData>({})
 // 倒计时
 const timeout = ref<string>('--:--:--')
 // 订单号
-const orderNo = ref<string>('')
+const orderId = ref<number>()
 // 订单首次加载状态
 const firstStatus = ref<number>(1)
 
@@ -35,13 +35,13 @@ const continueFn = async () => {
 // 取消支付
 const cancelPayFn = async () => {
   await cancelPay(detail.value?.id || 0)
-  detail.value = await orderInfo(orderNo.value)
+  detail.value = await orderInfo(orderId.value)
   status(detail.value.status || firstStatus.value)
 }
 
 onLoad((options) => {
-  if (options?.no) {
-    orderNo.value = options?.no
+  if (options?.id) {
+    orderId.value = options?.id
   }
   if (options?.status) {
     status(Number(options?.status))
@@ -50,7 +50,7 @@ onLoad((options) => {
 
 onMounted(async () => {
   // 给请求 添加商品
-  detail.value = await orderInfo(orderNo.value)
+  detail.value = await orderInfo(orderId.value)
   timeout.value = countdown(detail.value?.createdAt || '')
 
   const times = setInterval(async () => {
@@ -58,7 +58,7 @@ onMounted(async () => {
       timeout.value = countdown(detail.value?.createdAt || '')
       if (timeout.value === '已过期') {
         clearInterval(times)
-        detail.value = await orderInfo(orderNo.value)
+        detail.value = await orderInfo(orderId.value)
         status(detail.value.status || firstStatus.value)
       }
     }

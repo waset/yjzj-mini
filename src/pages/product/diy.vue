@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
+const { changeBuyType } = useSubmitOrderStore()
 
 interface PageReq {
   product_id: Product['id'] | null
@@ -14,23 +15,21 @@ onLoad(async (params) => {
 
 const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
 
-const { addConfiguration } = useDiyStore()
+const { addConfiguration, collectionConfig } = useDiyStore()
 /**
  * 立即购买
  */
 const buyNow = async () => {
   const params = ref<addConfiguration>({ params: [] })
-
   Object.entries(detail.value?.configuration || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
-
   // detail.value.configuration
-
   // 新增配置单
-  await addConfiguration(params.value)
-  // 提交订单
-  // await submit()
+  const data = await addConfiguration(params.value)
+  await collectionConfig(data.no)
+  changeBuyType('buy')
+  Jump('/pages/buy/submitOrder')
 }
 
 const { addProduct } = useBuyStore()
