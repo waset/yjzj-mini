@@ -10,7 +10,7 @@ onShow(() => {
   <div class="addressCard">
     <div class="center_info">
       <div v-if="nowAddress.username" class="nameMobile">
-        <div style="display: flex;align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8rpx;">
           <div class="usernameRow">
             <div class="icon i-icons-address" /> {{ nowAddress.username }}
           </div>
