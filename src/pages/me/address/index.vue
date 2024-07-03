@@ -115,8 +115,11 @@ const setCodesFromAddresses = (params: any) => {
 }
 const showAddressTxt = ref<string>('')
 // 选择地址 确认
+const formatAddress = (labels: string[]) => {
+  return labels.join('')
+}
 const bindPickerChange = () => {
-  showAddressTxt.value = labelsToRender.value[0] + labelsToRender.value[1] + labelsToRender.value[2]
+  showAddressTxt.value = formatAddress(labelsToRender.value)
   // 地址拼接的字符串
   setCodesFromAddresses(addReqParams.value)
 }
