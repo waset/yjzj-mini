@@ -10,6 +10,16 @@ const banner_images = computed<string[]>(() => {
   }
   return []
 })
+
+/**
+ * 预览产品图
+ */
+const previewImage = (index: number) => {
+  uni.previewImage({
+    current: banner_images.value[index],
+    urls: banner_images.value,
+  })
+}
 </script>
 
 <template>
@@ -51,6 +61,7 @@ const banner_images = computed<string[]>(() => {
             <carousel
               v-model:current="current" :list="banner_images" loop :height="500"
               easing-function="linear" :duration="500"
+              @click="previewImage"
             />
             <div class="statement">
               *实际效果图以订单为准
