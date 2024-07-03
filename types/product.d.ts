@@ -37,7 +37,21 @@ interface GetProductParams {
   /**
    * 分类名称
    */
-  name?: string
+  name?: string | number | undefined
+}
+
+interface GetrecommendPar {
+  CPUType: string
+  productTypeParentID: number
+  sellPriceMax: number
+  sellPriceMin: number
+}
+interface Product_res {
+  data: Product[]
+  code: number
+  msg: string
+  page: Page
+
 }
 interface Product {
   banner: string[]

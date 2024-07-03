@@ -157,7 +157,7 @@ const paym = computed(() => {
             </div>
           </template>
 
-          <div class="i-icons-right" />
+          <div class="icon i-icons-right" />
         </div>
       </div>
       <div class="notes" @click="showPop = true">
@@ -166,7 +166,7 @@ const paym = computed(() => {
           <div class="text1">
             {{ submitOrderParams.remark || '无备注' }}
           </div>
-          <div class="i-icons-right" />
+          <div class="icon i-icons-right" />
         </div>
       </div>
     </div>
@@ -285,7 +285,7 @@ $Be: #BEBEBE;
 
       }
 
-      .i-icons-right {
+      .icon {
         font-size: 32rpx;
         width: 32rpx;
         height: 32rpx;

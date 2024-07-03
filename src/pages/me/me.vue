@@ -61,7 +61,7 @@ const menus = [
   {
     icon: 'i-icons-setting',
     text: '配置单',
-    path: '',
+    path: '/pages/me/configList/configuration',
   },
   {
     icon: 'i-icons-coupon',
@@ -86,6 +86,9 @@ function goLogin() {
 
 const changeMenus = (text: string) => {
   switch (text) {
+    case '配置单':
+      Jump('/pages/me/configList/configuration')
+      break
     case '收货地址':
       Jump('/pages/me/address/index')
       break

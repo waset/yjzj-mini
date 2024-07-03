@@ -4,6 +4,7 @@ export const useProductStore = defineStore('product', {
     types: ProductType[]
     products: Product[]
     detail: Product | null
+    lastPage: number
   } => ({
     // 产品类目
     categorys: {
@@ -18,6 +19,7 @@ export const useProductStore = defineStore('product', {
     // 这里存放数据
     products: [],
     detail: null,
+    lastPage: 10,
   }),
   getters: {
     isDiy: (state) => {
@@ -39,15 +41,21 @@ export const useProductStore = defineStore('product', {
         this.types = data
     },
     // 获取产品列表
-    async getProducts(params: GetProductParams, page: number, pageSize: number) {
-      const { data, code } = await http.post<Product[]>('/web/product/list', {
+    async getProducts(params: GetProductParams, pages: number, pageSize: number, isconcat: boolean = false) {
+      const { data, code, page } = await http.post<Product_res>('/web/product/list', {
         ...params,
-        page,
+        page: pages,
         pageSize,
       }, { auth: false })
-
-      if (code === 200)
-        this.products = data
+      if (code === 200) {
+        this.lastPage = page.lastPage
+        if (isconcat) {
+          this.products = this.products.concat(data)
+        }
+        else {
+          this.products = data
+        }
+      }
     },
     // 获取产品详情
     async getProductDetail(id?: number) {
@@ -59,6 +67,52 @@ export const useProductStore = defineStore('product', {
 
       if (code === 200) {
         this.detail = data
+      }
+    },
+
+    // 获取智能推荐列表
+    async recommendList(params: GetrecommendPar, pages: number, pageSize: number) {
+      try {
+        const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
+          ...params,
+          page: pages,
+          pageSize,
+        }, { auth: false })
+        if (code === 200) {
+          return { data, page }
+        }
+        else {
+          throw new Error('列表请求失败')
+        }
+      }
+      catch (error) {
+        uni.showToast({
+          title: '请求失败',
+          icon: 'error',
+        })
+      }
+    },
+
+    // 获取智能推荐列表
+    async recommendList(params: GetrecommendPar, pages: number, pageSize: number) {
+      try {
+        const { data, code, page } = await http.post<Product[]>('/web/product/recommend/list', {
+          ...params,
+          page: pages,
+          pageSize,
+        }, { auth: false })
+        if (code === 200) {
+          return { data, page }
+        }
+        else {
+          throw new Error('列表请求失败')
+        }
+      }
+      catch (error) {
+        uni.showToast({
+          title: '请求失败',
+          icon: 'error',
+        })
       }
     },
   },

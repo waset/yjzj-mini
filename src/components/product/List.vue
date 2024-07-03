@@ -47,7 +47,7 @@ const handleClick = (item: Product) => {
               <div class="more">
                 <div class="price">
                   <span>￥</span>
-                  <span>{{ item.tagPrice }}</span>
+                  <span>{{ item.sellPrice }}</span>
                 </div>
                 <div class="btns">
                   <div class="btn">

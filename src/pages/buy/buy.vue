@@ -146,9 +146,16 @@ const submitorder = () => {
         </div>
         <div class="btns">
           <template v-if="!management">
-            <div class="btn bg-green" @click="submitorder">
-              结算
-            </div>
+            <template v-if="selectedNum(management) !== 0">
+              <div class="btn bg-green" @click="submitorder">
+                结算
+              </div>
+            </template>
+            <template v-else>
+              <div class="btn" style="color: #F5F5F5; background-color: #8D8D8D;">
+                结算
+              </div>
+            </template>
           </template>
           <template v-else>
             <div class="btn bg-white" @click="delModel(selectedProductIds(management))">

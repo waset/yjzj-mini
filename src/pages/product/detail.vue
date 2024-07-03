@@ -33,12 +33,12 @@ onShow(async () => {
 </template>
 
 <style scoped lang="scss">
-  .detail {
-    padding: 48rpx 0;
+.detail {
+  padding: 48rpx 0;
 
-    .banner {
-      padding: 0 32rpx;
-    }
+  .banner {
+    padding: 0 32rpx;
+  }
 
   }
 </style>

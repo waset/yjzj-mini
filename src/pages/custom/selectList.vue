@@ -78,7 +78,7 @@ onShow(async () => {
         {{
           item.name
         }}
-        <div class="i-icons-closed" @click="remove(index)" />
+        <div class="icon i-icons-closed" @click="remove(index)" />
       </div>
     </div>
     <common-popup :show="filte" name="筛选" @close="filte = false">
@@ -125,7 +125,7 @@ onShow(async () => {
     align-items: center;
     margin-bottom: 16rpx;
 
-    .i-icons-closed {
+    .icon {
       color: #fff;
       font-size: 24rpx;
       margin-left: 8rpx;

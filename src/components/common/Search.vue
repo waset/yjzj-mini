@@ -4,13 +4,16 @@ const props = withDefaults(defineProps<{
   isInput?: boolean
   placeholder?: string
   padding?: string
+  isFocus?: boolean
 }>(), {
   isInput: false,
   placeholder: '输入关键字搜索想要的商品',
   padding: '48rpx 32rpx',
+  isFocus: false,
 })
 const emits = defineEmits<{
   'update:value': [value: string]
+  'clicking': []
 }>()
 const text = ref('')
 const update = useDebounceFn(() => {
@@ -23,10 +26,10 @@ const onKeyInput = (event: any) => {
 </script>
 
 <template>
-  <div class="search" :style="{ padding: props.padding }">
+  <div class="search" :style="{ padding: props.padding }" @click="emits('clicking')">
     <div class="box">
       <template v-if="props.isInput">
-        <input class="input" :value="props.value" type="text" :placeholder="props.placeholder" @input="onKeyInput">
+        <input class="input" :value="props.value" type="text" :placeholder="props.placeholder" :focus="isFocus" @input="onKeyInput">
       </template>
       <template v-else>
         <div class="text">
