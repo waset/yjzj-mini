@@ -27,7 +27,10 @@ const buyNow = async () => {
   // detail.value.configuration
   // 新增配置单
   const data = await addConfiguration(params.value)
-  await collectionConfig(data.no)
+  const code = await collectionConfig(data.no)
+  if (code !== 200) {
+    return false
+  }
   changeBuyType('buy')
   Jump('/pages/buy/submitOrder')
 }
