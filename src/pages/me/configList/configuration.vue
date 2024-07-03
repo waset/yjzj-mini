@@ -2,9 +2,14 @@
 const { getList: getConfiguration, del: deleteConfiguration } = useConfigurationStore()
 const { configurations } = storeToRefs(useConfigurationStore())
 
+const params = ref<ConfigurationListReq>({
+  page: 1,
+  pageSize: 10,
+})
+
 // 获取配置列表
 const getList = async () => {
-  await getConfiguration()
+  await getConfiguration(params.value)
 }
 
 onShow(async () => {
@@ -34,11 +39,16 @@ const deleteFn = async (no: Required<Configuration>['no']) => {
     })
   }
 }
+
+const search = async (val: string) => {
+  params.value.no = val || undefined
+  await getList()
+}
 </script>
 
 <template>
   <navbar-back text="我的配置单" />
-  <common-search />
+  <common-search :value="params?.no" placeholder="请输入配置单编号进行搜索" is-input @update:value="search" />
   <div class="configuration">
     <div class="body">
       <div class="box">
