@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   addressdata: addresslist[]
-  select: boolean
+
 }>()
 
 const emits = defineEmits<{
@@ -28,9 +28,6 @@ const editAddress = (item: addresslist) => {
 
 // 设置当前地址
 const setNowAddress = (index: number) => {
-  if (props.select === false)
-    return
-
   nowAddress.value = props.addressdata[index]
   Jump('/pages/buy/submitOrder', {}, 1)
 }

@@ -80,8 +80,14 @@ interface couponReq {
    * 卡券兑换码
    */
   fromNO?: string
-  page?: number
-  pageSize?: number
+  /**
+   * 邀请人id
+   */
+  fromUserID: number
+  /**
+   * 卡券id
+   */
+  ticketID: number
 }
 
 // 下单请求接口

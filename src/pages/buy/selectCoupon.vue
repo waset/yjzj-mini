@@ -1,17 +1,5 @@
 <script lang="ts" setup>
 const { couponList } = storeToRefs(useSubmitOrderStore())
-const { getCouponList, canusecouponList } = useSubmitOrderStore()
-
-const page = ref<number>(1)
-
-const show = ref<boolean>(false)
-const rule = ref('')
-const showrule = (index: number) => {
-  show.value = !show.value
-  if (show.value) {
-    rule.value = couponList.value[index].ticketInfo.instruction || ''
-  }
-}
 
 const selectId = ref<number>(0)
 const price = ref<string>('0')
@@ -25,30 +13,22 @@ const selectItem = (index: number) => {
 const confirm = () => {
   Jump('/pages/buy/submitOrder', { id: selectId.value, couponPrice: price.value }, 1)
 }
-
-// 更新优惠券列表
-const updateCouponFn = async () => {
-  page.value = 0
-  await getCouponList(page.value += 1, 15)
-}
 </script>
 
 <template>
-  <div>
-    <navbar-back text="我的优惠券" />
-    <div class="body">
-      <buys-coupon-search @update-coupon="updateCouponFn" />
-
-      <template v-if="canusecouponList.length === 0">
-        <common-empty text="当前暂无优惠券" icon="i-svg-nocoupon" />
-      </template>
-      <buys-coupon-item :coupn="canusecouponList" @click="showrule" @change="selectItem" />
+  <navbar-back text="我的优惠券" />
+  <div class="body">
+    <buys-coupon-search />
+    <div v-if="couponList.length === 0">
+      <common-empty text="当前暂无优惠券" icon="i-svg-nocoupon" />
     </div>
-    <common-popup v-model:show="show" name="规则说明">
-      <div class="h-full text-center lh-[40rpx]">
-        {{ rule }}
+    <div v-for="(item, index) in couponList" :key="index" class="itembox" @click="selectItem(index)">
+      <buys-coupon-item :coupn="item" :maxwidth="476" />
+      <div v-if="selectId !== item.ticketInfo.id" class="circle" />
+      <div v-if="selectId === item.ticketInfo.id" class="circle2">
+        <div class="i-icons-correct" />
       </div>
-    </common-popup>
+    </div>
     <div class="confirm">
       <div>
         优惠金额：￥{{ price }}
@@ -75,43 +55,65 @@ $Be: #BEBEBE;
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-}
 
-.confirm {
+  .itembox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32rpx;
+    box-sizing: border-box;
 
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 144rpx;
-  background-color: rgba($color: #fff, $alpha: 0.2);
-  backdrop-filter: blur(48rpx);
+    .circle,
+    .circle2 {
+      border-radius: 50%;
+      border: 2rpx solid #fff;
+      width: 40rpx;
+      height: 40rpx;
+      box-sizing: border-box;
 
-  @supports not (backdrop-filter: blur(48rpx)) {
-    background-color: #fff; // 不支持模糊滤镜的浏览器使用不透明白色背景
+    }
+
+    .circle2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 28rpx;
+      background-color: #A7F522;
+      border: 0;
+    }
   }
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32rpx;
-  box-sizing: border-box;
-
-  .confirmBtn {
-
-    background-color: #A7F522;
-    font-size: 28rpx;
-    border-radius: 8rpx;
-    color: #333;
+  .confirm {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 144rpx;
+    background-color: rgba($color: #fff, $alpha: 0.2);
+    backdrop-filter: blur(48rpx);
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 192rpx;
-    height: 80rpx;
-  }
+    justify-content: space-between;
+    padding: 32rpx;
+    box-sizing: border-box;
 
-  .confirmBtn:active {
-    background-color: #8fdf06;
+    .confirmBtn {
 
+      background-color: #A7F522;
+      font-size: 28rpx;
+      border-radius: 8rpx;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 192rpx;
+      height: 80rpx;
+    }
+
+    .confirmBtn:active {
+      background-color: #8fdf06;
+
+    }
   }
 }
 </style>

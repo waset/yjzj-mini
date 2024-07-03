@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 const { nowAddress } = storeToRefs(useAddressStore())
-const { getAddressList } = useAddressStore()
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
-const { canUseCouponNum, canusecouponList } = storeToRefs(useSubmitOrderStore())
+const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
 const { getCouponList, submitOrderReq, canUseCoupon, buyType } = useSubmitOrderStore()
 const page = ref<number>(1)
 
@@ -77,17 +76,6 @@ onShow(async () => {
     console.error('Failed to fetch coupon list:', error)
   }
 })
-
-onLoad(async () => {
-  try {
-    if (nowAddress.value.id === 0) {
-      await getAddressList(1, 20)
-    }
-  }
-  catch (error) {
-    console.error('Failed to fetch address list:', error)
-  }
-})
 onMounted(async () => {
   // 商品详情进入
   if (buyType === 'buy') {
@@ -128,7 +116,6 @@ onMounted(async () => {
 
     submitOrderParams.value.details = arr.value
     // 查询可用的优惠券
-    canusecouponList.value = []
     await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
   }
 })
@@ -137,7 +124,7 @@ onMounted(async () => {
 <template>
   <navbar-back text="提交订单" />
   <div class="body">
-    <div class="addressBox" @click="Jump('/pages/me/address/index', { back: true }, 1)">
+    <div class="addressBox" @click="Jump('/pages/me/address/index', {}, 1)">
       <buys-address-card />
     </div>
 
