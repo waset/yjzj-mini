@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  list?: BuyProduct[] | any
+  list?: BuyProduct[]
   showborder: boolean
 }>()
 const emit = defineEmits<{
