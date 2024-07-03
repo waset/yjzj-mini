@@ -4,7 +4,7 @@ export const useProductStore = defineStore('product', {
     types: ProductType[]
     products: Product[]
     detail: Product
-
+    lastPage: number
   } => ({
     // 产品类目
     categorys: {
@@ -19,7 +19,7 @@ export const useProductStore = defineStore('product', {
     // 这里存放数据
     products: [],
     detail: {} as Product,
-
+    lastPage: 10,
   }),
   getters: {
     isDiy: (state) => {
@@ -41,15 +41,21 @@ export const useProductStore = defineStore('product', {
         this.types = data
     },
     // 获取产品列表
-    async getProducts(params: GetProductParams, page: number, pageSize: number) {
-      const { data, code } = await http.post<Product[]>('/web/product/list', {
+    async getProducts(params: GetProductParams, pages: number, pageSize: number, isconcat: boolean = false) {
+      const { data, code, page } = await http.post<Product_res>('/web/product/list', {
         ...params,
-        page,
+        page: pages,
         pageSize,
       }, { auth: false })
-
-      if (code === 200)
-        this.products = data
+      if (code === 200) {
+        this.lastPage = page.lastPage
+        if (isconcat) {
+          this.products = this.products.concat(data)
+        }
+        else {
+          this.products = data
+        }
+      }
     },
     // 获取产品详情
     async getProductDetail(id?: number) {
