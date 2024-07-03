@@ -79,8 +79,13 @@ onShow(async () => {
 })
 
 onLoad(async () => {
-  if (nowAddress.value.id === 0) {
-    await getAddressList(1, 20)
+  try {
+    if (nowAddress.value.id === 0) {
+      await getAddressList(1, 20)
+    }
+  }
+  catch (error) {
+    console.error('Failed to fetch address list:', error)
   }
 })
 onMounted(async () => {
