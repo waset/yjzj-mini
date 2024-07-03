@@ -63,7 +63,7 @@ onReachBottom(() => {
         />
       </template>
       <template v-else>
-        <common-empty text="抱歉，没有找到相关结果" icon="i-icon-nosearch" />
+        <common-empty text="抱歉，没有找到相关结果" icon="i-icons-nosearch" />
       </template>
     </template>
   </div>
