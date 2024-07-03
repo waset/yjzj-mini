@@ -86,6 +86,8 @@ onMounted(async () => {
     submitOrderParams.value.details.push({ id: detail.value.id, number: 1, relationType: 1 })
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
+
+    await canUseCoupon(nowAddress.value.id, [detail.value.id], undefined)
   }
   else {
     // 购物车进入
@@ -113,8 +115,6 @@ onMounted(async () => {
           relationType: 1,
         })
       }
-
-      // productConfigIDs.value.push(item.id)
     })
     submitOrderParams.value.details = arr.value
     // 查询可用的优惠券

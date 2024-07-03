@@ -3,9 +3,11 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
   state: (): {
     couponList: couponList[]
     canUseCouponNum: number
+    canusecouponList: couponList[]
     provider: string
     buyType: 'buy' | 'car'
   } => ({
+    canusecouponList: [],
     couponList: [],
     canUseCouponNum: 0,
     provider: '',
@@ -98,12 +100,8 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
         if (code === 200) {
-          this.canUseCouponNum = 0
-          data.forEach((item) => {
-            if (item.ticketInfo.status === 1) {
-              this.canUseCouponNum += 1
-            }
-          })
+          this.canusecouponList = data
+          this.canUseCouponNum = data.length
         }
       }
       catch {
