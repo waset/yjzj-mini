@@ -168,7 +168,6 @@ const addBuyCar = () => {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-
   flex-wrap: wrap;
 
   .selectedItem {

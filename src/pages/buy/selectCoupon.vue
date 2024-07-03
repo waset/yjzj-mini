@@ -6,7 +6,7 @@ const price = ref<string>('0')
 
 // 选择优惠券
 const selectItem = (index: number) => {
-  selectId.value = couponList.value[index]?.ticketInfo?.id ?? 0
+  selectId.value = couponList.value[index]?.id ?? 0
   price.value = couponList.value[index]?.ticketInfo?.discountPrice ?? '0'
 }
 
@@ -24,8 +24,8 @@ const confirm = () => {
     </div>
     <div v-for="(item, index) in couponList" :key="index" class="itembox" @click="selectItem(index)">
       <buys-coupon-item :coupn="item" :maxwidth="476" />
-      <div v-if="selectId !== item.ticketInfo.id" class="circle" />
-      <div v-if="selectId === item.ticketInfo.id" class="circle2">
+      <div v-if="selectId !== item.id" class="circle" />
+      <div v-if="selectId === item.id" class="circle2">
         <div class="i-icons-correct" />
       </div>
     </div>
