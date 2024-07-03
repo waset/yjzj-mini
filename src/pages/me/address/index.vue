@@ -343,6 +343,7 @@ $theme: #A7F522;
     height: 80rpx;
     position: fixed;
     bottom: calc(32rpx + env(safe-area-inset-bottom));
+    --tabbar-padding-bottom: calc(var(--tabbar-bottom) + env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
     font-size: 28rpx;
