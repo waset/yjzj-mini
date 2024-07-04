@@ -1,18 +1,9 @@
 <script lang="ts" setup>
-import ranktoplv1 from '@/assets/background/invite-th1bg.svg'
-import ranktoplv2 from '@/assets/background/invite-th2bg.svg'
-import ranktoplv3 from '@/assets/background/invite-th3bg.svg'
-
 const props = withDefaults(defineProps<{
   inviterank: Inviterank[]
 }>(), {
   inviterank: () => [],
 })
-const rankImglist = ref<string[]>([
-  ranktoplv1,
-  ranktoplv2,
-  ranktoplv3,
-])
 const medalIcon = ref<string[]>([
   'i-svg-medal-lv1',
   'i-svg-medal-lv2',
@@ -56,6 +47,11 @@ const ranklist = computed(() => {
     return []
   }
 })
+
+// top3 榜单背景
+function imgUrl(lv: number) {
+  return `/svg/invite-th${lv}bg.svg`
+}
 </script>
 
 <template>
@@ -69,7 +65,7 @@ const ranklist = computed(() => {
         <template v-for="(item, i) in ranktop" :key="i">
           <div
             class="awardbg"
-            :style="{ marginTop: i !== 1 ? '80rpx' : '0', backgroundImage: `url(${rankImglist[item.lv - 1]})` }"
+            :style="{ marginTop: i !== 1 ? '80rpx' : '0', backgroundImage: `url(${StaticUrl(imgUrl(item.lv))})` }"
           >
             <image
               :src="ImageUrl(item.avatar)" mode="scaleToFill" class="avatar"
