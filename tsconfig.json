@@ -1,10 +1,16 @@
 {
+  "allowSyntheticDefaultImports": true,
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "types": [
       "@dcloudio/types",
@@ -16,13 +22,15 @@
     "sourceMap": true
   },
   "include": [
-    "src/**/*.ts",
     "src/**/*.d.ts",
+    "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "temp/**/*.d.ts",
     "types/**/*.d.ts"
   ],
-  "exclude": ["node_modules/**", "dist/**"],
-  "allowSyntheticDefaultImports": true
+  "exclude": [
+    "dist/**",
+    "node_modules/**"
+  ]
 }
