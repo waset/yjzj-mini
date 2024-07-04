@@ -8,9 +8,14 @@ interface PageReq {
 }
 
 onLoad(async (params) => {
-  const req = params as PageReq
-  if (req.id) {
-    productId.value = Number(req.id)
+  try {
+    const req = params as PageReq
+    if (req.id) {
+      productId.value = Number(req.id)
+    }
+  }
+  catch (error) {
+
   }
 })
 const { addProduct } = useBuyStore()
@@ -18,19 +23,24 @@ const { addProduct } = useBuyStore()
  * 加入购物车
  */
 const addBuyCar = () => {
-  if (!detail.value) {
-    return
+  try {
+    if (!detail.value) {
+      return
+    }
+    addProduct({
+      quantity: 1,
+      select: false,
+      delete: false,
+      ...detail.value,
+    })
+    uni.showToast({
+      title: '添加成功',
+      icon: 'success',
+    })
   }
-  addProduct({
-    quantity: 1,
-    select: false,
-    delete: false,
-    ...detail.value,
-  })
-  uni.showToast({
-    title: '添加成功',
-    icon: 'success',
-  })
+  catch (error) {
+
+  }
 }
 
 const buyNow = () => {
@@ -67,5 +77,5 @@ onShow(async () => {
     padding: 0 32rpx;
   }
 
-  }
+}
 </style>
