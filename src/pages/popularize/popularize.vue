@@ -62,30 +62,32 @@ function InviteEvent() {
         class="popu_svg_bg" src="@/assets/background/popularize-bg.svg" :style="{ width: '100%' }"
         mode="widthFix"
       />
-      <div class="popu_title">
-        邀请推广
-      </div>
-      <!-- 立即提现 & 提现弹窗 -->
-      <popularize-withdraw />
-      <div class="explain_view">
-        <div class="explain_ad">
-          *特别说明：由于相关业务数据复杂，可能存在误差及计算延迟情况，若有疑问请联系客服。给您带来不便，敬请谅解。
+      <div class="info">
+        <div class="popu_title">
+          邀请推广
         </div>
-      </div>
-      <template v-for="(item, index) in messageArray" :key="index">
-        <div class="message_line">
-          <div class="message_left message_text">
-            {{ item.title }}
+        <!-- 立即提现 & 提现弹窗 -->
+        <popularize-withdraw />
+        <div class="explain_view">
+          <div class="explain_ad">
+            *特别说明：由于相关业务数据复杂，可能存在误差及计算延迟情况，若有疑问请联系客服。给您带来不便，敬请谅解。
           </div>
-          <div class="message_right message_text">
-            <image v-if="index === 2" class="message_right_avatar" :src="item.avatar" />
-            <div class="text_width">
-              {{ item.value }}
+        </div>
+        <template v-for="(item, index) in messageArray" :key="index">
+          <div class="message_line">
+            <div class="message_left message_text">
+              {{ item.title }}
             </div>
-            <div :class="item.Isvg" class="copy_redact_svg" @click="index === 2 ? Editclick() : CopyEvent(item)" />
+            <div class="message_right message_text">
+              <image v-if="index === 2" class="message_right_avatar" :src="item.avatar" />
+              <div class="text_width">
+                {{ item.value }}
+              </div>
+              <div :class="item.Isvg" class="copy_redact_svg" @click="index === 2 ? Editclick() : CopyEvent(item)" />
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </div>
     </div>
     <!-- 返利记录 & 提现记录 -->
     <popularize-record-list />
@@ -115,9 +117,9 @@ function InviteEvent() {
     width: 100%;
 
     .popu_value {
+      position: relative;
       width: calc(100% - 64rpx);
       height: 960rpx;
-      position: relative;
       margin: 0 auto;
       margin-top: 34rpx;
       overflow: hidden;
@@ -126,101 +128,106 @@ function InviteEvent() {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: -1;
+        z-index: 0;
       }
 
-      .popu_title {
-        font-size: 32rpx;
-        font-weight: bold;
-        line-height: 41.6rpx;
-        text-align: left;
-
-        position: absolute;
-        top: 38rpx;
-        left: 48rpx;
-      }
-
-      // 解释说明
-      .explain_view {
-        width: calc(100% - 64rpx);
-        height: 152rpx;
-        margin: 0 auto;
-        margin-top: 32rpx;
+      .info {
         position: relative;
-        border-radius: 8rpx;
-        background: rgba(62, 62, 62, 0.2);
-        margin-bottom: 32rpx;
+        z-index: 1;
 
-        .explain_ad {
-          width: 100%;
-          height: 152rpx;
-          padding: 16rpx 60rpx;
-          border-radius: 8rpx;
-          box-sizing: border-box;
+        .popu_title {
+          font-size: 32rpx;
+          font-weight: bold;
+          line-height: 41.6rpx;
+          text-align: left;
+
           position: absolute;
-          top: 10rpx;
-          left: 10rpx;
-          color: rgba(190, 190, 190, 1);
-          background: rgba(62, 62, 62, 0.3);
-
-          font-family: PingFang SC;
-          font-size: 24rpx;
-          font-weight: 400;
-          line-height: 40rpx;
-          text-align: center;
-        }
-      }
-
-      .message_line {
-        width: calc(100% - 64rpx);
-        height: 64rpx;
-        margin: 0 auto;
-        overflow: hidden;
-        margin-bottom: 16rpx;
-        padding: 0rpx 32rpx 0rpx 32rpx;
-        box-sizing: border-box;
-        border-radius: 8rpx 0px 0px 0px;
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
-
-        .message_left {
-          width: calc(100% - 366rpx);
-          float: left;
-          line-height: 64rpx;
+          top: -80rpx;
+          left: 40rpx;
         }
 
-        .message_text {
-          font-size: 28rpx;
-          font-weight: 400;
-          line-height: 64rpx;
+        // 解释说明
+        .explain_view {
+          width: calc(100% - 64rpx);
+          height: 152rpx;
+          margin: 0 auto;
+          margin-top: 32rpx;
+          position: relative;
+          border-radius: 8rpx;
+          background: rgba(62, 62, 62, 0.2);
+          margin-bottom: 32rpx;
+
+          .explain_ad {
+            width: 100%;
+            height: 152rpx;
+            padding: 16rpx 60rpx;
+            border-radius: 8rpx;
+            box-sizing: border-box;
+            position: absolute;
+            top: 10rpx;
+            left: 10rpx;
+            color: rgba(190, 190, 190, 1);
+            background: rgba(62, 62, 62, 0.3);
+
+            font-family: PingFang SC;
+            font-size: 24rpx;
+            font-weight: 400;
+            line-height: 40rpx;
+            text-align: center;
+          }
         }
 
-        .message_right {
-          width: 366rpx;
-          float: right;
-          line-height: 64rpx;
+        .message_line {
+          width: calc(100% - 64rpx);
+          height: 64rpx;
+          margin: 0 auto;
+          overflow: hidden;
+          margin-bottom: 16rpx;
+          padding: 0rpx 32rpx 0rpx 32rpx;
+          box-sizing: border-box;
+          border-radius: 8rpx 0px 0px 0px;
+          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
 
-          .message_right_avatar {
-            width: 40rpx;
-            height: 40rpx;
+          .message_left {
+            width: calc(100% - 366rpx);
             float: left;
-            border-radius: 50%;
-            margin-top: 14rpx;
-            margin-right: 10rpx;
+            line-height: 64rpx;
           }
 
-          .text_width {
-            width: 280rpx;
-            float: left;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
+          .message_text {
+            font-size: 28rpx;
+            font-weight: 400;
+            line-height: 64rpx;
           }
 
-          .copy_redact_svg {
-            width: 30rpx;
-            height: 30rpx;
+          .message_right {
+            width: 366rpx;
             float: right;
-            margin-top: 18.66rpx;
+            line-height: 64rpx;
+
+            .message_right_avatar {
+              width: 40rpx;
+              height: 40rpx;
+              float: left;
+              border-radius: 50%;
+              margin-top: 14rpx;
+              margin-right: 10rpx;
+            }
+
+            .text_width {
+              width: 280rpx;
+              float: left;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            }
+
+            .copy_redact_svg {
+              width: 30rpx;
+              height: 30rpx;
+              float: right;
+              margin-top: 18.66rpx;
+            }
           }
         }
       }
