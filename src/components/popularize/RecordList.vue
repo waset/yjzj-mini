@@ -76,6 +76,7 @@ const tabTitleX = {
     position: relative;
     z-index: 0;
     overflow: hidden;
+    background-color: rgba($color: #000000, $alpha: .6);
 
     width: calc(100% - 64rpx);
     height: 720rpx;

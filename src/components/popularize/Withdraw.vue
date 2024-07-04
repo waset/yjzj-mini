@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { userDesc } = storeToRefs(useUserStore())
 const showWIthdraw = ref(false) // 提现表单弹出
 const showModel = ref(false) // 提现成功提示
 
@@ -6,15 +7,15 @@ const showModel = ref(false) // 提现成功提示
 const moneyObject = ref({
   proportion: {
     title: '返利比例',
-    value: '9',
+    value: userDesc.value.promoter.rebateRatio,
   },
   way: {
     title: '返利方式',
-    value: '等级',
+    value: userDesc.value.promoter.rebateTypeDesc,
   },
   balance: {
     title: '账号余额',
-    value: '01.00',
+    value: Number.parseFloat(userDesc.value.balanceAmount).toFixed(2),
   },
 })
 // 提现说明
@@ -25,7 +26,7 @@ const explainArray = [
 ]
 // 提现弹框
 function eventWithdraw() {
-  if (moneyObject.value.balance.value !== '00.00') {
+  if (moneyObject.value.balance.value !== '0.00') {
     showWIthdraw.value = !showWIthdraw.value
   }
 }
@@ -38,21 +39,19 @@ function withdrawEvent() {
 
 <template>
   <div class="popu_user">
-    <div class="user_value_view">
-      <image
-        class="avatar_image_money float_style"
-        src="https://img2.baidu.com/it/u=4194115798,4169726391&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1717520400&t=07f44f7aa557afc8a3268b79488c64da"
-        mode=""
-      />
-      <div class="user_name float_style">
-        汉库克
+    <div class="user">
+      <div class="avatar">
+        <avatar :src="userDesc.avatar" width="48rpx" />
       </div>
-      <div class="user_grade float_style">
-        当前等级lv2
+      <div class="name">
+        {{ userDesc.nickname }}
+      </div>
+      <div class="grade">
+        当前等级 {{ userDesc.promoter.levelName }}
       </div>
       <div class="i-svg-medal-v2 popu_svg_medal" />
       <div class="integral_right">
-        积分：88809
+        积分：{{ userDesc.promoter.cycleOrderAmount }}
       </div>
     </div>
     <div class="money_view">
@@ -66,7 +65,7 @@ function withdrawEvent() {
           </div>
         </div>
       </div>
-      <div :class="moneyObject.balance.value === '00.00' ? 'withdraw' : ' subheads'" @click="eventWithdraw">
+      <div :class="moneyObject.balance.value === '0.00' ? 'withdraw' : ' subheads'" @click="eventWithdraw">
         立即提现
       </div>
     </div>
@@ -145,7 +144,11 @@ function withdrawEvent() {
     padding: 0px 0px 32rpx 0px;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
 
-    .user_value_view {
+    .user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
       height: 80rpx;
       padding: 0rpx 32rpx;
       box-sizing: border-box;
@@ -153,26 +156,7 @@ function withdrawEvent() {
       overflow: hidden;
       background: linear-gradient(90deg, rgba(109, 109, 109, 0) 1.52%, rgba(202, 202, 202, 0.5) 53.11%, rgba(109, 109, 109, 0) 98.86%);
 
-      .avatar_image_money {
-        width: 48rpx;
-        height: 48rpx;
-        border-radius: 50%;
-        margin-top: 16rpx;
-      }
-
-      .float_style {
-        float: left;
-      }
-
-      .user_name {
-        margin-left: 8rpx;
-        font-size: 30rpx;
-        font-weight: 600;
-        line-height: 80rpx;
-      }
-
-      .user_grade {
-        margin-left: 8rpx;
+      .grade {
         font-size: 25rpx;
         line-height: 80rpx;
       }
@@ -180,11 +164,9 @@ function withdrawEvent() {
       .popu_svg_medal {
         width: 38.78rpx;
         height: 31.46rpx;
-        margin-left: 16rpx;
       }
 
       .integral_right {
-        float: right;
         line-height: 80rpx;
         font-size: 24rpx;
         font-weight: 500;

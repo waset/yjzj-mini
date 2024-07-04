@@ -1,47 +1,32 @@
 <script setup lang="ts">
+const { getUserInfo } = useUserStore()
+const { user } = storeToRefs(useUserStore())
+
+onShow(async () => {
+  await getUserInfo()
+})
+
 const showWInvite = ref(false) // 邀请人填写弹出
 // 邀请详情
-const messageArray = [
+const messageArray = ref([
   {
+    Isvg: 'i-svg-vector',
     title: '邀请码',
-    value: '081200',
-    Isvg: 'i-svg-vector',
-  },
-  {
-    title: '邀请链接',
-    value: 'http://baidu.com',
-    Isvg: 'i-svg-vector',
+    value: user.value.inviteCode,
+    click: () => {
+      copyText(user.value.inviteCode)
+    },
   },
   {
     Isvg: 'i-svg-edit-lv',
     title: '我的邀请人',
-    value: '诺顿坎贝尔',
-    avatar: 'https://img2.baidu.com/it/u=4194115798,4169726391&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1717520400&t=07f44f7aa557afc8a3268b79488c64da',
+    value: user.value?.inviteUserInfo.nickname,
+    avatar: '',
+    click: () => {
+      showWInvite.value = !showWInvite.value
+    },
   },
-]
-// 邀请人编辑
-function Editclick() {
-  showWInvite.value = !showWInvite.value
-}
-// 文本复制
-function CopyEvent(item: any) {
-  uni.setClipboardData({
-    data: item.value,
-    success() {
-      uni.showToast({
-        title: '复制成功',
-        icon: 'success',
-        duration: 2000,
-      })
-    },
-    fail() {
-      uni.showToast({
-        title: '复制失败',
-        duration: 2000,
-      })
-    },
-  })
-}
+])
 // 邀请确认
 function InviteEvent() {
   showWInvite.value = false
@@ -83,7 +68,7 @@ function InviteEvent() {
               <div class="text_width">
                 {{ item.value }}
               </div>
-              <div :class="item.Isvg" class="copy_redact_svg" @click="index === 2 ? Editclick() : CopyEvent(item)" />
+              <div :class="item.Isvg" class="copy_redact_svg" @click="item.click" />
             </div>
           </div>
         </template>
