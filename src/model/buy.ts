@@ -79,6 +79,18 @@ export const useBuyStore = defineStore('buy', {
           this.products[index].quantity += 1
         }
       }
+
+      if (product.alloaction) {
+        const index = this.products.findIndex(item => item.alloaction === product.alloaction)
+        if (index === -1) {
+          // 没有该产品
+          this.products.push(product)
+        }
+        else {
+          // 有该产品
+          this.products[index].quantity += 1
+        }
+      }
     },
   },
   persist: true,

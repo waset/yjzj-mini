@@ -2,7 +2,7 @@
 const { detail } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
-
+const { addConfiguration, collectionConfig } = useDiyStore()
 interface PageReq {
   product_id: Product['id'] | null
 }
@@ -30,28 +30,32 @@ const isPass = () => {
 }
 
 const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
+// 新增配置单需要的参数
+const params = ref<addConfiguration>({ params: [] })
 
-const { addConfiguration, collectionConfig } = useDiyStore()
-/**
- * 立即购买
- */
-const buyNow = async () => {
-  const params = ref<addConfiguration>({ params: [] })
-  // 新增配置单需要的参数
+const allocationId = async () => {
   Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
+
   // 新增配置单
   const data = await addConfiguration(params.value)
-  // 收藏配置单
-  const code = await collectionConfig(data.no)
-  if (code !== 200) {
-    return false
+  //  收藏配置单
+  await collectionConfig(data.no)
+  return data
+}
+/**
+ * 立即购买
+ */
+
+const buyNow = async () => {
+  const data = await allocationId()
+
+  if (detail.value) {
+    // 添加配置单id
+    detail.value.alloaction = data.id
   }
 
-  // 添加配置单id
-  if (detail.value)
-    detail.value.alloaction = data.id
   if (isPass()) {
     changeBuyType('buy')
     Jump('/pages/buy/submitOrder')
@@ -62,9 +66,14 @@ const { addProduct } = useBuyStore()
 /**
  * 加入购物车
  */
-const addBuyCar = () => {
+const addBuyCar = async () => {
   if (!detail.value) {
     return
+  }
+  const data = await allocationId()
+  if (detail.value) {
+    // 添加配置单id
+    detail.value.alloaction = data.id
   }
   if (isPass()) {
     addProduct({
