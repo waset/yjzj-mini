@@ -65,11 +65,9 @@ const addMark = (params: string) => {
     height: 280rpx;
     margin: 0 auto;
     display: flex;
-    // flex-direction: column;
     flex-wrap: wrap;
 
     .selectItem {
-      // width: 210rpx;
       height: 72rpx;
       padding: 16rpx 24rpx;
       box-sizing: border-box;

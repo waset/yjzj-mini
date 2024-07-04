@@ -77,7 +77,6 @@ const submitOrder = () => {
     z-index: 10;
     padding-left: 50rpx;
 
-    // background:#A7F522;
     &::after {
       content: "";
       position: absolute;

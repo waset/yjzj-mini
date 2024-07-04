@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// const { recommendlist } = storeToRefs(useProductStore())
 const { categorys, recommendList } = useProductStore()
 
 const products = ref<Product[]>([])

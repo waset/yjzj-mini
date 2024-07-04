@@ -1,6 +1,18 @@
 /**
  * 配置单类型定义
  */
+interface ConfigurationListReq {
+  no?: string
+  page: number
+  pageSize: number
+}
+
+interface ConfigurationListRes {
+  code: number
+  data: Configuration[]
+  msg: string
+  page: ConfigPage
+}
 interface Configuration {
   cartNumber?: number
   collectNumber?: number
@@ -31,9 +43,9 @@ interface ConfigurationParam {
   num: number
   pID: number
 }
-interface Page {
-  currentPage?: number
-  LastPage?: number
-  pageSize?: number
-  total?: number
+interface ConfigPage {
+  currentPage: number
+  lastPage: number
+  pageSize: number
+  total: number
 }
