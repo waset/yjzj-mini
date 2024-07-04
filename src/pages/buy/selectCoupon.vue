@@ -86,10 +86,6 @@ $Be: #BEBEBE;
   background-color: rgba($color: #fff, $alpha: 0.2);
   backdrop-filter: blur(48rpx);
 
-  // @supports not (backdrop-filter: blur(48rpx)) {
-  // background-color: #fff; // 不支持模糊滤镜的浏览器使用不透明白色背景
-  // }
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -115,9 +111,3 @@ $Be: #BEBEBE;
   }
 }
 </style>
-<!--
-<route lang="json">
-{
-  "layout": "home"
-}
-</route> -->
