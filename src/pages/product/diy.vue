@@ -3,6 +3,7 @@ const { detail } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig } = useDiyStore()
+const { addProduct } = useBuyStore()
 interface PageReq {
   product_id: Product['id'] | null
 }
@@ -33,36 +34,30 @@ const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
 // 新增配置单需要的参数
 const params = ref<addConfiguration>({ params: [] })
 
+// 生成配置单id  和收藏配置单
 const allocationId = async () => {
   Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
-
   // 新增配置单
   const data = await addConfiguration(params.value)
   //  收藏配置单
   await collectionConfig(data.no)
   return data
 }
+
 /**
  * 立即购买
  */
 
 const buyNow = async () => {
-  const data = await allocationId()
-
-  if (detail.value) {
-    // 添加配置单id
-    detail.value.alloaction = data.id
-  }
-
+  await allocationId()
   if (isPass()) {
     changeBuyType('buy')
     Jump('/pages/buy/submitOrder')
   }
 }
 
-const { addProduct } = useBuyStore()
 /**
  * 加入购物车
  */
@@ -74,6 +69,7 @@ const addBuyCar = async () => {
   if (detail.value) {
     // 添加配置单id
     detail.value.alloaction = data.id
+    detail.value.name = `配置单${data.id}`
   }
   if (isPass()) {
     addProduct({
