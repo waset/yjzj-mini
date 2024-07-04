@@ -35,23 +35,13 @@ const TimeConversion = (item: couponList) => {
 }
 
 const compareTime = (targetTime: string) => {
-  // 将目标时间转换为时间戳（单位：毫秒）
-  const targetTimestamp = Date.parse(targetTime)
-
-  // 获取当前时间的时间戳（单位：毫秒）
-  const currentTimestamp = Date.now()
   if (!targetTime)
     return '#8E8B84' // 处理空或无效的时间输入
-  // 比较目标时间戳与当前时间戳
-  if (targetTimestamp > currentTimestamp) {
-    return '#D3AC4D'
-  }
-  else if (targetTimestamp < currentTimestamp) {
-    return '#8E8B84'
-  }
-  else {
-    return '#8E8B84'
-  }
+
+  const targetTimestamp = Date.parse(targetTime)
+  const currentTimestamp = Date.now()
+
+  return targetTimestamp > currentTimestamp ? '#D3AC4D' : '#8E8B84'
 }
 
 const selectId = ref<number>(0)
