@@ -23,7 +23,7 @@ const messageArray = ref([
     value: user.value?.inviteUserInfo.nickname,
     avatar: '',
     click: () => {
-      showWInvite.value = !showWInvite.value
+      bandinvite()
     },
   },
 ])
@@ -35,6 +35,12 @@ function InviteEvent() {
     icon: 'success',
     duration: 2000,
   })
+}
+
+// 打开绑定邀请人组件
+const childRef = ref<any>(null)
+function bandinvite() {
+  childRef.value.openShow()
 }
 </script>
 
@@ -98,6 +104,7 @@ function InviteEvent() {
         </div>
       </div>
     </common-popup>
+    <popularize-bind-inviter ref="childRef" />
   </div>
 </template>
 
