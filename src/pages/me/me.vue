@@ -195,18 +195,18 @@ const promotion = () => {
             <div class="items">
               <div class="item">
                 <div class="number">
-                  <span>{{ userDesc?.promoter?.rebateTypeDesc }}</span>
+                  <span>{{ userDesc?.promoter?.levelName }}</span>
                 </div>
                 <div class="text">
-                  返利方式
+                  推广等级
                 </div>
               </div>
               <div class="item">
                 <div class="number">
-                  <span>{{ user?.promoter?.rebateRatio || '无' }}</span>
+                  <span>{{ userDesc?.promoter?.rebateTypeDesc }}</span>
                 </div>
                 <div class="text">
-                  计算方式
+                  返利方式
                 </div>
               </div>
               <div class="item">

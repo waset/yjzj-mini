@@ -18,10 +18,10 @@ export const useUserStore = defineStore('user', {
       if (state.user?.promoter?.rebateType) {
         switch (state.user.promoter.rebateType) {
           case 1:
-            rebateType = ' 按等级'
+            rebateType = ' 等级'
             break
           case 2:
-            rebateType = '固定比例'
+            rebateType = '固定'
             break
 
           default:
