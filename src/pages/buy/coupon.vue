@@ -19,7 +19,7 @@ const rule = ref('')
 const showrule = (index: number) => {
   show.value = !show.value
   if (show.value) {
-    rule.value = couponList.value[index].ticketInfo.instruction || ''
+    rule.value = couponList.value[index]?.ticketInfo?.instruction || ''
   }
 }
 
