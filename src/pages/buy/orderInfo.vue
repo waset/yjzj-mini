@@ -180,9 +180,3 @@ $Be: #BEBEBE;
 
 }
 </style>
-<!--
-<route lang="json">
-{
-  "layout": "home"
-}
-</route> -->
