@@ -59,16 +59,18 @@ function InviteEvent() {
           </div>
         </div>
         <template v-for="(item, index) in messageArray" :key="index">
-          <div class="message_line">
+          <div class="message_line flex items-center">
             <div class="message_left message_text">
               {{ item.title }}
             </div>
-            <div class="message_right message_text">
-              <image v-if="index === 2" class="message_right_avatar" :src="item.avatar" />
-              <div class="text_width">
-                {{ item.value }}
+            <div class="message_right message_text flex items-center justify-between flex-1">
+              <div>
+                <image v-if="index === 2" class="message_right_avatar" :src="item.avatar" />
+                <div class="text_width">
+                  {{ item.value }}
+                </div>
               </div>
-              <div :class="item.Isvg" class="copy_redact_svg" @click="item.click" />
+              <div :class="item.Isvg" @click="item.click" />
             </div>
           </div>
         </template>
@@ -78,13 +80,15 @@ function InviteEvent() {
     <popularize-record-list />
     <!-- 邀请人弹窗 -->
     <common-popup v-model:show="showWInvite" name="我的邀请人">
-      <input class="query_input" type="text" placeholder="请输入邀请人的邀请码">
-      <div class="query_button">
-        查询
+      <div class="flex mt-2">
+        <input class="query_input" type="text" placeholder="请输入邀请人的邀请码">
+        <div class="query_button ml-1">
+          查询
+        </div>
       </div>
       <input class="query_input_current" type="text" placeholder="当前邀请码所属的邀请人">
       <div class="button_view_fixed">
-        <div class="button_view">
+        <div class="button_view flex justify-between">
           <div class="button_cancel" @click="showWInvite = false">
             取消
           </div>
@@ -125,7 +129,6 @@ function InviteEvent() {
           font-weight: bold;
           line-height: 41.6rpx;
           text-align: left;
-
           position: absolute;
           top: -80rpx;
           left: 40rpx;
@@ -170,30 +173,23 @@ function InviteEvent() {
           margin-bottom: 16rpx;
           padding: 0rpx 32rpx 0rpx 32rpx;
           box-sizing: border-box;
-          border-radius: 8rpx 0px 0px 0px;
+          border-radius: 8rpx;
           background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
-
           .message_left {
             width: calc(100% - 366rpx);
-            float: left;
             line-height: 64rpx;
           }
 
           .message_text {
             font-size: 28rpx;
             font-weight: 400;
-            line-height: 64rpx;
           }
 
           .message_right {
-            width: 366rpx;
-            float: right;
-            line-height: 64rpx;
 
             .message_right_avatar {
               width: 40rpx;
               height: 40rpx;
-              float: left;
               border-radius: 50%;
               margin-top: 14rpx;
               margin-right: 10rpx;
@@ -205,13 +201,6 @@ function InviteEvent() {
               text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;
-            }
-
-            .copy_redact_svg {
-              width: 30rpx;
-              height: 30rpx;
-              float: right;
-              margin-top: 18.66rpx;
             }
           }
         }
@@ -226,13 +215,11 @@ function InviteEvent() {
     border-radius: 8rpx;
     padding: 0rpx 24rpx 0rpx 24rpx;
     font-size: 28rpx;
-    margin-top: 32rpx;
     min-height: auto !important;
     background: rgba(132, 132, 132, 0.2);
   }
 
   .query_button {
-    float: right;
     height: 72rpx;
     line-height: 72rpx;
     padding: 0rpx 40rpx 0rpx 40rpx;
@@ -240,7 +227,6 @@ function InviteEvent() {
     font-size: 28rpx;
     text-align: center;
     border-radius: 8rpx;
-    margin-top: 32rpx;
     color: rgba(167, 245, 34, 1);
     background: rgba(132, 132, 132, 0.2);
   }
@@ -272,7 +258,6 @@ function InviteEvent() {
       width: 100%;
       padding: 80rpx 107rpx 80rpx 107rpx;
       box-sizing: border-box;
-      overflow: hidden;
 
       .button_cancel {
         width: 192rpx;
@@ -280,7 +265,6 @@ function InviteEvent() {
         line-height: 80rpx;
         border-radius: 8rpx;
         text-align: center;
-        float: left;
         font-size: 28rpx;
         color: rgba(51, 51, 51, 1);
         background: var(---light, rgba(255, 255, 255, 1));
@@ -292,7 +276,6 @@ function InviteEvent() {
         line-height: 80rpx;
         border-radius: 8rpx;
         text-align: center;
-        float: right;
         font-size: 28rpx;
         color: rgba(51, 51, 51, 1);
         background: var(--, rgba(167, 245, 34, 1));
