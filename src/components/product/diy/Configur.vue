@@ -58,20 +58,6 @@ const openSelectPop = async (index: number, paramValue: string | number | string
   const { typeID } = DiyType[index]
   productCustomRelocationRef.value?.showOptional(typeID, paramValue)
 }
-
-// // 替换 选配 组件
-// const replaceAllocation = (index: number) => {
-//   if (!detail.value) {
-//     return
-//   }
-//   detail.value.params[openIndex.value].id = ModificationList.value[index].id
-//   detail.value.params[openIndex.value].product = ModificationList.value[index]
-//   changeAllocation.value = false
-// }
-// watch(() => getModificationListParams.value.productName, async () => {
-//   getModificationListParams.value.page = 1
-//   await getModificationList(getModificationListParams.value)
-// })
 </script>
 
 <template>
