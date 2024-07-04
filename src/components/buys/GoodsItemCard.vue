@@ -25,7 +25,7 @@ const emit = defineEmits<{
           </div>
           <div class="goodsOptions">
             <div class="goodsTitle">
-              {{ item.productSnapshot.name }}
+              {{ item.productSnapshot.name || '自由定制' }}
             </div>
             <div class="options" @click="emit('check', index)">
               配置详情

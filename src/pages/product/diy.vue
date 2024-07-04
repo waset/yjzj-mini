@@ -13,6 +13,22 @@ onLoad(async (params) => {
   }
 })
 
+// 是否通过检测
+const isPass = () => {
+  const isEmpty = (obj: any) => Object.keys(obj).length === 0
+  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
+  if (detail.value?.params.length === 0 || alloactionArr?.length !== 0) {
+    uni.showToast({
+      title: '请选择完整配置',
+      icon: 'error',
+    })
+    return false
+  }
+  else {
+    return true
+  }
+}
+
 const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
 
 const { addConfiguration, collectionConfig } = useDiyStore()
@@ -21,18 +37,25 @@ const { addConfiguration, collectionConfig } = useDiyStore()
  */
 const buyNow = async () => {
   const params = ref<addConfiguration>({ params: [] })
+  // 新增配置单需要的参数
   Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
-  // detail.value.configuration
   // 新增配置单
   const data = await addConfiguration(params.value)
+  // 收藏配置单
   const code = await collectionConfig(data.no)
   if (code !== 200) {
     return false
   }
-  changeBuyType('buy')
-  Jump('/pages/buy/submitOrder')
+
+  // 添加配置单id
+  if (detail.value)
+    detail.value.alloaction = data.id
+  if (isPass()) {
+    changeBuyType('buy')
+    Jump('/pages/buy/submitOrder')
+  }
 }
 
 const { addProduct } = useBuyStore()
@@ -43,16 +66,18 @@ const addBuyCar = () => {
   if (!detail.value) {
     return
   }
-  addProduct({
-    quantity: 1,
-    select: false,
-    delete: false,
-    ...detail.value,
-  })
-  uni.showToast({
-    title: '添加成功',
-    icon: 'success',
-  })
+  if (isPass()) {
+    addProduct({
+      quantity: 1,
+      select: false,
+      delete: false,
+      ...detail.value,
+    })
+    uni.showToast({
+      title: '添加成功',
+      icon: 'success',
+    })
+  }
 }
 </script>
 
@@ -74,7 +99,7 @@ const addBuyCar = () => {
         <div class="more">
           <div class="price">
             <span>￥</span>
-            <span>{{ detail?.tagPrice || 0 }}</span>
+            <span>{{ detail?.sellPrice || 0 }}</span>
           </div>
           <div class="btns">
             <div class="btn">
@@ -86,11 +111,7 @@ const addBuyCar = () => {
     </div>
 
     <div class="info">
-      <product-diy-configur
-        :params="detail?.params" @up-config="(list) => {
-          DiyGameRef?.upOptional()
-        }"
-      />
+      <product-diy-configur :params="detail?.params" @up-config="DiyGameRef?.upOptional()" />
     </div>
 
     <div class="swiper">

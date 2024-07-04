@@ -67,8 +67,8 @@ const hasShowOptional = ref(false)
 /**
  * 设置选配类型及获取其列表
  */
-const showOptional = async (id: number, paramValue: any) => {
-  ProductCustomOptionalRef?.value?.setId(paramValue)
+const showOptional = async (id: number, index: number, type: string, paramValue: any) => {
+  ProductCustomOptionalRef?.value?.setId(paramValue, index, type)
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
   getModificationListParams.value.productTypeParentID = 4

@@ -5,27 +5,61 @@ const emit = defineEmits<{
   (e: 'loadmore'): void
 }>()
 const { detail } = storeToRefs(useProductStore())
-const { ModificationList } = storeToRefs(useDiyStore())
+const { ModificationList, isDiy } = storeToRefs(useDiyStore())
 const saveId = ref<number>(0)
-
-const setId = (id: number) => {
+const indexs = ref<number>(0)
+const types = ref<string>('')
+const setId = (id: number, index: number, type: string) => {
   saveId.value = id
+  indexs.value = index
+  types.value = type
 }
-const obj = ref<any>()
+
+const obj = ref<any>({})
+
+const parr = ref<any[]>([{}, {}, {}, {}, {}, {}, {}, {}])
+
+const totalPrice = computed(() => {
+  let result = 0
+  if (detail.value) {
+    parr.value.forEach((item) => {
+      if (item.product?.sellPrice) {
+        result += Number(item.product?.sellPrice) ?? 0
+      }
+    })
+  }
+  return result
+})
+
 const okfn = () => {
-  ModificationList.value.forEach((item: any) => {
-    if (item.id === saveId.value) {
-      obj.value = item
+  // 判断选中的是那个配件  obj 就是选中的配件
+  const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
+  if (selectedProduct) {
+    obj.value = selectedProduct
+  }
+  if (isDiy.value) {
+    // 如果是 全diy页面  全自定义
+    parr.value[indexs.value].paramDesc = types.value
+    parr.value[indexs.value].paramValue = obj.value.id
+    parr.value[indexs.value].product = obj.value
+
+    if (detail.value) {
+      if (types.value === '机箱') {
+        detail.value.banner = obj.value.banner
+      }
+      detail.value.params = parr.value
+      detail.value.sellPrice = totalPrice.value.toString()
     }
-  })
-  // TODO: 增加互斥规则
-  //
-  Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
-    if (params.paramDesc === obj.value.typeName) {
-      params.product = obj.value
-      params.paramValue = obj.value.id
-    }
-  })
+  }
+  else {
+    // TODO: 增加互斥规则
+    Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
+      if (params.paramDesc === obj.value?.typeName) {
+        params.product = obj.value
+        params.paramValue = obj.value.id
+      }
+    })
+  }
 
   emit('change', false)
 }

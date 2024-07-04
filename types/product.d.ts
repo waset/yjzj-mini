@@ -117,6 +117,7 @@ interface Product {
   quantity?: number
   select?: boolean
   delete?: boolean
+  alloaction?: number
 }
 
 interface Brand {

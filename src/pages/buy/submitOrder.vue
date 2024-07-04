@@ -2,6 +2,8 @@
 const { nowAddress } = storeToRefs(useAddressStore())
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
+const { isDiy } = storeToRefs(useDiyStore())
+
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
 const { getCouponList, submitOrderReq, canUseCoupon, buyType } = useSubmitOrderStore()
 const page = ref<number>(1)
@@ -83,7 +85,11 @@ onMounted(async () => {
       return
     }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
-    submitOrderParams.value.details.push({ id: detail.value.id, number: 1, relationType: 1 })
+    submitOrderParams.value.details.push({ id: detail.value.id || 0, number: 1, relationType: 1 })
+    if (isDiy.value === true) {
+      submitOrderParams.value.details[0].relationType = 2
+      submitOrderParams.value.details[0].id = detail.value.alloaction
+    }
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
 

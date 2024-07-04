@@ -2,11 +2,12 @@ export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
     ModificationList: any
-    // diytype: DiyType
+    isDiy: boolean // diy页面选配 ？true 是
   } => ({
     gamesList: [],
     ModificationList: [],
     // diytype: DiyICons,
+    isDiy: false,
   }),
   actions: {
     // 获取游戏列表

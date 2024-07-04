@@ -55,8 +55,8 @@ const DiyType = [
 const productCustomRelocationRef = ref<ComponentInstance['ProductCustomRelocation']>()
 // 打开选择配置组件的弹窗
 const openSelectPop = async (index: number, paramValue: string | number | string[] | undefined) => {
-  const { typeID } = DiyType[index]
-  productCustomRelocationRef.value?.showOptional(typeID, paramValue)
+  const { typeID, type } = DiyType[index]
+  productCustomRelocationRef.value?.showOptional(typeID, index, type, paramValue)
 }
 </script>
 
@@ -69,15 +69,17 @@ const openSelectPop = async (index: number, paramValue: string | number | string
             <div :class="item.icons" class="icon_style" />
 
             <div class="text">
-              <template v-if="detail?.params && detail?.params[index].paramDesc === item.type">
+              <!-- && detail?.params[index].paramDesc === item.type -->
+              <template v-if="detail?.params[index] && detail?.params[index].paramDesc === item.type">
                 {{ detail?.params[index].product.name }}
               </template>
+
               <template v-else>
                 {{ item.text }}
               </template>
             </div>
 
-            <div class="alter" @click="openSelectPop(index, detail?.params[index].paramValue)">
+            <div class="alter" @click="openSelectPop(index, detail?.params[index]?.paramValue)">
               <div class="i-icons-edit alter_icon" />
               改配
             </div>

@@ -45,6 +45,7 @@ const submitOrder = () => {
 
 .bottomSubmit {
   position: fixed;
+  left: 0;
   bottom: 0;
   height: calc(128rpx + env(safe-area-inset-bottom));
   width: 100%;
