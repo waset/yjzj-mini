@@ -96,6 +96,18 @@ const activities = () => {
 }
 
 const promotion = () => {
+  if (!user.value?.promoterStatus) {
+    uni.showToast({
+      title: '请先成为推广员',
+      icon: 'none',
+      success: () => {
+        setTimeout(() => {
+          Jump('/pages/popularize/invitetion')
+        }, 1000)
+      },
+    })
+    return
+  }
   if (!user.value?.promoter) {
     uni.showToast({
       title: '请先登录',
