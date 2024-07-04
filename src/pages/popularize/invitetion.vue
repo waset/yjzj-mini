@@ -53,6 +53,13 @@ async function become() {
     })
   }
   else {
+    if (!user.value?.promoter) {
+      uni.showToast({
+        title: '请先登录',
+        icon: 'none',
+      })
+      return
+    }
     uni.showToast({
       title: res.msg,
       icon: 'none',
@@ -93,30 +100,30 @@ async function become() {
 </template>
 
 <style lang="scss" scoped>
-.main {
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.codeinp {
-  border-radius: 8rpx 8rpx 8rpx 8rpx;
-
-  .inp {
-    font-size: 26rpx;
-    color: #000;
-    background: #D9D9D9;
-    width: 66%;
-    border-radius: 12rpx;
-    padding: 2rpx 0;
+  .main {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
-}
+
+  .codeinp {
+    border-radius: 8rpx 8rpx 8rpx 8rpx;
+
+    .inp {
+      font-size: 26rpx;
+      color: #000;
+      background: #D9D9D9;
+      width: 66%;
+      border-radius: 12rpx;
+      padding: 2rpx 0;
+    }
+  }
 </style>
 
 <style>
-page {
-  background-image: none;
-  background-color: #08050C;
-}
+  page {
+    background-image: none;
+    background-color: #08050C;
+  }
 </style>
