@@ -59,7 +59,7 @@ function InviteEvent() {
     <!-- 推广邀请 -->
     <div class="popu_value">
       <image
-        class="popu_svg_bg" src="@/assets/background/popularize_bg.svg" :style="{ width: '100%' }"
+        class="popu_svg_bg" src="@/assets/background/popularize-bg.svg" :style="{ width: '100%' }"
         mode="widthFix"
       />
       <div class="popu_title">

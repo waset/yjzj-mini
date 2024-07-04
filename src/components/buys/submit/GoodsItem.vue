@@ -112,13 +112,13 @@ const checkFn = (index: number) => {
         width: 400rpx;
         height: 144rpx;
 
-        .goodsTitle {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          word-break: break-all;
+      .goodsTitle {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
 
           font-weight: 500;
           font-size: 28rpx;

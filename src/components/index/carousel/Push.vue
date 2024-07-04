@@ -77,11 +77,11 @@ watchEffect(() => {
                 <div class="price bg-red">
                   <div class="current">
                     <span>￥</span>
-                    <span>{{ item.tagPrice }}</span>
+                    <span>{{ item.sellPrice }}</span>
                   </div>
                   <div class="original">
                     <span>￥</span>
-                    <span>{{ item.costPrice }}</span>
+                    <span>{{ item.tagPrice }}</span>
                   </div>
                 </div>
               </div>

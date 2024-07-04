@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   list: gamesList[]
-  params: any[]
+  params: Param[] | []
 }>()
 const emit = defineEmits<{
   (e: 'selectGames'): void
@@ -31,10 +31,10 @@ const copyPararms = ref<powerParams>({
 // 处理游戏性能请求参数
 const handleParams = () => {
   // copyPararms.value = { ...powerParams.value, ...copyPararms.value }
-  copyPararms.value.cpuTag2IDS = props?.params[0].product.tags2
-  copyPararms.value.displayCardTag2IDs = props?.params[2].product.tags2
+  copyPararms.value.cpuTag2IDS = props?.params[0].product.tags2 || []
+  copyPararms.value.displayCardTag2IDs = props?.params[2].product.tags2 || []
   copyPararms.value.resolutionType = selectPower.value === '1080' ? 1 : 2
-  copyPararms.value.gameID = props.list[pcurrent.value].id
+  copyPararms.value.gameID = props.list[pcurrent.value]?.id || undefined
   // 然后删除不需要的属性
   if (powerParams.value.cpuTag2IDS?.length === 0) {
     delete copyPararms.value.cpuTag2IDS
@@ -58,7 +58,7 @@ const reset = () => {
 }
 // 请求游戏性能
 const getpower = async () => {
-  await handleParams()
+  handleParams()
   const arr = ref<any>([])
   arr.value = await getGamePower(copyPararms.value)
   if (arr.value.length === 0) {
@@ -167,12 +167,12 @@ const changeGame = (text: string) => {
             </template>
             <template #prev>
               <div class="switch left">
-                <div class="i-icons-swiperleft" />
+                <div class="i-icons-swiper-left" />
               </div>
             </template>
             <template #next>
               <div class="switch right">
-                <div class="i-icons-swiperright" />
+                <div class="i-icons-swiper-right" />
               </div>
             </template>
           </carousel>

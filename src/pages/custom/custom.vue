@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 const { detail } = storeToRefs(useProductStore())
 function JumpDetail() {
-  detail.value = {
-    typeParentID: 6,
-  } as Product
-  Jump('/pages/product/detail')
+  detail.value = null
+  Jump('/pages/product/diy')
 }
 </script>
 

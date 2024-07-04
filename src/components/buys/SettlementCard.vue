@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps<{
+  totalpay: number
   number: number
   pay: number
   coupon: string
@@ -25,7 +26,7 @@ const props = defineProps<{
       <div class="BEC">
         合计金额
       </div>
-      <div>￥{{ props.pay }}</div>
+      <div>￥{{ props.totalpay }}</div>
     </div>
 
     <div class="row">

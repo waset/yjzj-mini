@@ -10,6 +10,7 @@ const menu = useMenuButtonBounding()
           minWidth: `${menu.width}px`,
           height: `${menu.height}px`,
         }"
+        @click="Jump('/pages/search/search')"
       >
         <div class="i-icons-search" />
         <div class="text">

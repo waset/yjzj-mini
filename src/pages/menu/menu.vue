@@ -78,7 +78,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 <template>
   <div class="menu">
     <navbar-home text="菜单" />
-    <common-search />
+    <common-search @clicking="Jump('/pages/search/search')" />
     <div class="wrap">
       <div class="left">
         <scroll-view scroll-y scroll-with-animation class="menu-scroll scroll" :scroll-top="leftScrollTop">
@@ -123,6 +123,9 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                     @click="() => {
                       if (index === productLength - 1){
                         Jump('/pages/product/category', { key: categorysArray[current].name })
+                      }
+                      else if (item.typeParentID === categorys.diy.value){
+                        Jump('/pages/product/diy', { product_id: item.id })
                       }
                       else {
                         Jump('/pages/product/detail', { id: item.id })

@@ -64,9 +64,3 @@ const exchange = async () => {
     }
   }
 </style>
-<!--
-<route lang="json">
-{
-  "layout": "home"
-}
-</route> -->

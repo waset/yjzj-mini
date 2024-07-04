@@ -37,7 +37,7 @@ interface GetProductParams {
   /**
    * 分类名称
    */
-  name?: string
+  name?: string | number | undefined
 }
 
 interface GetrecommendPar {
@@ -46,7 +46,13 @@ interface GetrecommendPar {
   sellPriceMax: number
   sellPriceMin: number
 }
+interface Product_res {
+  data: Product[]
+  code: number
+  msg: string
+  page: Page
 
+}
 interface Product {
   banner: string[]
   brand: Brand
@@ -54,10 +60,6 @@ interface Product {
   configNO: string
   configUniqueCode: string
   content: string[]
-  /**
-   * 原价
-   */
-  costPrice: string
   createAdmin: CreateAdmin
   createAdminID: number
   createdAt: string
@@ -93,14 +95,14 @@ interface Product {
   priceType: number
   sellNumber: number
   /**
-   * 原价
+   * 现价
    */
   sellPrice: string
   sort: number
   status: number
   stockNumber: number
   /**
-   * 现价
+   * 原价
    */
   tagPrice: string
   tags: number[]

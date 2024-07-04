@@ -117,7 +117,6 @@ $max-width: 686rpx;
     }
   }
 
-  // background-color: rgba($color: #848484, $alpha: 0.5);
   &::after {
     content: '';
     position: absolute;
