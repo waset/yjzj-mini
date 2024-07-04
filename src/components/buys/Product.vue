@@ -119,7 +119,7 @@ function onClick() {
               <div class="price">
                 <div class="original">
                   <span>￥</span>
-                  <span>{{ props.product.costPrice }}</span>
+                  <span>{{ props.product.tagPrice }}</span>
                 </div>
                 <div class="current">
                   <span>￥</span>

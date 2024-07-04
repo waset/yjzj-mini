@@ -495,7 +495,6 @@ const changeMenus = (text: string) => {
 
       .items {
         padding: 32rpx;
-        padding-bottom: 56rpx;
         border-radius: 32rpx;
         background-color: #000;
 

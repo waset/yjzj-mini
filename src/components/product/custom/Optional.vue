@@ -1,58 +1,93 @@
 <script setup lang="ts">
-const props = defineProps<{
-  list: Product[]
-}>()
 const emit = defineEmits<{
   (e: 'confirm', index: number): void
+  (e: 'change', flag: boolean): void
   (e: 'loadmore'): void
 }>()
-const selectIndex = ref<number>(0)
+const { detail } = storeToRefs(useProductStore())
+const { ModificationList } = storeToRefs(useDiyStore())
+const saveId = ref<number>(0)
 
-const isSelect = (index: number) => {
-  return index === selectIndex.value
+const setId = (id: number) => {
+  saveId.value = id
 }
-
+const obj = ref<any>()
 const okfn = () => {
-  emit('confirm', selectIndex.value)
+  ModificationList.value.forEach((item: any) => {
+    if (item.id === saveId.value) {
+      obj.value = item
+    }
+  })
+  // TODO: 增加互斥规则
+  //
+  Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
+    if (params.paramDesc === obj.value.typeName) {
+      params.product = obj.value
+      params.paramValue = obj.value.id
+    }
+  })
+
+  emit('change', false)
 }
+
+const selectFn = (item: any) => {
+  if (item.errors.length !== 0) {
+    return false
+  }
+  saveId.value = item.id
+}
+
 // 触底加载
 const reachBottom = () => {
   emit('loadmore')
 }
+
+defineExpose({
+  setId,
+})
 </script>
 
 <template>
-  <scroll-view :scroll-y="true" class="scroll-view" @scrolltolower="reachBottom">
-    <div v-for="(item, index) in props.list" :key="index">
-      <div class="select" @click="selectIndex = index">
-        <div v-if="isSelect(index)" class="selectbg" />
-        <div v-if="isSelect(index)" class="selected">
-          <div class="icon i-icons-correct" />
-        </div>
-        <div v-if="!isSelect(index)" class="line topLine" />
-        <div v-if="!isSelect(index)" class="line bottomLine" />
-        <div class="goodsImg">
-          <image class="img" :src="ImageUrl(item.banner[0])" mode="scaleToFill" />
-        </div>
-        <div class="goodsInfo">
-          <div class="row1 fs28">
-            {{ item.name }}
+  <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
+    <template v-for="(item, index) in ModificationList" :key="index">
+      <div class="card mb-4">
+        <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
+          <template v-if="saveId === item.id">
+            <product-custom-singlebg />
+          </template>
+          <template v-else>
+            <div class="topLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
+            <div class="bottomLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
+          </template>
+          <div class="goodsImg">
+            <product-image :src="ImageUrl(item.banner[0])" />
           </div>
-          <div class="row2 fs20">
-            {{ item.description }}
-          </div>
-          <div class="row3">
-            <div class="fs24 check">
-              查看详情
-              <div class="i-icons-right" />
+          <div class="goodsInfo">
+            <div class="row1 fs28">
+              {{ item.name }}
             </div>
-            <div class="fs32 price">
-              ￥{{ item.sellPrice }}
+            <div class="row2 fs20">
+              {{ item.description }}
+            </div>
+            <div class="row3">
+              <div class="fs24 check">
+                查看详情
+                <div class="i-icons-right" />
+              </div>
+              <div class="fs32 price">
+                ￥{{ item.sellPrice }}
+              </div>
             </div>
           </div>
         </div>
+        <template v-if="item.errors.length !== 0">
+          <div class="error mt-1">
+            <div class="icon i-icons-info" />
+            <div>{{ item.errors[0]?.message || '' }}</div>
+          </div>
+        </template>
       </div>
-    </div>
+    </template>
     <div class="empty" />
   </scroll-view>
 
@@ -63,7 +98,7 @@ const reachBottom = () => {
         <div class="cancel">
           取消
         </div>
-        <div class="confirm" @click="okfn">
+        <div class="confirm" @click="okfn()">
           确定
           <div class="confirm2" />
         </div>
@@ -97,113 +132,105 @@ const reachBottom = () => {
   }
 }
 
-.select {
-  position: relative;
-  border-radius: 16rpx;
-  height: 192rpx;
-  background-color: rgba(#000, 0.2);
-  padding: 16rpx;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32rpx;
-  z-index: 9;
-
-  .selected {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 69rpx;
-    height: 69rpx;
-    background-color: #A7F522;
-    clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
-
-    .icon {
-      color: #000;
-    }
-  }
-
-  .selectbg {
-    position: absolute;
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: url(../../assets/svg/compon-select.svg) no-repeat;
-    background-size: 109% 105%;
+.card {
+  .select {
+    position: relative;
     border-radius: 16rpx;
-    opacity: 0.2;
-    z-index: -1;
-  }
-
-  .line {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    height: 2rpx;
-    background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
-  }
-
-  .topLine {
-    top: 0;
-  }
-
-  .bottomLine {
-    bottom: 0;
-  }
-
-  .goodsImg {
-    width: 160rpx;
-    height: 160rpx;
-    margin-right: 16rpx;
-    background: url(../../assets/svg/product_bg.svg) no-repeat;
+    height: 192rpx;
+    background-color: rgba(#000, 0.2);
+    padding: 16rpx;
+    box-sizing: border-box;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
 
-    .img {
-      width: 100rpx;
-      height: 100rpx;
+    z-index: 9;
+
+    .line {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      height: 2rpx;
+      background: linear-gradient(to right, rgba(#91DC10, 0), #A7F522, rgba(#91DC10, 0));
+    }
+
+    .lineGrey {
+      background: linear-gradient(to right, rgba(#E3E3E3, 0), #bebebe, rgba(#E3E3E3, 0));
+    }
+
+    .topLine {
+      top: 0;
+    }
+
+    .bottomLine {
+      bottom: 0;
+    }
+
+    .goodsInfo {
+      flex: 1;
+      height: 100%;
+      padding-left: 20rpx;
+
+      .row1 {
+        font-weight: 600;
+
+      }
+
+      .row1,
+      .row2 {
+        width: 400rpx;
+        color: #f5f5f5;
+        margin-bottom: 10rpx;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .row3 {
+        margin-top: 32rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .price {
+          color: #A7F522;
+          font-weight: 600;
+        }
+
+        .check {
+          color: #BEBEBE;
+        }
+      }
     }
   }
 
-  .goodsInfo {
-    flex: 1;
-    height: 100%;
-
-    .row1 {
-      font-weight: 600;
-
-    }
+  .errcss {
 
     .row1,
-    .row2 {
-      width: 400rpx;
-      color: #f5f5f5;
-      margin-bottom: 10rpx;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
+    .row2,
     .row3 {
-      margin-top: 32rpx;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: #8D8D8D !important;
 
+      .check,
       .price {
-        color: #A7F522;
-        font-weight: 600;
-      }
-
-      .check {
-        color: #BEBEBE;
+        color: #8D8D8D !important;
       }
     }
   }
+
+  .error {
+    @apply flex;
+    align-items: center;
+    color: #A7F522;
+    font-size: 24rpx;
+
+    .icon {
+      width: 40rpx;
+      height: 40rpx;
+    }
+
+  }
+
 }
 
 .bottom {

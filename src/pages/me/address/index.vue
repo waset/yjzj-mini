@@ -3,7 +3,7 @@ const { addressList } = storeToRefs(useAddressStore())
 const { getAddressList, newAddress, delAddress, editAddress } = useAddressStore()
 
 // ===== data ===================================
-
+const back = ref<boolean>(false)
 const page = ref<number>(1)
 
 // 新增地址请求参数
@@ -27,7 +27,6 @@ const AddressshowPop = ref<boolean>(false)
 
 // 提示删除弹窗开关
 const showModel = ref<boolean>(false)
-const icon = ref<'i-svg-info' | 'i-svg-success' | 'i-svg-error' | 'i-svg-warn'>('i-svg-error')
 
 // 索引
 const multiIndex = ref<number[]>([0, 0, 0])
@@ -37,6 +36,7 @@ const newAddressList = ref<{ [key: string]: string }[][]>([
   [],
   [],
 ])
+
 // ===== computed =============
 const new1 = computed(() => {
   return areadata.map((item) => {
@@ -68,27 +68,13 @@ const new3 = computed(() => {
 })
 
 // ===== methods =====================================
-
 // 初始化数据
 const initAddress = () => {
   newAddressList.value[0] = new1.value
   newAddressList.value[1] = new2.value
   newAddressList.value[2] = new3.value
 }
-// 确认地址以后 对 省市区进行赋值
-const setCodesFromAddresses = (params: any) => {
-  ['province', 'city', 'country'].forEach((key, index) => {
-    const addressLevel = newAddressList.value[index]
-    if (addressLevel && addressLevel && multiIndex.value[index] >= 0) {
-      params[`${key}Code`] = addressLevel[multiIndex.value[index]].value
-    }
-  })
-}
-// 选择地址 确认
-const bindPickerChange = () => {
-  // 地址拼接的字符串
-  setCodesFromAddresses(addReqParams.value)
-}
+
 // 互动选择器第几列
 const pickerColumnchange = (e: any) => {
   if (e.detail.column === 0) {
@@ -109,7 +95,6 @@ const pickerColumnchange = (e: any) => {
     multiIndex.value[2] = e.detail.value
   }
 }
-
 // 显示  地址文本 展示出来
 const labelsToRender = computed(() => {
   return newAddressList.value
@@ -119,11 +104,25 @@ const labelsToRender = computed(() => {
     )
 })
 
-// 打开 新增地址弹窗
-const newAdd = () => {
-  AddressshowPop.value = true
+// 确认地址以后 对 省市区进行赋值
+const setCodesFromAddresses = (params: any) => {
+  ['province', 'city', 'country'].forEach((key, index) => {
+    const addressLevel = newAddressList.value[index]
+    if (addressLevel && addressLevel && multiIndex.value[index] >= 0) {
+      params[`${key}Code`] = addressLevel[multiIndex.value[index]].value
+    }
+  })
 }
-
+const showAddressTxt = ref<string>('')
+// 选择地址 确认
+const formatAddress = (labels: string[]) => {
+  return labels.join('')
+}
+const bindPickerChange = () => {
+  showAddressTxt.value = formatAddress(labelsToRender.value)
+  // 地址拼接的字符串
+  setCodesFromAddresses(addReqParams.value)
+}
 // ** 新增保存 && 编辑保存**
 const saveAddress = async () => {
   // 新增
@@ -205,9 +204,43 @@ const setDefaultFn = async (item: addresslist, index: number) => {
   await editAddress(item)
   await getAddressList(page.value, 10)
 }
+// 转换省市区序列号为 index下标
+// 打开 新增地址弹窗
 
+const newAdd = () => {
+  multiIndex.value = getPcaIndexes(['110000000000', '110100000000', '110101000000']) || []
+  const arr = [0, 1, 2]
+  // 模拟手动滑动
+  arr.forEach((column) => {
+    pickerColumnchange({
+      detail: {
+        value: 0,
+        column,
+      },
+    })
+  })
+  addReqParams.value = {
+    address: '',
+    cityCode: '',
+    countryCode: '',
+    isDefault: 1, // 默认（1：是 2：否）
+    phone: '',
+    provinceCode: '',
+    username: '',
+  }
+  popupName.value = 1
+  AddressshowPop.value = true
+}
 // **  编辑地址 **
 const editAddressFn = (data: addresslist) => {
+  const pcaCodes = [data.provinceCode, data.cityCode, data.countryCode]
+  multiIndex.value = getPcaIndexes(pcaCodes) || []
+  pcaCodes.forEach((value, column) => {
+    pickerColumnchange({
+      detail: { value: multiIndex.value[column], column },
+    })
+  })
+  showAddressTxt.value = labelsToRender.value[0] + labelsToRender.value[1] + labelsToRender.value[2]
   popupName.value = 2
   AddressshowPop.value = true
   addReqParams.value = JSON.parse(JSON.stringify(data))
@@ -220,19 +253,28 @@ onMounted(() => {
   // 初始化数据
   initAddress()
 })
+
+onLoad((options) => {
+  if (options?.back) {
+    back.value = options.back
+  }
+})
 </script>
 
 <template>
   <div>
     <navbar-back text="收货地址" />
-    <common-model :show="showModel" msg="确认删除该地址吗？" :icon="icon" @ok="deleteAddressFn" @cancel="showModel = false" />
+    <common-model
+      :show="showModel" msg="确认删除该地址吗？" icon="i-svg-warn" @ok="deleteAddressFn"
+      @cancel="showModel = false"
+    />
     <div class="myaddress">
       <div v-if="addressList.length === 0">
         <common-empty text="当前暂无收货地址,快去添加吧！" icon="i-svg-union" />
       </div>
       <address-item-card
-        :addressdata="addressList" @delete-address="delAddressFn" @set-default="setDefaultFn"
-        @edit-address="editAddressFn"
+        :select="back" :addressdata="addressList" @delete-address="delAddressFn"
+        @set-default="setDefaultFn" @edit-address="editAddressFn"
       />
       <div class="newAddress" @click="newAdd()">
         新增收货地址
@@ -243,7 +285,7 @@ onMounted(() => {
         <div class="inputBox">
           <div class="row">
             <div>收货人</div>
-            <input v-model="addReqParams.username" type="text">
+            <input v-model="addReqParams.username" class="inp" type="text">
           </div>
           <div class="row">
             <div>联系电话</div>
@@ -256,8 +298,8 @@ onMounted(() => {
               @change="bindPickerChange" @columnchange="pickerColumnchange"
             >
               <div class="input">
-                <span v-for="(label, index) in labelsToRender" :key="index">{{ addReqParams.provinceCode === '' ? ''
-                  : label }}</span>
+                <span>{{ addReqParams.provinceCode === '' ? ''
+                  : showAddressTxt }}</span>
                 <div class="icon i-icons-left" />
               </div>
             </picker>
@@ -301,6 +343,7 @@ $theme: #A7F522;
     height: 80rpx;
     position: fixed;
     bottom: calc(32rpx + env(safe-area-inset-bottom));
+    --tabbar-padding-bottom: calc(var(--tabbar-bottom) + env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
     font-size: 28rpx;

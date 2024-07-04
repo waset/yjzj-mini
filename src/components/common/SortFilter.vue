@@ -12,8 +12,10 @@ interface List {
 
 const props = withDefaults(defineProps<{
   hasLayout: boolean
+  padding: string
 }>(), {
   hasLayout: true,
+  padding: '0 32rpx',
 })
 
 const emits = defineEmits<{
@@ -83,7 +85,7 @@ const switchTab = (id: keys, index: number) => {
 </script>
 
 <template>
-  <div class="func">
+  <div class="func" :style="{ padding: props.padding }">
     <div class="warp">
       <div class="bg">
         <div class="box">
@@ -121,103 +123,102 @@ const switchTab = (id: keys, index: number) => {
 </template>
 
 <style lang="scss" soped>
-  .func {
-    padding: 0 32rpx;
+.func {
 
-    .warp {
-      background-image: linear-gradient(133.06deg,
-          rgba(255, 255, 255, 0.4) 3.56%,
-          rgba(238, 238, 238, 0.06) 99.09%);
-      padding: 2rpx;
+  .warp {
+    background-image: linear-gradient(133.06deg,
+        rgba(255, 255, 255, 0.4) 3.56%,
+        rgba(238, 238, 238, 0.06) 99.09%);
+    padding: 2rpx;
+    border-radius: 16rpx;
+
+    .bg {
       border-radius: 16rpx;
+      background: #000;
 
-      .bg {
+      .box {
+        @apply flex-between;
         border-radius: 16rpx;
-        background: #000;
 
-        .box {
-          @apply flex-between;
+        .left {
+          display: flex;
+          align-items: center;
+          color: #f5f5f5;
+          font-size: 28rpx;
+          font-weight: 400;
+          line-height: 40rpx;
+          text-align: center;
           border-radius: 16rpx;
 
-          .left {
-            display: flex;
-            align-items: center;
-            color: #f5f5f5;
-            font-size: 28rpx;
-            font-weight: 400;
-            line-height: 40rpx;
-            text-align: center;
-            border-radius: 16rpx;
+          .item {
+            padding: 32rpx;
+            @apply flex-center;
+            position: relative;
+            z-index: 1;
 
-            .item {
-              padding: 32rpx;
+            .icons {
+              padding-left: 4rpx;
+              font-size: 20rpx;
               @apply flex-center;
-              position: relative;
-              z-index: 1;
+              flex-direction: column;
+            }
 
-              .icons {
-                padding-left: 4rpx;
-                font-size: 20rpx;
-                @apply flex-center;
-                flex-direction: column;
-              }
+            &::before {
+              content: "";
+              position: absolute;
+              z-index: -1;
+              top: -6rpx;
+              width: 50%;
+              height: 50%;
+              background: #a7f522;
+              border-radius: 8rpx;
+              opacity: var(--show);
+            }
 
-              &::before {
-                content: "";
-                position: absolute;
-                z-index: -1;
-                top: -6rpx;
-                width: 50%;
-                height: 50%;
-                background: #a7f522;
-                border-radius: 8rpx;
-                opacity: var(--show);
-              }
+            &::after {
+              content: "";
+              position: absolute;
+              z-index: -1;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(#000, 0.4);
+              backdrop-filter: blur(20rpx);
+            }
 
+            &:first-child {
               &::after {
-                content: "";
-                position: absolute;
-                z-index: -1;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(#000, 0.4);
-                backdrop-filter: blur(20rpx);
-              }
-
-              &:first-child {
-                &::after {
-                  border-top-left-radius: 16rpx;
-                  border-bottom-left-radius: 16rpx;
-                }
+                border-top-left-radius: 16rpx;
+                border-bottom-left-radius: 16rpx;
               }
             }
           }
+        }
 
-          .right {
-            display: flex;
-            align-items: center;
-            color: #f5f5f5;
-            font-size: 40rpx;
-            font-weight: 400;
-            line-height: 40rpx;
-            text-align: center;
-            padding-right: 16rpx;
+        .right {
+          display: flex;
+          align-items: center;
+          color: #f5f5f5;
+          font-size: 40rpx;
+          font-weight: 400;
+          line-height: 40rpx;
+          text-align: center;
+          padding-right: 16rpx;
 
-            .item {
-              padding: 28rpx 16rpx;
+          .item {
+            padding: 28rpx 16rpx;
+            @apply flex-center;
+            position: relative;
+            z-index: 1;
+
+            .icons {
               @apply flex-center;
-              position: relative;
-              z-index: 1;
-
-              .icons {
-                @apply flex-center;
-              }
             }
           }
         }
       }
     }
   }
+}
 </style>

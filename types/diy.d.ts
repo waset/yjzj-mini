@@ -52,7 +52,7 @@ interface FpsPowerRes {
 interface Modification {
   params?: ProductParm[]
   productTypeParentID: number
-  productTypeID?: number
+  productTypeID: number
   productTypeIDs?: number[]
   sellPriceMin?: any
   sellPriceMax?: any
@@ -67,10 +67,10 @@ interface Modification {
   pageSize: number
 }
 interface ProductParm {
-  id: number
-  value?: string
-  type: any
-  number: number
+  id?: number
+  v?: any
+  type?: type
+  number?: number
 }
 
 interface ProductParamDesc {
@@ -87,7 +87,6 @@ interface configurationListReq {
 
 // 新增配置单
 interface addConfiguration {
-
   params: ParamConfig[]
   shareCode?: string
   createUserID?: number
@@ -95,8 +94,8 @@ interface addConfiguration {
 }
 
 interface ParamConfig {
-  productID: number
-  number: number
+  pID: number
+  num: number
 }
 
 // 下单
@@ -150,4 +149,26 @@ interface submitReqDetail {
    */
   relationType?: number
 
+}
+
+interface getAllParams {
+  productTypeID: number
+  page: number
+  pageSize: number
+}
+
+interface AllParamsRes {
+  content: string
+  createdAt: string
+  default: string
+  deletedAt: null
+  desc: string
+  id: number
+  isGroup: number
+  isRequired: number
+  isSearch: number
+  productTypeID: number
+  remark: string
+  type: string
+  updatedAt: string
 }

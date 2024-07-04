@@ -3,20 +3,20 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
   state: (): {
     couponList: couponList[]
     canUseCouponNum: number
+    canusecouponList: couponList[]
     provider: string
-    buyType: string
-
+    buyType: 'buy' | 'car'
   } => ({
+    canusecouponList: [],
     couponList: [],
     canUseCouponNum: 0,
     provider: '',
-    buyType: '',
-
+    buyType: 'buy',
   }),
   getters: {
   },
   actions: {
-    changeBuyType(type: string) {
+    changeBuyType(type: 'buy' | 'car') {
       this.buyType = type
     },
 
@@ -100,12 +100,8 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
         if (code === 200) {
-          this.canUseCouponNum = 0
-          data.forEach((item) => {
-            if (item.ticketInfo.status === 1) {
-              this.canUseCouponNum += 1
-            }
-          })
+          this.canusecouponList = data
+          this.canUseCouponNum = data.length
         }
       }
       catch {
@@ -133,16 +129,19 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
         const { code, data, msg } = await http.post('/web/order/add', { ...params }, { auth: true })
         if (code === 200) {
           // TODO wxpay.then->支付成功回调，fail->支付失败回调
-          products.value = products.value.filter(element => !element.select)
+          if (this.buyType === 'car') {
+            // 当前是购物车下单时才能删除购物车中的选中
+            products.value = products.value.filter(element => !element.select)
+          }
+
           this.wxpay(data.jsapiPayParams).then(() => {
             // 支付成功跳转的订单列表
-            Jump('/pages/order/list')
+            Jump('/pages/buy/orderInfo', { id: data.orderID })
           }).catch(() => {
             // 支付失败提示
             uni.showToast({
               title: '支付失败',
               icon: 'error',
-
               duration: 2000,
               // 跳转订单列表
               success: () => {
@@ -151,7 +150,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
                 const nowpage = page.route
                 if (nowpage !== 'pages/order/list') {
                   setTimeout(() => {
-                    Jump('/pages/order/list')
+                    Jump('/pages/buy/orderInfo', { id: data.orderID })
                   }, 1000)
                 }
               },
@@ -211,8 +210,11 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       })
     },
     // 订单详情
-    async orderInfo(id: string) {
-      const { data } = await http.post<orderinfoData>('/web/order/info', { NO: id }, { auth: true })
+    async orderInfo(id?: number) {
+      if (id) {
+        id = Number(id)
+      }
+      const { data } = await http.post<orderinfoData>('/web/order/info', { id }, { auth: true })
 
       return data
     },

@@ -79,10 +79,15 @@ onShow(async () => {
 onMounted(async () => {
   // 商品详情进入
   if (buyType === 'buy') {
+    if (!detail.value) {
+      return
+    }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id, number: 1, relationType: 1 })
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
+
+    await canUseCoupon(nowAddress.value.id, [detail.value.id], undefined)
   }
   else {
     // 购物车进入
@@ -110,28 +115,31 @@ onMounted(async () => {
           relationType: 1,
         })
       }
-
-      // productConfigIDs.value.push(item.id)
     })
-
     submitOrderParams.value.details = arr.value
     // 查询可用的优惠券
     await canUseCoupon(nowAddress.value.id, productIDs.value, undefined)
   }
+})
+
+const paym = computed(() => {
+  const { cloned } = useCloned(payment.value)
+
+  return (cloned.value - Number(couponPrice.value))
 })
 </script>
 
 <template>
   <navbar-back text="提交订单" />
   <div class="body">
-    <div class="addressBox" @click="Jump('/pages/me/address/index', {}, 1)">
+    <div class="addressBox" @click="Jump('/pages/me/address/index', { back: true }, 1)">
       <buys-address-card />
     </div>
 
     <buys-submit-goods-item :list="nowGoods" :goods="detail" :showborder="showborder" @checked="checkAllocation" />
 
     <div class="CouponsAndNotes">
-      <div class="counpons" @click="Jump('/pages/buy/selectCoupon', {}, 1)">
+      <div class="counpons" @click="Jump('/pages/buy/selectCoupon')">
         <div>优惠券</div>
         <div class="beColor">
           <template v-if="couponPrice !== ''">
@@ -162,8 +170,8 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <buys-settlement-card :number="totalNumber" :pay="payment" :coupon="couponPrice" />
-    <buys-bottom-submit :number="totalNumber" :pay="payment" @submit-order="submitOrderFn" />
+    <buys-settlement-card :number="totalNumber" :totalpay="payment" :pay="paym" :coupon="couponPrice" />
+    <buys-bottom-submit :number="totalNumber" :pay="paym" @submit-order="submitOrderFn" />
 
     <common-popup :show="showPop" name="备注" height="70%" @close="showPop = false">
       <div>
@@ -173,9 +181,9 @@ onMounted(async () => {
 
     <common-popup :show="allocationShow" name="配置详情" @close="allocationShow = false">
       <div>
-        <div v-for="(item, index) in allocationList" :key="index">
+        <template v-for="(item, index) in allocationList" :key="index">
           <buys-submit-allocation-card :params="item" />
-        </div>
+        </template>
       </div>
     </common-popup>
   </div>

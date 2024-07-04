@@ -75,6 +75,7 @@ function maskClose() {
     justify-content: center;
     flex-direction: column;
     overflow: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
 
     .mask {
       flex: 1;

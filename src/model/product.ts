@@ -3,7 +3,7 @@ export const useProductStore = defineStore('product', {
     categorys: Categorys
     types: ProductType[]
     products: Product[]
-    detail: Product
+    detail: Product | null
     lastPage: number
   } => ({
     // 产品类目
@@ -18,7 +18,7 @@ export const useProductStore = defineStore('product', {
     types: [],
     // 这里存放数据
     products: [],
-    detail: {} as Product,
+    detail: null,
     lastPage: 10,
   }),
   getters: {
@@ -40,6 +40,7 @@ export const useProductStore = defineStore('product', {
       if (code === 200)
         this.types = data
     },
+
     // 获取产品列表
     async getProducts(params: GetProductParams, pages: number, pageSize: number, isconcat: boolean = false) {
       const { data, code, page } = await http.post<Product_res>('/web/product/list', {
@@ -57,15 +58,18 @@ export const useProductStore = defineStore('product', {
         }
       }
     },
+
     // 获取产品详情
     async getProductDetail(id?: number) {
       if (!id) {
+        this.detail = null
         return
       }
       const { data, code } = await http.post<Product>('/web/product/info', { id }, { auth: false })
 
-      if (code === 200)
+      if (code === 200) {
         this.detail = data
+      }
     },
 
     // 获取智能推荐列表
@@ -90,6 +94,7 @@ export const useProductStore = defineStore('product', {
         })
       }
     },
+
   },
 })
 
