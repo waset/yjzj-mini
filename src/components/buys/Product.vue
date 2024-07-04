@@ -118,9 +118,11 @@ function onClick() {
             <div class="funarea">
               <div class="price">
                 <div class="original">
-                  <span>￥</span>
-                  <span>{{ props.product.tagPrice }}</span>
+                  <template v-if="props.product.tagPrice">
+                    <span>￥{{ props.product.tagPrice }}</span>
+                  </template>
                 </div>
+
                 <div class="current">
                   <span>￥</span>
                   <span>{{ props.product.sellPrice }}</span>
@@ -159,167 +161,168 @@ function onClick() {
 </template>
 
 <style lang="scss" scoped>
-  $px: 32rpx;
-  $py: 16rpx;
+$px: 32rpx;
+$py: 16rpx;
 
-  .product {
-    padding: $py $px;
+.product {
+  padding: $py $px;
+  position: relative;
+  z-index: 0;
+
+  .wraps {
     position: relative;
-    z-index: 0;
+    z-index: 1;
+    border-radius: 32rpx;
+    box-shadow: 0rpx 16rpx 48rpx 12rpx rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
+    padding: 2rpx;
+    transition: transform 0.3s;
 
-    .wraps {
-      position: relative;
-      z-index: 1;
+    .wrap {
+      @apply flex-between;
+      background: rgba(0, 0, 0, 1);
       border-radius: 32rpx;
-      box-shadow: 0rpx 16rpx 48rpx 12rpx rgba(0, 0, 0, 0.2);
-      background-image: linear-gradient(113.84deg, rgba(255, 255, 255, 0.8) -6.55%, rgba(255, 255, 255, 0.08) 46.47%, rgba(255, 255, 255, 0.8) 92.28%);
-      padding: 2rpx;
-      transition: transform 0.3s;
+      padding: 24rpx 32rpx;
 
-      .wrap {
+      .select {
+        @apply flex-center;
+        color: #000;
+        font-size: 32rpx;
+
+        width: 48rpx;
+        height: 48rpx;
+        border-radius: 50%;
+        border: 2rpx solid #FFFFFF;
+
+        &.selected {
+          $color: #a7f522;
+          background-color: $color;
+          border-color: $color;
+        }
+      }
+
+      .info {
+        flex: 1;
+        max-width: 90%;
         @apply flex-between;
-        background: rgba(0, 0, 0, 1);
-        border-radius: 32rpx;
-        padding: 24rpx 32rpx;
 
-        .select {
-          @apply flex-center;
-          color: #000;
-          font-size: 32rpx;
+        .image {
+          padding-right: 16rpx;
+        }
 
-          width: 48rpx;
-          height: 48rpx;
-          border-radius: 50%;
-          border: 2rpx solid #FFFFFF;
+        .details {
+          flex: 1;
+          overflow: hidden;
 
-          &.selected {
-            $color: #a7f522;
-            background-color: $color;
-            border-color: $color;
+          .name {
+
+            font-weight: 500;
+            font-size: 28rpx;
+            color: #FFFFFF;
+            line-height: 46rpx;
+            text-align: left;
+            font-style: normal;
+            text-transform: none;
+            padding-bottom: 8rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+          }
+
+          .goview {
+            @apply flex-start;
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #BEBEBE;
+            line-height: 40rpx;
+            padding-bottom: 16rpx;
           }
         }
 
-        .info {
-          flex: 1;
-          max-width: 90%;
-          @apply flex-between;
+        .funarea {
+          @apply flex-between items-end;
 
-          .image {
-            padding-right: 16rpx;
-          }
-
-          .details {
-            flex: 1;
-            overflow: hidden;
-
-            .name {
+          .price {
+            .current {
               font-weight: 500;
               font-size: 28rpx;
-              color: #FFFFFF;
-              line-height: 46rpx;
+              color: #A7F522;
+              line-height: 40rpx;
               text-align: left;
               font-style: normal;
               text-transform: none;
-              padding-bottom: 8rpx;
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 2;
-              overflow: hidden;
             }
 
-            .goview {
-              @apply flex-start;
+            .original {
               font-weight: 400;
               font-size: 24rpx;
               color: #BEBEBE;
               line-height: 40rpx;
-              padding-bottom: 16rpx;
+              text-align: left;
+              font-style: normal;
+              text-decoration-line: line-through;
+              text-transform: none;
             }
           }
 
-          .funarea {
-            @apply flex-between items-end;
+          .num {
+            @apply flex-end;
 
-            .price {
-              .current {
-                font-weight: 500;
-                font-size: 28rpx;
-                color: #A7F522;
-                line-height: 40rpx;
-                text-align: left;
-                font-style: normal;
-                text-transform: none;
-              }
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12rpx 12rpx 12rpx 12rpx;
 
-              .original {
-                font-weight: 400;
-                font-size: 24rpx;
-                color: #BEBEBE;
-                line-height: 40rpx;
-                text-align: left;
-                font-style: normal;
-                text-decoration-line: line-through;
-                text-transform: none;
-              }
+            .number {
+              font-weight: 500;
+              font-size: 28rpx;
+              color: #F5F5F5;
+              line-height: 40rpx;
+              text-align: center;
+              font-style: normal;
+              text-transform: none;
+              padding: 0 8rpx;
             }
 
-            .num {
-              @apply flex-end;
+            .fun {
+              @apply flex-center;
+              font-size: 42rpx;
 
-              background: rgba(255, 255, 255, 0.2);
-              border-radius: 12rpx 12rpx 12rpx 12rpx;
-
-              .number {
-                font-weight: 500;
-                font-size: 28rpx;
-                color: #F5F5F5;
-                line-height: 40rpx;
-                text-align: center;
-                font-style: normal;
-                text-transform: none;
-                padding: 0 8rpx;
-              }
-
-              .fun {
-                @apply flex-center;
-                font-size: 42rpx;
-
-                &.disabled {
-                  color: #767676;
-                }
+              &.disabled {
+                color: #767676;
               }
             }
           }
         }
-
       }
-    }
 
-    &.sliding {
-      .wraps {
-        transform: translateX(calc(var(--sliding) - $px));
-      }
-    }
-
-    .func {
-      position: absolute;
-      right: $px;
-      top: $py;
-      height: calc(100% - $py * 2);
-      z-index: -1;
-      border-radius: 32rpx;
-
-      .item {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 $px;
-        font-size: 48rpx;
-        border-radius: 32rpx;
-        background: rgba(0, 0, 0, 0.5);
-        box-shadow: 0rpx 16rpx 48rpx 12rpx rgba(0, 0, 0, 0.2);
-      }
     }
   }
+
+  &.sliding {
+    .wraps {
+      transform: translateX(calc(var(--sliding) - $px));
+    }
+  }
+
+  .func {
+    position: absolute;
+    right: $px;
+    top: $py;
+    height: calc(100% - $py * 2);
+    z-index: -1;
+    border-radius: 32rpx;
+
+    .item {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 $px;
+      font-size: 48rpx;
+      border-radius: 32rpx;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0rpx 16rpx 48rpx 12rpx rgba(0, 0, 0, 0.2);
+    }
+  }
+}
 </style>
