@@ -28,7 +28,9 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
           <image style="width: 90%;" src="@/assets/background/invite-btn.svg" mode="widthFix" @click="become" />
         </template>
         <template v-else>
-          <image class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" />
+          <button class="sharebtn" open-type="share">
+            <image class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" />
+          </button>
         </template>
       </div>
     </div>
@@ -78,5 +80,24 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
     border-radius: 4rpx 4rpx 4rpx 4rpx;
     margin-left: 22rpx;
   }
+}
+.sharebtn {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.35;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  color: #000;
+  font-size: 32rpx;
+  width: 100%;
+  height: 100%;
+  background:none;
 }
 </style>
