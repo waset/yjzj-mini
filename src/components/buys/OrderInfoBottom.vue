@@ -41,7 +41,6 @@ const cancelPay = () => {
   position: fixed;
   bottom: 0;
   width: 100%;
-  // height: 144rpx;
   background-color: #414141;
 
   .Tobepaid {

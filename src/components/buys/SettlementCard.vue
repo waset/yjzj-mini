@@ -76,7 +76,6 @@ $Be: #BEBEBE;
 
 .settlementCard {
   position: relative;
-  // margin: 32rpx auto;
   padding: 0 32rpx 32rpx 32rpx;
 
   border-radius: 32rpx;

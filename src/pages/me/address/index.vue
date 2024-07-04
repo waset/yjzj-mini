@@ -477,9 +477,3 @@ $theme: #A7F522;
   }
 }
 </style>
-<!--
-<route lang="json">
-{
-  "layout": "home"
-}
-</route> -->

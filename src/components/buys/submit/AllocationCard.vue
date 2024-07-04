@@ -31,7 +31,6 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .card {
-  // height: 148rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;

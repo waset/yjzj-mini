@@ -70,9 +70,3 @@ $Be: #BEBEBE;
   overflow: hidden;
 }
 </style>
-<!--
-<route lang="json">
-{
-  "layout": "home"
-}
-</route> -->
