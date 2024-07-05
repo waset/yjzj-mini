@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 const { detail } = storeToRefs(useProductStore())
-const { isDiy } = storeToRefs(useDiyStore())
 function JumpDetail() {
-  isDiy.value = true
   detail.value = {} as Product
   detail.value.typeParentID = 6
   detail.value.params = []

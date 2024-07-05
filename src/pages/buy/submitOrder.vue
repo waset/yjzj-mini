@@ -2,8 +2,6 @@
 const { nowAddress } = storeToRefs(useAddressStore())
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
-const { isDiy } = storeToRefs(useDiyStore())
-
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
 const { getCouponList, submitOrderReq, canUseCoupon, buyType } = useSubmitOrderStore()
 const page = ref<number>(1)
@@ -86,7 +84,7 @@ onMounted(async () => {
     }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id || 0, number: 1, relationType: 1 })
-    if (isDiy.value === true) {
+    if (!detail.value.id) {
       submitOrderParams.value.details[0].relationType = 2
       submitOrderParams.value.details[0].id = detail.value.alloaction
     }
@@ -115,11 +113,20 @@ onMounted(async () => {
         // 产品id 列表 用于提交订单时的参数
         productIDs.value.push(item.id)
 
-        arr.value.push({
-          id: item.id,
-          number: item.quantity,
-          relationType: 1,
-        })
+        if (!item.id) {
+          arr.value.push({
+            id: item.alloaction as number,
+            number: item.quantity,
+            relationType: 2,
+          })
+        }
+        else {
+          arr.value.push({
+            id: item.id,
+            number: item.quantity,
+            relationType: 1,
+          })
+        }
       }
     })
     submitOrderParams.value.details = arr.value

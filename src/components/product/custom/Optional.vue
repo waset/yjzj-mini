@@ -5,7 +5,7 @@ const emit = defineEmits<{
   (e: 'loadmore'): void
 }>()
 const { detail } = storeToRefs(useProductStore())
-const { ModificationList, isDiy } = storeToRefs(useDiyStore())
+const { ModificationList } = storeToRefs(useDiyStore())
 const saveId = ref<number>(0)
 const indexs = ref<number>(0)
 const types = ref<string>('')
@@ -37,7 +37,7 @@ const okfn = () => {
   if (selectedProduct) {
     obj.value = selectedProduct
   }
-  if (isDiy.value) {
+  if (!detail?.value?.id) {
     // 如果是 全diy页面  全自定义
     parr.value[indexs.value].paramDesc = types.value
     parr.value[indexs.value].paramValue = obj.value.id
