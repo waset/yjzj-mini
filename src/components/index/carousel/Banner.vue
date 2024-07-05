@@ -3,15 +3,8 @@ const props = defineProps<{
   list: WindowsImage[]
 }>()
 
-const bannerImages = ref<string[]>([])
-watchEffect(() => {
-  bannerImages.value = props.list.map(item => ImageUrl(item.imageUrl))
-})
+const bannerImages = ref<WindowsImage[]>(props.list)
 
-function skip(index: number) {
-  const path = props.list[index].src as any
-  Jump(path)
-}
 const bannerSwiper = ref()
 const current = ref(0)
 const onChange = () => {
@@ -35,7 +28,7 @@ const changSwiper = (index: number) => {
       }" @slide-change="onChange"
     >
       <z-swiper-item v-for="(item, index) in bannerImages" :key="index">
-        <image class="image" :src="item" mode="aspectFill" @click="skip(index)" />
+        <image class="image" :src="ImageUrl(item.imageUrl)" mode="aspectFill" @click="Jump(item.src as any)" />
       </z-swiper-item>
       <template #indicator>
         <div class="indicator">
