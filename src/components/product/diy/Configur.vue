@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const emit = defineEmits<{
+  upconfigs: []
+}>()
 const { detail } = storeToRefs(useProductStore())
 const DiyType = [
   {
@@ -51,12 +54,15 @@ const DiyType = [
     typeID: 20,
   },
 ]
-
 const productCustomRelocationRef = ref<ComponentInstance['ProductCustomRelocation']>()
 // 打开选择配置组件的弹窗
 const openSelectPop = async (index: number, paramValue: string | number | string[] | undefined) => {
   const { typeID, type } = DiyType[index]
   productCustomRelocationRef.value?.showOptional(typeID, index, type, paramValue)
+}
+
+const upconfig = () => {
+  emit('upconfigs')
 }
 </script>
 
@@ -72,7 +78,9 @@ const openSelectPop = async (index: number, paramValue: string | number | string
               <div class="text">
                 <template v-if="detail?.params[index] && detail?.params[index].paramDesc === item.type">
                   <template v-if="detail?.params[index] && detail?.params[index]?.product?.errors">
-                    <div :class="{ error: detail?.params[index]?.product?.errors?.findIndex((v) => v.key === item.type) !== -1 }">
+                    <div
+                      :class="{ error: detail?.params[index]?.product?.errors?.findIndex((v) => v.key === item.type) !== -1 }"
+                    >
                       {{ detail?.params[index].product.name }}
                     </div>
                   </template>
@@ -110,7 +118,7 @@ const openSelectPop = async (index: number, paramValue: string | number | string
       </div>
     </div>
 
-    <product-custom-relocation ref="productCustomRelocationRef" />
+    <product-custom-relocation ref="productCustomRelocationRef" @updateconfig="upconfig" />
   </div>
 </template>
 
@@ -182,6 +190,7 @@ const openSelectPop = async (index: number, paramValue: string | number | string
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+
             .error {
               color: #F53F3F;
             }

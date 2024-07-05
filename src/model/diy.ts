@@ -9,7 +9,7 @@ export const useDiyStore = defineStore('diy', {
   actions: {
     // 获取游戏列表
     async getGamesList() {
-      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 }, { auth: false })
+      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 1000 }, { auth: false })
 
       if (code === 200) {
         this.gamesList = data

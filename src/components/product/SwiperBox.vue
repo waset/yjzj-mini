@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
   list: gamesList[]
-  params: Param[] | []
 }>()
 const emit = defineEmits<{
   (e: 'selectGames'): void
@@ -9,6 +8,8 @@ const emit = defineEmits<{
 }>()
 
 const { getGamePower } = useDiyStore()
+
+const { detail } = storeToRefs(useProductStore())
 // 当前第几页 页码
 const pcurrent = ref(0)
 // 分辨率
@@ -29,12 +30,12 @@ const copyPararms = ref<powerParams>({
   gameID: 1,
 })
 // 处理游戏性能请求参数
-const handleParams = () => {
-  // copyPararms.value = { ...powerParams.value, ...copyPararms.value }
-  copyPararms.value.cpuTag2IDS = props?.params[0]?.product?.tags2 || []
-  copyPararms.value.displayCardTag2IDs = props?.params[2]?.product?.tags2 || []
+const handleParams = (list?: any) => {
+  copyPararms.value.cpuTag2IDS = detail?.value?.params[0]?.product?.tags2 || []
+  copyPararms.value.displayCardTag2IDs = detail.value?.params[2]?.product?.tags2 || []
   copyPararms.value.resolutionType = selectPower.value === '1080' ? 1 : 2
-  copyPararms.value.gameID = props.list[pcurrent.value]?.id || undefined
+  copyPararms.value.gameID = props.list[pcurrent.value]?.id || list[0].id
+
   // 然后删除不需要的属性
   if (powerParams.value.cpuTag2IDS?.length === 0) {
     delete copyPararms.value.cpuTag2IDS
@@ -57,8 +58,8 @@ const reset = () => {
   pcurrent.value = 0
 }
 // 请求游戏性能
-const getpower = async () => {
-  handleParams()
+const getpower = async (list?: any) => {
+  await handleParams(list)
   const arr = ref<any>([])
   arr.value = await getGamePower(copyPararms.value)
   if (arr.value.length === 0) {
@@ -84,7 +85,7 @@ defineExpose({
 // 监听分辨率选择是否变化了  变化了就请求
 watch(selectPower, async () => {
   await getpower()
-}, { immediate: true })
+})
 
 // 监听页面是否变化  变化了就传递给父组件显示
 watch(pcurrent, async (val) => {
@@ -131,10 +132,10 @@ const changeGame = (text: string) => {
   <div class="center">
     <template v-if="props.list.length !== 0">
       <div>
-        <div class="searchBox" @click="selectGame">
+        <!-- <div class="searchBox" @click="selectGame">
           <span> 选择喜欢的游戏,查看当前配置的性能数据</span>
           <div class="icon i-icons-left" />
-        </div>
+        </div> -->
         <div class="swiper">
           <carousel
             v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="vertical"

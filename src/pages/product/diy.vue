@@ -142,11 +142,11 @@ const addBuyCar = async () => {
     </div>
 
     <div class="info">
-      <product-diy-configur :params="detail?.params" @up-config="DiyGameRef?.upOptional()" />
+      <product-diy-configur :params="detail?.params" @upconfigs="DiyGameRef?.upOptional()" />
     </div>
 
     <div class="swiper">
-      <product-diy-game ref="DiyGameRef" :detail="detail" />
+      <product-diy-game ref="DiyGameRef" />
     </div>
     <div class="bottom">
       <product-operation @add-car="addBuyCar" @buy-now="buyNow" />
