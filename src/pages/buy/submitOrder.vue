@@ -109,7 +109,7 @@ onMounted(async () => {
         // 总数量  用于展示
         totalNumber.value += item.quantity
         //  总金额 用于展示
-        payment.value += Number(item.sellPrice)
+        payment.value += Number(item.sellPrice) * item.quantity
         // 产品id 列表 用于提交订单时的参数
         productIDs.value.push(item.id)
 

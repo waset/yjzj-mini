@@ -21,7 +21,7 @@ const submitOrder = () => {
         <span class="fs24" style="color: #BEBEBE;">件</span>
         <span class="fs24">|</span>
         <span class="fs24">合计：</span>
-        <span class="fs32">￥{{ props.pay }}</span>
+        <span class="fs32">￥{{ props.pay.toFixed(2) }}</span>
       </div>
       <div class="submitBtn" @click="submitOrder">
         <div class="submitBtnCopy" />
