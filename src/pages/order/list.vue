@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { orders } = storeToRefs(useOrderStore())
+const { orders, lastPage } = storeToRefs(useOrderStore())
 const { getOrderList } = useOrderStore()
 
 const tabsIdx = ref<Order['status']>(0)
@@ -9,6 +9,12 @@ const tabs = ref<{
   0: '全部订单',
   1: '待付款',
   2: '待收货',
+})
+
+const getParams = ref({
+  status: 0,
+  Page: 1,
+  pageSize: 10,
 })
 
 onLoad((params) => {
@@ -21,16 +27,32 @@ onLoad((params) => {
 })
 
 const getList = async (status: number) => {
-  await getOrderList(status)
+  await getOrderList(status, getParams.value.Page, getParams.value.pageSize)
 }
 
 const handleTabClick = async (status: Order['status']) => {
+  // 切换tab时重置页码
+  getParams.value.Page = 1
   tabsIdx.value = status
   await getList(status)
 }
 
 onShow(async () => {
   await getList(tabsIdx.value)
+})
+
+// 触底加载更多
+onReachBottom(() => {
+  if (getParams.value.Page < lastPage.value) {
+    getParams.value.Page += 1
+    getList(tabsIdx.value)
+  }
+  else {
+    uni.showToast({
+      title: '没有更多了',
+      icon: 'none',
+    })
+  }
 })
 </script>
 

@@ -16,7 +16,7 @@ export const useConfigurationStore = defineStore('configuration', {
           this.configurations = []
         }
         this.configurations = [...this.configurations, ...data]
-        this.lastPage = page.lastPage
+        this.lastPage = page?.lastPage || 1
       }
     },
 

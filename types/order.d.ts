@@ -129,3 +129,23 @@ interface Datum {
   status: string
   time: string
 }
+
+interface OrderReq {
+  status: number
+  page: number
+  pageSize: number
+}
+
+interface OrderRes {
+  code: number
+  data: Order[]
+  msg: string
+  page: OrderPage
+}
+
+interface OrderPage {
+  page: number
+  currentPage: number
+  lastPage: number
+  pageSize: number
+}
