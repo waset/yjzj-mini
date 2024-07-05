@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
+const { user } = storeToRefs(useUserStore())
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const productId = ref<Product['id']>()
 interface PageReq {
   id: Product['id']
+  inviteCode: UserInfo['inviteCode']
 }
 
 onLoad(async (params) => {
@@ -50,6 +52,21 @@ const buyNow = () => {
 onShow(async () => {
   await getProductDetail(productId.value)
 })
+// #ifdef MP
+onShareAppMessage(() => {
+  const params = {} as any
+  if (detail.value) {
+    params.id = detail.value.id
+    params.inviteCode = user.value?.inviteCode
+  }
+
+  return {
+    title: detail.value?.name,
+    imageUrl: ShareIamgeUrl(detail.value?.banner),
+    path: UrlAndParams('/pages/product/detail', params),
+  }
+})
+// #endif
 </script>
 
 <template>
