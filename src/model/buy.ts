@@ -78,15 +78,10 @@ export const useBuyStore = defineStore('buy', {
     },
     // 删除商品
     deletes(ids: BuyProduct['id'][], alls: BuyProduct['id'][]) {
-      let idsPro = this.products.filter(item => item.id)
-      let allPro = this.products.filter(item => item.alloaction)
-      if (ids.length !== 0) {
-        idsPro = idsPro.filter(item => !ids.includes(item.id))
-      }
-      if (alls.length !== 0) {
-        allPro = allPro.filter(item => !alls.includes(item.alloaction as number))
-      }
-      this.products = [...idsPro, ...allPro]
+      this.products = this.products.filter(item =>
+        // 创建一个新的数组，其中不包含 id 在 ids 数组中或 alloaction 在 alls 数组中的数据
+        !(ids.includes(item.id) || (alls.includes(item.alloaction as number) && item.alloaction !== null)),
+      )
     },
 
     // 添加商品
