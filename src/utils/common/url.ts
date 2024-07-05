@@ -6,7 +6,7 @@
  * @returns string
  */
 export function UrlAndParams(url: string, param: object) {
-  if (!param)
+  if (!param || typeof param !== 'object')
     return url
   const str = Object.entries(param).filter(([_, value]) => value !== undefined && value !== null)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
