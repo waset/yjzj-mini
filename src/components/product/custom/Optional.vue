@@ -31,12 +31,70 @@ const totalPrice = computed(() => {
   return result
 })
 
+const isPass = () => {
+  const isEmpty = (obj: any) => Object.keys(obj).length === 0
+  // 判断配置单是否又空选项
+  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
+  if (alloactionArr?.length !== 0) {
+    return false
+  }
+  else {
+    return true
+  }
+}
+// 互斥规则校验
+const mutualRule = () => {
+  const { detail } = useProductStore()
+  const { cloned } = useCloned(detail)
+  const _params: {
+    num: number
+    product: any
+    tagTitle: string
+    typeID: number
+  }[] = []
+  cloned.value?.params.forEach((item) => {
+    _params.push({
+      num: 1,
+      product: item.product || {},
+      tagTitle: item.paramDesc || '',
+      typeID: Number(item?.product?.typeID),
+    })
+  })
+
+  parr.value.forEach((item: any, index: number) => {
+    const errs = getCompactErrors(_params, index, item.product)
+    const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+    parr.value[index].product.errors = uniqueData
+  })
+
+  function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
+    if (paramsIndex < 0)
+      return []
+    const { cloned } = useCloned(sourceParams)
+
+    cloned.value[paramsIndex] = {
+      tagTitle: data.typeName,
+      typeID: data.typeID, // 商品类型ID
+      product: {
+        id: data.id,
+        sellPrice: data.sellPrice,
+        banner: data.banner,
+        params: data.params,
+        name: data.name,
+      },
+      num: 1,
+    }
+    return createErrors(cloned.value)
+  }
+}
+
 const okfn = () => {
   // 判断选中的是那个配件  obj 就是选中的配件
   const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
   if (selectedProduct) {
     obj.value = selectedProduct
   }
+  // 配置单没有id
   if (!detail?.value?.id) {
     // 如果是 全diy页面  全自定义
     parr.value[indexs.value].paramDesc = types.value
@@ -49,6 +107,10 @@ const okfn = () => {
       }
       detail.value.params = parr.value
       detail.value.sellPrice = totalPrice.value.toString()
+    }
+
+    if (isPass()) {
+      mutualRule()
     }
   }
   else {

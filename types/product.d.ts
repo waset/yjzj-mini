@@ -118,6 +118,10 @@ interface Product {
   select?: boolean
   delete?: boolean
   alloaction?: number
+  errors?: {
+    key?: string
+    message?: string
+  }[]
 }
 
 interface Brand {

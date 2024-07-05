@@ -54,15 +54,29 @@ const allocationId = async () => {
   return data
 }
 
+// 判断每个对象中的errors 是否有值
+const hasErrors = (arrayOfObjects: any) => {
+  return arrayOfObjects.params.some((obj: any) => obj.product.errors && obj.product.errors.length > 0)
+}
 /**
  * 立即购买
  */
 
 const buyNow = async () => {
+  // 如果通过 检测是否为空
   if (isPass()) {
-    await allocationId()
-    changeBuyType('buy')
-    Jump('/pages/buy/submitOrder')
+    // 如果没有 错误
+    if (!hasErrors(detail.value)) {
+      await allocationId()
+      changeBuyType('buy')
+      Jump('/pages/buy/submitOrder')
+    }
+    else {
+      uni.showToast({
+        title: '请检查配置单',
+        icon: 'error',
+      })
+    }
   }
 }
 
@@ -74,18 +88,26 @@ const addBuyCar = async () => {
     return
   }
   if (isPass()) {
-    await allocationId()
-
-    addProduct({
-      quantity: 1,
-      select: false,
-      delete: false,
-      ...detail.value,
-    })
-    uni.showToast({
-      title: '添加成功',
-      icon: 'success',
-    })
+    if (!hasErrors(detail.value)) {
+      // 如果没有 错误
+      await allocationId()
+      addProduct({
+        quantity: 1,
+        select: false,
+        delete: false,
+        ...detail.value,
+      })
+      uni.showToast({
+        title: '添加成功',
+        icon: 'success',
+      })
+    }
+    else {
+      uni.showToast({
+        title: '请检查配置单',
+        icon: 'error',
+      })
+    }
   }
 }
 </script>

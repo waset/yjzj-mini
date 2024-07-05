@@ -42,16 +42,14 @@ export const useDiyStore = defineStore('diy', {
           _params.push({
             num: 1,
             product: item.product,
-            tagTitle: item.desc,
-            typeID: Number(item.content),
+            tagTitle: item.paramDesc,
+            typeID: Number(item?.product?.typeID),
           })
         })
 
         data.forEach((item: any, index: number) => {
           const errs = getCompactErrors(_params, index, item)
-
           const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
-
           data[index].errors = uniqueData
         })
 
