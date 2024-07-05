@@ -38,66 +38,52 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
 </template>
 
 <style lang="scss" scoped>
-.banner-container {
-  background-color: #150A35;
-}
+  .banner-container {
+    background-color: #150A35;
+  }
 
-.banner {
-  width: 100%;
-  // height: 1296rpx;
-  background-size: cover;
-  background-position: center;
-
-  .banner-bg {
+  .banner {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    // height: 1296rpx;
+    background-size: cover;
+    background-position: center;
 
-  .icon1 {
-    width: 600rpx;
-    height: 600rpx;
-  }
+    .banner-bg {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .icon2 {
-    width: 562rpx;
-    height: 216rpx;
-  }
+    .icon1 {
+      width: 600rpx;
+      height: 600rpx;
+    }
 
-  .my-inviter {
-    font-weight: 600;
-    font-size: 28rpx;
-    color: #FFFFFF;
-  }
+    .icon2 {
+      width: 562rpx;
+      height: 216rpx;
+    }
 
-  .btn-inviter {
-    padding: 8rpx 16rpx;
-    font-weight: 400;
-    font-size: 28rpx;
-    color: #F5F5F5;
-    background: rgba(85, 85, 85, 0.5);
-    border-radius: 4rpx 4rpx 4rpx 4rpx;
-    margin-left: 22rpx;
+    .my-inviter {
+      font-weight: 600;
+      font-size: 28rpx;
+      color: #FFFFFF;
+    }
+
+    .btn-inviter {
+      padding: 8rpx 16rpx;
+      font-weight: 400;
+      font-size: 28rpx;
+      color: #F5F5F5;
+      background: rgba(85, 85, 85, 0.5);
+      border-radius: 4rpx 4rpx 4rpx 4rpx;
+      margin-left: 22rpx;
+    }
+
+    .sharebtn {
+      all: unset;
+      @apply flex-center w-full h-full;
+    }
   }
-}
-.sharebtn {
-  position: relative;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 0px;
-  padding-right: 0px;
-  box-sizing: border-box;
-  text-align: center;
-  text-decoration: none;
-  line-height: 1.35;
-  -webkit-tap-highlight-color: transparent;
-  overflow: hidden;
-  color: #000;
-  font-size: 32rpx;
-  width: 100%;
-  height: 100%;
-  background:none;
-}
 </style>
