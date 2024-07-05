@@ -41,15 +41,20 @@ function allWithdraw() {
   amount.value = user.value.balanceAmount
 }
 
-// 提现确认
+// 提现校验
 async function withdrawEvent() {
-  if (!amount.value || amount.value <= 0) {
-    return uni.showToast({ title: '请正确输入提现金额', icon: 'none' })
-  }
-
   if (user.value.isSub === 2) {
     uni.showToast({ title: '请先关注“一剑装机”公众号', icon: 'none' })
     return
+  }
+
+  if (user.value.realName) {
+    uni.showToast({ title: '请先实名认证', icon: 'none' })
+    return
+  }
+
+  if (!amount.value || amount.value <= 0) {
+    return uni.showToast({ title: '请正确输入提现金额', icon: 'none' })
   }
 
   if (amount.value > 2000) {
@@ -59,9 +64,12 @@ async function withdrawEvent() {
 
   if (amount.value < 10) {
     uni.showToast({ title: '单笔提现金额不能少于10元', icon: 'none' })
-    return
   }
+  await serveWithdraw()
+}
 
+// 发起提现
+async function serveWithdraw() {
   const res = await CashWithdraw({ applyAmount: amount.value })
   if (res.code === 200) {
     showWIthdraw.value = false
@@ -143,9 +151,11 @@ function InpAmount(e: any) {
         <div class="i-icons-authentication money_way_svg" />
         实名认证
       </div>
-      <div class="ensure_style">
-        已认证
-        <div class="i-icons-right money_way_svg" />
+      <div class="ensure_style" @click="user.realName || Jump('/pages/me/info', { type: 'authentication' })">
+        {{ user.realName ? '已认证' : '未认证' }}
+        <template v-if="!user.realName">
+          <div class="i-icons-right money_way_svg" />
+        </template>
       </div>
     </div>
     <div class="popup_text">

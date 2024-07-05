@@ -4,6 +4,7 @@ const { user, uploadAvatar, getPhoneNumber, getUserInfo, authentication, registe
 onShow(async () => {
   await getUserInfo()
 })
+
 const form = ref(user)
 const showDatePicker = ref(false)
 const onChooseAvatar = async (e: any) => {
@@ -87,6 +88,12 @@ const goRegister = async () => {
     }, 1000)
   }
 }
+onLoad(async (params) => {
+  // 认证
+  if (params && params.type === 'authentication') {
+    showAuthentication.value = true
+  }
+})
 </script>
 
 <template>
