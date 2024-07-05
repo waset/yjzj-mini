@@ -1,11 +1,8 @@
 <script setup lang="ts">
-const { getWindows, getWindowsByKeyValue } = useWindowsStore()
+const { banners, hots, pushs } = storeToRefs(useWindowsStore())
+const { getWindows } = useWindowsStore()
 const { getCategorys, getProducts } = useProductStore()
 const { types, products } = storeToRefs(useProductStore())
-
-const banners = ref<WindowsImage[]>([])
-const hots = ref<Product[]>([])
-const pushs = ref<Product[]>([])
 
 const hots_current = ref(0)
 
@@ -13,10 +10,6 @@ const notebook_type = ref(0)
 
 onShow(async () => {
   await getWindows(1, 20)
-  banners.value = getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
-  hots.value = getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
-  pushs.value = getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
-
   await getCategorys('laptop', 1, 4)
   notebook_type.value = types.value[0]?.id || 0
 
@@ -45,7 +38,7 @@ async function getProductsByType(type: number) {
       </template>
     </index-product-title>
     <index-carousel-hot v-model:current="hots_current" :list="hots" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
-    <index-product-title @click="Jump('/pages/menu/menu')">
+    <index-product-title @click="Jump('/pages/product/category', { key: 'diy' })">
       <template #left>
         <div class="i-svg-push-products" />
       </template>
