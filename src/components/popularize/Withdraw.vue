@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { allowedNodeEnvironmentFlags } from 'node:process'
-
 // 提现成功提示
 const { userDesc, user } = storeToRefs(useUserStore())
 const { CashWithdraw } = usePopularizeStore()

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  rebatelist: Withdrawlist[]
-  withdrawlist: Withdrawlist[]
-}>(), {
-  rebatelist: () => [],
-  withdrawlist: () => [],
+const { getRebatelist, getWithdrawlist } = usePopularizeStore()
+const { rebatelist, withdrawlist, rebateLastpage, withdrawLastpage } = storeToRefs(usePopularizeStore())
+const rebatePage = ref(1)
+const withdrawPage = ref(1)
+
+onShow(async () => {
+  await getRebatelist({ page: 1, pageSize: 20 })
+  await getWithdrawlist({ page: 1, pageSize: 20 })
 })
 const tabIndex = ref(0) // tab下标弹出
 const tabListArray = ['返利记录', '提现记录'] // 记录tab
@@ -43,6 +45,38 @@ const withdrawStatus = ['处理中', '打款成功', '打款退回', '处理中'
 function rebateStatus(status: number) {
   return status === 1 ? '待返利' : '已返利'
 }
+// 返利记录触底加载
+async function rebatePush() {
+  if (rebatePage.value < rebateLastpage.value) {
+    rebatePage.value++
+    await getRebatelist({ page: rebatePage.value, pageSize: 20 })
+  }
+  else {
+    uni.showToast({
+      title: '没有更多记录了',
+      icon: 'none',
+    })
+  }
+}
+
+// 提现记录触底加载
+async function withdrawPush() {
+  if (withdrawPage.value < withdrawLastpage.value) {
+    withdrawPage.value++
+    await getWithdrawlist({ page: withdrawPage.value, pageSize: 20 })
+  }
+  else {
+    uni.showToast({
+      title: '没有更多记录了',
+      icon: 'none',
+    })
+  }
+}
+
+// 列表触底
+function reachBottom() {
+  !tabIndex.value ? rebatePush() : withdrawPush()
+}
 </script>
 
 <template>
@@ -64,29 +98,31 @@ function rebateStatus(status: number) {
             </div>
           </template>
         </div>
-        <div class="list_scroll">
-          <template v-for="(item, index) in !tabIndex ? props.rebatelist : props.withdrawlist" :key="index">
-            <div class="title_list">
-              <div class="title_text">
-                {{ !tabIndex ? forString(item.orderNO) : forString(item.no) }}
+        <div>
+          <scroll-view class="list_scroll" :scroll-y="true" @scrolltolower="reachBottom">
+            <template v-for="(item, index) in !tabIndex ? rebatelist : withdrawlist" :key="index">
+              <div class="title_list">
+                <div class="title_text">
+                  {{ !tabIndex ? forString(item.orderNO) : forString(item.no) }}
+                </div>
+                <div class="title_text">
+                  {{ !tabIndex ? item.userInfo.nickname : '' }}
+                </div>
+                <div class="title_text">
+                  {{ !tabIndex ? item.rebateAmount : item.withdrawAmount }}
+                </div>
+                <div class="title_text">
+                  {{ !tabIndex ? rebateStatus(item.status) : item.balanceAmountAfter }}
+                </div>
+                <div class="title_text">
+                  {{ !tabIndex ? item.createdAt : item.auditedAt }}
+                </div>
+                <div class="title_text">
+                  {{ !tabIndex ? item.updatedAt : withdrawStatus[item.status - 1] }}
+                </div>
               </div>
-              <div class="title_text">
-                {{ !tabIndex ? item.userInfo.nickname : '' }}
-              </div>
-              <div class="title_text" style="min-width: 140rpx;">
-                {{ !tabIndex ? item.rebateAmount : item.withdrawAmount }}
-              </div>
-              <div class="title_text" style="min-width: 140rpx;">
-                {{ !tabIndex ? rebateStatus(item.status) : item.balanceAmountAfter }}
-              </div>
-              <div class="title_text">
-                {{ !tabIndex ? item.createdAt : item.auditedAt }}
-              </div>
-              <div class="title_text">
-                {{ !tabIndex ? item.updatedAt : withdrawStatus[item.status - 1] }}
-              </div>
-            </div>
-          </template>
+            </template>
+          </scroll-view>
         </div>
       </div>
     </div>

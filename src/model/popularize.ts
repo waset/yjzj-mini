@@ -1,16 +1,22 @@
 export const usePopularizeStore = defineStore('popularize', {
   state: (): {
-    rebatelist: Levelall[]
-    withdrawlist: Levelall[]
+    rebatelist: Rebatelist[]
+    withdrawlist: Withdrawlist[]
+    rebateLastpage: number
+    withdrawLastpage: number
   } => ({
     rebatelist: [],
     withdrawlist: [],
+    rebateLastpage: 10,
+    withdrawLastpage: 10,
   }),
   actions: {
     // 返利记录
     async getRebatelist(params: Popularize_req) {
-      const { code, data } = await http.post('/web/rebate/list', params)
+      const { code, data, page } = await http.post<Rebate_req>('/web/rebate/list', params)
       if (code === 200) {
+        this.rebateLastpage = page.lastPage
+
         if (params.page === 1) {
           this.rebatelist = data
         }
@@ -21,8 +27,9 @@ export const usePopularizeStore = defineStore('popularize', {
     },
     // 返利
     async getWithdrawlist(params: Popularize_req) {
-      const { data, code } = await http.post('/web/user/withdraw/list', params)
+      const { data, code, page } = await http.post<Withdraw_req>('/web/user/withdraw/list', params)
       if (code === 200) {
+        this.withdrawLastpage = page.lastPage
         if (params.page === 1) {
           this.withdrawlist = data
         }

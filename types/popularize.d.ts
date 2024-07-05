@@ -3,13 +3,25 @@ interface Popularize_req {
   pageSize: number
 }
 
-interface Response {
+interface Withdraw_req {
   code: number
-  data: Withdrawlist[] | Rebatelist[]
+  data: Withdrawlist[]
   msg: string
-  page: Page
+  page: page_code
 }
 
+interface Rebate_req {
+  code: number
+  data: Rebatelist[]
+  msg: string
+  page: page_code
+}
+interface page_code {
+  currentPage: number
+  lastPage: number
+  pageSize: number
+  total: number
+}
 interface Withdrawlist {
   adminID: number
   applyAmount: string
@@ -35,18 +47,18 @@ interface Withdrawlist {
 }
 
 interface Rebatelist {
-  createdAt?: string
-  deletedAt?: null
-  id?: number
-  orderID?: number
-  orderNO?: string
-  rebateAmount?: string
-  rebateAt?: string
-  rebateUserID?: number
-  status?: number
-  updatedAt?: string
-  userID?: number
-  userInfo?: UserInfo
+  createdAt: string
+  deletedAt: null
+  id: number
+  orderID: number
+  orderNO: string
+  rebateAmount: string
+  rebateAt: string
+  rebateUserID: number
+  status: number
+  updatedAt: string
+  userID: number
+  userInfo: UserInfo
   [property: string]: any
 }
 
