@@ -44,6 +44,13 @@ const allocationId = async () => {
   const data = await addConfiguration(params.value)
   //  收藏配置单
   await collectionConfig(data.no)
+  if (!detail.value?.id) {
+    // 添加配置单id
+    if (detail.value) {
+      detail.value.alloaction = data.id
+      detail.value.name = `配置单${data.id ? data.id : ''}`
+    }
+  }
   return data
 }
 
@@ -67,12 +74,8 @@ const addBuyCar = async () => {
     return
   }
   if (isPass()) {
-    const data = await allocationId()
-    if (!detail.value.id) {
-      // 添加配置单id
-      detail.value.alloaction = data.id
-      detail.value.name = `配置单${data.id ? data.id : ''}`
-    }
+    await allocationId()
+
     addProduct({
       quantity: 1,
       select: false,

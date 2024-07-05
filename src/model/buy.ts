@@ -58,8 +58,6 @@ export const useBuyStore = defineStore('buy', {
           }
         })
         return obj.value
-
-        // .map(item => item.id)
       }
     },
     total: state => state.products.filter(item => item.select).reduce((pre, product) => {

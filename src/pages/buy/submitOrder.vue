@@ -90,7 +90,6 @@ onMounted(async () => {
     }
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
-
     await canUseCoupon(nowAddress.value.id, [detail.value.id], undefined)
   }
   else {
