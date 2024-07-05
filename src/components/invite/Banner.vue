@@ -82,7 +82,7 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
     }
 
     .sharebtn {
-      all: unset;
+      background:none ;
       @apply flex-center w-full h-full;
     }
   }

@@ -61,41 +61,27 @@ async function become() {
         </template>
       </div>
     </div>
-    <popularize-bind-inviter ref="childRef" />
+    <popularize-bind-inviter ref="childRef" :user="user" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .main {
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
+.main {
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sharebtn {
+  background:none ;
+  @apply flex-center w-full h-full;
+}
 </style>
 
 <style>
-  page {
-    background-image: none;
-    background-color: #08050C;
-  }
-  .sharebtn {
-    position: relative;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 0px;
-    padding-right: 0px;
-    box-sizing: border-box;
-    text-align: center;
-    text-decoration: none;
-    line-height: 1.35;
-    -webkit-tap-highlight-color: transparent;
-    overflow: hidden;
-    color: #000;
-    font-size: 32rpx;
-    width: 100%;
-    height: 100%;
-    background:none;
-  }
+page {
+  background-image: none;
+  background-color: #08050C;
+}
 </style>
