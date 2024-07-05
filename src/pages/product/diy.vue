@@ -4,13 +4,21 @@ const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig } = useDiyStore()
 const { addProduct } = useBuyStore()
+const { user } = storeToRefs(useUserStore())
 interface PageReq {
   product_id: Product['id'] | null
 }
+const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.product_id) {
     await getProductDetail(Number(req.product_id))
+  }
+  if (isEmpty(user.value)) {
+    uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
+    setTimeout(() => {
+      Jump('/pages/me/login')
+    }, 1000)
   }
 })
 
