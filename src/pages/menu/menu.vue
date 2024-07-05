@@ -125,7 +125,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                         Jump('/pages/product/category', { key: categorysArray[current].name })
                       }
                       else if (item.typeParentID === categorys.diy.value){
-                        Jump('/pages/product/diy', { product_id: item.id })
+                        Jump('/pages/product/diy', { id: item.id })
                       }
                       else {
                         Jump('/pages/product/detail', { id: item.id })

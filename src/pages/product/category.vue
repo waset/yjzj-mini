@@ -105,6 +105,15 @@ onReachBottom(async () => {
     })
   }
 })
+
+const goDetails = (item: Product) => {
+  if (item.typeParentID === categorys.diy.value) {
+    Jump('/pages/product/diy', { id: item.id })
+  }
+  else {
+    Jump('/pages/product/detail', { id: item.id })
+  }
+}
 </script>
 
 <template>
@@ -136,9 +145,7 @@ onReachBottom(async () => {
     <template v-if="products && products.length">
       <div class="list">
         <product-list
-          :list="products" :layout="layout ? 'grids' : 'rows'" @click="(item: Product) => {
-            Jump('/pages/product/detail', { id: item.id })
-          }"
+          :list="products" :layout="layout ? 'grids' : 'rows'" @click="goDetails"
         />
       </div>
     </template>
