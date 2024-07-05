@@ -17,7 +17,7 @@ const moneyObject = ref({
   },
   balance: {
     title: '账号余额',
-    value: Number.parseFloat(userDesc.value.balanceAmount).toFixed(2) + 1,
+    value: Number.parseFloat(userDesc.value.balanceAmount).toFixed(2),
   },
 })
 // 提现说明
