@@ -21,9 +21,16 @@ const messageArray = ref([
     Isvg: 'i-svg-edit-lv',
     title: '我的邀请人',
     value: user.value?.inviteUserInfo.nickname,
-    avatar: '',
     click: () => {
       bandinvite()
+    },
+  },
+  {
+    Isvg: 'i-svg-vector',
+    title: '邀请链接',
+    value: `${import.meta.env.VITE_DOMAIN_URL || ''}/login?inviteCode=${user.value.inviteCode}`,
+    click: () => {
+      copyText(`${import.meta.env.VITE_DOMAIN_URL || ''}/login?inviteCode=${user.value.inviteCode}`)
     },
   },
 ])
@@ -70,8 +77,8 @@ function bandinvite() {
               {{ item.title }}
             </div>
             <div class="message_right message_text flex items-center justify-between flex-1">
-              <div>
-                <image v-if="index === 2" class="message_right_avatar" :src="item.avatar" />
+              <div class="flex items-center">
+                <image v-if="index === 1" class="message_right_avatar mr-1" :src="ImageUrl(user.inviteUserInfo.avatar)" />
                 <div class="text_width">
                   {{ item.value }}
                 </div>
@@ -109,184 +116,183 @@ function bandinvite() {
 </template>
 
 <style lang="scss" scoped>
-  .popularize {
-    width: 100%;
+.popularize {
+  width: 100%;
 
-    .popu_value {
+  .popu_value {
+    position: relative;
+    width: calc(100% - 64rpx);
+    height: 960rpx;
+    margin: 0 auto;
+    margin-top: 34rpx;
+    overflow: hidden;
+
+    .popu_svg_bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .info {
       position: relative;
-      width: calc(100% - 64rpx);
-      height: 960rpx;
-      margin: 0 auto;
-      margin-top: 34rpx;
-      overflow: hidden;
+      z-index: 1;
 
-      .popu_svg_bg {
+      .popu_title {
+        font-size: 32rpx;
+        font-weight: bold;
+        line-height: 41.6rpx;
+        text-align: left;
         position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 0;
+        top: -80rpx;
+        left: 40rpx;
       }
 
-      .info {
+      // 解释说明
+      .explain_view {
+        width: calc(100% - 64rpx);
+        height: 152rpx;
+        margin: 0 auto;
+        margin-top: 32rpx;
         position: relative;
-        z-index: 1;
+        border-radius: 8rpx;
+        background: rgba(62, 62, 62, 0.2);
+        margin-bottom: 32rpx;
 
-        .popu_title {
-          font-size: 32rpx;
-          font-weight: bold;
-          line-height: 41.6rpx;
-          text-align: left;
-          position: absolute;
-          top: -80rpx;
-          left: 40rpx;
-        }
-
-        // 解释说明
-        .explain_view {
-          width: calc(100% - 64rpx);
+        .explain_ad {
+          width: 100%;
           height: 152rpx;
-          margin: 0 auto;
-          margin-top: 32rpx;
-          position: relative;
+          padding: 16rpx 60rpx;
           border-radius: 8rpx;
-          background: rgba(62, 62, 62, 0.2);
-          margin-bottom: 32rpx;
-
-          .explain_ad {
-            width: 100%;
-            height: 152rpx;
-            padding: 16rpx 60rpx;
-            border-radius: 8rpx;
-            box-sizing: border-box;
-            position: absolute;
-            top: 10rpx;
-            left: 10rpx;
-            color: rgba(190, 190, 190, 1);
-            background: rgba(62, 62, 62, 0.3);
-
-            font-family: PingFang SC;
-            font-size: 24rpx;
-            font-weight: 400;
-            line-height: 40rpx;
-            text-align: center;
-          }
-        }
-
-        .message_line {
-          width: calc(100% - 64rpx);
-          height: 64rpx;
-          margin: 0 auto;
-          overflow: hidden;
-          margin-bottom: 16rpx;
-          padding: 0rpx 32rpx 0rpx 32rpx;
           box-sizing: border-box;
-          border-radius: 8rpx;
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
-          .message_left {
-            width: calc(100% - 366rpx);
-            line-height: 64rpx;
+          position: absolute;
+          top: 10rpx;
+          left: 10rpx;
+          color: rgba(190, 190, 190, 1);
+          background: rgba(62, 62, 62, 0.3);
+
+          font-family: PingFang SC;
+          font-size: 24rpx;
+          font-weight: 400;
+          line-height: 40rpx;
+          text-align: center;
+        }
+      }
+
+      .message_line {
+        width: calc(100% - 64rpx);
+        height: 64rpx;
+        margin: 0 auto;
+        overflow: hidden;
+        margin-bottom: 16rpx;
+        padding: 0rpx 32rpx 0rpx 32rpx;
+        box-sizing: border-box;
+        border-radius: 8rpx;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
+
+        .message_left {
+          width: calc(100% - 366rpx);
+          line-height: 64rpx;
+        }
+
+        .message_text {
+          font-size: 28rpx;
+          font-weight: 400;
+        }
+
+        .message_right {
+
+          .message_right_avatar {
+            width: 40rpx;
+            height: 40rpx;
+            border-radius: 50%;
           }
 
-          .message_text {
-            font-size: 28rpx;
-            font-weight: 400;
-          }
-
-          .message_right {
-
-            .message_right_avatar {
-              width: 40rpx;
-              height: 40rpx;
-              border-radius: 50%;
-              margin-top: 14rpx;
-              margin-right: 10rpx;
-            }
-
-            .text_width {
-              width: 280rpx;
-              float: left;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-            }
+          .text_width {
+            width: 280rpx;
+            float: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
           }
         }
       }
     }
   }
+}
 
-  .query_input {
-    width: calc(100% - 200rpx);
-    height: 72rpx;
-    display: inline-block;
-    border-radius: 8rpx;
-    padding: 0rpx 24rpx 0rpx 24rpx;
-    font-size: 28rpx;
-    min-height: auto !important;
-    background: rgba(132, 132, 132, 0.2);
-  }
+.query_input {
+  width: calc(100% - 200rpx);
+  height: 72rpx;
+  display: inline-block;
+  border-radius: 8rpx;
+  padding: 0rpx 24rpx 0rpx 24rpx;
+  font-size: 28rpx;
+  min-height: auto !important;
+  background: rgba(132, 132, 132, 0.2);
+}
 
-  .query_button {
-    height: 72rpx;
-    line-height: 72rpx;
-    padding: 0rpx 40rpx 0rpx 40rpx;
-    box-sizing: border-box;
-    font-size: 28rpx;
-    text-align: center;
-    border-radius: 8rpx;
-    color: rgba(167, 245, 34, 1);
-    background: rgba(132, 132, 132, 0.2);
-  }
+.query_button {
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0rpx 40rpx 0rpx 40rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  color: rgba(167, 245, 34, 1);
+  background: rgba(132, 132, 132, 0.2);
+}
 
-  .query_button:active {
-    background-color: #696969;
-  }
+.query_button:active {
+  background-color: #696969;
+}
 
-  .query_input_current {
+.query_input_current {
+  width: 100%;
+  box-sizing: border-box;
+  height: 72rpx;
+  display: inline-block;
+  border-radius: 8rpx;
+  padding: 0rpx 24rpx 0rpx 24rpx;
+  font-size: 28rpx;
+  min-height: auto !important;
+  background: rgba(132, 132, 132, 0.2);
+  margin-top: 32rpx;
+}
+
+.button_view_fixed {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+
+  .button_view {
     width: 100%;
+    padding: 80rpx 107rpx 80rpx 107rpx;
     box-sizing: border-box;
-    height: 72rpx;
-    display: inline-block;
-    border-radius: 8rpx;
-    padding: 0rpx 24rpx 0rpx 24rpx;
-    font-size: 28rpx;
-    min-height: auto !important;
-    background: rgba(132, 132, 132, 0.2);
-    margin-top: 32rpx;
-  }
 
-  .button_view_fixed {
-    width: 100%;
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    .button_cancel {
+      width: 192rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      border-radius: 8rpx;
+      text-align: center;
+      font-size: 28rpx;
+      color: rgba(51, 51, 51, 1);
+      background: var(---light, rgba(255, 255, 255, 1));
+    }
 
-    .button_view {
-      width: 100%;
-      padding: 80rpx 107rpx 80rpx 107rpx;
-      box-sizing: border-box;
-
-      .button_cancel {
-        width: 192rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        border-radius: 8rpx;
-        text-align: center;
-        font-size: 28rpx;
-        color: rgba(51, 51, 51, 1);
-        background: var(---light, rgba(255, 255, 255, 1));
-      }
-
-      .button_affirm {
-        width: 192rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        border-radius: 8rpx;
-        text-align: center;
-        font-size: 28rpx;
-        color: rgba(51, 51, 51, 1);
-        background: var(--, rgba(167, 245, 34, 1));
-      }
+    .button_affirm {
+      width: 192rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      border-radius: 8rpx;
+      text-align: center;
+      font-size: 28rpx;
+      color: rgba(51, 51, 51, 1);
+      background: var(--, rgba(167, 245, 34, 1));
     }
   }
+}
 </style>
