@@ -95,7 +95,11 @@ const deleteFn = () => {
                   <span>￥</span>
                   <span>{{ props.configuration.sellPrice }}</span>
                 </div>
-                <div class="btn">
+                <div
+                  class="btn" @click="() => {
+                    Jump('/pages/product/diy', { id: props.configuration.id })
+                  }"
+                >
                   改配
                 </div>
               </div>

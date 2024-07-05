@@ -176,12 +176,12 @@ const tabs = reactive(['详情', '参数'])
                 }
 
                 .type {
-                  @apply text-green;
+                  color: rgba(190, 190, 190, 1);
                   padding-bottom: 16rpx;
                 }
 
                 .desc {
-                  color: rgba(190, 190, 190, 1);
+                  @apply text-green;
                 }
               }
             }

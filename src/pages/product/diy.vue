@@ -1,18 +1,18 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
+const { user } = storeToRefs(useUserStore())
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig } = useDiyStore()
 const { addProduct } = useBuyStore()
-const { user } = storeToRefs(useUserStore())
 interface PageReq {
-  product_id: Product['id'] | null
+  id: Product['id'] | null
 }
 const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
-  if (req.product_id) {
-    await getProductDetail(Number(req.product_id))
+  if (req.id) {
+    await getProductDetail(Number(req.id))
   }
   if (isEmpty(user.value)) {
     uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
@@ -118,6 +118,25 @@ const addBuyCar = async () => {
     }
   }
 }
+// #ifdef MP
+onShareAppMessage(async () => {
+  const params = {} as any
+  if (!detail.value?.id || !detail.value?.alloaction) {
+    await allocationId()
+  }
+
+  if (detail.value) {
+    params.id = detail.value?.alloaction || detail.value?.id
+    params.inviteCode = user.value?.inviteCode
+  }
+
+  return {
+    title: detail.value?.name,
+    imageUrl: ShareIamgeUrl(detail.value?.banner),
+    path: UrlAndParams('/pages/product/diy', params),
+  }
+})
+// #endif
 </script>
 
 <template>

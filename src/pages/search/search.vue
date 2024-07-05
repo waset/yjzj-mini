@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const { searchList, lastpage, searchParams } = storeToRefs(useSearchStore())
 const { getsearch, clearSearch } = useSearchStore()
+const { categorys } = useProductStore()
 const layout = ref(true)
 // 进入不显示空数据状态
 const showNodata = ref(false)
@@ -47,6 +48,15 @@ onReachBottom(() => {
     })
   }
 })
+
+const goDetails = (item: Product) => {
+  if (item.typeParentID === categorys.diy.value) {
+    Jump('/pages/product/diy', { id: item.id })
+  }
+  else {
+    Jump('/pages/product/detail', { id: item.id })
+  }
+}
 </script>
 
 <template>
@@ -57,9 +67,7 @@ onReachBottom(() => {
       <common-sort-filter @change="onChange" />
       <template v-if="searchList && searchList.length">
         <product-list
-          :list="searchList" :layout="layout ? 'grids' : 'rows'" @click="(item: Product) => {
-            Jump('/pages/product/detail', { id: item.id })
-          }"
+          :list="searchList" :layout="layout ? 'grids' : 'rows'" @click="goDetails"
         />
       </template>
       <template v-else>
