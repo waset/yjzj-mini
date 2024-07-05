@@ -5,7 +5,6 @@ const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig } = useDiyStore()
 const { addProduct } = useBuyStore()
-const { user } = storeToRefs(useUserStore())
 interface PageReq {
   id: Product['id'] | null
 }
