@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 const emits = defineEmits<{
   'update:product': [product: BuyProduct]
-  'del': [id: BuyProduct['id']]
+  'del': [obj: delobj]
   'sliding': [sliding: boolean]
   'showDetail': [product: BuyProduct]
   'click': [product: BuyProduct]
@@ -33,7 +33,17 @@ const selected = computed({
 })
 // 删除产品
 function del() {
-  emits('del', props.product.id)
+  const obj = ref<delobj>({
+    ids: [],
+    alls: [],
+  })
+  if (props.product.id) {
+    obj.value.ids.push(props.product.id)
+  }
+  else {
+    obj.value.alls.push(props.product.alloaction as number)
+  }
+  emits('del', obj.value)
 }
 // 功能区
 const func = ref<HTMLElement | null>(null)
@@ -125,7 +135,7 @@ function onClick() {
 
                 <div class="current">
                   <span>￥</span>
-                  <span>{{ props.product.sellPrice }}</span>
+                  <span>{{ (Number(props.product.sellPrice) * props.product.quantity).toString() }}</span>
                 </div>
               </div>
               <div v-if="!isManagement" class="num">

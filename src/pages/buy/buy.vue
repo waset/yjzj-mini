@@ -28,14 +28,16 @@ function showConfigsFn(product: BuyProduct) {
 // 是否显示确认框
 const showModel = ref(false)
 const del_ids = ref<BuyProduct['id'][]>([])
+const del_alloaction = ref<BuyProduct['id'][]>([])
 // 删除弹窗
-function delModel(ids: BuyProduct['id'][]) {
-  del_ids.value = ids
+function delModel(ids: delobj) {
+  del_ids.value = ids.ids
+  del_alloaction.value = ids.alls
   showModel.value = true
 }
 // 删除商品
 function deleteProduct() {
-  deletes(del_ids.value)
+  deletes(del_ids.value, del_alloaction.value)
   showModel.value = false
   slidIdx.value = null
   if (del_ids.value.length > 1 || products.value.length === 0)
@@ -112,7 +114,7 @@ const submitorder = () => {
           <template v-for="(item, index) in products" :key="index">
             <buys-product
               :product="item" :sliding="slidIdx === index" :is-management="management"
-              @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="delModel([item.id])"
+              @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="delModel"
               @show-detail="showConfigsFn" @update:product="(product) => products[index] = product"
               @click="(product) => Jump('/pages/product/detail', { id: product.id })"
             />

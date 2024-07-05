@@ -35,20 +35,35 @@ export const useBuyStore = defineStore('buy', {
     },
     // 选中的所有商品id
     selectedProductIds(state) {
+      const obj = ref<delobj>({
+        ids: [],
+        alls: [],
+      })
       return (isDelete: boolean) => {
         if (state.products.length === 0)
-          return []
+          return obj.value
 
-        return state.products.filter((item) => {
+        const selectArr = state.products.filter((item) => {
           if (!isDelete)
             return item.select
           else
             return item.delete
-        }).map(item => item.id)
+        })
+        selectArr.forEach((item) => {
+          if (item.alloaction) {
+            obj.value.alls.push(item.alloaction)
+          }
+          else {
+            obj.value.ids.push(item.id)
+          }
+        })
+        return obj.value
+
+        // .map(item => item.id)
       }
     },
     total: state => state.products.filter(item => item.select).reduce((pre, product) => {
-      return pre + Number.parseFloat(product.tagPrice) * (product.quantity ?? 1)
+      return pre + Number.parseFloat(product.sellPrice) * (product.quantity ?? 1)
     }, 0).toFixed(2),
   },
   actions: {
@@ -62,9 +77,18 @@ export const useBuyStore = defineStore('buy', {
       })
     },
     // 删除商品
-    deletes(ids: BuyProduct['id'][]) {
-      this.products = this.products.filter(item => !ids.includes(item.id))
+    deletes(ids: BuyProduct['id'][], alls: BuyProduct['id'][]) {
+      let idsPro = this.products.filter(item => item.id)
+      let allPro = this.products.filter(item => item.alloaction)
+      if (ids.length !== 0) {
+        idsPro = idsPro.filter(item => !ids.includes(item.id))
+      }
+      if (alls.length !== 0) {
+        allPro = allPro.filter(item => !alls.includes(item.alloaction as number))
+      }
+      this.products = [...idsPro, ...allPro]
     },
+
     // 添加商品
     addProduct(product: BuyProduct) {
       if (product.id) {

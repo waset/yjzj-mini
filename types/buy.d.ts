@@ -9,3 +9,9 @@ interface goodsListInfo {
   price: number
   number: number
 }
+
+interface delobj {
+
+  ids: number[]
+  alls: number[]
+}
