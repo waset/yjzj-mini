@@ -3,7 +3,10 @@ const props = defineProps<{
   list: WindowsImage[]
 }>()
 
-const bannerImages = ref<WindowsImage[]>(props.list)
+const bannerImages = ref<WindowsImage[]>([])
+watchEffect(() => {
+  bannerImages.value = props.list
+})
 
 const bannerSwiper = ref()
 const current = ref(0)
