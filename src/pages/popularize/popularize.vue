@@ -48,9 +48,9 @@ function InviteEvent() {
 }
 
 // 打开绑定邀请人组件
-const childRef = ref<any>(null)
+const childRef = ref<ComponentInstance['PopularizeBindInviter']>()
 function bandinvite() {
-  childRef.value.openShow()
+  childRef.value?.openShow()
 }
 </script>
 
@@ -114,7 +114,7 @@ function bandinvite() {
         </div>
       </div>
     </common-popup>
-    <popularize-bind-inviter ref="childRef" />
+    <popularize-bind-inviter ref="childRef" :user="user" />
   </div>
 </template>
 

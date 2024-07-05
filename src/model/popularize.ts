@@ -39,8 +39,8 @@ export const usePopularizeStore = defineStore('popularize', {
       }
     },
     // 发起提现
-    async CashWithdraw(params: CashWithdraw_req) {
-      return await http.post('/web/user/withdraw/apply', params)
+    CashWithdraw(params: CashWithdraw_req) {
+      return http.post('/web/user/withdraw/apply', params)
     },
   },
 })

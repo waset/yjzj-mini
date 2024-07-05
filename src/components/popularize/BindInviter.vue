@@ -31,11 +31,11 @@ async function band() {
     })
   }
   code.value = ''
+  show.value = false
 }
 
 async function confirm() {
   await band()
-  show.value = false
 }
 function cancel() {
   show.value = false
