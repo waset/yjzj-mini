@@ -18,4 +18,6 @@ interface ImportMetaEnv {
   readonly VITE_IMAGE_URL: string
   // 资源地址
   readonly VITE_STATIC_URL: string
+  // 域名地址
+  readonly VITE_DOMAIN_URL: string
 }
