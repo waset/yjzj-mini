@@ -7,25 +7,121 @@ const emit = defineEmits<{
 const { detail } = storeToRefs(useProductStore())
 const { ModificationList } = storeToRefs(useDiyStore())
 const saveId = ref<number>(0)
-
-const setId = (id: number) => {
+const indexs = ref<number>(0)
+const types = ref<string>('')
+const setId = (id: number, index: number, type: string) => {
   saveId.value = id
+  indexs.value = index
+  types.value = type
 }
-const obj = ref<any>()
+
+const obj = ref<any>({})
+
+const parr = ref<any[]>([{}, {}, {}, {}, {}, {}, {}, {}])
+
+const totalPrice = computed(() => {
+  let result = 0
+  if (detail.value) {
+    parr.value.forEach((item) => {
+      if (item.product?.sellPrice) {
+        result += Number(item.product?.sellPrice) ?? 0
+      }
+    })
+  }
+  return result
+})
+
+const isPass = () => {
+  const isEmpty = (obj: any) => Object.keys(obj).length === 0
+  // 判断配置单是否又空选项
+  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
+  if (alloactionArr?.length !== 0) {
+    return false
+  }
+  else {
+    return true
+  }
+}
+// 互斥规则校验
+const mutualRule = () => {
+  const { detail } = useProductStore()
+  const { cloned } = useCloned(detail)
+  const _params: {
+    num: number
+    product: any
+    tagTitle: string
+    typeID: number
+  }[] = []
+  cloned.value?.params.forEach((item) => {
+    _params.push({
+      num: 1,
+      product: item.product || {},
+      tagTitle: item.paramDesc || '',
+      typeID: Number(item?.product?.typeID),
+    })
+  })
+
+  parr.value.forEach((item: any, index: number) => {
+    const errs = getCompactErrors(_params, index, item.product)
+    const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+    parr.value[index].product.errors = uniqueData
+  })
+
+  function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
+    if (paramsIndex < 0)
+      return []
+    const { cloned } = useCloned(sourceParams)
+
+    cloned.value[paramsIndex] = {
+      tagTitle: data.typeName,
+      typeID: data.typeID, // 商品类型ID
+      product: {
+        id: data.id,
+        sellPrice: data.sellPrice,
+        banner: data.banner,
+        params: data.params,
+        name: data.name,
+      },
+      num: 1,
+    }
+    return createErrors(cloned.value)
+  }
+}
+
 const okfn = () => {
-  ModificationList.value.forEach((item: any) => {
-    if (item.id === saveId.value) {
-      obj.value = item
+  // 判断选中的是那个配件  obj 就是选中的配件
+  const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
+  if (selectedProduct) {
+    obj.value = selectedProduct
+  }
+  // 配置单没有id
+  if (!detail?.value?.id) {
+    // 如果是 全diy页面  全自定义
+    parr.value[indexs.value].paramDesc = types.value
+    parr.value[indexs.value].paramValue = obj.value.id
+    parr.value[indexs.value].product = obj.value
+
+    if (detail.value) {
+      if (types.value === '机箱') {
+        detail.value.banner = obj.value.banner
+      }
+      detail.value.params = parr.value
+      detail.value.sellPrice = totalPrice.value.toString()
     }
-  })
-  // TODO: 增加互斥规则
-  //
-  Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
-    if (params.paramDesc === obj.value.typeName) {
-      params.product = obj.value
-      params.paramValue = obj.value.id
+
+    if (isPass()) {
+      mutualRule()
     }
-  })
+  }
+  else {
+    // TODO: 增加互斥规则
+    Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
+      if (params.paramDesc === obj.value?.typeName) {
+        params.product = obj.value
+        params.paramValue = obj.value.id
+      }
+    })
+  }
 
   emit('change', false)
 }

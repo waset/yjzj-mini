@@ -26,7 +26,7 @@ const props = defineProps<{
       <div class="BEC">
         合计金额
       </div>
-      <div>￥{{ props.totalpay }}</div>
+      <div>￥{{ (props.totalpay).toFixed(2) }}</div>
     </div>
 
     <div class="row">
@@ -64,7 +64,7 @@ const props = defineProps<{
         实付金额
       </div>
       <div style="color: #a7f522;font-weight: bold;">
-        ￥{{ props.pay }}
+        ￥{{ props.pay.toFixed(2) }}
       </div>
     </div>
   </div>

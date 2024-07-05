@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const emit = defineEmits<{
+  updateconfig: []
+
+}>()
 const { ModificationList } = storeToRefs(useDiyStore())
 const { getModificationList } = useDiyStore()
 // 获取请求配置列表的参数
@@ -6,7 +10,6 @@ const getModificationListParams = ref<Modification>({
   page: 0,
   pageSize: 10,
 } as Modification)
-
 // 获取配置列表数据
 const getAllocationList = async () => {
   getModificationListParams.value.page += 1
@@ -67,14 +70,19 @@ const hasShowOptional = ref(false)
 /**
  * 设置选配类型及获取其列表
  */
-const showOptional = async (id: number, paramValue: any) => {
-  ProductCustomOptionalRef?.value?.setId(paramValue)
+const showOptional = async (id: number, index: number, type: string, paramValue: any) => {
+  ProductCustomOptionalRef?.value?.setId(paramValue, index, type)
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
   getModificationListParams.value.productTypeParentID = 4
   getAllocationList().then(() => {
     hasShowOptional.value = true
   })
+}
+const changeUpdate = () => {
+  hasShowOptional.value = false
+
+  emit('updateconfig')
 }
 
 defineExpose({
@@ -110,7 +118,7 @@ defineExpose({
           }"
         />
         <div class="commodity_list">
-          <product-custom-optional ref="ProductCustomOptionalRef" @change="hasShowOptional = false" @loadmore="reachBottom()" />
+          <product-custom-optional ref="ProductCustomOptionalRef" @change="changeUpdate" @loadmore="reachBottom()" />
         </div>
       </div>
     </common-popup>

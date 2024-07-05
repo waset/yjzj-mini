@@ -1,24 +1,16 @@
 <script setup lang="ts">
-const props = defineProps<{
-  detail: Product | null
-}>()
-const { detail } = toRefs(props)
-const { gamesList } = storeToRefs(useDiyStore())
 const { getGamesList } = useDiyStore()
 
 //  swiper 实例
 const swiperbox = ref<ComponentInstance['ProductSwiperBox']>()
 // swiper当前位置
 const current = ref<number>(0)
-
 // 显示选择游戏弹窗
 const showGames = ref<boolean>(false)
-// 搜索文字
-const searchText = ref<string>('')
 //  用于展示轮播图的游戏列表
 const useGamesList = ref<gamesList[]>([])
 // 用于确定时赋值的游戏列表
-const assignment = ref<gamesList[]>([])
+// const assignment = ref<gamesList[]>([])
 
 // swiper 当前背景
 const gameBg = computed(() => {
@@ -37,34 +29,6 @@ const changeSwiperFn = (value: number) => {
   current.value = value
 }
 
-// 确认选择的游戏
-const confirmGames = () => {
-  const { cloned } = useCloned(assignment.value)
-
-  useGamesList.value = cloned.value
-  // 重置序列号
-  swiperbox.value?.reset()
-  showGames.value = false
-}
-
-// 选择操作
-const selectAction = (item: gamesList, i: number) => {
-  const index = assignment.value.findIndex((obj) => {
-    return obj.id === item.id
-  })
-  if (index !== -1) {
-    assignment.value.splice(index, 1)
-  }
-  else {
-    assignment.value.splice(i, 0, item)
-  }
-}
-
-// 判断是否选中
-const isIncludes = (idToFind: number) => {
-  return assignment.value.some(item => item.id === idToFind)
-}
-
 // 更新选配
 const upOptional = () => {
   swiperbox.value?.getpower()
@@ -73,12 +37,7 @@ const upOptional = () => {
 onMounted(async () => {
   const gemelist = await getGamesList() || []
   useGamesList.value = gemelist
-  /**
-   * TODO:@sampson762
-   * @see https://vueuse.org/core/useCloned/
-   */
-  const { cloned } = useCloned(gemelist)
-  assignment.value = cloned.value
+  swiperbox.value?.getpower(gemelist)
 })
 
 defineExpose({
@@ -90,41 +49,10 @@ defineExpose({
   <div class="game">
     <div class="content" :style="{ '--bg-img': gameBg }">
       <product-swiper-box
-        ref="swiperbox" :list="useGamesList" :pcurrent="current" :params="detail?.params || []"
-        @select-games="showGames = true" @change-swiper="changeSwiperFn"
+        ref="swiperbox" :list="useGamesList" :pcurrent="current" @select-games="showGames = true"
+        @change-swiper="changeSwiperFn"
       />
     </div>
-    <common-popup :show="showGames" name="选择游戏" @close="showGames = false">
-      <div class="selectGames">
-        <div>
-          <div class="search">
-            <input v-model="searchText" type="text" placeholder="输入关键字搜索想要的商品">
-            <div class="i-icons-search" />
-          </div>
-          <div class="selectbox">
-            <div v-for="(item, index) in gamesList" :key="index">
-              <div class="select" @click="selectAction(item, index)">
-                <div v-if="isIncludes(item.id)" class="selected">
-                  <div class="icon i-icons-correct" />
-                </div>
-                <div class="goodsImg">
-                  <image class="img" :src="ImageUrl(item.cover)" mode="aspectFill" />
-                </div>
-                <div class="goodsInfo">
-                  <div class="name">
-                    {{ item.name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="confirm" @click="confirmGames">
-            确定
-          </div>
-        </div>
-      </div>
-    </common-popup>
   </div>
 </template>
 

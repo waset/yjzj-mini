@@ -117,6 +117,11 @@ interface Product {
   quantity?: number
   select?: boolean
   delete?: boolean
+  alloaction?: number
+  errors?: {
+    key?: string
+    message?: string
+  }[]
 }
 
 interface Brand {

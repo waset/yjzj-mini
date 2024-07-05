@@ -2,16 +2,14 @@ export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
     ModificationList: any
-    // diytype: DiyType
   } => ({
     gamesList: [],
     ModificationList: [],
-    // diytype: DiyICons,
   }),
   actions: {
     // 获取游戏列表
     async getGamesList() {
-      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 10 }, { auth: false })
+      const { code, data } = await http.post<gamesList[]>('/web/game/list', { page: 1, pageSize: 1000 }, { auth: false })
 
       if (code === 200) {
         this.gamesList = data
@@ -44,16 +42,14 @@ export const useDiyStore = defineStore('diy', {
           _params.push({
             num: 1,
             product: item.product,
-            tagTitle: item.desc,
-            typeID: Number(item.content),
+            tagTitle: item.paramDesc,
+            typeID: Number(item?.product?.typeID),
           })
         })
 
         data.forEach((item: any, index: number) => {
           const errs = getCompactErrors(_params, index, item)
-
           const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
-
           data[index].errors = uniqueData
         })
 

@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 const { detail } = storeToRefs(useProductStore())
 function JumpDetail() {
-  detail.value = null
+  detail.value = {} as Product
+  detail.value.typeParentID = 6
+  detail.value.params = []
   Jump('/pages/product/diy')
 }
 </script>
@@ -25,104 +27,104 @@ function JumpDetail() {
 </template>
 
 <style lang="scss" scoped>
-  .custom {
-    height: var(--body-min-height);
+.custom {
+  height: var(--body-min-height);
 
-    .body {
-      height: 100%;
+  .body {
+    height: 100%;
 
-      .wrap {
-        width: 100%;
-        height: 50%;
+    .wrap {
+      width: 100%;
+      height: 50%;
+      position: relative;
+
+      .item {
         position: relative;
+        width: 62%;
+        display: inline-block;
+        opacity: 0;
+
+        .image {
+          width: 460rpx;
+          height: 580rpx;
+
+          &.bounce {
+
+            animation: bounce 1s infinite alternate;
+
+            @keyframes bounce {
+              0% {
+                transform: translateY(-15rpx);
+              }
+
+              100% {
+                transform: translateY(15rpx);
+              }
+            }
+          }
+        }
+      }
+
+      &.left {
+        text-align: left;
 
         .item {
-          position: relative;
-          width: 62%;
-          display: inline-block;
-          opacity: 0;
+          left: 0;
+          top: 32%;
+          z-index: 2;
+
+          &.movein {
+            opacity: 1;
+            animation: leftmove 1s;
+
+            @keyframes leftmove {
+              0% {
+                left: -100%;
+              }
+
+              100% {
+                left: 0;
+              }
+            }
+          }
 
           .image {
-            width: 460rpx;
-            height: 580rpx;
+            animation-delay: 1.1s;
+          }
+        }
+      }
 
-            &.bounce {
+      &.right {
+        text-align: right;
 
-              animation: bounce 1s infinite alternate;
+        .item {
+          right: 0;
+          bottom: 32%;
+          z-index: 1;
 
-              @keyframes bounce {
-                0% {
-                  transform: translateY(-15rpx);
-                }
+          &.movein {
+            opacity: 1;
+            animation: rightmovein 1s;
 
-                100% {
-                  transform: translateY(15rpx);
-                }
+            @keyframes rightmovein {
+              0% {
+                right: -100%;
+              }
+
+              100% {
+                right: 0;
               }
             }
           }
-        }
 
-        &.left {
-          text-align: left;
-
-          .item {
-            left: 0;
-            top: 32%;
-            z-index: 2;
-
-            &.movein {
-              opacity: 1;
-              animation: leftmove 1s;
-
-              @keyframes leftmove {
-                0% {
-                  left: -100%;
-                }
-
-                100% {
-                  left: 0;
-                }
-              }
-            }
-
-            .image {
-              animation-delay: 1.1s;
-            }
-          }
-        }
-
-        &.right {
-          text-align: right;
-
-          .item {
-            right: 0;
-            bottom: 32%;
-            z-index: 1;
-
-            &.movein {
-              opacity: 1;
-              animation: rightmovein 1s;
-
-              @keyframes rightmovein {
-                0% {
-                  right: -100%;
-                }
-
-                100% {
-                  right: 0;
-                }
-              }
-            }
-
-            .image {
-              animation-delay: 1.2s;
-            }
+          .image {
+            animation-delay: 1.2s;
           }
         }
       }
     }
   }
+}
 </style>
 
 <route lang="json">

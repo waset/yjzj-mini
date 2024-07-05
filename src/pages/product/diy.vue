@@ -2,57 +2,121 @@
 const { detail } = storeToRefs(useProductStore())
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
-
+const { addConfiguration, collectionConfig } = useDiyStore()
+const { addProduct } = useBuyStore()
+const { user } = storeToRefs(useUserStore())
 interface PageReq {
   product_id: Product['id'] | null
 }
+const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.product_id) {
     await getProductDetail(Number(req.product_id))
   }
+  if (isEmpty(user.value)) {
+    uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
+    setTimeout(() => {
+      Jump('/pages/me/login')
+    }, 1000)
+  }
 })
 
-const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
+// 是否通过检测
+const isPass = () => {
+  const isEmpty = (obj: any) => Object.keys(obj).length === 0
+  // 判断配置单是否又空选项
+  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
+  if (detail.value?.params.length === 0 || alloactionArr?.length !== 0) {
+    uni.showToast({
+      title: '请选择完整配置',
+      icon: 'error',
+    })
+    return false
+  }
+  else {
+    return true
+  }
+}
 
-const { addConfiguration, collectionConfig } = useDiyStore()
-/**
- * 立即购买
- */
-const buyNow = async () => {
+const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
+// 新增配置单需要的参数
+
+// 生成配置单id  和收藏配置单
+const allocationId = async () => {
   const params = ref<addConfiguration>({ params: [] })
   Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
-  // detail.value.configuration
   // 新增配置单
   const data = await addConfiguration(params.value)
-  const code = await collectionConfig(data.no)
-  if (code !== 200) {
-    return false
+  //  收藏配置单
+  await collectionConfig(data.no)
+  if (!detail.value?.id) {
+    // 添加配置单id
+    if (detail.value) {
+      detail.value.alloaction = data.id
+      detail.value.name = `配置单${data.id ? data.id : ''}`
+    }
   }
-  changeBuyType('buy')
-  Jump('/pages/buy/submitOrder')
+  return data
 }
 
-const { addProduct } = useBuyStore()
+// 判断每个对象中的errors 是否有值
+const hasErrors = (arrayOfObjects: any) => {
+  return arrayOfObjects.params.some((obj: any) => obj.product.errors && obj.product.errors.length > 0)
+}
+/**
+ * 立即购买
+ */
+
+const buyNow = async () => {
+  // 如果通过 检测是否为空
+  if (isPass()) {
+    // 如果没有 错误
+    if (!hasErrors(detail.value)) {
+      await allocationId()
+      changeBuyType('buy')
+      Jump('/pages/buy/submitOrder')
+    }
+    else {
+      uni.showToast({
+        title: '请检查配置单',
+        icon: 'error',
+      })
+    }
+  }
+}
+
 /**
  * 加入购物车
  */
-const addBuyCar = () => {
+const addBuyCar = async () => {
   if (!detail.value) {
     return
   }
-  addProduct({
-    quantity: 1,
-    select: false,
-    delete: false,
-    ...detail.value,
-  })
-  uni.showToast({
-    title: '添加成功',
-    icon: 'success',
-  })
+  if (isPass()) {
+    if (!hasErrors(detail.value)) {
+      // 如果没有 错误
+      await allocationId()
+      addProduct({
+        quantity: 1,
+        select: false,
+        delete: false,
+        ...detail.value,
+      })
+      uni.showToast({
+        title: '添加成功',
+        icon: 'success',
+      })
+    }
+    else {
+      uni.showToast({
+        title: '请检查配置单',
+        icon: 'error',
+      })
+    }
+  }
 }
 </script>
 
@@ -74,7 +138,7 @@ const addBuyCar = () => {
         <div class="more">
           <div class="price">
             <span>￥</span>
-            <span>{{ detail?.tagPrice || 0 }}</span>
+            <span>{{ detail?.sellPrice || 0 }}</span>
           </div>
           <div class="btns">
             <div class="btn">
@@ -86,15 +150,11 @@ const addBuyCar = () => {
     </div>
 
     <div class="info">
-      <product-diy-configur
-        :params="detail?.params" @up-config="(list) => {
-          DiyGameRef?.upOptional()
-        }"
-      />
+      <product-diy-configur :params="detail?.params" @upconfigs="DiyGameRef?.upOptional()" />
     </div>
 
     <div class="swiper">
-      <product-diy-game ref="DiyGameRef" :detail="detail" />
+      <product-diy-game ref="DiyGameRef" />
     </div>
     <div class="bottom">
       <product-operation @add-car="addBuyCar" @buy-now="buyNow" />
