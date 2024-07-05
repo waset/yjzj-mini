@@ -1,9 +1,12 @@
 <script setup lang="ts">
 const { getUserInfo } = useUserStore()
 const { user } = storeToRefs(useUserStore())
-
+const { getRebatelist, getWithdrawlist } = usePopularizeStore()
+const { rebatelist, withdrawlist } = storeToRefs(usePopularizeStore())
 onShow(async () => {
   await getUserInfo()
+  getRebatelist({ page: 1, pageSize: 20 })
+  getWithdrawlist({ page: 1, pageSize: 20 })
 })
 
 const showWInvite = ref(false) // 邀请人填写弹出
@@ -90,7 +93,7 @@ function bandinvite() {
       </div>
     </div>
     <!-- 返利记录 & 提现记录 -->
-    <popularize-record-list />
+    <popularize-record-list :rebatelist="rebatelist" :withdrawlist="withdrawlist" />
     <!-- 邀请人弹窗 -->
     <common-popup v-model:show="showWInvite" name="我的邀请人">
       <div class="flex mt-2">

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const props = withDefaults(defineProps<{
+  rebatelist: Withdrawlist[]
+  withdrawlist: Withdrawlist[]
+}>(), {
+  rebatelist: () => [],
+  withdrawlist: () => [],
+})
 const tabIndex = ref(0) // tab下标弹出
 const tabListArray = ['返利记录', '提现记录'] // 记录tab
 const tabTitleX = {
@@ -21,6 +28,21 @@ const tabTitleX = {
 }
 // 返利记录数据
 // const rebateData = []
+
+function forString(str: string) {
+  if (str && str.length > 6) {
+    const firstTwo = str.substring(0, 2)
+    const lastFour = str.substring(str.length - 4)
+    return `${firstTwo}****${lastFour}`
+  }
+}
+
+const withdrawStatus = ['处理中', '打款成功', '打款退回', '处理中', '处理中', '打款成功']
+
+// 返利状态
+function rebateStatus(status: number) {
+  return status === 1 ? '待返利' : '已返利'
+}
 </script>
 
 <template>
@@ -43,25 +65,25 @@ const tabTitleX = {
           </template>
         </div>
         <div class="list_scroll">
-          <template v-for="(item, index) in 30" :key="index">
+          <template v-for="(item, index) in !tabIndex ? props.rebatelist : props.withdrawlist" :key="index">
             <div class="title_list">
               <div class="title_text">
-                DD****1234
+                {{ !tabIndex ? forString(item.orderNO) : forString(item.no) }}
               </div>
               <div class="title_text">
-                PinkRFriend
+                {{ !tabIndex ? item.userInfo.nickname : '' }}
+              </div>
+              <div class="title_text" style="min-width: 140rpx;">
+                {{ !tabIndex ? item.rebateAmount : item.withdrawAmount }}
+              </div>
+              <div class="title_text" style="min-width: 140rpx;">
+                {{ !tabIndex ? rebateStatus(item.status) : item.balanceAmountAfter }}
               </div>
               <div class="title_text">
-                871.00
+                {{ !tabIndex ? item.createdAt : item.auditedAt }}
               </div>
               <div class="title_text">
-                DD****1234
-              </div>
-              <div class="title_text">
-                PinkRFriend
-              </div>
-              <div class="title_text">
-                871.00
+                {{ !tabIndex ? item.updatedAt : withdrawStatus[item.status - 1] }}
               </div>
             </div>
           </template>
