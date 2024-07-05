@@ -119,10 +119,14 @@ const addBuyCar = async () => {
   }
 }
 // #ifdef MP
-onShareAppMessage(() => {
+onShareAppMessage(async () => {
   const params = {} as any
+  if (!detail.value?.id || !detail.value?.alloaction) {
+    await allocationId()
+  }
+
   if (detail.value) {
-    params.id = detail.value.id
+    params.id = detail.value?.alloaction || detail.value?.id
     params.inviteCode = user.value?.inviteCode
   }
 
