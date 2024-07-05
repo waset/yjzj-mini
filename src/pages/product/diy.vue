@@ -17,6 +17,7 @@ onLoad(async (params) => {
 // 是否通过检测
 const isPass = () => {
   const isEmpty = (obj: any) => Object.keys(obj).length === 0
+  // 判断配置单是否又空选项
   const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
   if (detail.value?.params.length === 0 || alloactionArr?.length !== 0) {
     uni.showToast({
@@ -32,10 +33,10 @@ const isPass = () => {
 
 const DiyGameRef = ref<ComponentInstance['ProductDiyGame'] | null>(null)
 // 新增配置单需要的参数
-const params = ref<addConfiguration>({ params: [] })
 
 // 生成配置单id  和收藏配置单
 const allocationId = async () => {
+  const params = ref<addConfiguration>({ params: [] })
   Object.entries(detail.value?.params || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.paramValue as number, num: 1 })
   })
@@ -51,8 +52,8 @@ const allocationId = async () => {
  */
 
 const buyNow = async () => {
-  await allocationId()
   if (isPass()) {
+    await allocationId()
     changeBuyType('buy')
     Jump('/pages/buy/submitOrder')
   }
@@ -65,13 +66,13 @@ const addBuyCar = async () => {
   if (!detail.value) {
     return
   }
-  const data = await allocationId()
-  if (detail.value) {
-    // 添加配置单id
-    detail.value.alloaction = data.id
-    detail.value.name = `配置单${data.id}`
-  }
   if (isPass()) {
+    const data = await allocationId()
+    if (!detail.value.id) {
+      // 添加配置单id
+      detail.value.alloaction = data.id
+      detail.value.name = `配置单${data.id ? data.id : ''}`
+    }
     addProduct({
       quantity: 1,
       select: false,
