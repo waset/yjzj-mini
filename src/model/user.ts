@@ -14,8 +14,33 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {
     userDesc: (state) => {
-      return <Desc<UserInfo>>{
+      let rebateType = ''
+      if (state.user?.promoter?.rebateType) {
+        switch (state.user.promoter.rebateType) {
+          case 1:
+            rebateType = ' 等级'
+            break
+          case 2:
+            rebateType = '固定'
+            break
+
+          default:
+            rebateType = '无'
+            break
+        }
+      }
+      else {
+        rebateType = '无'
+      }
+
+      return <Desc<UserInfo & {
+        promoter: Desc<Promoter>
+      }>>{
         ...state.user,
+        promoter: {
+          ...state.user.promoter,
+          rebateTypeDesc: rebateType,
+        },
         isSubDesc: state.user?.isSub === 1 ? '已订阅' : '未订阅',
         phoneDesc: state.user?.phone ? SensitivePhone(state.user.phone) : '未绑定手机号',
       }

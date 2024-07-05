@@ -1,15 +1,20 @@
 {
+  "conventionalCommits.scopes": [
+    "config",
+    "deps",
+    "github",
+    "utils"
+  ],
+  "css.customData": [
+    ".vscode/unocss.json"
+  ],
   "css.validate": false,
-  // Enable the ESlint flat config support
-  "eslint.experimental.useFlatConfig": true,
-  // Disable the default formatter, use eslint instead
-  "prettier.enable": false,
-  "editor.formatOnSave": false,
   // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.organizeImports": "never"
   },
+  "editor.formatOnSave": false,
   // Silent the stylistic rules in you IDE, but still auto fix them
   "eslint.rules.customizations": [
     {
@@ -49,43 +54,39 @@
       "severity": "off"
     }
   ],
+  // Enable the ESlint flat config support
+  "eslint.useFlatConfig": true,
   // Enable eslint for all supported languages
   "eslint.validate": [
+    "html",
     "javascript",
     "javascriptreact",
+    "json",
+    "jsonc",
+    "markdown",
     "typescript",
     "typescriptreact",
     "vue",
-    "html",
-    "markdown",
-    "json",
-    "jsonc",
     "yaml"
-  ],
-  "css.customData": [
-    ".vscode/unocss.json"
   ],
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*",
     "package.json": ".npmrc, package.json, package-lock.json, yarn.lock, pnpm-lock.yaml",
-    "project.config.*": ".editorconfig, eslint.config.*, renovate.*, *.env, .env.*"
+    "project.config.*": ".editorconfig, eslint.config.*, renovate.*, *.env, .env.*",
+    "vite.config.*": "pages.config.*, manifest.config.*, uno.config.*, volar.config.*"
   },
-  "conventionalCommits.scopes": [
-    "config",
-    "github",
-    "utils",
-    "deps"
-  ],
-  "iconify.inplace": false,
-  "iconify.position": "after",
+  "files.exclude": {
+    "src/assets/css/background.scss": true
+  },
   "iconify.customCollectionJsonPaths": [
     "temp/icons/icons.json",
     "temp/icons/svg.json"
   ],
+  "iconify.inplace": false,
+  "iconify.position": "after",
+  "image-manager.appearance.language": "zh-CN",
   "miniprogram.miniprogramPath": "dist/dev/mp-weixin",
-  "files.exclude": {
-    "src/assets/css/background.scss": true
-  },
-  "image-manager.appearance.language": "zh-CN"
+  // Disable the default formatter, use eslint instead
+  "prettier.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { getUserInfo } = useUserStore()
 const { token } = storeToRefs(useAuthStore())
-const { userDesc, isRegister } = storeToRefs(useUserStore())
+const { user, userDesc, isRegister } = storeToRefs(useUserStore())
 
 const { orders } = storeToRefs(useOrderStore())
 const { getOrderList } = useOrderStore()
@@ -117,6 +117,33 @@ function goLogin() {
 
   Jump('/pages/me/login')
 }
+
+const activities = () => {
+  Jump('/pages/popularize/invitetion')
+}
+
+const promotion = () => {
+  if (!user.value?.promoterStatus) {
+    uni.showToast({
+      title: '请先成为推广员',
+      icon: 'none',
+      success: () => {
+        setTimeout(() => {
+          Jump('/pages/popularize/invitetion')
+        }, 1000)
+      },
+    })
+    return
+  }
+  if (!user.value?.promoter) {
+    uni.showToast({
+      title: '请先登录',
+      icon: 'none',
+    })
+    return
+  }
+  Jump('/pages/popularize/popularize')
+}
 </script>
 
 <template>
@@ -205,37 +232,35 @@ function goLogin() {
             <div class="left">
               我的邀请
             </div>
-            <div class="right" @click="Jump('/pages/popularize/popularize')">
+            <div class="right" @click="activities">
               邀请推广>>
             </div>
           </div>
-          <div class="body">
+          <div class="body" @click="promotion">
             <div class="items">
               <div class="item">
                 <div class="number">
-                  <span v-if="1 > 0" class="units">￥</span>
-                  <span>{{ 1.00 }}</span>
+                  <span>{{ userDesc?.promoter?.levelName || 'LV0' }}</span>
                 </div>
                 <div class="text">
-                  当前收益
+                  推广等级
+                </div>
+              </div>
+              <div class="item">
+                <div class="number">
+                  <span>{{ userDesc?.promoter?.rebateTypeDesc }}</span>
+                </div>
+                <div class="text">
+                  返利方式
                 </div>
               </div>
               <div class="item">
                 <div class="number">
                   <span v-if="0" class="units">￥</span>
-                  <span>{{ 0 }}</span>
+                  <span>{{ user?.promoter?.cycleOrderAmount || 0 }}</span>
                 </div>
                 <div class="text">
-                  可提现
-                </div>
-              </div>
-              <div class="item">
-                <div class="number">
-                  <span>{{ 1 }}</span>
-                  <span class="units">/人</span>
-                </div>
-                <div class="text">
-                  已邀请
+                  账户余额
                 </div>
               </div>
             </div>

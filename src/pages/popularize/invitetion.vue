@@ -1,46 +1,16 @@
 <script setup lang="ts">
 const { levelall, inviterank, inviteuser } = storeToRefs(useInviteStore())
-const { getInviteall, getInviteRank, bandInviter, becomePromoter } = useInviteStore()
+const { getInviteall, getInviteRank, becomePromoter } = useInviteStore()
 const { user } = storeToRefs(useUserStore())
-const { getUserInfo } = useUserStore()
 onShow(async () => {
   await getInviteall()
   await getInviteRank()
 })
 
-// 绑定邀请人显隐
-const showModel = ref(false)
-// 邀请人邀请码
-const code = ref('')
+// 打开绑定邀请人组件
+const childRef = ref<any>(null)
 function bandinvite() {
-  showModel.value = true
-}
-
-// 确认绑定
-async function confirm() {
-  try {
-    const res = await bandInviter(code.value)
-    if (res.code === 200) {
-      uni.showToast({
-        title: '绑定成功',
-        icon: 'none',
-      })
-      await getUserInfo()
-    }
-    else {
-      uni.showToast({
-        title: res.msg,
-        icon: 'none',
-      })
-    }
-  }
-  catch {
-    uni.showToast({
-      title: '网络错误',
-      icon: 'none',
-    })
-  }
-  showModel.value = false
+  childRef.value.openShow()
 }
 
 // 成为推广员
@@ -53,6 +23,13 @@ async function become() {
     })
   }
   else {
+    if (!user.value?.promoter) {
+      uni.showToast({
+        title: '请先登录',
+        icon: 'none',
+      })
+      return
+    }
     uni.showToast({
       title: res.msg,
       icon: 'none',
@@ -78,17 +55,13 @@ async function become() {
           <image style="width: 90%;" src="@/assets/background/invite-btn.svg" mode="widthFix" @click="become" />
         </template>
         <template v-else>
-          <image style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" />
+          <button class="sharebtn" open-type="share">
+            <image class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" />
+          </button>
         </template>
       </div>
     </div>
-    <common-model v-model:show="showModel" msg="绑定邀请人" icon="i-svg-success" @ok="confirm">
-      <template #inp>
-        <div class="codeinp flex-center pt-2">
-          <input v-model="code" placeholder="请输入邀请人邀请码" type="text" class="inp mt-1">
-        </div>
-      </template>
-    </common-model>
+    <popularize-bind-inviter ref="childRef" :user="user" />
   </div>
 </template>
 
@@ -100,17 +73,9 @@ async function become() {
   background-repeat: no-repeat;
 }
 
-.codeinp {
-  border-radius: 8rpx 8rpx 8rpx 8rpx;
-
-  .inp {
-    font-size: 26rpx;
-    color: #000;
-    background: #D9D9D9;
-    width: 66%;
-    border-radius: 12rpx;
-    padding: 2rpx 0;
-  }
+.sharebtn {
+  background:none ;
+  @apply flex-center w-full h-full;
 }
 </style>
 
