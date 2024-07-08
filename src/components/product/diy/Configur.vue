@@ -61,6 +61,15 @@ const openSelectPop = async (index: number, paramValue: string | number | string
   productCustomRelocationRef.value?.showOptional(typeID, index, type, paramValue)
 }
 
+const atr = ref<any>({})
+
+const delselectParams = (index: number) => {
+  if (detail.value) {
+    detail.value.params[index].product = atr.value
+    detail.value.params[index].paramDesc = ''
+    detail.value.params[index].paramValue = 0
+  }
+}
 const upconfig = () => {
   emit('upconfigs')
 }
@@ -78,9 +87,7 @@ const upconfig = () => {
               <div class="text">
                 <template v-if="detail?.params[index] && detail?.params[index].paramDesc === item.type">
                   <template v-if="detail?.params[index] && detail?.params[index]?.product?.errors">
-                    <div
-                      :class="{ error: detail?.params[index]?.product?.errors?.findIndex((v) => v.key === item.type) !== -1 }"
-                    >
+                    <div>
                       {{ detail?.params[index].product.name }}
                     </div>
                   </template>
@@ -95,10 +102,16 @@ const upconfig = () => {
                   {{ item.text }}
                 </template>
               </div>
-
-              <div class="alter" @click="openSelectPop(index, detail?.params[index]?.paramValue)">
-                <div class="i-icons-edit alter_icon" />
-                改配
+              <div class="rightbtn">
+                <div class="alter" @click="openSelectPop(index, detail?.params[index]?.paramValue)">
+                  <div class="i-icons-modify alter_icon" />
+                </div>
+                <div
+                  class="del" :class="{ candel: detail?.params[index] && detail?.params[index].paramDesc ? true : false }"
+                  @click="delselectParams(index)"
+                >
+                  <div class="i-icons-del" />
+                </div>
               </div>
             </div>
             <div>
@@ -154,11 +167,13 @@ const upconfig = () => {
         .tips {
           font-size: 24rpx;
           color: #F53F3F;
+
           @apply flex;
           padding-left: 16rpx;
         }
 
         .line {
+
           margin-bottom: 4rpx;
           height: 80rpx;
           line-height: 80rpx;
@@ -171,13 +186,14 @@ const upconfig = () => {
           font-size: 28rpx;
           font-weight: 600;
           position: relative;
-          padding: 0rpx 16rpx;
+          // padding: 0rpx 16rpx;
           display: flex;
           align-items: center;
+          justify-content: space-between;
 
           .icon_style {
-            width: 44rpx;
-            height: 44rpx;
+            width: 32rpx;
+            height: 32rpx;
             margin-right: 12rpx;
           }
 
@@ -196,27 +212,41 @@ const upconfig = () => {
             }
           }
 
-          .alter {
-            min-width: 104rpx;
-            height: 48rpx;
-            line-height: 35rpx;
-            position: absolute;
-            top: 50%;
-            right: 16rpx;
-            transform: translateY(-50%);
-            float: right;
-            font-size: 24rpx;
-            text-align: center;
-            color: #ffffff;
-            border-radius: 4rpx;
-            border: 2rpx solid #a7f522;
-            background: #ffffff33;
-            padding: 4rpx 14rpx 4rpx 14rpx;
+          .rightbtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            .alter_icon {
+            .alter {
+              @apply flex-center;
+              width: 56rpx;
+              height: 48rpx;
+              color: #ffffff;
+              border-radius: 4rpx;
+              border: 2rpx solid #a7f522;
+              background: #ffffff33;
+              font-size: 24rpx;
+
+            }
+
+            .del {
+              margin-left: 20rpx;
+              @apply flex-center;
+              width: 56rpx;
+              height: 48rpx;
+              color: #8D8D8D;
+              border-radius: 4rpx;
+              border: 2rpx solid #8D8D8D;
+              background: #ffffff33;
               font-size: 24rpx;
             }
+            .candel {
+              border: 2rpx solid #F53F3F;
+              color: #F53F3F;
+            }
+
           }
+
         }
       }
 

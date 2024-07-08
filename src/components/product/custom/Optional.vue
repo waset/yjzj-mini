@@ -87,6 +87,51 @@ const mutualRule = () => {
     return createErrors(cloned.value)
   }
 }
+// 互斥规则校验
+const mutualRuleShop = () => {
+  const { detail } = useProductStore()
+  const { cloned } = useCloned(detail)
+  const _params: {
+    num: number
+    product: any
+    tagTitle: string
+    typeID: number
+  }[] = []
+  cloned.value?.params.forEach((item) => {
+    _params.push({
+      num: 1,
+      product: item.product || {},
+      tagTitle: item.paramDesc || '',
+      typeID: Number(item?.product?.typeID) || Number(item?.content),
+    })
+  })
+
+  detail?.params.forEach((item: any, index: number) => {
+    const errs = getCompactErrors(_params, index, item.product)
+    const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+    detail.params[index].product.errors = uniqueData
+    console.log(errs)
+  })
+
+  function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
+    if (paramsIndex < 0)
+      return []
+    const { cloned } = useCloned(sourceParams)
+    cloned.value[paramsIndex] = {
+      tagTitle: data.typeName,
+      typeID: data.typeID, // 商品类型ID
+      product: {
+        id: data.id,
+        sellPrice: data.sellPrice,
+        banner: data.banner,
+        params: data.params,
+        name: data.name,
+      },
+      num: 1,
+    }
+    return createErrors(cloned.value)
+  }
+}
 
 const okfn = () => {
   if (saveId.value !== 0) {
@@ -117,11 +162,14 @@ const okfn = () => {
     else {
       // TODO: 增加互斥规则
       Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
-        if (params.paramDesc === obj.value?.typeName) {
+        if (params.desc === obj.value?.typeName) {
           params.product = obj.value
           params.paramValue = obj.value.id
+          params.paramDesc = obj.value.typeName
         }
       })
+      mutualRuleShop()
+      console.log(detail.value.params)
     }
 
     emit('change', false)
@@ -139,7 +187,17 @@ const selectFn = (item: any) => {
 const reachBottom = () => {
   emit('loadmore')
 }
+const showConfigs = ref<BuyProduct | null>(null)
+const showConfigsSwitch = ref<boolean>(false)
+// 查看详情
+const checkInfo = (item: any) => {
+  showConfigs.value = item
+  showConfigsSwitch.value = true
+}
 
+onMounted(() => {
+  mutualRuleShop()
+})
 defineExpose({
   setId,
 })
@@ -168,7 +226,7 @@ defineExpose({
               {{ item.description }}
             </div>
             <div class="row3">
-              <div class="fs24 check">
+              <div class="fs24 check" @click="checkInfo(item)">
                 查看详情
                 <div class="i-icons-right" />
               </div>
@@ -188,7 +246,9 @@ defineExpose({
     </template>
     <div class="empty" />
   </scroll-view>
-
+  <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+    <buys-show-alloaction :config="showConfigs" />
+  </common-popup>
   <div class="bottom">
     <div class="center">
       <div class="left" />
@@ -319,7 +379,7 @@ defineExpose({
   .error {
     @apply flex;
     align-items: center;
-    color: #A7F522;
+    color: #F53F3F;
     font-size: 24rpx;
 
     .icon {

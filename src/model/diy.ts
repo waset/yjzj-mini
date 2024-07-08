@@ -30,30 +30,8 @@ export const useDiyStore = defineStore('diy', {
       }
       const { code, data } = await http.post('/web/product/list/by/params', params, { auth: false })
       if (code === 200) {
-        const { detail } = useProductStore()
-        const { cloned } = useCloned(detail)
-        const _params: {
-          num: number
-          product: any
-          tagTitle: string
-          typeID: number
-        }[] = []
-        cloned.value?.params.forEach((item) => {
-          _params.push({
-            num: 1,
-            product: item.product,
-            tagTitle: item.paramDesc,
-            typeID: Number(item?.product?.typeID),
-          })
-        })
-
-        data.forEach((item: any, index: number) => {
-          const errs = getCompactErrors(_params, index, item)
-          const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
-          data[index].errors = uniqueData
-        })
-
-        this.ModificationList = [...this.ModificationList, ...data]
+        const res = cycleData(data)
+        this.ModificationList = [...this.ModificationList, ...res]
       }
     },
 
@@ -96,6 +74,36 @@ export const useDiyStore = defineStore('diy', {
 
   },
 })
+
+function cycleData(data: any) {
+  const { detail } = storeToRefs(useProductStore())
+  const _params: {
+    num: number
+    product: any
+    tagTitle: string
+    typeID: number
+  }[] = []
+  detail.value?.params.forEach((item, index) => {
+    _params[index] = {
+      num: 1,
+      product: item.product,
+      tagTitle: item.paramDesc,
+      typeID: Number(item?.product?.typeID) || Number(item.content),
+    }
+  })
+
+  data.forEach((item: any, index: number) => {
+    const idx = _params.findIndex(v => v.tagTitle === item.typeName)
+    if (index === -1) {
+      return
+    }
+    const errs = getCompactErrors(_params, idx, item)
+    const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+    data[index].errors = uniqueData
+  })
+
+  return data
+}
 
 function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
   if (paramsIndex < 0)
