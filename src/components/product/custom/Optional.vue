@@ -10,7 +10,7 @@ const saveId = ref<number>(0)
 const indexs = ref<number>(0)
 const types = ref<string>('')
 const setId = (id: number, index: number, type: string) => {
-  saveId.value = id
+  saveId.value = id || 0
   indexs.value = index
   types.value = type
 }
@@ -89,41 +89,43 @@ const mutualRule = () => {
 }
 
 const okfn = () => {
-  // 判断选中的是那个配件  obj 就是选中的配件
-  const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
-  if (selectedProduct) {
-    obj.value = selectedProduct
-  }
-  // 配置单没有id
-  if (!detail?.value?.id) {
-    // 如果是 全diy页面  全自定义
-    parr.value[indexs.value].paramDesc = types.value
-    parr.value[indexs.value].paramValue = obj.value.id
-    parr.value[indexs.value].product = obj.value
+  if (saveId.value !== 0) {
+    // 判断选中的是那个配件  obj 就是选中的配件
+    const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
+    if (selectedProduct) {
+      obj.value = selectedProduct
+    }
+    // 配置单没有id
+    if (!detail?.value?.id) {
+      // 如果是 全diy页面  全自定义
+      parr.value[indexs.value].paramDesc = types.value
+      parr.value[indexs.value].paramValue = obj.value.id
+      parr.value[indexs.value].product = obj.value
 
-    if (detail.value) {
-      if (types.value === '机箱') {
-        detail.value.banner = obj.value.banner
+      if (detail.value) {
+        if (types.value === '机箱') {
+          detail.value.banner = obj.value.banner
+        }
+        detail.value.params = parr.value
+        detail.value.sellPrice = totalPrice.value.toString()
       }
-      detail.value.params = parr.value
-      detail.value.sellPrice = totalPrice.value.toString()
+
+      if (isPass()) {
+        mutualRule()
+      }
+    }
+    else {
+      // TODO: 增加互斥规则
+      Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
+        if (params.paramDesc === obj.value?.typeName) {
+          params.product = obj.value
+          params.paramValue = obj.value.id
+        }
+      })
     }
 
-    if (isPass()) {
-      mutualRule()
-    }
+    emit('change', false)
   }
-  else {
-    // TODO: 增加互斥规则
-    Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
-      if (params.paramDesc === obj.value?.typeName) {
-        params.product = obj.value
-        params.paramValue = obj.value.id
-      }
-    })
-  }
-
-  emit('change', false)
 }
 
 const selectFn = (item: any) => {
