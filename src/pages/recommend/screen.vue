@@ -14,11 +14,11 @@ const saveX2 = ref<number>(100)
 const width = ref<number>(300)
 // 开始点的价钱
 const starPrice = computed((): number => {
-  return Math.round((60000 / width.value) * (saveX.value))
+  return Math.round((24000 / width.value) * (saveX.value))
 })
 // 结束点的价钱
 const endPrice = computed((): number => {
-  return Math.round((60000 / width.value) * (saveX2.value))
+  return Math.round((24000 / width.value) * (saveX2.value))
 })
 
 // 滑动第一个点
@@ -34,23 +34,29 @@ const endchange = (e: any) => {
 interface pricelist {
   start: number
   end: number
+  title: string
 }
 
 const list = ref<pricelist[]>([{
+  start: 0,
+  end: 4000,
+  title: '0 - 4000',
+}, {
   start: 4000,
   end: 7000,
+  title: '4000 - 7000',
 }, {
   start: 7000,
   end: 10000,
+  title: '7000 - 10000',
 }, {
   start: 10000,
-  end: 12000,
-}, {
-  start: 12000,
   end: 20000,
+  title: '10000 - 20000',
 }, {
   start: 20000,
-  end: 50000,
+  end: 99999,
+  title: '20000+',
 }])
 
 // 计算中间背景开始的长度
@@ -61,7 +67,7 @@ const bgWidth = computed(() => Math.abs(saveX2.value - saveX.value))
 
 // 计算价格区间
 const sub = (price: number) => {
-  return price / Math.round((60000 / width.value))
+  return price / Math.round((24000 / width.value))
 }
 
 const setPrice = (item: pricelist) => {
@@ -69,8 +75,12 @@ const setPrice = (item: pricelist) => {
   saveX.value = sub(item.start)
   x.value = saveX.value
   // 点2 设置位置
-  saveX2.value = sub(item.end)
-
+  if (item.end === 99999) {
+    saveX2.value = sub(24000)
+  }
+  else {
+    saveX2.value = sub(item.end)
+  }
   x1.value = saveX2.value
 }
 
@@ -95,15 +105,15 @@ const select = ref<'Intel' | 'AMD'>('Intel')
                 @change="startChange"
               >
                 <div class="text">
-                  {{ starPrice }}
+                  {{ starPrice > 20000 ? '20000' : starPrice }}
                 </div>
               </movable-view>
               <movable-view
-                :animation="false" :x="x1" :y="y1" direction="horizontal" class="circle"
+                :inertia="true" :animation="false" :x="x1" :y="y1" direction="horizontal" class="circle"
                 @change="endchange"
               >
                 <div class="text">
-                  {{ endPrice }}
+                  {{ endPrice > 20000 ? '20000+' : endPrice }}
                 </div>
               </movable-view>
             </movable-area>
@@ -111,9 +121,12 @@ const select = ref<'Intel' | 'AMD'>('Intel')
 
           <div class="price">
             <div v-for="(item, index) in list" :key="index" class="priceItem" @click="setPrice(item)">
-              <div class="item" :class="{ actives: item.start === starPrice && item.end === endPrice }">
+              <div
+                class="item"
+                :class="{ actives: item.start === starPrice && item.end === endPrice || item.start === starPrice && item.end === 99999 }"
+              >
                 <div class="text">
-                  {{ item.start }} - {{ item.end }}
+                  {{ item.title }}
                 </div>
               </div>
             </div>
@@ -154,7 +167,13 @@ const select = ref<'Intel' | 'AMD'>('Intel')
       </div>
     </div>
 
-    <div class="btn" @click="Jump('/pages/recommend/recommendlist', { start: starPrice, end: endPrice, cpu: select })">
+    <div
+      class="btn" @click="() => {
+
+        Jump('/pages/recommend/recommendlist', { start: starPrice > 20000 ? 20000 : starPrice, end: endPrice > 20000 ? 99999 : endPrice, cpu: select })
+
+      }"
+    >
       开始智能推荐
     </div>
   </div>
