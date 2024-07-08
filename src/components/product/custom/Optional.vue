@@ -191,7 +191,7 @@ defineExpose({
     <div class="center">
       <div class="left" />
       <div class="right">
-        <div class="cancel">
+        <div class="cancel" @click="emit('change', false)">
           取消
         </div>
         <div class="confirm" @click="okfn()">
