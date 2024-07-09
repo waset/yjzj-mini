@@ -150,6 +150,7 @@ const okfn = () => {
       if (detail.value && detail.value?.params.length === 0) {
         detail.value.params = parr.value
       }
+      // 判断是否通过
       if (isPass()) {
         parr.value = detail.value?.params || [{}, {}, {}, {}, {}, {}, {}, {}]
       }
