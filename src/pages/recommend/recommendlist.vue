@@ -50,6 +50,16 @@ onReachBottom(() => {
     getProduct()
   }
 })
+
+// 点击跳转商品详情
+const infoClick = (item: Product) => {
+  if (item.typeParentID === 6) {
+    Jump('/pages/product/diy', { id: item.id })
+  }
+  else {
+    Jump('/pages/product/detail', { id: item.id })
+  }
+}
 </script>
 
 <template>
@@ -57,9 +67,7 @@ onReachBottom(() => {
     <navbar-back text="智能推荐" />
     <div class="list">
       <product-list
-        :list="products" layout="grids" @click="(item: Product) => {
-          Jump('/pages/product/detail', { id: item.id })
-        }"
+        :list="products" layout="grids" @click="infoClick"
       />
     </div>
 
