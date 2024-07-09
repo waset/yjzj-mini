@@ -90,6 +90,18 @@ interface couponReq {
   ticketID: number
 }
 
+interface getcouponReq {
+  /**
+   * 来源 1：分享链接 2：派发 3：兑换码 4：商品详情
+   */
+  from: number
+  /**
+   * 卡券兑换码
+   */
+  fromNO?: string
+
+}
+
 // 下单请求接口
 interface submitOrderReq {
   /**

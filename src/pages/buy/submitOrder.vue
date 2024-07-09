@@ -75,6 +75,7 @@ onShow(async () => {
   try {
     // 获取优惠列表
     await getCouponList(page.value, 15)
+    await canUseCoupon(nowAddress.value.id, [detail?.value?.id || 0], undefined)
   }
   catch (error) {
     console.error('Failed to fetch coupon list:', error)
@@ -94,7 +95,6 @@ onMounted(async () => {
     }
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
-    await canUseCoupon(nowAddress.value.id, [detail.value.id], undefined)
   }
   else {
     // 购物车进入
