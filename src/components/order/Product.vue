@@ -4,14 +4,20 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
-// 普通商品点击跳转
-const handleClick = (detailProduct: Product) => {
-  Jump('/pages/product/detail', { id: detailProduct.id })
+// 自定义商品点击跳转
+const customClick = (detailDiy: orderDetail) => {
+  Jump('/pages/product/diy', { config_id: detailDiy.productConfigID })
 }
 
-// diy商品点击跳转
-const diyClick = (detailDiy: ProductConfigSnapshot) => {
-  Jump('/pages/product/detail', { id: detailDiy.shareCode })
+// 非自定义商品点击跳转
+const handleClick = (detailProduct: orderDetail) => {
+  // 如果是diy商品
+  if (detailProduct.typeParentID === 6) {
+    Jump('/pages/product/diy', { id: detailProduct.productID })
+  }
+  else {
+    Jump('/pages/product/detail', { id: detailProduct.productID })
+  }
 }
 </script>
 
@@ -19,18 +25,24 @@ const diyClick = (detailDiy: ProductConfigSnapshot) => {
   <div class="box">
     <div class="info">
       <template v-for="(detail, i) in props.order.details" :key="i">
-        <div v-if="detail.productSnapshot === null" class="diy">
-          <!-- diy商品 -->
+        <div v-if="detail.productSnapshot === null" class="custom">
+          <!-- 用户自定义商品 -->
           <div class="proItem">
             <div class="content">
               <div class="left">
-                <div class="img" @click="diyClick(detail.productConfigSnapshot)">
-                  <!-- diy商品从机箱中取banner图 -->
+                <div class="img" @click="customClick(detail)">
+                  <!-- 从机箱中取banner图 -->
                   <product-image :src="detail.details.filter(item => item.tagTitle.indexOf('机箱') > -1)[0].productSnapshot.banner[0] || ''" width="160rpx" radius="16rpx" />
                 </div>
                 <div class="text">
                   <div class="name">
                     {{ detail.tagTitle }}
+                  </div>
+                  <div v-if="detail.details[0].productSnapshot.name" class="desc">
+                    <div class="descText">
+                      <!-- 取出所有配置的名称 -->
+                      {{ detail.details.map(item => item.productSnapshot.name).join('；') }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -45,15 +57,15 @@ const diyClick = (detailDiy: ProductConfigSnapshot) => {
           </div>
         </div>
         <div v-else class="other">
-          <!-- 非diy商品 -->
+          <!-- 非自定义商品 -->
           <div class="proItem">
             <div class="content">
               <div class="left">
-                <div class="img" @click="handleClick(detail.productSnapshot)">
+                <div class="img" @click="handleClick(detail)">
                   <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
                 </div>
                 <div class="text">
-                  <div class="name" @click="handleClick(detail.productSnapshot)">
+                  <div class="name" @click="handleClick(detail)">
                     {{ detail.productSnapshot.name }}
                   </div>
                   <div v-if="detail.productSnapshot.description" class="desc">
@@ -85,7 +97,7 @@ const diyClick = (detailDiy: ProductConfigSnapshot) => {
     display: flex;
     flex-direction: column;
 
-    .diy {
+    .custom {
       display: flex;
       flex-direction: column;
 

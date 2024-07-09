@@ -78,112 +78,149 @@ const filterOrder = (status: Order['status']) => {
   <div class="order-list-container">
     <common-popup v-model:show="detailDialog" name="查看明细">
       <div class="detail">
-        <div v-if="detailInfo" class="wrap">
-          <div class="content">
-            <div class="bg">
-              <div class="top">
-                <div class="total">
-                  <div class="text">
-                    合计金额
+        <template v-if="detailInfo">
+          <div class="wrap">
+            <div class="receiving">
+              <template v-if="detailInfo.userAddressSnapshot">
+                <!-- 收货信息 -->
+                <div class="bg">
+                  <div class="contacts">
+                    <div class="text">
+                      联系人
+                    </div>
+                    <div class="desc">
+                      {{ detailInfo.userAddressSnapshot.username }}
+                    </div>
                   </div>
-                  <div class="price">
-                    <span>￥</span>
-                    <span>{{ detailInfo.sellPrice }}</span>
+                  <div class="telephone">
+                    <div class="text">
+                      联系电话
+                    </div>
+                    <div class="desc">
+                      {{ detailInfo.userAddressSnapshot.phone }}
+                    </div>
                   </div>
-                </div>
-                <div class="activity">
-                  <div class="text">
-                    活动优惠
-                  </div>
-                  <div class="price">
-                    <span>-￥</span>
-                    <span>0</span>
-                  </div>
-                </div>
-                <div class="coupon">
-                  <div class="text">
-                    卡券优惠
-                  </div>
-                  <div class="price">
-                    <span>-￥</span>
-                    <span>{{ detailInfo.ticketPrice }}</span>
-                  </div>
-                </div>
-                <div class="freight">
-                  <div class="text">
-                    运费
-                  </div>
-                  <div class="price">
-                    <span>￥</span>
-                    <span>0</span>
+                  <div class="remark">
+                    <div class="text">
+                      备注
+                    </div>
+                    <div class="desc">
+                      {{ detailInfo.remark || '无备注' }}
+                    </div>
                   </div>
                 </div>
-                <div class="actualPayment">
-                  <div class="text">
-                    实付金额
+              </template>
+            </div>
+
+            <div class="content">
+              <!-- 订单信息 -->
+              <div class="bg">
+                <div class="top">
+                  <div class="total">
+                    <div class="text">
+                      合计金额
+                    </div>
+                    <div class="price">
+                      <span>￥</span>
+                      <span>{{ detailInfo.sellPrice }}</span>
+                    </div>
                   </div>
-                  <div class="price">
-                    <span>￥</span>
-                    <span>{{ detailInfo.payPrice }}</span>
+                  <div class="activity">
+                    <div class="text">
+                      活动优惠
+                    </div>
+                    <div class="price">
+                      <span>-￥</span>
+                      <span>0</span>
+                    </div>
+                  </div>
+                  <div class="coupon">
+                    <div class="text">
+                      卡券优惠
+                    </div>
+                    <div class="price">
+                      <span>-￥</span>
+                      <span>{{ detailInfo.ticketPrice }}</span>
+                    </div>
+                  </div>
+                  <div class="freight">
+                    <div class="text">
+                      运费
+                    </div>
+                    <div class="price">
+                      <span>￥</span>
+                      <span>0</span>
+                    </div>
+                  </div>
+                  <div class="actualPayment">
+                    <div class="text">
+                      实付金额
+                    </div>
+                    <div class="price">
+                      <span>￥</span>
+                      <span>{{ detailInfo.payPrice }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="line" />
+                <div class="bottom">
+                  <div class="orderNumber">
+                    <div class="text">
+                      订单编号
+                    </div>
+                    <div class="info">
+                      <div class="num">
+                        {{ detailInfo.no }}
+                      </div>
+                      <div class="replication" @click="copyText(detailInfo.no)">
+                        | 复制
+                      </div>
+                    </div>
+                  </div>
+                  <div class="create">
+                    <div class="text">
+                      创建时间
+                    </div>
+                    <div class="info">
+                      <div>{{ detailInfo.createdAt }}</div>
+                    </div>
+                  </div>
+                  <div v-if="detailInfo.payAt" class="pay">
+                    <div class="text">
+                      付款时间
+                    </div>
+                    <div class="info">
+                      <div>{{ detailInfo.payAt }}</div>
+                    </div>
+                  </div>
+                  <div v-if="detailInfo.updatedAt" class="finish">
+                    <div class="text">
+                      成交时间
+                    </div>
+                    <div class="info">
+                      <div>{{ detailInfo.updatedAt }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="line" />
-              <div class="bottom">
-                <div class="orderNumber">
-                  <div class="text">
-                    订单编号
-                  </div>
-                  <div class="info">
-                    <div class="num">
-                      {{ detailInfo.no }}
-                    </div>
-                    <div class="replication" @click="copyText(detailInfo.no)">
-                      | 复制
-                    </div>
-                  </div>
+            </div>
+
+            <div class="service">
+              <!-- 服务 -->
+              <div class="body">
+                <div class="title">
+                  遇到问题？
                 </div>
-                <div class="create">
+                <div class="btn">
+                  <div class="i-icons-service" />
                   <div class="text">
-                    创建时间
-                  </div>
-                  <div class="info">
-                    <div>{{ detailInfo.createdAt }}</div>
-                  </div>
-                </div>
-                <div v-if="detailInfo.payAt" class="pay">
-                  <div class="text">
-                    付款时间
-                  </div>
-                  <div class="info">
-                    <div>{{ detailInfo.payAt }}</div>
-                  </div>
-                </div>
-                <div v-if="detailInfo.updatedAt" class="finish">
-                  <div class="text">
-                    成交时间
-                  </div>
-                  <div class="info">
-                    <div>{{ detailInfo.updatedAt }}</div>
+                    联系客服
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- <div class="service">
-            <div class="body">
-              <div class="title">
-                遇到问题？
-              </div>
-              <div class="btn">
-                <div class="i-icons-service" />
-                <div class="text">
-                  联系客服
-                </div>
-              </div>
-            </div>
-          </div> -->
-        </div>
+        </template>
       </div>
     </common-popup>
     <div class="order-list">
@@ -263,75 +300,131 @@ const filterOrder = (status: Order['status']) => {
 </template>
 
 <style scoped lang="scss">
-  .order-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+.order-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
-    gap: 32rpx;
+  gap: 32rpx;
 
-    .list {
+  .list {
 
-      .item {
-        padding: 24rpx;
+    .item {
+      padding: 24rpx;
 
-        background: rgba(132, 132, 132, 0.2);
-        border: 2rpx solid rgba(189, 189, 189, 0.5);
-        border-radius: 32rpx;
+      background: rgba(132, 132, 132, 0.2);
+      border: 2rpx solid rgba(189, 189, 189, 0.5);
+      border-radius: 32rpx;
 
-        .info {
+      .info {
+        display: flex;
+        flex-direction: column;
+
+        .top {
           display: flex;
-          flex-direction: column;
+          justify-content: space-between;
+          padding: 32rpx 24rpx;
 
-          .top {
+          gap: 32rpx;
+
+          background-image: linear-gradient(133.06deg, rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 0.5) 50%, rgba(0, 0, 0, 1) 100%);
+          border-radius: 32rpx;
+
+          .idFunc {
             display: flex;
-            justify-content: space-between;
-            padding: 32rpx 24rpx;
+            align-items: center;
+            justify-content: start;
+            flex-direction: row;
+            gap: 4rpx;
 
-            gap: 32rpx;
-
-            background-image: linear-gradient(133.06deg, rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 0.5) 50%, rgba(0, 0, 0, 1) 100%);
-            border-radius: 32rpx;
-
-            .idFunc {
-              display: flex;
-              align-items: center;
-              justify-content: start;
-              flex-direction: row;
-              gap: 4rpx;
-
-              .id {
-                font-size: 24rpx;
-                color: #bebebe;
-                white-space: nowrap;
-              }
-
-              .copy {
-                font-size: 24rpx;
-                color: #ffffff;
-              }
+            .id {
+              font-size: 24rpx;
+              color: #bebebe;
+              white-space: nowrap;
             }
 
-            .statusDesc {
+            .copy {
               font-size: 24rpx;
+              color: #ffffff;
+            }
+          }
+
+          .statusDesc {
+            font-size: 24rpx;
+          }
+        }
+
+      }
+
+      .func {
+        display: flex;
+        flex-direction: column;
+
+        gap: 16rpx;
+
+        .upper {
+          display: flex;
+          flex-direction: row-reverse;
+
+          .price {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            padding: 0 8rpx;
+
+            .text {
+              font-size: 24rpx;
+              color: #ffffff;
+            }
+
+            .totalPrice {
+              font-size: 32rpx;
+              font-weight: 550;
+              color: #ffffff;
             }
           }
 
         }
 
-        .func {
+        .bottom {
+          all: unset;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
 
-          gap: 16rpx;
-
-          .upper {
+          .left {
+            width: auto;
             display: flex;
-            flex-direction: row-reverse;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            gap: 16rpx;
 
-            .price {
+            .more {
+              position: relative;
+              display: inline-block;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 4rpx;
+
+              font-size: 28rpx;
+              color: #ffffff;
+
+              .icon {
+                font-size: 32rpx;
+              }
+            }
+
+          }
+
+          .right {
+
+            .sum {
               display: flex;
               flex-direction: row;
               align-items: center;
@@ -352,376 +445,238 @@ const filterOrder = (status: Order['status']) => {
 
           }
 
-          .bottom {
-            all: unset;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-
-            .left {
-              width: auto;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: start;
-              gap: 16rpx;
-
-              .more {
-                position: relative;
-                display: inline-block;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 4rpx;
-
-                font-size: 28rpx;
-                color: #ffffff;
-
-                .icon {
-                  font-size: 32rpx;
-                }
-              }
-
-            }
-
-            .right {
-
-              .sum {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-
-                padding: 0 8rpx;
-
-                .text {
-                  font-size: 24rpx;
-                  color: #ffffff;
-                }
-
-                .totalPrice {
-                  font-size: 32rpx;
-                  font-weight: 550;
-                  color: #ffffff;
-                }
-              }
-
-            }
-
-          }
-
         }
+
       }
     }
-
   }
 
-  .detail {
+}
 
-    .wrap {
-      display: flex;
-      flex-direction: column;
+.detail {
 
-      gap: 32rpx;
+  .wrap {
+    display: flex;
+    flex-direction: column;
 
-      .content {
-        background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
-        padding: 2rpx;
+    gap: 32rpx;
+
+    .receiving {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 32rpx;
+
+      .bg {
         border-radius: 32rpx;
+        background: rgba(0, 0, 0, 0.8);
 
-        .bg {
-          border-radius: 32rpx;
-          background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 16rpx;
+        padding: 32rpx 32rpx;
 
-          display: flex;
-          flex-direction: column;
-          gap: 16rpx;
-          padding: 32rpx 32rpx;
-
-          .top {
-            display: flex;
-            flex-direction: column;
-            gap: 16rpx;
-
-            .total {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .price {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 2rpx;
-
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .activity {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .price {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 2rpx;
-
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .coupon {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .price {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 2rpx;
-
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .freight {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .price {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 2rpx;
-
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .actualPayment {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .price {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 2rpx;
-
-                color: #a7f522;
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-          }
-
-          .line {
-            width: 100%;
-            height: 2rpx;
-            background-image: linear-gradient(134deg, rgba(190, 190, 190, 0.2), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.2));
-          }
-
-          .bottom {
-            display: flex;
-            flex-direction: column;
-            gap: 16rpx;
-
-            .orderNumber {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .info {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: start;
-                gap: 8rpx;
-
-                .num {
-                  color: #bebebe;
-                  font-size: 28rpx;
-                }
-
-                .replication {
-                  color: #ffffff;
-                  font-size: 28rpx;
-                  font-weight: 500;
-                }
-
-              }
-
-            }
-
-            .create {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .info {
-                color: #bebebe;
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .pay {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .info {
-                color: #bebebe;
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-            .finish {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-              padding: 8rpx 0;
-
-              .text {
-                font-size: 28rpx;
-                color: #ffffff;
-              }
-
-              .info {
-                color: #bebebe;
-                font-size: 28rpx;
-                font-weight: 500;
-
-              }
-
-            }
-
-          }
-        }
-      }
-
-      .service {
-        background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
-        padding: 2rpx;
-        border-radius: 32rpx;
-
-        .body {
-          border-radius: 32rpx;
-          background: rgba(0, 0, 0, 0.8);
-
+        .contacts,
+        .telephone {
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
+          padding: 8rpx 0;
 
-          padding: 32rpx 32rpx;
-
-          .title {
-            font-size: 30rpx;
+          .text {
+            font-size: 28rpx;
             color: #ffffff;
           }
 
-          .btn {
+          .desc {
+            font-size: 28rpx;
+            font-weight: 500;
+          }
+
+        }
+
+        .remark {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          justify-content: space-between;
+          padding: 8rpx 0;
+
+          gap: 40rpx;
+
+          .text {
+            font-size: 28rpx;
+            color: #ffffff;
+          }
+
+          .desc {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+
+            font-size: 28rpx;
+            width: 70%;
+            font-weight: 500;
+          }
+        }
+
+      }
+    }
+
+    .content {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 32rpx;
+
+      .bg {
+        border-radius: 32rpx;
+        background: rgba(0, 0, 0, 0.8);
+
+        display: flex;
+        flex-direction: column;
+        gap: 16rpx;
+        padding: 32rpx 32rpx;
+
+        .top {
+          display: flex;
+          flex-direction: column;
+          gap: 16rpx;
+
+          .total, .activity, .coupon, .freight, .actualPayment {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 4rpx;
+            justify-content: space-between;
+            padding: 8rpx 0;
 
-            font-size: 28rpx;
-            color: #ffffff;
+            .text {
+              font-size: 28rpx;
+              color: #ffffff;
+            }
+
+            .price {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: start;
+              gap: 2rpx;
+
+              font-size: 28rpx;
+              font-weight: 500;
+
+            }
+
+          }
+
+        }
+
+        .line {
+          width: 100%;
+          height: 2rpx;
+          background-image: linear-gradient(134deg, rgba(190, 190, 190, 0.2), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.6), rgba(190, 190, 190, 0.2));
+        }
+
+        .bottom {
+          display: flex;
+          flex-direction: column;
+          gap: 16rpx;
+
+          .orderNumber {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rpx 0;
+
+            .text {
+              font-size: 28rpx;
+              color: #ffffff;
+            }
+
+            .info {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: start;
+              gap: 8rpx;
+
+              .num {
+                color: #bebebe;
+                font-size: 28rpx;
+              }
+
+              .replication {
+                color: #ffffff;
+                font-size: 28rpx;
+                font-weight: 500;
+              }
+
+            }
+
+          }
+
+          .create, .pay, .finish {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rpx 0;
+
+            .text {
+              font-size: 28rpx;
+              color: #ffffff;
+            }
+
+            .info {
+              color: #bebebe;
+              font-size: 28rpx;
+              font-weight: 500;
+
+            }
+
           }
 
         }
       }
     }
+
+    .service {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 32rpx;
+
+      .body {
+        border-radius: 32rpx;
+        background: rgba(0, 0, 0, 0.8);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 32rpx 32rpx;
+
+        .title {
+          font-size: 30rpx;
+          color: #ffffff;
+        }
+
+        .btn {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 4rpx;
+
+          font-size: 28rpx;
+          color: #ffffff;
+        }
+
+      }
+    }
   }
+}
 </style>

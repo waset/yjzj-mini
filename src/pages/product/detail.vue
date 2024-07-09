@@ -76,6 +76,10 @@ onShareAppMessage(() => {
       <product-banner :list="detail?.banner || []" />
     </div>
 
+    <div class="top">
+      <product-top :info="detail" />
+    </div>
+
     <div class="info">
       <product-info :info="detail" />
     </div>

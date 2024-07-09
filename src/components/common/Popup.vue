@@ -35,10 +35,10 @@ function maskClose() {
 </script>
 
 <template>
-  <div v-if="props.show" class="popup">
-    <div v-if="props.mask" class="mask" @click="maskClose" @touchmove.prevent.stop @scroll.prevent.stop />
+  <div v-if="props.show" class="popup" @touchmove.prevent.stop @mousemove.prevent.stop>
+    <div v-if="props.mask" class="mask" @click="maskClose" @touchmove.prevent.stop @mousemove.prevent.stop />
     <div class="wrap" :style="{ width: props.width, height: props.height }">
-      <div class="header" @touchmove.prevent.stop @scroll.prevent.stop>
+      <div class="header" @touchmove.prevent.stop @mousemove.prevent.stop>
         <slot name="header">
           <div class="title" @click="close">
             <div v-if="props.name" class="name">
@@ -51,9 +51,11 @@ function maskClose() {
         </slot>
       </div>
       <div class="body">
-        <slot />
+        <scroll-view :scroll-y="true" class="scroll-view">
+          <slot />
+        </scroll-view>
       </div>
-      <div class="footer" @touchmove.prevent.stop @scroll.prevent.stop>
+      <div class="footer" @touchmove.prevent.stop @mousemove.prevent.stop>
         <slot name="footer" />
       </div>
     </div>
@@ -123,6 +125,10 @@ function maskClose() {
         flex: 1;
         overflow: scroll;
         padding: 32rpx 0;
+
+        .scroll-view {
+          height: 100%;
+        }
       }
     }
   }
