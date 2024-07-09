@@ -29,6 +29,11 @@ export const useAddressStore = defineStore('address', {
       const { data, code } = await http.post<addresslist[]>('/web/user/address/list', { page, pageSize }, { auth: true })
       if (code === 200)
         this.addressList = data
+      this.addressList.forEach((item) => {
+        if (item.isDefault === 1) {
+          this.nowAddress = item
+        }
+      })
     },
     // 新增收获地址
     async newAddress(params: addressReq) {
