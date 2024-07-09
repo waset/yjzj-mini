@@ -173,16 +173,16 @@ defineExpose({
     }
 
     .body {
-      width: 66%;
+      width:60%;
       padding: 60rpx 0;
       text-align: center;
     }
 
     .footer {
-      width: 66%;
+      width: 60%;
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: space-between;
       padding-bottom: 50rpx;
 
       .btn {
@@ -227,9 +227,9 @@ defineExpose({
     font-size: 26rpx;
     color: #000;
     background: #D9D9D9;
-    width: 66%;
+    width: 100%;
     border-radius: 12rpx;
-    padding: 2rpx 0;
+    padding: 12rpx 0;
   }
 }
 </style>
