@@ -81,7 +81,7 @@ const showOptional = async (id: number, index: number, type: string, paramValue:
 }
 const changeUpdate = () => {
   hasShowOptional.value = false
-
+  getModificationListParams.value.productName = ''
   emit('updateconfig')
 }
 

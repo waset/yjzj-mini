@@ -50,6 +50,21 @@ const submitorder = () => {
   changeBuyType('car')
   Jump('/pages/buy/submitOrder')
 }
+
+// 跳转商品详情
+const infoClick = (product: BuyProduct) => {
+  if (product.typeParentID === 6) {
+    if (product.id) {
+      Jump('/pages/product/diy', { id: product.id })
+    }
+    else {
+      Jump('/pages/product/diy', { config_id: product.alloaction })
+    }
+  }
+  else {
+    Jump('/pages/product/detail', { id: product.id })
+  }
+}
 </script>
 
 <template>
@@ -65,7 +80,7 @@ const submitorder = () => {
             <div class="info">
               <div class="top">
                 <div class="type">
-                  {{ item.desc }}
+                  {{ item.paramDesc }}
                 </div>
                 <div v-if="item.number" class="num">
                   <span>x</span>
@@ -116,7 +131,7 @@ const submitorder = () => {
               :product="item" :sliding="slidIdx === index" :is-management="management"
               @sliding="(sliding) => sliding ? slidIdx = index : slidIdx = null" @del="delModel"
               @show-detail="showConfigsFn" @update:product="(product) => products[index] = product"
-              @click="(product) => Jump('/pages/product/detail', { id: product.id })"
+              @click="infoClick"
             />
           </template>
         </template>

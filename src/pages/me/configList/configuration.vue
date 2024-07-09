@@ -28,7 +28,7 @@ const deleteFn = async (no: Required<Configuration>['no']) => {
     uni.showToast({
       title: '删除成功',
       icon: 'none',
-      duration: 2000,
+      duration: 1000,
       success: () => {
         setTimeout(() => {
           getList()
