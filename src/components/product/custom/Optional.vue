@@ -6,17 +6,19 @@ const emit = defineEmits<{
 }>()
 const { detail } = storeToRefs(useProductStore())
 const { ModificationList } = storeToRefs(useDiyStore())
+// 当前选中配置id
 const saveId = ref<number>(0)
+// 当前点击改配索引号
 const indexs = ref<number>(0)
+// 当前改配类型
 const types = ref<string>('')
 const setId = (id: number, index: number, type: string) => {
-  saveId.value = id
+  saveId.value = id || 0
   indexs.value = index
   types.value = type
 }
-
+// 用于暂存当前选中项
 const obj = ref<any>({})
-
 const parr = ref<any[]>([{}, {}, {}, {}, {}, {}, {}, {}])
 
 const totalPrice = computed(() => {
@@ -32,14 +34,20 @@ const totalPrice = computed(() => {
 })
 
 const isPass = () => {
-  const isEmpty = (obj: any) => Object.keys(obj).length === 0
-  // 判断配置单是否又空选项
-  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
-  if (alloactionArr?.length !== 0) {
+  // 计算数组中对象的数量
+  const countObjects = detail.value?.params.filter((item: any) => typeof item === 'object' && item !== null).length
+  // 计算非空对象的数量
+  const countNonEmptyObjects = detail.value?.params.filter((item) => {
+    if (typeof item === 'object' && item !== null && item !== undefined) {
+      return Object.keys(item).length > 0
+    }
     return false
+  }).length
+  if (countObjects === countNonEmptyObjects) {
+    return true
   }
   else {
-    return true
+    return false
   }
 }
 // 互斥规则校验
@@ -87,45 +95,105 @@ const mutualRule = () => {
     return createErrors(cloned.value)
   }
 }
-
-const okfn = () => {
-  // 判断选中的是那个配件  obj 就是选中的配件
-  const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
-  if (selectedProduct) {
-    obj.value = selectedProduct
-  }
-  // 配置单没有id
-  if (!detail?.value?.id) {
-    // 如果是 全diy页面  全自定义
-    parr.value[indexs.value].paramDesc = types.value
-    parr.value[indexs.value].paramValue = obj.value.id
-    parr.value[indexs.value].product = obj.value
-
-    if (detail.value) {
-      if (types.value === '机箱') {
-        detail.value.banner = obj.value.banner
-      }
-      detail.value.params = parr.value
-      detail.value.sellPrice = totalPrice.value.toString()
-    }
-
-    if (isPass()) {
-      mutualRule()
-    }
-  }
-  else {
-    // TODO: 增加互斥规则
-    Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
-      if (params.paramDesc === obj.value?.typeName) {
-        params.product = obj.value
-        params.paramValue = obj.value.id
-      }
+// 互斥规则校验
+const mutualRuleShop = () => {
+  const { detail } = useProductStore()
+  const { cloned } = useCloned(detail)
+  const _params: {
+    num: number
+    product: any
+    tagTitle: string
+    typeID: number
+  }[] = []
+  cloned.value?.params.forEach((item) => {
+    _params.push({
+      num: 1,
+      product: item.product || {},
+      tagTitle: item.paramDesc || '',
+      typeID: Number(item?.product?.typeID) || Number(item?.content),
     })
-  }
+  })
 
-  emit('change', false)
+  detail?.params.forEach((item: any, index: number) => {
+    const errs = getCompactErrors(_params, index, item.product)
+    const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
+    detail.params[index].product.errors = uniqueData
+  })
+
+  function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
+    if (paramsIndex < 0)
+      return []
+    const { cloned } = useCloned(sourceParams)
+    cloned.value[paramsIndex] = {
+      tagTitle: data.typeName,
+      typeID: data.typeID, // 商品类型ID
+      product: {
+        id: data.id,
+        sellPrice: data.sellPrice,
+        banner: data.banner,
+        params: data.params,
+        name: data.name,
+      },
+      num: 1,
+    }
+    return createErrors(cloned.value)
+  }
 }
 
+const okfn = () => {
+  if (saveId.value !== 0) {
+    // 判断选中的是那个配件  obj 就是选中的配件
+    const selectedProduct = ModificationList.value.find((item: any) => item.id === saveId.value)
+    if (selectedProduct) {
+      obj.value = selectedProduct
+    }
+    // 配置单没有id  如果有id 说明是配套diy   没有则是diy
+    if (!detail?.value?.id) {
+      // 判断当前 是否有params参数  如果没有 则 赋值八个空对象
+      if (detail.value && detail.value?.params.length === 0) {
+        detail.value.params = parr.value
+      }
+      // 判断 params是否通过检测。  通过即是八个不为空的对象
+      if (isPass()) {
+        // 不为空，则把参数赋值给 parr  即配置单 通过改配 在这里赋值
+        parr.value = detail.value?.params || [{}, {}, {}, {}, {}, {}, {}, {}]
+      }
+
+      // 如果是 全diy页面  全自定义
+      parr.value[indexs.value].paramDesc = types.value
+      parr.value[indexs.value].paramValue = obj.value.id
+      parr.value[indexs.value].product = obj.value
+
+      if (detail.value) {
+        if (types.value === '机箱') {
+          detail.value.banner = obj.value.banner
+        }
+        detail.value.params = parr.value
+        detail.value.sellPrice = totalPrice.value.toString()
+      }
+
+      if (isPass()) {
+        mutualRule()
+      }
+    }
+    else {
+      // TODO: 增加互斥规则
+      Object.entries(detail.value?.params || {}).forEach(([_, params]) => {
+        if (params.desc === obj.value?.typeName) {
+          params.product = obj.value
+          params.paramValue = obj.value.id
+          params.paramDesc = obj.value.typeName
+        }
+      })
+      // 互斥规则校验
+      mutualRuleShop()
+    }
+
+    emit('change', false)
+  }
+}
+
+// 改配选择配置  设置id
 const selectFn = (item: any) => {
   if (item.errors.length !== 0) {
     return false
@@ -137,7 +205,18 @@ const selectFn = (item: any) => {
 const reachBottom = () => {
   emit('loadmore')
 }
+// 查看配置详情的数据
+const showConfigs = ref<BuyProduct | null>(null)
+const showConfigsSwitch = ref<boolean>(false)
+// 查看详情
+const checkInfo = (item: any) => {
+  showConfigs.value = item
+  showConfigsSwitch.value = true
+}
 
+onMounted(() => {
+  mutualRuleShop()
+})
 defineExpose({
   setId,
 })
@@ -166,7 +245,7 @@ defineExpose({
               {{ item.description }}
             </div>
             <div class="row3">
-              <div class="fs24 check">
+              <div class="fs24 check" @click="checkInfo(item)">
                 查看详情
                 <div class="i-icons-right" />
               </div>
@@ -186,7 +265,9 @@ defineExpose({
     </template>
     <div class="empty" />
   </scroll-view>
-
+  <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+    <buys-show-alloaction :config="showConfigs" />
+  </common-popup>
   <div class="bottom">
     <div class="center">
       <div class="left" />
@@ -317,7 +398,7 @@ defineExpose({
   .error {
     @apply flex;
     align-items: center;
-    color: #A7F522;
+    color: #F53F3F;
     font-size: 24rpx;
 
     .icon {

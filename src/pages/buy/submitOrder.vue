@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const { nowAddress } = storeToRefs(useAddressStore())
+const { getAddressList } = useAddressStore()
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
@@ -61,10 +62,13 @@ const submitOrderFn = async () => {
 }
 
 // 接受参数  选择优惠券的id 和金额
-onLoad((options) => {
+onLoad(async (options) => {
   if (options?.id) {
     submitOrderParams.value.userTicketID = Number(options?.id)
     couponPrice.value = options?.couponPrice
+  }
+  if (!nowAddress.value.address) {
+    await getAddressList(1, 100)
   }
 })
 onShow(async () => {

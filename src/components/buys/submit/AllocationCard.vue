@@ -9,13 +9,16 @@ const props = defineProps<{
     <div class="card">
       <div class="image">
         <template v-if="props.params?.product">
-          <product-image :src="ImageUrl(props.params?.product?.banner[0]) || ''" mode="scaleToFill" :background="false" width="100rpx" />
+          <product-image
+            :src="ImageUrl(props.params?.product?.banner[0]) || ''" mode="scaleToFill" :background="false"
+            width="100rpx"
+          />
         </template>
       </div>
       <div class="info">
         <div class="row">
           <div class="name">
-            {{ props.params?.desc }}
+            {{ props.params.paramDesc }}
           </div>
           <div class="number">
             x{{ props.params?.number }}
@@ -34,7 +37,7 @@ const props = defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex:1;
+  flex: 1;
 
   background-color: #333333;
   padding: 16rpx 24rpx;
