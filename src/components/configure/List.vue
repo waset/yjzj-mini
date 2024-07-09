@@ -97,7 +97,7 @@ const deleteFn = () => {
                 </div>
                 <div
                   class="btn" @click="() => {
-                    Jump('/pages/product/diy', { id: props.configuration.id })
+                    Jump('/pages/product/diy', { config_id: props.configuration.id })
                   }"
                 >
                   改配
