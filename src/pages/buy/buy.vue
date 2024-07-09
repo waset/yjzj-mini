@@ -53,13 +53,13 @@ const submitorder = () => {
 
 // 跳转商品详情
 const infoClick = (product: BuyProduct) => {
-  // 用户完全自定义的商品
-  if (product.typeParentID === 0) {
-    Jump('/pages/product/diy', { config_id: product.alloaction })
-  }
-  // 非完全自定义的商品
-  else if (product.typeParentID === 6) {
-    Jump('/pages/product/diy', { id: product.id })
+  if (product.typeParentID === 6) {
+    if (product.id) {
+      Jump('/pages/product/diy', { id: product.id })
+    }
+    else {
+      Jump('/pages/product/diy', { config_id: product.alloaction })
+    }
   }
   else {
     Jump('/pages/product/detail', { id: product.id })

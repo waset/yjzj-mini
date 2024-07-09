@@ -56,9 +56,6 @@ const infoClick = (item: Product) => {
   if (item.typeParentID === 6) {
     Jump('/pages/product/diy', { id: item.id })
   }
-  else {
-    Jump('/pages/product/detail', { id: item.id })
-  }
 }
 </script>
 
