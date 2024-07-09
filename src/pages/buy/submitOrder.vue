@@ -198,7 +198,7 @@ const paym = computed(() => {
     <buys-settlement-card :number="totalNumber" :totalpay="payment" :pay="paym" :coupon="couponPrice" />
     <buys-bottom-submit :number="totalNumber" :pay="paym" @submit-order="submitOrderFn" />
 
-    <common-popup :show="showPop" name="备注" height="70%" @close="showPop = false">
+    <common-popup :show="showPop" name="备注" height="75%" @close="showPop = false">
       <div>
         <buys-submit-remark @write-mark="writeMarkFn" />
       </div>
