@@ -1,13 +1,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
-
   config: any
-
 }>()
-
-function product_is_diy(product: any): boolean {
-  return product.typeParentID === 6
-}
 </script>
 
 <template>
