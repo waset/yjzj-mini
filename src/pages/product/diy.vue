@@ -20,6 +20,18 @@ const parr = ref<any[]>([
   { paramDesc: 'CPU散热器' },
   { paramDesc: '电源' },
 ])
+
+const updataParams = (data: Product[]) => {
+  data.forEach((item: Product, index: number) => {
+    parr.value[index].paramDesc = item.typeName
+    parr.value[index].paramValue = item.id
+    parr.value[index].product = item
+    if (item.typeName === '机箱' && detail.value) {
+      detail.value.banner = item.banner
+    }
+  })
+}
+
 const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
@@ -32,14 +44,7 @@ onLoad(async (params) => {
     detail.value.typeParentID = 6
     detail.value.params = []
     const data = await getConfigInfo(Number(req.config_id))
-    data.products.forEach((item: Product, index: number) => {
-      parr.value[index].paramDesc = item.typeName
-      parr.value[index].paramValue = item.id
-      parr.value[index].product = item
-      if (item.typeName === '机箱' && detail.value) {
-        detail.value.banner = item.banner
-      }
-    })
+    updataParams(data.product)
     detail.value.params = parr.value // 配置单params
     detail.value.alloaction = data.id // 配置单id
     detail.value.name = `配置单${data.id}` // 配置单name

@@ -14,9 +14,8 @@ const setId = (id: number, index: number, type: string) => {
   indexs.value = index
   types.value = type
 }
-
+// 用于暂存当前选中项
 const obj = ref<any>({})
-
 const parr = ref<any[]>([{}, {}, {}, {}, {}, {}, {}, {}])
 
 const totalPrice = computed(() => {
@@ -145,13 +144,15 @@ const okfn = () => {
     if (selectedProduct) {
       obj.value = selectedProduct
     }
-    // 配置单没有id
+    // 配置单没有id  如果有id 说明是配套diy   没有则是diy
     if (!detail?.value?.id) {
+      // 判断当前 是否有params参数  如果没有 则 赋值八个空对象
       if (detail.value && detail.value?.params.length === 0) {
         detail.value.params = parr.value
       }
-      // 判断是否通过
+      // 判断 params是否通过检测。  通过即是八个不为空的对象
       if (isPass()) {
+        // 不为空，则把参数赋值给 parr  即配置单 通过改配 在这里赋值
         parr.value = detail.value?.params || [{}, {}, {}, {}, {}, {}, {}, {}]
       }
 
@@ -181,6 +182,7 @@ const okfn = () => {
           params.paramDesc = obj.value.typeName
         }
       })
+      // 互斥规则校验
       mutualRuleShop()
     }
 
@@ -188,6 +190,7 @@ const okfn = () => {
   }
 }
 
+// 改配选择配置  设置id
 const selectFn = (item: any) => {
   if (item.errors.length !== 0) {
     return false
@@ -199,6 +202,7 @@ const selectFn = (item: any) => {
 const reachBottom = () => {
   emit('loadmore')
 }
+// 查看配置详情的数据
 const showConfigs = ref<BuyProduct | null>(null)
 const showConfigsSwitch = ref<boolean>(false)
 // 查看详情
