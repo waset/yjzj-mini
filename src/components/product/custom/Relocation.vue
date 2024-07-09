@@ -104,7 +104,7 @@ defineExpose({
       <div class="select">
         <div class="header">
           <common-search
-            padding="48rpx 0rpx" :value="getModificationListParams.productName" is-input @update:value="(val) => {
+            padding="0 0 32rpx 0" :value="getModificationListParams.productName" is-input @update:value="(val) => {
               getModificationListParams.productName = val
               getModificationListParams.page = 0
               getAllocationList()
@@ -138,9 +138,6 @@ defineExpose({
       background-color: rgba(#000, 0.2);
       padding: 16rpx;
       box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 32rpx;
       z-index: 9;
 
