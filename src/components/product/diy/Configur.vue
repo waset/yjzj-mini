@@ -83,16 +83,18 @@ const upconfig = () => {
           <div class="linebox">
             <div class="line">
               <div :class="item.icons" class="icon_style" />
-
-              <div class="text">
+              <div class="type">
+                {{ item.type === 'CPU散热器' ? '散热' : item.type }}
+              </div>
+              <div class="text ">
                 <template v-if="detail?.params[index] && detail?.params[index].paramDesc === item.type">
                   <template v-if="detail?.params[index] && detail?.params[index]?.product?.errors">
-                    <div>
+                    <div class="scrolling">
                       {{ detail?.params[index].product.name }}
                     </div>
                   </template>
                   <template v-else>
-                    <div class="">
+                    <div class="scrolling">
                       {{ detail?.params[index].product.name }}
                     </div>
                   </template>
@@ -107,7 +109,8 @@ const upconfig = () => {
                   <div class="i-icons-modify alter_icon" />
                 </div>
                 <div
-                  class="del" :class="{ candel: detail?.params[index] && detail?.params[index].paramDesc ? true : false }"
+                  class="del"
+                  :class="{ candel: detail?.params[index] && detail?.params[index].paramDesc ? true : false }"
                   @click="delselectParams(index)"
                 >
                   <div class="i-icons-del" />
@@ -136,6 +139,18 @@ const upconfig = () => {
 </template>
 
 <style scoped lang="scss">
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.scrolling {
+  display: inline-block;
+  animation: scroll 10s linear infinite alternate;
+  animation-delay: 2s;
+}
+
 .diy {
   .top {
     padding: 0 32rpx;
@@ -196,16 +211,17 @@ const upconfig = () => {
             height: 32rpx;
             margin-right: 12rpx;
           }
-
+          .type{
+            margin-right: 12rpx;
+          }
           .text {
             font-size: 28rpx;
             font-weight: 600;
-            width: 420rpx;
-            height: 46rpx;
             line-height: 46rpx;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            flex: 1 1 50%;
 
             .error {
               color: #F53F3F;
@@ -240,6 +256,7 @@ const upconfig = () => {
               background: #ffffff33;
               font-size: 24rpx;
             }
+
             .candel {
               border: 2rpx solid #F53F3F;
               color: #F53F3F;
