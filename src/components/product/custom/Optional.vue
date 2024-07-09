@@ -32,14 +32,20 @@ const totalPrice = computed(() => {
 })
 
 const isPass = () => {
-  const isEmpty = (obj: any) => Object.keys(obj).length === 0
-  // 判断配置单是否又空选项
-  const alloactionArr = detail.value?.params.filter(item => isEmpty(item))
-  if (alloactionArr?.length !== 0) {
+  // 计算数组中对象的数量
+  const countObjects = detail.value?.params.filter((item: any) => typeof item === 'object' && item !== null).length
+  // 计算非空对象的数量
+  const countNonEmptyObjects = detail.value?.params.filter((item) => {
+    if (typeof item === 'object' && item !== null && item !== undefined) {
+      return Object.keys(item).length > 0
+    }
     return false
+  }).length
+  if (countObjects === countNonEmptyObjects) {
+    return true
   }
   else {
-    return true
+    return false
   }
 }
 // 互斥规则校验
@@ -110,7 +116,6 @@ const mutualRuleShop = () => {
     const errs = getCompactErrors(_params, index, item.product)
     const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
     detail.params[index].product.errors = uniqueData
-    console.log(errs)
   })
 
   function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
@@ -142,6 +147,13 @@ const okfn = () => {
     }
     // 配置单没有id
     if (!detail?.value?.id) {
+      if (detail.value && detail.value?.params.length === 0) {
+        detail.value.params = parr.value
+      }
+      if (isPass()) {
+        parr.value = detail.value?.params || [{}, {}, {}, {}, {}, {}, {}, {}]
+      }
+
       // 如果是 全diy页面  全自定义
       parr.value[indexs.value].paramDesc = types.value
       parr.value[indexs.value].paramValue = obj.value.id
@@ -169,7 +181,6 @@ const okfn = () => {
         }
       })
       mutualRuleShop()
-      console.log(detail.value.params)
     }
 
     emit('change', false)
