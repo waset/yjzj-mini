@@ -36,16 +36,16 @@ const updataParams = (data: Product[]) => {
 const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
-  if (!req.id) {
+  if (req.id) {
     await getProductDetail(Number(req.id))
   }
 
-  if (req.id) {
+  if (req.config_id) {
     detail.value = {} as Product
     detail.value.typeParentID = 6
     detail.value.params = []
-    const data = await getConfigInfo(Number(req.id))
-    await updataParams(data.products)
+    const data = await getConfigInfo(Number(req.config_id))
+    updataParams(data.products)
     detail.value.params = parr.value // 配置单params
     detail.value.alloaction = data.id // 配置单id
     detail.value.name = `配置单${data.id}` // 配置单name
@@ -220,92 +220,92 @@ onShareAppMessage(async () => {
 </template>
 
 <style scoped lang="scss">
-.detail {
-  padding: 48rpx 0;
+  .detail {
+    padding: 48rpx 0;
 
-  .banner {
-    padding: 0 32rpx;
-  }
+    .banner {
+      padding: 0 32rpx;
+    }
 
-  .top {
-    padding: 32rpx;
-
-    .wrap {
+    .top {
       padding: 32rpx;
-      border-radius: 16rpx;
-      background-color: #000;
-      word-break: break-all;
 
-      .title {
-        font-size: 36rpx;
-        line-height: 48rpx;
-        color: rgba(245, 245, 245, 1);
-      }
+      .wrap {
+        padding: 32rpx;
+        border-radius: 16rpx;
+        background-color: #000;
+        word-break: break-all;
 
-      .desc {
-        font-size: 24rpx;
-        line-height: 36rpx;
-        color: #bebebe;
-        padding: 16rpx 0;
-      }
+        .title {
+          font-size: 36rpx;
+          line-height: 48rpx;
+          color: rgba(245, 245, 245, 1);
+        }
 
-      .more {
-        @apply flex-between;
-        font-size: 48rpx;
-        line-height: 56rpx;
+        .desc {
+          font-size: 24rpx;
+          line-height: 36rpx;
+          color: #bebebe;
+          padding: 16rpx 0;
+        }
 
-        .price {
-          @apply text-green;
+        .more {
+          @apply flex-between;
+          font-size: 48rpx;
+          line-height: 56rpx;
+
+          .price {
+            @apply text-green;
+          }
         }
       }
+
+      .price {
+        @apply text-green;
+      }
     }
 
-    .price {
-      @apply text-green;
+    .swiper {
+      padding: 32rpx;
     }
+
   }
 
-  .swiper {
-    padding: 32rpx;
+  .select {
+    .commodity_list {
+      padding: 32rpx;
+      padding-bottom: 144rpx;
+    }
+
   }
 
-}
-
-.select {
-  .commodity_list {
-    padding: 32rpx;
-    padding-bottom: 144rpx;
-  }
-
-}
-
-.showSelected {
-  font-size: 28rpx;
-  padding: 32rpx 32rpx 0 32rpx;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  .selectedItem {
-    margin-right: 16rpx;
-    width: fit-content;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    padding: 8rpx 16rpx;
-    background-color: #414141;
-    color: #A7F522;
-    border-radius: 8rpx;
+  .showSelected {
+    font-size: 28rpx;
+    padding: 32rpx 32rpx 0 32rpx;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    margin-bottom: 16rpx;
+    flex-wrap: wrap;
 
-    .i-icons-closed {
-      color: #fff;
-      font-size: 24rpx;
-      margin-left: 8rpx;
+    .selectedItem {
+      margin-right: 16rpx;
+      width: fit-content;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      padding: 8rpx 16rpx;
+      background-color: #414141;
+      color: #A7F522;
+      border-radius: 8rpx;
+      display: flex;
+      align-items: center;
+      margin-bottom: 16rpx;
 
+      .i-icons-closed {
+        color: #fff;
+        font-size: 24rpx;
+        margin-left: 8rpx;
+
+      }
     }
   }
-}
 </style>
