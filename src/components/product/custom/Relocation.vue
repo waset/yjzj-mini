@@ -110,7 +110,7 @@ defineExpose({
               getAllocationList()
             }"
           />
-          <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
+          <common-sort-filter :has-layout="false" :has-filter="true" padding="0 0 32rpx 0" @change="onChange" />
         </div>
         <product-custom-filter-list
           ref="ProductCustomFilterListRef" v-model:value="getModificationListParams" @change="(data) => {
