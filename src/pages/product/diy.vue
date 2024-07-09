@@ -21,6 +21,7 @@ const parr = ref<any[]>([
   { paramDesc: '电源' },
 ])
 
+// 更新配置
 const updataParams = (data: Product[]) => {
   data.forEach((item: Product, index: number) => {
     parr.value[index].paramDesc = item.typeName
@@ -35,16 +36,16 @@ const updataParams = (data: Product[]) => {
 const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
-  if (req.id) {
+  if (!req.id) {
     await getProductDetail(Number(req.id))
   }
 
-  if (req.config_id) {
+  if (req.id) {
     detail.value = {} as Product
     detail.value.typeParentID = 6
     detail.value.params = []
-    const data = await getConfigInfo(Number(req.config_id))
-    updataParams(data.product)
+    const data = await getConfigInfo(Number(req.id))
+    await updataParams(data.products)
     detail.value.params = parr.value // 配置单params
     detail.value.alloaction = data.id // 配置单id
     detail.value.name = `配置单${data.id}` // 配置单name

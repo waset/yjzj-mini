@@ -6,8 +6,11 @@ const emit = defineEmits<{
 }>()
 const { detail } = storeToRefs(useProductStore())
 const { ModificationList } = storeToRefs(useDiyStore())
+// 当前选中配置id
 const saveId = ref<number>(0)
+// 当前点击改配索引号
 const indexs = ref<number>(0)
+// 当前改配类型
 const types = ref<string>('')
 const setId = (id: number, index: number, type: string) => {
   saveId.value = id || 0
