@@ -25,11 +25,19 @@ interface Order {
   refundPrice: string
   sellPrice: string
   status: number
+  /**
+   * 备注
+   */
+  remark: string
   ticketPrice: string
   totalNumber: number
   transactionID: string
   updatedAt: string
   userTicketID: number
+  /**
+   * 收货信息快照
+   */
+  userAddressSnapshot: UserAddressSnapshot
 }
 
 interface orderDetail {
@@ -103,6 +111,25 @@ interface ExpressSnapshot {
   lastResult?: LastResult
   message?: string
   status?: string
+}
+
+interface UserAddressSnapshot {
+  address?: string
+  cityCode?: string
+  countryCode?: string
+  createdAt?: string
+  deletedAt?: null
+  id?: number
+  isDefault?: number
+  phone?: string
+  provinceCode?: string
+  status?: number
+  updatedAt?: string
+  userID?: number
+  /**
+   * 收货人姓名
+   */
+  username?: string
 }
 
 interface DestResult {
