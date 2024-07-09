@@ -80,7 +80,7 @@ const infoClick = (product: BuyProduct) => {
             <div class="info">
               <div class="top">
                 <div class="type">
-                  {{ item.desc }}
+                  {{ item.paramDesc }}
                 </div>
                 <div v-if="item.number" class="num">
                   <span>x</span>
