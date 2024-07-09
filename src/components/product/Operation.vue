@@ -16,14 +16,16 @@ const buyNow = () => {
   <div class="operation">
     <div class="wrap">
       <div class="left">
-        <button class="item" open-type="share">
-          <div class="icon">
-            <div class="i-icons-share" />
-          </div>
-          <div class="name">
-            分享
-          </div>
-        </button>
+        <div class="item">
+          <button class="btn" open-type="share">
+            <div class="icon">
+              <div class="i-icons-share" />
+            </div>
+            <div class="name">
+              分享
+            </div>
+          </button>
+        </div>
         <div class="item" @click="() => Jump('/pages/buy/buy')">
           <div class="icon">
             <div class="i-icons-buy" />
@@ -80,9 +82,6 @@ const buyNow = () => {
         margin-left: -16rpx;
 
         .item {
-          // 清除系统button样式
-          all:unset;
-
           height: 100%;
           padding: 0 24rpx;
           @apply flex-center;
@@ -113,6 +112,15 @@ const buyNow = () => {
             font-size: 20rpx;
             line-height: 40rpx;
             font-weight: 400;
+          }
+
+          .btn {
+            // 清除系统button样式
+            all: unset;
+            display: inline-block;
+            &::after{
+              content: none;
+            }
           }
         }
 
