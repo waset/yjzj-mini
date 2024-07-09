@@ -21,7 +21,7 @@ interface Configuration {
   createdAt?: string
   createUserID?: number
   deletedAt?: null
-  id?: number
+  config_id?: number
   isCollect?: number
   no?: string
   params?: ConfigurationParam[]
