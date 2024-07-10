@@ -8,6 +8,9 @@ onShow(async () => {
 const form = ref(user)
 const showDatePicker = ref(false)
 const onChooseAvatar = async (e: any) => {
+  if (e?.type !== 'chooseavatar') {
+    return
+  }
   const { avatarUrl } = e.detail
   form.value.avatar = await uploadAvatar(avatarUrl)
 }
