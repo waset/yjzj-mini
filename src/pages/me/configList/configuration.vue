@@ -45,8 +45,8 @@ const deleteFn = async (no: Required<Configuration>['no']) => {
   }
 }
 
-const search = async (val: string) => {
-  params.value.no = val || undefined
+const search = async (val: string | undefined) => {
+  params.value.no = val
   await getList()
 }
 
@@ -63,6 +63,29 @@ onReachBottom(() => {
     })
   }
 })
+
+// #ifdef MP
+onShareAppMessage(async ({ from, target }) => {
+  if (from === 'button' && target?.dataset?.index !== undefined) {
+    const shareItem = configurations.value[target.dataset.index]
+    // 筛选出 typeName 为 "机箱" 的产品
+    const product = shareItem?.products?.find(p => p.typeName === '机箱')
+    // 取出该产品的 banner
+    const banner = ImageUrl(product?.banner[0])
+
+    return {
+      title: `配置单${shareItem?.id}`,
+      path: `/pages/configure/diy?config_id=${shareItem?.id}`,
+      imageUrl: banner,
+    }
+  }
+
+  return {
+    title: '一剑装机',
+    path: '/pages/index/index',
+  }
+})
+// #endif
 </script>
 
 <template>
@@ -73,9 +96,7 @@ onReachBottom(() => {
       <div class="box">
         <template v-if="configurations && configurations.length">
           <div class="list-box">
-            <template v-for="(item, index) in configurations" :key="index">
-              <configure-list :configuration="item" @del="(no) => deleteFn(no)" />
-            </template>
+            <configure-list :configurations="configurations" @del="(no) => deleteFn(no)" />
           </div>
         </template>
         <template v-else>
@@ -89,21 +110,3 @@ onReachBottom(() => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.configuration {
-
-  .body {
-
-    .box {
-
-      .list-box {
-        display: flex;
-        flex-direction: column;
-
-        gap: 32rpx;
-      }
-    }
-  }
-}
-</style>

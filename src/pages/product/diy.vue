@@ -8,6 +8,7 @@ const { addProduct } = useBuyStore()
 interface PageReq {
   id: Product['id'] | null
   config_id: Product['id'] | null
+  shareCode: Product['shareCode'] | null
 }
 
 const parr = ref<any[]>([
@@ -45,6 +46,18 @@ onLoad(async (params) => {
     detail.value.typeParentID = 6
     detail.value.params = []
     const data = await getConfigInfo(Number(req.config_id))
+    updataParams(data.products)
+    detail.value.params = parr.value // 配置单params
+    detail.value.alloaction = data.id // 配置单id
+    detail.value.name = `配置单${data.id}` // 配置单name
+    detail.value.sellPrice = data.sellPrice // 配置单价格
+  }
+
+  if (req.shareCode) {
+    detail.value = {} as Product
+    detail.value.typeParentID = 6
+    detail.value.params = []
+    const data = await getConfigInfo(0, req.shareCode)
     updataParams(data.products)
     detail.value.params = parr.value // 配置单params
     detail.value.alloaction = data.id // 配置单id
@@ -90,6 +103,9 @@ const allocationId = async () => {
   const data = await addConfiguration(params.value)
   //  收藏配置单
   await collectionConfig(data.no)
+  // @ts-expect-error detail.value一定有值
+  detail.value.shareCode = data.shareCode
+
   if (!detail.value?.id) {
     // 添加配置单id
     if (detail.value) {
@@ -159,14 +175,19 @@ const addBuyCar = async () => {
 // #ifdef MP
 onShareAppMessage(async () => {
   const params = {} as any
-  if (!detail.value?.id || !detail.value?.alloaction) {
+  if (!isPass()) {
+    return {
+      title: '自由定制',
+      path: '/pages/product/diy',
+    }
+  }
+
+  if (!detail.value?.shareCode) {
     await allocationId()
   }
 
-  if (detail.value) {
-    params.id = detail.value?.alloaction || detail.value?.id
-    params.inviteCode = user.value?.inviteCode
-  }
+  params.shareCode = detail.value?.shareCode
+  params.inviteCode = user.value?.inviteCode
 
   return {
     title: detail.value?.name,
@@ -205,9 +226,9 @@ onShareAppMessage(async () => {
   .detail {
     padding: 48rpx 0;
 
-  .banner {
-    padding: 0 32rpx;
-  }
+    .banner {
+      padding: 0 32rpx;
+    }
 
     .swiper {
       padding: 32rpx;
