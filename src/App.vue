@@ -14,5 +14,9 @@ onLaunch(async () => {
   page {
     color: #fff;
     height: 100%;
+
+    font-size: 32rpx;
+    font-weight: 400;
+    line-height: 40rpx          ;
   }
 </style>
