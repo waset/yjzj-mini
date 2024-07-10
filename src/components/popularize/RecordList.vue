@@ -107,7 +107,7 @@ function reachBottom() {
                     {{ !tabIndex ? forString(item.orderNO) : forString(item.no) }}
                   </div>
                   <div class="title_text">
-                    {{ !tabIndex ? item.userInfo.nickname : '' }}
+                    {{ !tabIndex ? item.userInfo.nickname : '提现' }}
                   </div>
                   <div class="title_text">
                     {{ !tabIndex ? item.rebateAmount : item.withdrawAmount }}
