@@ -2,14 +2,20 @@
 const props = withDefaults(defineProps<{
   text?: string
   icon?: string
+  padding?: string
 }>(), {
   text: '',
   icon: 'i-svg-empty',
+  padding: '100rpx 40rpx',
 })
 </script>
 
 <template>
-  <div class="empty">
+  <div
+    class="empty" :style="{
+      padding: props.padding,
+    }"
+  >
     <div class="icon">
       <div :class="props.icon" />
     </div>
@@ -27,7 +33,6 @@ const props = withDefaults(defineProps<{
     justify-content: center;
     flex-direction: column;
     height: 100%;
-    padding: 40rpx;
 
     .icon {
       display: flex;
