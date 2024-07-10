@@ -337,6 +337,7 @@ const infoClick = (product: BuyProduct) => {
             border-radius: 8rpx;
             font-size: 32rpx;
             line-height: 40rpx;
+            font-weight: bold;
             color: #F5F5F5;
             background-color: #8D8D8D;
 

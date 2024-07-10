@@ -118,6 +118,7 @@ const buyNow = () => {
             // 清除系统button样式
             all: unset;
             display: inline-block;
+
             &::after{
               content: none;
             }
@@ -131,7 +132,7 @@ const buyNow = () => {
 
         .item {
           color: rgba(19, 17, 18, 1);
-          padding: 10rpx 40rpx;
+          padding: 16rpx 40rpx;
           padding-right: 50rpx;
           position: relative;
           z-index: 0;
@@ -209,7 +210,7 @@ const buyNow = () => {
 
           .btn {
             font-size: 28rpx;
-            font-weight: 400;
+            font-weight: bold;
             line-height: 40rpx;
           }
         }
