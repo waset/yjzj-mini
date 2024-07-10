@@ -515,6 +515,7 @@ $sc: polygon(62.821% 25.676%, 0% 101.351%, 98.718% 105.405%, 100.641% 0%, 60.256
   text-align: center;
   color: #333;
   font-size: 28rpx;
+  font-weight: bold;
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
