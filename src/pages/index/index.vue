@@ -64,6 +64,7 @@ async function getProductsByType(type: number) {
 
 <style lang="scss" scoped>
   .index {
+    overflow: hidden;
     margin-top: calc((var(--navbar-height-all) - var(--navbar-top)) * -1);
 
     .about {
