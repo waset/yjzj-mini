@@ -11,7 +11,6 @@ interface goodsListInfo {
 }
 
 interface delobj {
-
   ids: number[]
   alls: number[]
 }
