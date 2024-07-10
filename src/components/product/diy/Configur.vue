@@ -157,21 +157,6 @@ const checkInfo = (index: number) => {
 </template>
 
 <style scoped lang="scss">
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  .scrolling {
-    display: inline-block;
-    animation: scroll 6s ease-in-out infinite alternate;
-    animation-delay: 2s;
-  }
-
   .diy {
     .top {
       padding: 0 32rpx;
@@ -209,7 +194,6 @@ const checkInfo = (index: number) => {
           }
 
           .line {
-
             margin-bottom: 4rpx;
             height: 80rpx;
             line-height: 80rpx;
@@ -222,19 +206,14 @@ const checkInfo = (index: number) => {
             font-size: 28rpx;
             font-weight: 600;
             position: relative;
-            // padding: 0rpx 16rpx;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12rpx;
 
             .icon_style {
               width: 32rpx;
               height: 32rpx;
-              margin-right: 12rpx;
-            }
-
-            .type {
-              margin-right: 12rpx;
             }
 
             .text {
@@ -244,7 +223,7 @@ const checkInfo = (index: number) => {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              flex: 1 1 50%;
+              flex: 1;
 
               .error {
                 color: #F53F3F;
