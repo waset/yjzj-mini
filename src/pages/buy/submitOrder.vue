@@ -148,7 +148,7 @@ const paym = computed(() => {
 <template>
   <navbar-back text="提交订单" />
   <div class="body">
-    <div class="addressBox" @click="Jump('/pages/me/address/index', { back: true }, 1)">
+    <div class="addressBox" @click="Jump('/pages/me/address/index', { back: true })">
       <buys-address-card />
     </div>
 
