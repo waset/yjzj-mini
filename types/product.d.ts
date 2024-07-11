@@ -118,6 +118,7 @@ interface Product {
   select?: boolean
   delete?: boolean
   alloaction?: number
+  shareCode?: string
   errors?: {
     key?: string
     message?: string

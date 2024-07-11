@@ -1,8 +1,13 @@
 export const useBuyStore = defineStore('buy', {
   state: (): {
     products: BuyProduct[]
+    selected: delobj
   } => ({
     products: [],
+    selected: {
+      ids: [],
+      alls: [],
+    },
   }),
   getters: {
     // 选中数量
@@ -35,13 +40,11 @@ export const useBuyStore = defineStore('buy', {
     },
     // 选中的所有商品id
     selectedProductIds(state) {
-      const obj = ref<delobj>({
-        ids: [],
-        alls: [],
-      })
       return (isDelete: boolean) => {
+        state.selected.alls = []
+        state.selected.ids = []
         if (state.products.length === 0)
-          return obj.value
+          return state.selected
 
         const selectArr = state.products.filter((item) => {
           if (!isDelete)
@@ -51,13 +54,13 @@ export const useBuyStore = defineStore('buy', {
         })
         selectArr.forEach((item) => {
           if (item.alloaction) {
-            obj.value.alls.push(item.alloaction)
+            state.selected.alls.push(item.alloaction)
           }
           else {
-            obj.value.ids.push(item.id)
+            state.selected.ids.push(item.id)
           }
         })
-        return obj.value
+        return state.selected
       }
     },
     total: state => state.products.filter(item => item.select).reduce((pre, product) => {

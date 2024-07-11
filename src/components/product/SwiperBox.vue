@@ -283,7 +283,9 @@ const changeGame = (text: string) => {
       .name-text {
         font-size: 32rpx;
         font-weight: 600;
-
+        padding: 8rpx 32rpx;
+        background-color: #000;
+        border-radius: 40rpx;
       }
 
       .length {

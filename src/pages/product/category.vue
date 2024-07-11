@@ -150,7 +150,7 @@ const goDetails = (item: Product) => {
       </div>
     </template>
     <template v-else>
-      <common-empty text="抱歉，没有找到相关结果" icon="i-icons-nosearch" />
+      <common-empty text="商品列表为空~" />
     </template>
   </div>
 </template>

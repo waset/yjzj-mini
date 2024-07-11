@@ -21,9 +21,9 @@ interface Configuration {
   createdAt?: string
   createUserID?: number
   deletedAt?: null
-  id?: number
+  id: number
   isCollect?: number
-  no?: string
+  no: string
   params?: ConfigurationParam[]
   products?: Product[]
   sellNumber?: number

@@ -224,7 +224,7 @@ const filterOrder = (status: Order['status']) => {
                 <div class="title">
                   遇到问题？
                 </div>
-                <div class="btn">
+                <div class="btn" @click="contact_customer_service()">
                   <div class="i-icons-service" />
                   <div class="text">
                     联系客服

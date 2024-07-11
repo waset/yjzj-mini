@@ -70,6 +70,11 @@ const props = defineProps<{
             .btn {
               // 清除系统button样式
               all: unset;
+              display: inline-block;
+
+              &::after {
+                content: none;
+              }
 
               height: 100%;
               padding: 0 24rpx;

@@ -38,9 +38,9 @@ export function ShareIamgeUrl(path: string | string[] | undefined | null) {
  * @param path 图片地址
  * @returns 加工后的图片地址
  */
-export function ImageUrl(path: string) {
-  if (path.startsWith('http') || !path)
-    return path
+export function ImageUrl(path: string | undefined) {
+  if (!path || path.startsWith('http'))
+    return path || ''
 
   const imageUrl = import.meta.env.VITE_IMAGE_URL || ''
   const trailingSlash = imageUrl.endsWith('/') ? '' : '/'

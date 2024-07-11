@@ -77,7 +77,7 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 
 <template>
   <div class="menu">
-    <navbar-home text="菜单" />
+    <navbar-home text="分类" />
     <common-search @clicking="Jump('/pages/search/search')" />
     <div class="wrap">
       <div class="left">

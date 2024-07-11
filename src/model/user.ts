@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     async uploadAvatar(avatarUrl: string) {
-      const { data } = await http.upload<UploadRes>('/web/file/upload', avatarUrl, {})
+      const { data } = await http.upload<UploadRes>('/web/file/upload', {}, { filePath: avatarUrl })
 
       return data?.fileKey || ''
     },
