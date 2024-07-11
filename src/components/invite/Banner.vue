@@ -4,7 +4,15 @@ const props = defineProps<{
 }>()
 const emits = defineEmits(['bandinvite', 'become'])
 function band() {
-  emits('bandinvite')
+  if (!props.user.phone) {
+    uni.showToast({
+      title: '请先登录',
+      icon: 'none',
+    })
+  }
+  else {
+    emits('bandinvite')
+  }
 }
 function become() {
   emits('become')

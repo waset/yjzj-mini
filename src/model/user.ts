@@ -8,9 +8,14 @@ export const useUserStore = defineStore('user', {
      * 是否已经注册
      */
     isRegister: boolean
+    /**
+     * 分享者邀请码
+     */
+    shareCode: string
   } => ({
     user: {} as UserInfo,
     isRegister: false,
+    shareCode: '',
   }),
   getters: {
     userDesc: (state) => {
