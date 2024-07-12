@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   info: Product | null
-  price: number
+  price?: number
 }>()
 const { detail } = storeToRefs(useProductStore())
 </script>
