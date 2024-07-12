@@ -25,6 +25,7 @@ const WithInfo = ref([
 function band() {
   emits('bandinvite')
 }
+
 function withdraw() {
   if (Number.parseFloat(userDesc.value.balanceAmount) < 10) {
     uni.showToast({
@@ -32,10 +33,9 @@ function withdraw() {
       icon: 'none',
       duration: 2000,
     })
+    return
   }
-  else {
-    emits('openwith')
-  }
+  emits('openwith')
 }
 
 // 邀请详情
