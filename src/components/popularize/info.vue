@@ -58,7 +58,7 @@ const messageArray = ref([
   {
     Isvg: 'i-svg-edit-lv',
     title: '我的邀请人',
-    value: user.value?.inviteUserInfo.nickname,
+    value: user.value?.inviteUserInfo?.nickname,
     click: () => {
       band()
     },
@@ -121,7 +121,7 @@ const balance = ref([
           <div class="flex items-center justify-between flex-1">
             <div class="flex items-center">
               <template v-if="index === 2">
-                <avatar :src="user.inviteUserInfo.avatar" width="40rpx" />
+                <avatar :src="user.inviteUserInfo?.avatar" width="40rpx" />
               </template>
               <div class="value ml-1">
                 {{ item.value }}
