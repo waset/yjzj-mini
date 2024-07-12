@@ -20,6 +20,11 @@ function allWithdraw() {
   amount.value = user.value.balanceAmount
 }
 
+// 余额转数字类型
+const isWithdraw = computed(() => {
+  return Number.parseFloat(amount.value)
+})
+
 // 提现校验
 async function withdrawEvent() {
   if (user.value.isSub === 2) {
@@ -32,16 +37,16 @@ async function withdrawEvent() {
     return
   }
 
-  if (!amount.value || Number.parseFloat(amount.value) <= 0) {
+  if (!amount.value || isWithdraw.value <= 0) {
     return uni.showToast({ title: '请正确输入提现金额', icon: 'none' })
   }
 
-  if (Number.parseFloat(amount.value) > 2000) {
+  if (isWithdraw.value > 2000) {
     uni.showToast({ title: '单笔提现金额不能超过2000元', icon: 'none' })
     return
   }
 
-  if (Number.parseFloat(amount.value) < 10) {
+  if (isWithdraw.value < 10) {
     uni.showToast({ title: '单笔提现金额不能少于10元', icon: 'none' })
   }
   await serveWithdraw()

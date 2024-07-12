@@ -21,11 +21,12 @@ const WithInfo = ref([
 
   },
 ])
+
 function band() {
   emits('bandinvite')
 }
 function withdraw() {
-  if (Number(userDesc.value.balanceAmount) < 10) {
+  if (Number.parseFloat(userDesc.value.balanceAmount) < 10) {
     uni.showToast({
       title: '最低提现金额为10元',
       icon: 'none',
