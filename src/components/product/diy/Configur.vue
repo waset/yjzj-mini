@@ -70,6 +70,15 @@ const delselectParams = (index: number) => {
     detail.value.params[index].paramValue = 0
   }
 }
+// 外设选择
+const productPeripheralRef = ref<ComponentInstance['ProductCustomPeripheral']>()
+// 预览数组
+
+// 打开弹窗
+const openPeripheral = () => {
+  productPeripheralRef.value?.setShow()
+}
+
 const upconfig = () => {
   emit('upconfigs')
 }
@@ -131,14 +140,37 @@ const upconfig = () => {
             </div>
           </div>
         </template>
+
+        <div class="peripheral">
+          <div class="peripheral_t">
+            <div class="icon i-icons-keyboard" />
+            <div class="peripheral_ttext">
+              {{ detail?.perihera && detail?.perihera.length > 0 ? '已选外设' : '请选择外设' }}
+            </div>
+            <div class="alter" @click="openPeripheral">
+              <div class="i-icons-modify alter_icon" />
+            </div>
+          </div>
+          <div class="peripheral_b">
+            <div v-for="(item, index) in detail?.perihera" :key="index" class="peripheral_b_item">
+              <span>{{ item.name }}</span>
+              <span>x{{ item.number }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
+    <!-- 组件改配弹窗 -->
     <product-custom-relocation ref="productCustomRelocationRef" @updateconfig="upconfig" />
+    <!-- 选购外设弹窗 -->
+    <product-custom-peripheral ref="productPeripheralRef" />
   </div>
 </template>
 
 <style scoped lang="scss">
+$bgcliner: linear-gradient(90.04deg, rgba(39, 39, 39, 0) 2.8%, #272727 24.32%, #272727 49.68%, rgba(39, 39, 39, 0) 79.65%);
+$borderbottom: linear-gradient(98.8deg, rgba(190, 190, 190, 0.1) 5.58%, rgba(190, 190, 190, 0.4) 35.3%, rgba(190, 190, 190, 0.4) 65.93%, rgba(190, 190, 190, 0.1) 92.04%);
+
 @keyframes scroll {
   to {
     transform: translateX(-50%);
@@ -162,6 +194,53 @@ const upconfig = () => {
       background-color: #000;
       word-break: break-all;
 
+      .peripheral {
+        width: 100%;
+        min-height: 80rpx;
+        background: $bgcliner;
+        border-bottom: 2rpx solid;
+        border-image-source: $borderbottom;
+        border-image-slice: 1;
+
+        .peripheral_t {
+          @apply flex-between;
+          height: 80rpx;
+
+          .peripheral_ttext {
+            flex: 1;
+            font-size: 28rpx;
+          }
+
+          .icon {
+            width: 32rpx;
+            height: 32rpx;
+            margin-right: 12rpx;
+          }
+
+          .alter {
+            @apply flex-center;
+            width: 56rpx;
+            height: 48rpx;
+            color: #ffffff;
+            border-radius: 4rpx;
+            border: 2rpx solid #a7f522;
+            background: #ffffff33;
+            font-size: 24rpx;
+
+          }
+        }
+
+        .peripheral_b {
+          @apply flex flex-col;
+
+          .peripheral_b_item {
+            @apply flex-between;
+            font-size: 28rpx;
+            @apply pb-2;
+          }
+        }
+      }
+
       .title {
         font-size: 40rpx;
         line-height: 48rpx;
@@ -184,6 +263,7 @@ const upconfig = () => {
           color: #F53F3F;
 
           @apply flex;
+          align-items: center;
           padding-left: 16rpx;
         }
 
@@ -194,9 +274,9 @@ const upconfig = () => {
           line-height: 80rpx;
           overflow: hidden;
           box-sizing: border-box;
-          background: linear-gradient(90.04deg, rgba(39, 39, 39, 0) 2.8%, #272727 24.32%, #272727 49.68%, rgba(39, 39, 39, 0) 79.65%);
+          background: $bgcliner;
           border-bottom: 2rpx solid;
-          border-image-source: linear-gradient(98.8deg, rgba(190, 190, 190, 0.1) 5.58%, rgba(190, 190, 190, 0.4) 35.3%, rgba(190, 190, 190, 0.4) 65.93%, rgba(190, 190, 190, 0.1) 92.04%);
+          border-image-source: $borderbottom;
           border-image-slice: 1;
           font-size: 28rpx;
           font-weight: 600;
@@ -211,9 +291,11 @@ const upconfig = () => {
             height: 32rpx;
             margin-right: 12rpx;
           }
-          .type{
+
+          .type {
             margin-right: 12rpx;
           }
+
           .text {
             font-size: 28rpx;
             font-weight: 600;

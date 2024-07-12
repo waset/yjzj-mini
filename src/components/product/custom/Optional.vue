@@ -95,7 +95,7 @@ const mutualRule = () => {
     return createErrors(cloned.value)
   }
 }
-// 互斥规则校验
+// 互斥规则校验 系统配置单的
 const mutualRuleShop = () => {
   const { detail } = useProductStore()
   const { cloned } = useCloned(detail)
@@ -118,6 +118,9 @@ const mutualRuleShop = () => {
     const errs = getCompactErrors(_params, index, item.product)
     const uniqueData = [...new Map(errs.map(item => [item.message, item])).values()]
     detail.params[index].product.errors = uniqueData
+    if (!ProductStatus(item.product.status)) {
+      detail.params[index].product.errors?.push({ key: item.paramDesc, message: '此商品已下架，无法完成下单，请修改配置' })
+    }
   })
 
   function getCompactErrors(sourceParams: any, paramsIndex: any, data: any) {
@@ -195,7 +198,7 @@ const okfn = () => {
 
 // 改配选择配置  设置id
 const selectFn = (item: any) => {
-  if (item.errors.length !== 0) {
+  if (item.errors.length !== 0 || !ProductStatus(item.status)) {
     return false
   }
   saveId.value = item.id
@@ -231,8 +234,14 @@ defineExpose({
             <product-custom-singlebg />
           </template>
           <template v-else>
-            <div class="topLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
-            <div class="bottomLine" :class="[item.errors.length !== 0 ? 'line lineGrey' : 'line']" />
+            <div
+              class="topLine"
+              :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
+            />
+            <div
+              class="bottomLine"
+              :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
+            />
           </template>
           <div class="goodsImg">
             <product-image :src="ImageUrl(item.banner[0])" />
@@ -302,7 +311,7 @@ defineExpose({
 }
 
 .scroll-view {
-  height: 626rpx;
+  height: 40vh;
 
   .empty {
     height: 40rpx;

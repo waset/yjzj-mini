@@ -2,9 +2,16 @@ export const useDiyStore = defineStore('diy', {
   state: (): {
     gamesList: gamesList[]
     ModificationList: any
+    peripheral: Product[]
+    types: ProductType[]
+    selectPeripheral: any
+
   } => ({
     gamesList: [],
     ModificationList: [],
+    peripheral: [], // 外设列表
+    types: [],
+    selectPeripheral: [], // 已选数组
   }),
   actions: {
     // 获取游戏列表
@@ -77,8 +84,30 @@ export const useDiyStore = defineStore('diy', {
       const { data } = await http.post('/web/product/config/info', { id })
       return data
     },
-
+    // 获取外设列表
+    async getProducts(params: GetProductParams) {
+      const { code, data } = await http.post<Product_res>('/web/product/list', params, { auth: false })
+      if (code === 200) {
+        if (data.length === 0) {
+          return
+        }
+        this.peripheral = [...this.peripheral, ...data]
+        return data
+      }
+    },
+    // 获取外设 类型 type
+    async getCategorys(page: number = 1, pageSize: number) {
+      const { categorys } = storeToRefs(useProductStore())
+      const { data, code } = await http.post<ProductType[]>('/web/product/type/list', {
+        parentID: categorys.value.peripherals.value,
+        page,
+        pageSize,
+      }, { auth: false })
+      if (code === 200)
+        this.types = data
+    },
   },
+
 })
 
 function cycleData(data: any) {
