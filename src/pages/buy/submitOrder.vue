@@ -75,6 +75,7 @@ onShow(async () => {
   try {
     // 获取优惠列表
     await getCouponList(page.value, 15)
+    await canUseCoupon(nowAddress.value.id, [detail?.value?.id || 0], undefined)
   }
   catch (error) {
     console.error('Failed to fetch coupon list:', error)
@@ -88,13 +89,13 @@ onMounted(async () => {
     }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id || 0, number: 1, relationType: 1 })
-    if (!detail.value.id) {
+
+    if (detail.value.typeParentID === 6) {
       submitOrderParams.value.details[0].relationType = 2
       submitOrderParams.value.details[0].id = detail.value.alloaction
     }
     totalNumber.value = 1
     payment.value = Number(detail.value.sellPrice)
-    await canUseCoupon(nowAddress.value.id, [detail.value.id], undefined)
   }
   else {
     // 购物车进入
@@ -110,23 +111,23 @@ onMounted(async () => {
         // 放进当前商品列表
         nowGoods.value.push(item)
         // 总数量  用于展示
-        totalNumber.value += item.quantity
+        totalNumber.value += (item.quantity | item.number)
         //  总金额 用于展示
-        payment.value += Number(item.sellPrice) * item.quantity
+        payment.value += Number(item.sellPrice) * (item.quantity | item.number)
         // 产品id 列表 用于提交订单时的参数
         productIDs.value.push(item.id)
 
         if (!item.id) {
           arr.value.push({
             id: item.alloaction as number,
-            number: item.quantity,
+            number: (item.quantity | item.number),
             relationType: 2,
           })
         }
         else {
           arr.value.push({
             id: item.id,
-            number: item.quantity,
+            number: (item.quantity | item.number),
             relationType: 1,
           })
         }
@@ -198,7 +199,7 @@ const paym = computed(() => {
     <buys-settlement-card :number="totalNumber" :totalpay="payment" :pay="paym" :coupon="couponPrice" />
     <buys-bottom-submit :number="totalNumber" :pay="paym" @submit-order="submitOrderFn" />
 
-    <common-popup :show="showPop" name="备注" height="70%" @close="showPop = false">
+    <common-popup :show="showPop" name="备注" height="75%" @close="showPop = false">
       <div>
         <buys-submit-remark @write-mark="writeMarkFn" />
       </div>

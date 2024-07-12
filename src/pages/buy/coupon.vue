@@ -6,6 +6,7 @@ const page = ref<number>(1)
 onShow(async () => {
   page.value = 0
   try {
+    couponList.value = []
     // 获取优惠列表
     await getCouponList(page.value += 1, 15)
   }

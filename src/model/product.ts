@@ -69,6 +69,7 @@ export const useProductStore = defineStore('product', {
 
       if (code === 200) {
         this.detail = data
+        this.detail.perihera = []
       }
     },
 
