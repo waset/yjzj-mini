@@ -57,6 +57,8 @@ interface Product {
   banner: string[]
   brand: Brand
   brandID: number
+  number: number
+  perihera: Product[]
   configNO: string
   configUniqueCode: string
   content: string[]
