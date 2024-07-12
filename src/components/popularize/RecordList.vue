@@ -91,15 +91,15 @@ function reachBottom() {
       </template>
       <!-- 表单 -->
       <div class="scroll_view">
-        <div class="title_tab">
-          <template v-for="(item, index) in tabIndex ? tabTitleX.tabTwo : tabTitleX.tabOne" :key="index">
-            <div class="title_text">
-              {{ item }}
-            </div>
-          </template>
-        </div>
         <div>
           <template v-if="!tabIndex ? rebatelist && rebatelist.length > 0 : withdrawlist && withdrawlist.length > 0">
+            <div class="title_tab">
+              <template v-for="(item, index) in tabIndex ? tabTitleX.tabTwo : tabTitleX.tabOne" :key="index">
+                <div class="title_text">
+                  {{ item }}
+                </div>
+              </template>
+            </div>
             <scroll-view class="list_scroll" :scroll-y="true" @scrolltolower="reachBottom">
               <template v-for="(item, index) in !tabIndex ? rebatelist : withdrawlist" :key="index">
                 <div class="title_list">
