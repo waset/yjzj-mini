@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const props = defineProps<{
   info: Product | null
+  price?: number
 }>()
+const { detail } = storeToRefs(useProductStore())
 </script>
 
 <template>
@@ -17,7 +19,7 @@ const props = defineProps<{
         <div class="more">
           <div class="price">
             <span>￥</span>
-            <span>{{ props.info?.sellPrice || 0 }}</span>
+            <span>{{ detail?.typeParentID === 6 ? price : detail?.sellPrice }}</span>
           </div>
           <div class="btns">
             <button class="btn" open-type="share">
@@ -33,38 +35,38 @@ const props = defineProps<{
 </template>
 
 <style scoped lang="scss">
-  .product-top {
+.product-top {
 
-    .top {
+  .top {
+    padding: 32rpx;
+
+    .wrap {
       padding: 32rpx;
+      border-radius: 16rpx;
+      background-color: #000;
+      word-break: break-all;
 
-      .wrap {
-        padding: 32rpx;
-        border-radius: 16rpx;
-        background-color: #000;
-        word-break: break-all;
+      .title {
+        font-size: 36rpx;
+        line-height: 48rpx;
+        color: rgba(245, 245, 245, 1);
+      }
 
-        .title {
-          font-size: 36rpx;
-          line-height: 48rpx;
-          color: rgba(245, 245, 245, 1);
+      .desc {
+        font-size: 24rpx;
+        line-height: 36rpx;
+        color: #bebebe;
+        padding: 16rpx 0;
+      }
+
+      .more {
+        @apply flex-between;
+        font-size: 48rpx;
+        line-height: 56rpx;
+
+        .price {
+          @apply text-green;
         }
-
-        .desc {
-          font-size: 24rpx;
-          line-height: 36rpx;
-          color: #bebebe;
-          padding: 16rpx 0;
-        }
-
-        .more {
-          @apply flex-between;
-          font-size: 48rpx;
-          line-height: 56rpx;
-
-          .price {
-            @apply text-green;
-          }
 
           .btns {
             .btn {
@@ -76,18 +78,18 @@ const props = defineProps<{
                 content: none;
               }
 
-              height: 100%;
-              padding: 0 24rpx;
-              @apply flex-center;
-              flex-direction: column;
-            }
+            height: 100%;
+            padding: 0 24rpx;
+            @apply flex-center;
+            flex-direction: column;
           }
         }
       }
+    }
 
-      .price {
-        @apply text-green;
-      }
+    .price {
+      @apply text-green;
     }
   }
+}
 </style>

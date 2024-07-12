@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-const { couponList } = storeToRefs(useSubmitOrderStore())
-const { getCouponList, canusecouponList } = useSubmitOrderStore()
-
-const page = ref<number>(1)
+const { couponList, canusecouponList } = storeToRefs(useSubmitOrderStore())
+const { detail } = storeToRefs(useProductStore())
+const { nowAddress } = storeToRefs(useAddressStore())
+const { canUseCoupon } = useSubmitOrderStore()
 
 const show = ref<boolean>(false)
 const rule = ref('')
@@ -21,15 +21,13 @@ const selectItem = (index: number) => {
   selectId.value = couponList.value[index]?.id ?? 0
   price.value = couponList.value[index]?.ticketInfo?.discountPrice ?? '0'
 }
+// 获取兑换后的列表
+const getListFn = async () => {
+  await canUseCoupon(nowAddress.value.id, [detail.value?.id || 0], undefined)
+}
 
 const confirm = () => {
   Jump('/pages/buy/submitOrder', { id: selectId.value, couponPrice: price.value }, 1)
-}
-
-// 更新优惠券列表
-const updateCouponFn = async () => {
-  page.value = 0
-  await getCouponList(page.value += 1, 15)
 }
 </script>
 
@@ -37,7 +35,7 @@ const updateCouponFn = async () => {
   <div>
     <navbar-back text="我的优惠券" />
     <div class="body">
-      <buys-coupon-search @update-coupon="updateCouponFn" />
+      <buys-coupon-search @get-list="getListFn" />
 
       <template v-if="canusecouponList.length === 0">
         <common-empty text="当前暂无优惠券" icon="i-svg-nocoupon" />

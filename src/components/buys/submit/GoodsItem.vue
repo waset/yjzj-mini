@@ -29,7 +29,7 @@ const checkFn = (index: number) => {
               </div>
               <div class="goodsOptions">
                 <div class="goodsTitle">
-                  {{ item.name }}
+                  {{ item.name || `配置单${item.id}` }}
                 </div>
                 <div class="options" @click="checkFn(index)">
                   配置详情
@@ -41,7 +41,7 @@ const checkFn = (index: number) => {
                     ￥{{ item.sellPrice }}
                   </div>
                   <div class="Number">
-                    x {{ item.quantity }}
+                    x {{ item.quantity || item.number }}
                   </div>
                 </div>
               </div>
@@ -112,13 +112,13 @@ const checkFn = (index: number) => {
         width: 400rpx;
         height: 144rpx;
 
-      .goodsTitle {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
+        .goodsTitle {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: break-all;
 
           font-weight: 500;
           font-size: 28rpx;

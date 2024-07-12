@@ -86,7 +86,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
       try {
         const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', { page, pageSize }, { auth: true })
         if (code === 200)
-          this.couponList = data
+          this.couponList = [...this.couponList, ...data]
       }
       catch {
         uni.showToast({
@@ -98,7 +98,7 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     // 获取可用卡券
     async canUseCoupon(userAddressID: number, productIDs?: number[], productConfigIDs?: string[]) {
       try {
-        const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { productIDs, productConfigIDs, userAddressID }, { auth: true })
+        const { data, code } = await http.post<couponList[]>('/web/user/ticket/can/use/list', { userAddressID, productIDs, productConfigIDs }, { auth: true })
         if (code === 200) {
           this.canusecouponList = data
           this.canUseCouponNum = data.length
@@ -110,11 +110,20 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
     },
 
     // 获取卡券
-    async getCoupon(params: couponReq) {
+    async getCoupon(params: getcouponReq) {
       try {
-        const { data, code } = await http.post<couponList[]>('/web/user/ticket/list', params, { auth: true })
-        if (code === 200)
-          this.couponList = data
+        const { code } = await http.post<couponList[]>('/web/user/ticket/get', params, { auth: true })
+        if (code === 200) {
+          this.couponList = []
+          this.getCouponList(1, 100)
+          uni.showToast({
+            title: '兑换成功',
+            icon: 'success',
+          })
+          return code
+        }
+
+        // this.canUseCoupon(nowAddress.value.id, [detail?.value?.id || 0], undefined)
       }
       catch {
         uni.showToast({
@@ -239,5 +248,5 @@ export const useSubmitOrderStore = defineStore('submitOrder', {
 
   },
 
-  persist: true,
+  persist: false,
 })
