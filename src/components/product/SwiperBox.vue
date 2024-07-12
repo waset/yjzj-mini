@@ -138,9 +138,9 @@ const changeGame = (text: string) => {
         </div> -->
         <div class="swiper">
           <carousel
-            v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="vertical"
+            v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="horizontal"
             :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="0" offset-y-step-units="rpx" :scale-step="0.8"
-            :opacity-step="0.99" overflow="visible" loop switch natural-direction
+            :opacity-step="0.99" overflow="visible" loop switch :natural-direction="true"
           >
             <template #item="{ item, index }">
               <div
@@ -283,7 +283,9 @@ const changeGame = (text: string) => {
       .name-text {
         font-size: 32rpx;
         font-weight: 600;
-
+        padding: 8rpx 32rpx;
+        background-color: #000;
+        border-radius: 40rpx;
       }
 
       .length {

@@ -80,8 +80,8 @@ export const useDiyStore = defineStore('diy', {
     },
 
     // 获取配置单详情
-    async getConfigInfo(id: number) {
-      const { data } = await http.post('/web/product/config/info', { id })
+    async getConfigInfo(id: number, shareCode?: string) {
+      const { data } = await http.post('/web/product/config/info', { id, shareCode })
       return data
     },
     // 获取外设列表

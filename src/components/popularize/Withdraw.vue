@@ -1,46 +1,29 @@
 <script setup lang="ts">
 // 提现成功提示
-const { userDesc, user } = storeToRefs(useUserStore())
+const { user } = storeToRefs(useUserStore())
 const { CashWithdraw } = usePopularizeStore()
 const showWIthdraw = ref(false) // 提现表单弹出
 const showModel = ref(false)// 账户信息
-const moneyObject = ref({
-  proportion: {
-    title: '返利比例',
-    value: userDesc.value.promoter.rebateRatio,
-  },
-  way: {
-    title: '返利方式',
-    value: userDesc.value.promoter.rebateTypeDesc,
-  },
-  balance: {
-    title: '账号余额',
-    value: Number.parseFloat(userDesc.value.balanceAmount).toFixed(2),
-  },
-})
 // 提现说明
 const explainArray = [
   '1、每天最多可提现1次，每次提现至少10元，最多2000元。',
   '2、提现将于1~3个工作日到账，特殊情况可能顺延。',
   '3、提现将收取1%的微信支付手续费。',
 ]
-// 提现弹框
-function eventWithdraw() {
-  if (moneyObject.value.balance.value !== '0.00') {
-    showWIthdraw.value = !showWIthdraw.value
-  }
-}
 
 // 提现金额
 const amount = ref()
 
 // 全部提现
 function allWithdraw() {
+  showModel.value = true
   amount.value = user.value.balanceAmount
 }
 
 // 提现校验
 async function withdrawEvent() {
+  const isWithdraw = Number.parseFloat(amount.value)
+
   if (user.value.isSub === 2) {
     uni.showToast({ title: '请先关注“一剑装机”公众号', icon: 'none' })
     return
@@ -51,16 +34,16 @@ async function withdrawEvent() {
     return
   }
 
-  if (!amount.value || amount.value <= 0) {
+  if (!amount.value || isWithdraw <= 0) {
     return uni.showToast({ title: '请正确输入提现金额', icon: 'none' })
   }
 
-  if (amount.value > 2000) {
+  if (isWithdraw > 2000) {
     uni.showToast({ title: '单笔提现金额不能超过2000元', icon: 'none' })
     return
   }
 
-  if (amount.value < 10) {
+  if (isWithdraw < 10) {
     uni.showToast({ title: '单笔提现金额不能少于10元', icon: 'none' })
   }
   await serveWithdraw()
@@ -89,102 +72,68 @@ function InpAmount(e: any) {
 </script>
 
 <template>
-  <div class="popu_user">
-    <div class="user">
-      <div class="avatar">
-        <avatar :src="userDesc.avatar" width="48rpx" />
-      </div>
-      <div class="name">
-        {{ userDesc.nickname }}
-      </div>
-      <div class="grade">
-        当前等级 {{ userDesc.promoter.levelName }}
-      </div>
-      <div class="i-svg-medal-v2 popu_svg_medal" />
-      <div class="integral_right">
-        积分：{{ userDesc.promoter.cycleOrderAmount }}
-      </div>
-    </div>
-    <div class="money_view">
-      <div class="wrap">
-        <div v-for="(item, key, index) in moneyObject" :key="key" class="money_details">
-          <div class="money_title">
-            {{ item.title }}
-          </div>
-          <div class="subhead">
-            {{ index === 2 ? `￥${item.value}` : `${item.value}` }}
-          </div>
-        </div>
-      </div>
-      <div :class="moneyObject.balance.value === '0.00' ? 'withdraw' : ' subheads'" @click="eventWithdraw">
-        立即提现
-      </div>
-    </div>
-  </div>
   <!-- 提现成功提醒 -->
   <common-model v-model:show="showModel" msg="零钱提现已发起，请耐心等待。" icon="i-svg-success" @ok="showModel = false" />
   <!-- 提现弹窗 -->
-  <common-popup v-model:show="showWIthdraw" name="申请提现">
-    <div class="money_view_popup">
-      <div class="icon i-svg-product-bg " />
-      <div class="money_text">
-        可提现金额（元）
-      </div>
-      <div class="money">
-        <div class="money_one">
-          ￥
-        </div>
-        <div class="money_two">
-          {{ user.balanceAmount }}
-        </div>
-      </div>
-      <div class="money_way">
-        到账方式
-        <div class="i-svg-weixin-icon money_way_svg" />
-        微信零钱
-      </div>
+  <div class="money_view_popup">
+    <div class="icon i-svg-product-bg " />
+    <div class="money_text">
+      可提现金额（元）
     </div>
-    <div class="ensure_view">
-      <div class="ensure_style">
-        <div class="i-icons-authentication money_way_svg" />
-        实名认证
-      </div>
-      <div class="ensure_style" @click="user.realName || Jump('/pages/me/info', { type: 'authentication' })">
-        {{ user.realName ? '已认证' : '未认证' }}
-        <template v-if="!user.realName">
-          <div class="i-icons-right money_way_svg" />
-        </template>
-      </div>
-    </div>
-    <div class="popup_text">
-      提现金额
-    </div>
-    <div class="input_view">
-      <input v-model="amount" type="number" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
-      <div class="money_icon">
+    <div class="money">
+      <div class="money_one">
         ￥
       </div>
-      <div class="sum_all" @click="allWithdraw">
-        全部提现
+      <div class="money_two">
+        {{ user.balanceAmount }}
       </div>
     </div>
-    <!-- 渐变底线 -->
-    <div class="gradient-line" />
-    <template v-if="realAmount">
-      <div class="reality_sum">
-        实际到账金额 {{ realAmount }}
-      </div>
-    </template>
-    <div class="withdraw_explain" style="margin-top: 60rpx;">
-      <div class="icon i-icons-info" style="margin-right: 6.66rpx;" /> 提现说明
+    <div class="money_way">
+      到账方式
+      <div class="i-svg-weixin-icon money_way_svg" />
+      微信零钱
     </div>
-    <div v-for="(item, index) in explainArray" :key="index" class="withdraw_explain">
-      {{ item }}
+  </div>
+  <div class="ensure_view">
+    <div class="ensure_style">
+      <div class="i-icons-authentication money_way_svg" />
+      实名认证
     </div>
-    <div class="button_style" @click="withdrawEvent">
-      立即提现
+    <div class="ensure_style" @click="user.realName || Jump('/pages/me/info', { type: 'authentication' })">
+      {{ user.realName ? '已认证' : '未认证' }}
+      <template v-if="!user.realName">
+        <div class="i-icons-right money_way_svg" />
+      </template>
     </div>
-  </common-popup>
+  </div>
+  <div class="popup_text">
+    提现金额
+  </div>
+  <div class="input_view">
+    <input v-model="amount" type="number" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
+    <div class="money_icon">
+      ￥
+    </div>
+    <div class="sum_all" @click="allWithdraw">
+      全部提现
+    </div>
+  </div>
+  <!-- 渐变底线 -->
+  <div class="gradient-line" />
+  <template v-if="realAmount">
+    <div class="reality_sum">
+      实际到账金额 {{ realAmount }}
+    </div>
+  </template>
+  <div class="withdraw_explain" style="margin-top: 60rpx;">
+    <div class="icon i-icons-info" style="margin-right: 6.66rpx;" /> 提现说明
+  </div>
+  <div v-for="(item, index) in explainArray" :key="index" class="withdraw_explain">
+    {{ item }}
+  </div>
+  <div class="button_style" @click="withdrawEvent">
+    立即提现
+  </div>
 </template>
 
 <style lang="scss" scoped>

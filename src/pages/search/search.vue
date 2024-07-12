@@ -66,12 +66,10 @@ const goDetails = (item: Product) => {
     <template v-if="showNodata">
       <common-sort-filter @change="onChange" />
       <template v-if="searchList && searchList.length">
-        <product-list
-          :list="searchList" :layout="layout ? 'grids' : 'rows'" @click="goDetails"
-        />
+        <product-list :list="searchList" :layout="layout ? 'grids' : 'rows'" @click="goDetails" />
       </template>
       <template v-else>
-        <common-empty text="抱歉，没有找到相关结果" icon="i-icons-nosearch" />
+        <common-empty text="商品列表为空~" />
       </template>
     </template>
   </div>

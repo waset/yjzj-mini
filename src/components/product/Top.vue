@@ -68,10 +68,15 @@ const { detail } = storeToRefs(useProductStore())
           @apply text-green;
         }
 
-        .btns {
-          .btn {
-            // 清除系统button样式
-            all: unset;
+          .btns {
+            .btn {
+              // 清除系统button样式
+              all: unset;
+              display: inline-block;
+
+              &::after {
+                content: none;
+              }
 
             height: 100%;
             padding: 0 24rpx;

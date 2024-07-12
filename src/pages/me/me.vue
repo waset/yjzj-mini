@@ -107,6 +107,13 @@ const menus = [
       Jump('/pages/me/address/index')
     },
   },
+  {
+    icon: 'i-icons-service',
+    text: '联系客服',
+    click: () => {
+      contact_customer_service()
+    },
+  },
 ]
 /**
  * 跳转登录

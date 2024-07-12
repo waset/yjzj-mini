@@ -1,7 +1,17 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  config: any
+  config: Product | null
 }>()
+
+const info = ref<Product | null>()
+
+watchEffect(() => {
+  info.value = props.config
+  if (!info.value) {
+    return
+  }
+  info.value.params = info.value?.params.sort((a, b) => a.id - b.id)
+})
 </script>
 
 <template>
@@ -15,7 +25,7 @@ const props = defineProps<{
           <div class="info">
             <div class="top">
               <div class="type">
-                {{ item.desc }}
+                {{ item.desc || item.paramDesc }}
               </div>
               <div v-if="item.number" class="num">
                 <span>x</span>

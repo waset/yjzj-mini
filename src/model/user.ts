@@ -8,9 +8,14 @@ export const useUserStore = defineStore('user', {
      * 是否已经注册
      */
     isRegister: boolean
+    /**
+     * 分享者邀请码
+     */
+    shareCode: string
   } => ({
     user: {} as UserInfo,
     isRegister: false,
+    shareCode: '',
   }),
   getters: {
     userDesc: (state) => {
@@ -58,7 +63,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     async uploadAvatar(avatarUrl: string) {
-      const { data } = await http.upload<UploadRes>('/web/file/upload', avatarUrl, {})
+      const { data } = await http.upload<UploadRes>('/web/file/upload', {}, { filePath: avatarUrl })
 
       return data?.fileKey || ''
     },

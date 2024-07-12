@@ -1,16 +1,19 @@
 @mixin clear-style {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
+
 /* #ifdef H5 */
-div{
-    &,
-    &::before,
-    &::after {
-        @include clear-style;
-    }
+div {
+
+  &,
+  &::before,
+  &::after {
+    @include clear-style;
+  }
 }
+
 /* #endif */
 page,
 text,
@@ -19,9 +22,10 @@ navigator,
 swiper,
 swiper-item,
 image {
-    &,
-    &::before,
-    &::after {
-        @include clear-style;
-    }
+
+  &,
+  &::before,
+  &::after {
+    @include clear-style;
+  }
 }

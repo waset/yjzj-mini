@@ -8,6 +8,7 @@ const { addProduct } = useBuyStore()
 interface PageReq {
   id: Product['id'] | null
   config_id: Product['id'] | null
+  shareCode: Product['shareCode'] | null
 }
 const deatrr = ['CPU', '主板', '显卡', '内存', '硬盘', '机箱', 'CPU散热器', '电源']
 const parr = ref<any[]>([
@@ -76,6 +77,18 @@ onLoad(async (params) => {
     detail.value.sellPrice = data.sellPrice // 配置单价格
   }
 
+  if (req.shareCode) {
+    detail.value = {} as Product
+    detail.value.typeParentID = 6
+    detail.value.params = []
+    const data = await getConfigInfo(0, req.shareCode)
+    updataParams(data.products)
+    detail.value.params = parr.value // 配置单params
+    detail.value.alloaction = data.id // 配置单id
+    detail.value.name = `配置单${data.id}` // 配置单name
+    detail.value.sellPrice = data.sellPrice // 配置单价格
+  }
+
   if (isEmpty(user.value)) {
     uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
     setTimeout(() => {
@@ -136,6 +149,8 @@ const allocationId = async () => {
   const data = await addConfiguration(params.value)
   //  收藏配置单
   await collectionConfig(data.no)
+  // @ts-expect-error detail.value一定有值
+  detail.value.shareCode = data.shareCode
 
   //  如果改了配置    就会变成 配 置单xxxx
   //  如果啥都没改    还是原来的配置单
@@ -216,11 +231,18 @@ const addBuyCar = async () => {
 // #ifdef MP
 onShareAppMessage(async () => {
   const params = {} as any
-  if (!detail.value?.id || !detail.value?.alloaction) {
+  if (!isPass()) {
+    return {
+      title: '自由定制',
+      path: '/pages/product/diy',
+    }
+  }
+
+  if (!detail.value?.shareCode) {
     await allocationId()
   }
 
-  params.config_id = detail.value?.alloaction
+  params.shareCode = detail.value?.shareCode
   params.inviteCode = user.value?.inviteCode
 
   return {
@@ -257,54 +279,54 @@ onShareAppMessage(async () => {
 </template>
 
 <style scoped lang="scss">
-.detail {
-  padding: 48rpx 0;
+  .detail {
+    padding: 48rpx 0;
 
-  .banner {
-    padding: 0 32rpx;
+    .banner {
+      padding: 0 32rpx;
+    }
+
+    .swiper {
+      padding: 32rpx;
+    }
+
   }
 
-  .swiper {
-    padding: 32rpx;
+  .select {
+    .commodity_list {
+      padding: 32rpx;
+      padding-bottom: 144rpx;
+    }
+
   }
 
-}
-
-.select {
-  .commodity_list {
-    padding: 32rpx;
-    padding-bottom: 144rpx;
-  }
-
-}
-
-.showSelected {
-  font-size: 28rpx;
-  padding: 32rpx 32rpx 0 32rpx;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  .selectedItem {
-    margin-right: 16rpx;
-    width: fit-content;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    padding: 8rpx 16rpx;
-    background-color: #414141;
-    color: #A7F522;
-    border-radius: 8rpx;
+  .showSelected {
+    font-size: 28rpx;
+    padding: 32rpx 32rpx 0 32rpx;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    margin-bottom: 16rpx;
+    flex-wrap: wrap;
 
-    .i-icons-closed {
-      color: #fff;
-      font-size: 24rpx;
-      margin-left: 8rpx;
+    .selectedItem {
+      margin-right: 16rpx;
+      width: fit-content;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      padding: 8rpx 16rpx;
+      background-color: #414141;
+      color: #A7F522;
+      border-radius: 8rpx;
+      display: flex;
+      align-items: center;
+      margin-bottom: 16rpx;
 
+      .i-icons-closed {
+        color: #fff;
+        font-size: 24rpx;
+        margin-left: 8rpx;
+
+      }
     }
   }
-}
 </style>

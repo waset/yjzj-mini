@@ -26,10 +26,12 @@ export const useAuthStore = defineStore('auth', {
         this.key = data.loginKey
     },
     async getToken(code: string) {
+      const user = useUserStore()
       const { data, code: rescode } = await http.post<LoginRes>('/web/login', {
         code,
         loginKey: this.key,
         type: 'miniPrograms',
+        inviteCode: user.shareCode || undefined,
       } as LoginReq, { auth: false })
       if (rescode === 200) {
         this.token = data.token

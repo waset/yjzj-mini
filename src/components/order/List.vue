@@ -15,13 +15,6 @@ const more = ref([
   },
 ])
 
-// 是否展示下拉菜单
-const showDropSwitch = ref(false)
-// 显示下拉菜单的方法
-function toggleDropFn() {
-  showDropSwitch.value = !showDropSwitch.value
-}
-
 // 查看明细弹窗
 const detailDialog = ref(false)
 // 查看明细弹窗内展示信息
@@ -32,12 +25,32 @@ function showDetailDialogFn() {
   detailInfo.value = props.order
 }
 
+// 是否展示下拉菜单
+const showDropSwitch = ref(false)
+// 显示下拉菜单的方法
+function toggleDropFn() {
+  showDropSwitch.value = !showDropSwitch.value
+  if (showDropSwitch.value) {
+    // 设置两秒后自动关闭下拉菜单
+    setTimeout(() => {
+      // 若并未弹出弹窗，则关闭下拉菜单
+      if (!detailDialog.value) {
+        showDropSwitch.value = false
+      }
+    }, 2000)
+  }
+}
+
 // 下拉菜单点击事件
 const DropFn = (name: string) => {
   switch (name) {
     case 'detail':
       // 查看明细
       showDetailDialogFn()
+      if (showDropSwitch.value) {
+        // 展示明细弹窗后，若下拉菜单已打开，则关闭下拉菜单
+        showDropSwitch.value = false
+      }
       break
   }
 }
@@ -211,7 +224,7 @@ const filterOrder = (status: Order['status']) => {
                 <div class="title">
                   遇到问题？
                 </div>
-                <div class="btn">
+                <div class="btn" @click="contact_customer_service()">
                   <div class="i-icons-service" />
                   <div class="text">
                     联系客服
@@ -510,7 +523,9 @@ const filterOrder = (status: Order['status']) => {
           }
 
           .desc {
-            display: -webkit-box;
+            display: flex;
+            justify-content: flex-end;
+
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             text-overflow: ellipsis;
