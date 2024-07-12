@@ -226,54 +226,59 @@ defineExpose({
 </script>
 
 <template>
-  <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
-    <template v-for="(item, index) in ModificationList" :key="index">
-      <div class="card mb-4">
-        <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
-          <template v-if="saveId === item.id">
-            <product-custom-singlebg />
-          </template>
-          <template v-else>
-            <div
-              class="topLine"
-              :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
-            />
-            <div
-              class="bottomLine"
-              :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
-            />
-          </template>
-          <div class="goodsImg">
-            <product-image :src="ImageUrl(item.banner[0])" />
-          </div>
-          <div class="goodsInfo">
-            <div class="row1 fs28">
-              {{ item.name }}
+  <template v-if="ModificationList && ModificationList.length">
+    <scroll-view :scroll-y="true" class="scroll-view" :enable-flex="true" @scrolltolower="reachBottom">
+      <template v-for="(item, index) in ModificationList" :key="index">
+        <div class="card mb-4">
+          <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
+            <template v-if="saveId === item.id">
+              <product-custom-singlebg />
+            </template>
+            <template v-else>
+              <div
+                class="topLine"
+                :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
+              />
+              <div
+                class="bottomLine"
+                :class="[item.errors.length !== 0 || !ProductStatus(item.status) ? 'line lineGrey' : 'line']"
+              />
+            </template>
+            <div class="goodsImg">
+              <product-image :src="ImageUrl(item.banner[0])" />
             </div>
-            <div class="row2 fs20">
-              {{ item.description }}
-            </div>
-            <div class="row3">
-              <div class="fs24 check" @click="checkInfo(item)">
-                查看详情
-                <div class="i-icons-right" />
+            <div class="goodsInfo">
+              <div class="row1 fs28">
+                {{ item.name }}
               </div>
-              <div class="fs32 price">
-                ￥{{ item.sellPrice }}
+              <div class="row2 fs20">
+                {{ item.description }}
+              </div>
+              <div class="row3">
+                <div class="fs24 check" @click="checkInfo(item)">
+                  查看详情
+                  <div class="i-icons-right" />
+                </div>
+                <div class="fs32 price">
+                  ￥{{ item.sellPrice }}
+                </div>
               </div>
             </div>
           </div>
+          <template v-if="item.errors.length !== 0">
+            <div class="error mt-1">
+              <div class="icon i-icons-info" />
+              <div>{{ item.errors[0]?.message || '' }}</div>
+            </div>
+          </template>
         </div>
-        <template v-if="item.errors.length !== 0">
-          <div class="error mt-1">
-            <div class="icon i-icons-info" />
-            <div>{{ item.errors[0]?.message || '' }}</div>
-          </div>
-        </template>
-      </div>
-    </template>
-    <div class="empty" />
-  </scroll-view>
+      </template>
+      <div class="empty" />
+    </scroll-view>
+  </template>
+  <template v-else>
+    <common-empty text="抱歉，没有找到相关结果" icon="i-icons-nosearch" />
+  </template>
   <common-popup v-model:show="showConfigsSwitch" name="配置详情">
     <buys-show-alloaction :config="showConfigs" />
   </common-popup>
