@@ -20,13 +20,10 @@ function allWithdraw() {
   amount.value = user.value.balanceAmount
 }
 
-// 余额转数字类型
-const isWithdraw = computed(() => {
-  return Number.parseFloat(amount.value)
-})
-
 // 提现校验
 async function withdrawEvent() {
+  const isWithdraw = Number.parseFloat(amount.value)
+
   if (user.value.isSub === 2) {
     uni.showToast({ title: '请先关注“一剑装机”公众号', icon: 'none' })
     return
@@ -37,16 +34,16 @@ async function withdrawEvent() {
     return
   }
 
-  if (!amount.value || isWithdraw.value <= 0) {
+  if (!amount.value || isWithdraw <= 0) {
     return uni.showToast({ title: '请正确输入提现金额', icon: 'none' })
   }
 
-  if (isWithdraw.value > 2000) {
+  if (isWithdraw > 2000) {
     uni.showToast({ title: '单笔提现金额不能超过2000元', icon: 'none' })
     return
   }
 
-  if (isWithdraw.value < 10) {
+  if (isWithdraw < 10) {
     uni.showToast({ title: '单笔提现金额不能少于10元', icon: 'none' })
   }
   await serveWithdraw()
