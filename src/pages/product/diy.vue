@@ -131,7 +131,6 @@ const allocationId = async () => {
   Object.entries(detail.value?.perihera || {}).forEach(([_, item]) => {
     params.value.params.push({ pID: item?.id as number, num: item.number })
   })
-  console.log(params.value)
 
   // 新增配置单
   const data = await addConfiguration(params.value)
