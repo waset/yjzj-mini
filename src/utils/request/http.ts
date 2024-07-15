@@ -60,7 +60,7 @@ class Http {
       }
 
       switch (this.options.methods) {
-        case 'UPLOAD':{
+        case 'UPLOAD': {
           uni.uploadFile<UniNamespace.UploadFileOption>({
             url: this.options.baseUrl + api,
             filePath: this.options.filePath,
@@ -76,11 +76,14 @@ class Http {
             fail: (err: any) => {
               return resolve(this.fail(err) as T)
             },
+            complete: () => {
+              this.options?.showLoading && uni.hideLoading()
+            },
           })
           break
         }
 
-        default:{
+        default: {
           /**
            * 发起请求
            */
@@ -97,7 +100,7 @@ class Http {
             ...options,
             header: { ...options?.headers },
             complete: () => {
-              uni.hideLoading()
+              this.options?.showLoading && uni.hideLoading()
             },
           })
           break

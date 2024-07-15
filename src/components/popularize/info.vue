@@ -2,10 +2,19 @@
 const emits = defineEmits(['bandinvite', 'openwith'])
 
 const { user, userDesc } = storeToRefs(useUserStore())
+
+const lvIcon = [
+  'i-svg-medal-lv1',
+  'i-svg-medal-lv2',
+  'i-svg-medal-lv3',
+  'i-svg-medal-lv4',
+  'i-svg-medal-lv5',
+]
+
 const WithInfo = ref([
   {
     title: '当前等级',
-    value: `i-svg-medal-lv${user.value.promoter.levelLevel || 1}`,
+    value: lvIcon[user.value.promoter.levelLevel || 0],
     isicon: true,
   },
   {
@@ -51,9 +60,9 @@ const messageArray = ref([
   {
     Isvg: 'i-svg-vector',
     title: '邀请链接',
-    value: `${import.meta.env.VITE_DOMAIN_URL || ''}/login?inviteCode=${user.value.inviteCode}`,
+    value: DomainUrl(`/login?inviteCode=${user.value.inviteCode}`),
     click: () => {
-      copyText(`${import.meta.env.VITE_DOMAIN_URL || ''}/login?inviteCode=${user.value.inviteCode}`)
+      copyText(DomainUrl(`/login?inviteCode=${user.value.inviteCode}`))
     },
   },
   {
@@ -82,7 +91,6 @@ const balance = ref([
 </script>
 
 <template>
-  <!-- <div class="info m-4" :style="{ backgroundImage: `url(${pbg}` }"> -->
   <div class="info m-4">
     <img class="dag" src="@/assets/background/drawdag.svg" alt="">
     <div class="title">

@@ -40,7 +40,7 @@ function isCenter(index: number) {
 
 <style scoped lang="scss">
   .tabbar {
-    @apply: fixed z-999 bottom-0 left-0 w-full;
+    @apply fixed z-999 bottom-0 left-0 w-full;
 
     padding-top: var(--tabbar-padding-top);
     padding-bottom: var(--tabbar-padding-bottom);
@@ -52,10 +52,10 @@ function isCenter(index: number) {
     .lists {
       height: var(--tabbar-height);
 
-      @apply: flex items-center justify-around;
+      @apply flex items-center justify-around;
 
       .item {
-        @apply: flex items-center justify-center;
+        @apply flex items-center justify-center;
 
         color: #FFF5F5F5;
 

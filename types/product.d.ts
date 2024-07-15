@@ -125,6 +125,8 @@ interface Product {
     key?: string
     message?: string
   }[]
+
+  color?: string
 }
 
 interface Brand {

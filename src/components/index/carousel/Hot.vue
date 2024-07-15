@@ -12,23 +12,9 @@ const emit = defineEmits<{
 const hotSwiper = ref()
 const carouselHeight = ref(900)
 
-const colors: string[] = [
-  '#A7F522',
-  '#E61C44',
-  '#52FFE2',
-  '#FE63FC',
-].sort(() => Math.random() - 0.5)
-
-const products = ref<Product[] & {
-  color: string
-}[]>([])
+const { cloned: products } = useCloned(props.list)
 watchEffect(() => {
-  products.value = props.list.map((item, index) => {
-    return {
-      ...item,
-      color: colors[index % colors.length],
-    }
-  })
+  products.value = props.list
 })
 
 const current = ref(0)
@@ -137,7 +123,7 @@ const onChange = () => {
           z-index: -1;
           width: calc(100% - var(--padding));
           height: calc(100% - var(--padding));
-          background: linear-gradient(180deg, var(--color) 43%, rgba(0, 0, 0, 1) 150%),
+          background: linear-gradient(180deg, var(--color,#A7F522) 43%, rgba(0, 0, 0, 1) 150%),
             linear-gradient(160deg, rgba(0, 0, 0, .8) 43%, rgba(0, 0, 0, 1) 150%);
           clip-path: var(--path);
         }

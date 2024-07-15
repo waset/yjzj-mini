@@ -48,6 +48,7 @@ interface InviteUserInfo {
   avatar: string
   nickname: string
   phone: string
+  inviteCode: string
 }
 
 interface Promoter {

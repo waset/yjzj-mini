@@ -6,7 +6,7 @@ interface addresslist {
   createdAt: string
   deletedAt: null
   id: number
-  isDefault: defaultNum
+  isDefault: number
   phone: string
   provinceCode: string
   status: number
