@@ -60,10 +60,7 @@ onShow(async () => {
     <index-product-list :list="products" />
 
     <div class="about">
-      <image
-        class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们"
-        @click="Jump('/pages/me/me')"
-      />
+      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" />
     </div>
   </div>
 </template>
