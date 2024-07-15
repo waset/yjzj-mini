@@ -3,7 +3,10 @@ const colors: string[] = [
   '#E61C44',
   '#52FFE2',
   '#FE63FC',
-].sort(() => Math.random() - 0.5)
+]
+const getColorsArr = () => {
+  return colors.sort(() => Math.random() - 0.5)
+}
 
 export const useWindowsStore = defineStore('windows', {
   state: (): {
@@ -32,7 +35,9 @@ export const useWindowsStore = defineStore('windows', {
         this.windows = data
 
         this.banners = this.getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
+
         this.hots = this.getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
+        let colors = getColorsArr()
         this.hots = this.hots.map((item, index) => {
           return {
             ...item,
@@ -41,6 +46,7 @@ export const useWindowsStore = defineStore('windows', {
         })
 
         this.pushs = this.getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
+        colors = getColorsArr()
         this.pushs = this.pushs.map((item, index) => {
           return {
             ...item,
