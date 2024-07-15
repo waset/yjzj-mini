@@ -35,6 +35,7 @@ function maskClose() {
 </script>
 
 <template>
+  <!-- 插槽区域要想禁止滚轮穿透滑动，则在使用插槽时添加 @wheel.stop -->
   <div v-if="props.show" class="popup" @touchmove.prevent.stop @mousemove.prevent.stop>
     <div v-if="props.mask" class="mask" @click="maskClose" @wheel.stop />
     <div class="wrap" :style="{ width: props.width, height: props.height }">
@@ -51,14 +52,11 @@ function maskClose() {
         </slot>
       </div>
       <div class="body">
-        <div style="overscroll-behavior-block: contain;">
-          <scroll-view :scroll-y="true" class="scroll-view">
-            <slot />
-          </scroll-view>
-        </div>
+        <scroll-view :scroll-y="true" class="scroll-view">
+          <slot />
+        </scroll-view>
       </div>
       <div class="footer">
-        <!-- 插槽区域要想禁止滚轮穿透滑动，则在使用插槽时添加 @wheel.stop -->
         <slot name="footer" />
       </div>
     </div>
@@ -131,10 +129,10 @@ function maskClose() {
       padding: 32rpx 0;
       overscroll-behavior-block: contain;
 
-      // .scroll-view {
-      //   height: 100%;
-      //   width: 100%;
-      // }
+      .scroll-view {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }
