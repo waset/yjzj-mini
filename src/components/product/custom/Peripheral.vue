@@ -61,8 +61,6 @@ const loadmoreFn = async () => {
 }
 
 const cancleFn = () => {
-  console.log(123)
-
   shows.value = false
 }
 
