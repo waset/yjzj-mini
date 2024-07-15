@@ -40,8 +40,8 @@ const cancelbtn = () => {
         </div>
       </div>
       <div class="right">
-        <div class="item">
-          <div class="btn" @click="cancelbtn">
+        <div class="item" @click="cancelbtn">
+          <div class="btn">
             取消
           </div>
         </div>

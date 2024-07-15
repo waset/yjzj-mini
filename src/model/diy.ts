@@ -5,7 +5,6 @@ export const useDiyStore = defineStore('diy', {
     peripheral: Product[]
     types: ProductType[]
     selectPeripheral: any
-
   } => ({
     gamesList: [],
     ModificationList: [],
@@ -85,8 +84,8 @@ export const useDiyStore = defineStore('diy', {
       return data
     },
     // 获取外设列表
-    async getProducts(params: GetProductParams) {
-      const { code, data } = await http.post<Product_res>('/web/product/list', params, { auth: false })
+    async getProducts(params: any) {
+      const { code, data } = await http.post<Product_res>('/web/product/list/by/params', params, { auth: false })
       if (code === 200) {
         if (data.length === 0) {
           return

@@ -106,6 +106,15 @@ export const useUserStore = defineStore('user', {
       }
       return code === 200
     },
+    logout() {
+      // 清除用户信息
+      this.user = {} as UserInfo
+      this.isRegister = false
+      // 清除登录信息
+      useAuthStore().logout()
+      // 清除订单
+      useOrderStore().clear()
+    },
   },
   persist: true,
 })

@@ -2,14 +2,16 @@ export const useOrderStore = defineStore('orders', {
   state: (): {
     orders: Order[]
     lastPage: number
-    express: Express
   } => ({
     orders: [] as Order[],
     lastPage: 1,
-    express: {} as Express,
   }),
 
   actions: {
+    clear() {
+      this.orders = []
+      this.lastPage = 1
+    },
     // 获取订单状态
     async getOrderList(status: number, Page: number, pageSize: number) {
       const sta = status !== undefined && status !== 0 ? Number(status) : null

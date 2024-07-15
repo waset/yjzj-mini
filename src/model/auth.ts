@@ -18,6 +18,10 @@ export const useAuthStore = defineStore('auth', {
     expire_time: 0,
   }),
   actions: {
+    logout() {
+      this.token = ''
+      this.expire_time = 0
+    },
     async getKey() {
       if (this.key)
         return

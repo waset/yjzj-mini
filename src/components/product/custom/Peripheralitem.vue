@@ -5,60 +5,53 @@ const emits = defineEmits<{
 const { detail } = storeToRefs(useProductStore())
 const { peripheral } = storeToRefs(useDiyStore())
 
+// 预选数组
+const Preselection = ref<any>([])
+
 // 选择外设
-const selectFn = (item: any) => {
-  const index = detail.value?.perihera.findIndex((obj: any) => item.id === obj.id)
+const selectFn = (item: Product) => {
+  // 选择的时候 传给新数组    否则就不传
+
+  const index = Preselection.value.findIndex((obj: any) => item.id === obj.id)
   if (index === -1) {
     item.number = 1
-    detail.value?.perihera.push(item)
+    Preselection.value.push(item)
   }
 }
 
 // 预删除外设
 const delSelect = (id: number) => {
-  if (detail.value) {
-    const index = detail.value.perihera.findIndex(item => item.id === id)
-    if (index === -1) {
-      return
-    }
-    detail.value?.perihera.splice(index, 1)
+  const index = Preselection.value.findIndex((item: any) => item.id === id)
+  if (index === -1) {
+    return
   }
+  Preselection.value.splice(index, 1)
 }
 
 // 加减数量
 const setNumber = (str: string, id: number, idx: number) => {
-  if (detail.value) {
-    const index = detail.value.perihera.findIndex(item => item.id === id)
-    let num = 1
-    if (index === -1) {
-      return
+  const index = Preselection.value.findIndex((item: any) => item.id === id)
+  if (index !== -1 && str === 'plus') {
+    peripheral.value[idx].number = peripheral.value[idx].number + 1
+    Preselection.value[index].number = peripheral.value[idx].number
+  }
+
+  if (index !== -1 && str === 'cut') {
+    if (Preselection.value[index].number > 1) {
+      peripheral.value[idx].number = peripheral.value[idx].number - 1
+      Preselection.value[index].number = peripheral.value[idx].number
     }
-    if (str === 'plus') {
-      num = detail.value.perihera[index].number + 1
-    }
-    else {
-      if (detail.value.perihera[index].number > 1) {
-        num = detail.value.perihera[index].number - 1
-      }
-    }
-    if (num < 1) {
-      return
-    }
-    peripheral.value[idx].number = num
-    detail.value.perihera[index].number = num
   }
 }
 
 // 是否选中
 const isSelect = (id: number) => {
-  if (detail.value) {
-    const index = detail.value.perihera.findIndex((obj: any) => id === obj.id)
-    if (index === -1) {
-      return false
-    }
-    else {
-      return true
-    }
+  const index = Preselection.value.findIndex((obj: any) => id === obj.id)
+  if (index === -1) {
+    return false
+  }
+  else {
+    return true
   }
 }
 
@@ -74,9 +67,37 @@ const openSelect = () => {
 const reachBottom = () => {
   emits('loadmore')
 }
+const confirmSelect = () => {
+  // 确认选中
+  if (!detail.value) {
+    return
+  }
+  const { cloned } = useCloned(Preselection.value)
+  detail.value.perihera = cloned.value
+}
+const everyFun = () => {
+  // 每次执行  比对当前 选中项 是否和 列表中的值相等  相等则替换   选中项替换列表数据
+  // 创建一个新的数组，其中包含与 Preselection.value 中匹配的更新后对象
+  peripheral.value = peripheral.value.map((obj) => {
+    const matchedItem = Preselection.value.find((item: any) => item.id === obj.id)
+    return matchedItem ? { ...obj, ...matchedItem } : obj
+  })
+}
+// 处理数组
+const Processing = () => {
+  const { cloned } = useCloned(detail.value?.perihera)
+  Preselection.value = cloned.value
+  everyFun()
+}
+
+const closed = () => {
+  Processing()
+}
 
 defineExpose({
   openSelect,
+  confirmSelect,
+  Processing,
 })
 </script>
 
@@ -120,7 +141,7 @@ defineExpose({
                       <div> ￥{{ item.sellPrice }}</div>
                     </template>
                     <template v-if="isSelect(item.id) && item?.number > 1">
-                      <div class="circlec" @click.prevent.stop="setNumber('cut', item.id, index)">
+                      <div class="circlec" @click.stop="setNumber('cut', item.id, index)">
                         <div class="i-icons-minus" />
                       </div>
                       <div>{{ item.number }}</div>
@@ -142,10 +163,13 @@ defineExpose({
             </div>
           </div>
         </template>
+        <template v-if="peripheral.length === 0">
+          <common-empty text="暂无物流信息" />
+        </template>
       </div>
-    </scroll-view>>
+    </scroll-view>
 
-    <common-popup v-model:show="selectshows" name="已选外设" height="70%">
+    <common-popup v-model:show="selectshows" name="已选外设" height="70%" @close="closed">
       <div>
         <product-custom-select-peripheral ref="ProductselectPeripheralItem" />
       </div>

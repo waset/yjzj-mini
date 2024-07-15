@@ -31,6 +31,7 @@ function cancel() {
 }
 
 function confirm() {
+  emit('update:show', false)
   emit('ok')
 }
 
