@@ -133,7 +133,11 @@ defineExpose({
         <scroll-view scroll-x class="scroll-h">
           <div class="items">
             <template v-for="(item, index) in types" :key="index">
-              <div class="item" @click="setNowType(item)">
+              <div
+                class="item" :class="{
+                  active: listParams.productTypeID === item.id,
+                }" @click="setNowType(item)"
+              >
                 <div class="logo">
                   <product-image :src="item.logo" width="160rpx" :background="nowType === item.id" />
                 </div>
@@ -196,7 +200,8 @@ defineExpose({
 
       &.active {
         .name {
-          color: #FFFFFF;
+          color: #A7F522;
+          font-weight: bold;
         }
       }
     }
