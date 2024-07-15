@@ -2,15 +2,21 @@
 const { getProducts, getCategorys } = useDiyStore()
 const { categorys, detail } = storeToRefs(useProductStore())
 const { types, peripheral } = storeToRefs(useDiyStore())
+interface listPar {
+  productTypeID?: number
+  productTypeParentID?: number
+  order?: string
+  sort?: string
+  keywords?: string
+  page: number
+  pageSize: number
+}
+
 // 列表请求参数
-const listParams = ref({
-  typeID: 0,
-  typeParentID: 0,
-  order: '',
-  sort: '',
-  name: '',
+const listParams = ref<listPar>({
   page: 1,
-  pageSize: 20,
+  pageSize: 10,
+  productTypeParentID: 5,
 })
 
 // 列表组do
@@ -33,6 +39,7 @@ const getlistFun = async () => {
       }
     })
   })
+  ProductPeripheralItem.value?.Processing()
 }
 // 打开列表
 const setShow = async () => {
@@ -40,8 +47,8 @@ const setShow = async () => {
   shows.value = true
   await getCategorys(1, 20)
   nowType.value = types.value[0].id
-  listParams.value.typeID = nowType.value
-  listParams.value.typeParentID = categorys.value.peripherals.value
+  listParams.value.productTypeID = nowType.value
+  listParams.value.productTypeParentID = categorys.value.peripherals.value
   // 获取列表
   getlistFun()
 }
@@ -50,9 +57,12 @@ const loadmoreFn = async () => {
   listParams.value.page += 1
 
   await getProducts(listParams.value)
+  ProductPeripheralItem.value?.Processing()
 }
 
 const cancleFn = () => {
+  console.log(123)
+
   shows.value = false
 }
 
@@ -73,6 +83,7 @@ const setSortGet = async (name: string, value: number) => {
   listParams.value.page = 1
 
   await getProducts(listParams.value)
+  ProductPeripheralItem.value?.Processing()
 }
 
 // 筛选
@@ -96,12 +107,13 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name,
 const setNowType = async (item: any) => {
   peripheral.value = []
   nowType.value = item.id
-  listParams.value.typeID = nowType.value || 0
+  listParams.value.productTypeID = nowType.value || 0
   await getProducts(listParams.value)
 }
 
 // 确认选购
 const addPeriheralsFn = () => {
+  ProductPeripheralItem.value?.confirmSelect()
   shows.value = false
 }
 
@@ -135,8 +147,8 @@ defineExpose({
           </div>
         </scroll-view>
         <common-search
-          padding="48rpx 0rpx" :value="listParams.name" is-input @update:value="(val) => {
-            listParams.name = val
+          padding="48rpx 0rpx" :value="listParams.keywords" is-input @update:value="(val) => {
+            listParams.keywords = val
             listParams.page = 1
             getlistFun()
           }"
