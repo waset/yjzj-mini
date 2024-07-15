@@ -31,9 +31,6 @@ export const useProductStore = defineStore('product', {
   actions: {
     // 获取产品分类
     async getCategorys(category: CategoryKey, page: number, pageSize: number) {
-      if (this.types.length) {
-        return
-      }
       const { data, code } = await http.post<ProductType[]>('/web/product/type/list', {
         parentID: this.categorys[category].value,
         page,

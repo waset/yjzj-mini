@@ -33,7 +33,7 @@ onShow(async () => {
   await getProducts()
 })
 // 产品数量
-const productLength = ref(30)
+const productLength = ref(15)
 // 获取产品列表
 async function getProducts() {
   products.value = []
@@ -124,9 +124,9 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                   <template v-for="(item, index) in products" :key="index">
                     <div
                       class="item" :class="{
-                        last: index === productLength - 1,
+                        last: index === products.length - 1,
                       }" @click="() => {
-                        if (index === productLength - 1) {
+                        if (index === products.length - 1) {
                           Jump('/pages/product/category', { key: categorysArray[current].name })
                         }
                         else if (item.typeParentID === categorys.diy.value) {
@@ -153,8 +153,8 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
                 </div>
               </template>
             </div>
-            <!-- <div class="py-2" /> -->
           </scroll-view>
+          <div class="py-2" />
         </div>
       </div>
     </div>
