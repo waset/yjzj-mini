@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 const { token } = storeToRefs(useAuthStore())
-const { user, userDesc, isRegister } = storeToRefs(useUserStore())
-const { getUserInfo, hasGoLogin } = useUserStore()
+const { user, isLogin, userDesc, isRegister } = storeToRefs(useUserStore())
+const { getUserInfo, hasGoLogin, logout } = useUserStore()
 
 const { orders } = storeToRefs(useOrderStore())
 const { getOrderList } = useOrderStore()
 
 onShow(async () => {
-  if (token.value) {
+  if (isLogin.value) {
     await getUserInfo()
     await getOrderList(OrderStatus.All, 1, 1000)
   }
@@ -132,6 +132,11 @@ const promotion = () => {
   }
   Jump('/pages/popularize/popularize')
 }
+
+const showLogout = ref(false)
+const goLogout = () => {
+  showLogout.value = true
+}
 </script>
 
 <template>
@@ -152,12 +157,21 @@ const promotion = () => {
             <div class="name">
               {{ userDesc.nickname }}
             </div>
-            <div class="phone">
-              {{ userDesc.phoneDesc }}
-            </div>
-            <div class="public">
-              <span> 公众号 </span>
-              <span>{{ userDesc.isSubDesc }}</span>
+            <div class="flex-between">
+              <div class="flex-1">
+                <div class="phone">
+                  {{ userDesc.phoneDesc }}
+                </div>
+                <div class="public">
+                  <span> 公众号 </span>
+                  <span>{{ userDesc.isSubDesc }}</span>
+                </div>
+              </div>
+              <template v-if="isLogin">
+                <div class="flex-center text-[64rpx]">
+                  <div class="i-icons-logout" @click.prevent.stop="goLogout" />
+                </div>
+              </template>
             </div>
           </div>
         </template>
@@ -278,6 +292,8 @@ const promotion = () => {
         </div>
       </div>
     </div>
+
+    <common-model v-model:show="showLogout" icon="i-svg-warn" msg="确定要退出登录吗？" @ok="logout" />
   </div>
 </template>
 
