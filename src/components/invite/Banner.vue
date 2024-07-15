@@ -17,7 +17,7 @@ function band() {
 function become() {
   emits('become')
 }
-const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.nickname : '---')
+const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.inviteCode : '---')
 </script>
 
 <template>
