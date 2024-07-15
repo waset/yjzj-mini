@@ -33,9 +33,10 @@ onShow(async () => {
   await getProducts()
 })
 // 产品数量
-const productLength = ref(30)
+const productLength = ref(15)
 // 获取产品列表
 async function getProducts() {
+  products.value = []
   await useGetProduct({ typeParentID: categorysArray.value[current.value].value }, 1, productLength.value)
 }
 // 切换菜单
@@ -113,37 +114,47 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
             scroll-y scroll-with-animation class="scroll" :scroll-top="rightScrollTop"
             @scroll="(detail: any) => { rightScrollTop = detail.scrollTop }"
           >
-            <div class="gradientBorder">
-              <div class="list">
-                <template v-for="(item, index) in products" :key="index">
-                  <div
-                    class="item" :class="{
-                      last: index === productLength - 1,
-                    }"
-                    @click="() => {
-                      if (index === productLength - 1){
-                        Jump('/pages/product/category', { key: categorysArray[current].name })
-                      }
-                      else if (item.typeParentID === categorys.diy.value){
-                        Jump('/pages/product/diy', { id: item.id })
-                      }
-                      else {
-                        Jump('/pages/product/detail', { id: item.id })
-                      }
-                    }"
-                  >
-                    <div class="image" data-last-text="查看更多>>">
-                      <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
+            <div
+              class="gradientBorder" :style="{
+                height: products.length ? 'auto' : '100%',
+              }"
+            >
+              <template v-if="products.length">
+                <div class="list">
+                  <template v-for="(item, index) in products" :key="index">
+                    <div
+                      class="item" :class="{
+                        last: index === products.length - 1,
+                      }" @click="() => {
+                        if (index === products.length - 1) {
+                          Jump('/pages/product/category', { key: categorysArray[current].name })
+                        }
+                        else if (item.typeParentID === categorys.diy.value) {
+                          Jump('/pages/product/diy', { id: item.id })
+                        }
+                        else {
+                          Jump('/pages/product/detail', { id: item.id })
+                        }
+                      }"
+                    >
+                      <div class="image" data-last-text="查看更多>>">
+                        <product-image :src="item.banner[0]" width="160rpx" height="160rpx" border-radius="28rpx" />
+                      </div>
+                      <div class="name">
+                        {{ item.name }}
+                      </div>
                     </div>
-                    <div class="name">
-                      {{ item.name }}
-                    </div>
-                  </div>
-                </template>
-              </div>
+                  </template>
+                </div>
+              </template>
+              <template v-else>
+                <div class="empty">
+                  <common-empty text="暂无商品" />
+                </div>
+              </template>
             </div>
-            <div class="py-2" />
           </scroll-view>
+          <div class="py-2" />
         </div>
       </div>
     </div>
@@ -159,7 +170,6 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
     .wrap {
       flex: 1;
       display: flex;
-      height: 100%;
       overflow: hidden;
 
       .left {
@@ -262,9 +272,9 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
 
         .product {
           padding-top: 32rpx;
+          padding-bottom: 16rpx;
           overflow: hidden;
           flex: 1;
-          height: 100%;
 
           .scroll {
             height: 100%;
@@ -274,11 +284,16 @@ function getElRect(elClass: string, dataVal: Ref<number>) {
               padding: 2rpx;
               background-image: linear-gradient(to right bottom, rgba(#BEBEBE, 1) 0%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 0.1) 80%, rgba(#BEBEBE, 1) 100%);
 
+              .empty,
               .list {
-                @apply grid grid-cols-3 gap-[22rpx];
+                min-height: 100%;
                 border-radius: 32rpx;
                 padding: 16rpx;
                 background-color: #000;
+              }
+
+              .list {
+                @apply grid grid-cols-3 gap-[22rpx];
 
                 .item {
                   @apply flex-center flex-col;

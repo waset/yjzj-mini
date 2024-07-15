@@ -192,7 +192,8 @@ const goDetails = (item: Product) => {
 
         &.active {
           .name {
-            color: #FFFFFF;
+            color: #A7F522;
+            font-weight: bold;
           }
         }
       }

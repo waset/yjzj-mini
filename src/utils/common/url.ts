@@ -57,3 +57,13 @@ export function StaticUrl(path: string) {
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
   return `${staticUrl}${trailingSlash}${leadingSlash}`
 }
+
+/**
+ * 将地址转换为官网地址
+ */
+export function DomainUrl(path: string) {
+  const staticUrl = import.meta.env.VITE_DOMAIN_URL || ''
+  const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
+  const leadingSlash = path.startsWith('/') ? path.slice(1) : path
+  return `${staticUrl}${trailingSlash}${leadingSlash}`
+}

@@ -16,6 +16,16 @@ const onChange = () => {
 const changSwiper = (index: number) => {
   bannerSwiper.value?.swiper.slideToLoop(index)
 }
+
+const { detail } = storeToRefs(useProductStore())
+const goJump = (src: string) => {
+  if (src.includes('diy')) {
+    detail.value = {} as Product
+    detail.value.typeParentID = 6
+    detail.value.params = []
+  }
+  Jump(src as any)
+}
 </script>
 
 <template>
@@ -31,7 +41,7 @@ const changSwiper = (index: number) => {
       }" @slide-change="onChange"
     >
       <z-swiper-item v-for="(item, index) in bannerImages" :key="index">
-        <image class="image" :src="ImageUrl(item.imageUrl)" mode="aspectFill" @click="Jump(item.src as any)" />
+        <image class="image" :src="ImageUrl(item.imageUrl)" mode="aspectFill" @click="goJump(item.src)" />
       </z-swiper-item>
       <template #indicator>
         <div class="indicator">

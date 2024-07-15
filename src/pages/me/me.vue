@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-const { getUserInfo } = useUserStore()
 const { token } = storeToRefs(useAuthStore())
 const { user, userDesc, isRegister } = storeToRefs(useUserStore())
+const { getUserInfo, hasGoLogin } = useUserStore()
 
 const { orders } = storeToRefs(useOrderStore())
 const { getOrderList } = useOrderStore()
@@ -14,20 +14,6 @@ onShow(async () => {
 })
 
 /**
- * 是否登录
- */
-const hasLogin = () => {
-  if (!isRegister.value) {
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
-    })
-  }
-
-  return !!isRegister.value
-}
-
-/**
  * 订单类型
  */
 const orderTypes = [
@@ -38,7 +24,7 @@ const orderTypes = [
       return 0
     },
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/order/list', {
         status: OrderStatus.All,
@@ -52,7 +38,7 @@ const orderTypes = [
       return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
     },
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/order/list', {
         status: OrderStatus.Wait,
@@ -66,7 +52,7 @@ const orderTypes = [
       return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
     },
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/order/list', {
         status: OrderStatus.PaymentSuccessful,
@@ -84,7 +70,7 @@ const menus = [
     text: '配置单',
     path: '/pages/me/configList/configuration',
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/me/configList/configuration')
     },
@@ -93,7 +79,7 @@ const menus = [
     icon: 'i-icons-coupon',
     text: '优惠券',
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/buy/coupon')
     },
@@ -102,7 +88,7 @@ const menus = [
     icon: 'i-icons-address',
     text: '收货地址',
     click: () => {
-      if (!hasLogin())
+      if (hasGoLogin())
         return
       Jump('/pages/me/address/index')
     },
@@ -130,6 +116,8 @@ const activities = () => {
 }
 
 const promotion = () => {
+  if (hasGoLogin())
+    return
   if (!user.value?.promoterStatus) {
     uni.showToast({
       title: '请先成为推广员',
@@ -139,13 +127,6 @@ const promotion = () => {
           Jump('/pages/popularize/invitetion')
         }, 1000)
       },
-    })
-    return
-  }
-  if (!user.value?.promoter) {
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
     })
     return
   }
@@ -195,7 +176,7 @@ const promotion = () => {
         </div>
         <div
           class="more" @click="() => {
-            if (!hasLogin())
+            if (hasGoLogin())
               return
             Jump('/pages/order/list')
           }"

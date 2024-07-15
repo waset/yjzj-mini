@@ -1,37 +1,49 @@
 <script setup lang="ts">
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   list: Product[]
-}>()
+  limit?: number
+}>(), {
+  limit: 4,
+})
 </script>
 
 <template>
-  <div class="lists">
-    <div class="body">
-      <template v-for="(product, index) in props.list" :key="index">
-        <div class="wrap">
-          <div class="item" @click="() => Jump('/pages/product/detail', { id: product.id })">
-            <image :src="ImageUrl(product.banner[0])" class="image" mode="aspectFit" />
-            <div class="info">
-              <span class="name">{{ product.name }}</span>
-            </div>
-            <div class="buy">
-              <div class="price">
-                <span>￥</span>
-                <span>{{ product.tagPrice }}</span>
+  <div
+    class="lists" :style="{
+      '--row': Math.floor(props.limit / 2),
+    }"
+  >
+    <template v-if="props.list.length && props.list.length <= props.limit">
+      <div class="body">
+        <template v-for="(product, index) in props.list" :key="index">
+          <div class="wrap">
+            <div class="item" @click="() => Jump('/pages/product/detail', { id: product.id })">
+              <image :src="ImageUrl(product.banner[0])" class="image" mode="aspectFit" />
+              <div class="info">
+                <span class="name">{{ product.name }}</span>
               </div>
-              <div class="icon">
-                <div class="i-icons-buy" />
+              <div class="buy">
+                <div class="price">
+                  <span>￥</span>
+                  <span>{{ product.tagPrice }}</span>
+                </div>
+                <div class="icon">
+                  <div class="i-icons-buy" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </template>
-    </div>
-    <div class="more">
-      <div class="btn" @click="() => Jump('/pages/product/category', { key: 'laptop' })">
-        查看更多>>
+        </template>
       </div>
-    </div>
+      <div class="more">
+        <div class="btn" @click="() => Jump('/pages/product/category', { key: 'laptop' })">
+          查看更多>>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <common-empty text="暂无商品" />
+    </template>
   </div>
 </template>
 
@@ -40,7 +52,8 @@ const props = defineProps<{
     @apply px-[32rpx];
 
     .body {
-      @apply py-[60rpx] grid grid-cols-2 grid-rows-2 gap-[16rpx];
+      @apply py-[60rpx] grid grid-cols-2 gap-[16rpx];
+      grid-template-rows: repeat(var(--row, 2), minmax(0, 1fr));
 
       .wrap {
         padding: 2rpx;

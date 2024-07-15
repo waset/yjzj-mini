@@ -3,21 +3,18 @@ const props = defineProps<{
   user: UserInfo
 }>()
 const emits = defineEmits(['bandinvite', 'become'])
+
+const { hasGoLogin } = useUserStore()
 function band() {
-  if (!props.user.phone) {
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
-    })
+  if (hasGoLogin()) {
+    return
   }
-  else {
-    emits('bandinvite')
-  }
+  emits('bandinvite')
 }
 function become() {
   emits('become')
 }
-const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.nickname : '---')
+const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.inviteCode : '---')
 </script>
 
 <template>

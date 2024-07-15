@@ -140,7 +140,7 @@ const changeGame = (text: string) => {
           <carousel
             v-model:current="pcurrent" :list="props.list" :height="carouselHeight" direction="horizontal"
             :offset-x-step="48" offset-x-step-units="rpx" :offset-y-step="0" offset-y-step-units="rpx" :scale-step="0.8"
-            :opacity-step="0.99" overflow="visible" loop switch :natural-direction="true"
+            :opacity-step="0.99" overflow="visible" loop switch :natural-direction="false"
           >
             <template #item="{ item, index }">
               <div

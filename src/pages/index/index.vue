@@ -8,17 +8,20 @@ const hots_current = ref(0)
 
 const notebook_type = ref(0)
 
+const getProductsByType = async (type: number) => {
+  products.value = []
+  await getProducts({ typeID: type }, 1, 4)
+}
+
 onShow(async () => {
   await getWindows(1, 20)
   await getCategorys('laptop', 1, 4)
-  notebook_type.value = types.value[0]?.id || 0
 
+  if (!notebook_type.value) {
+    notebook_type.value = types.value[0]?.id || 0
+  }
   await getProductsByType(notebook_type.value)
 })
-
-async function getProductsByType(type: number) {
-  getProducts({ typeID: type }, 1, 4)
-}
 </script>
 
 <template>
@@ -37,7 +40,10 @@ async function getProductsByType(type: number) {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-hot v-model:current="hots_current" :list="hots" @click="(item) => Jump('/pages/product/detail', { id: item.id })" />
+    <index-carousel-hot
+      v-model:current="hots_current" :list="hots"
+      @click="(item) => Jump('/pages/product/detail', { id: item.id })"
+    />
     <index-product-title @click="Jump('/pages/product/category', { key: 'diy' })">
       <template #left>
         <div class="i-svg-push-products" />
@@ -50,14 +56,11 @@ async function getProductsByType(type: number) {
     </index-product-title>
     <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/diy', { id: item.id })" />
 
-    <index-product-switch-type
-      v-model:current="notebook_type" :list="types"
-      @change="async (id) => await getProductsByType(id)"
-    />
+    <index-product-switch-type v-model:current="notebook_type" :list="types" @change="(id) => getProductsByType(id)" />
     <index-product-list :list="products" />
 
     <div class="about">
-      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" @click="Jump('/pages/me/me')" />
+      <image class="image" :src="StaticUrl('/images/about_us.png')" mode="widthFix" alt="关于我们" />
     </div>
   </div>
 </template>

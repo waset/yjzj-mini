@@ -1,3 +1,13 @@
+const colors: string[] = [
+  '#A7F522',
+  '#E61C44',
+  '#52FFE2',
+  '#FE63FC',
+]
+const getColorsArr = () => {
+  return colors.sort(() => Math.random() - 0.5)
+}
+
 export const useWindowsStore = defineStore('windows', {
   state: (): {
     windows: WindowsRes[]
@@ -19,11 +29,30 @@ export const useWindowsStore = defineStore('windows', {
       }, { auth: false })
 
       if (code === 200) {
+        if (this.windows === data) {
+          return
+        }
         this.windows = data
 
         this.banners = this.getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
+
         this.hots = this.getWindowsByKeyValue('name', '小程序 热门产品')?.content.products || []
+        let colors = getColorsArr()
+        this.hots = this.hots.map((item, index) => {
+          return {
+            ...item,
+            color: colors[index % colors.length],
+          }
+        })
+
         this.pushs = this.getWindowsByKeyValue('name', '小程序 推荐定制')?.content.products || []
+        colors = getColorsArr()
+        this.pushs = this.pushs.map((item, index) => {
+          return {
+            ...item,
+            color: colors[index % colors.length],
+          }
+        })
       }
     },
     // 通过名称、ID、状态获取橱窗数据
@@ -31,7 +60,6 @@ export const useWindowsStore = defineStore('windows', {
       return this.windows.find(item => item[key] === value)
     },
   },
-  persist: true,
 })
 
 if (import.meta.hot)

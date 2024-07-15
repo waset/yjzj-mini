@@ -6,26 +6,12 @@ const emit = defineEmits<{
   click: [item: Product, index: number]
 }>()
 
-const colors: string[] = [
-  '#A7F522',
-  '#E61C44',
-  '#52FFE2',
-  '#FE63FC',
-].sort(() => Math.random() - 0.5)
-
 const pushSwiper = ref()
 const carouselHeight = ref(900)
 
-const products = ref<Product[] & {
-  color: string
-}[]>([])
+const { cloned: products } = useCloned(props.list)
 watchEffect(() => {
-  products.value = props.list.map((item, index) => {
-    return {
-      ...item,
-      color: colors[index % colors.length],
-    }
-  })
+  products.value = props.list
 })
 </script>
 
@@ -130,7 +116,7 @@ watchEffect(() => {
               z-index: 0;
               width: 100%;
               height: 100%;
-              color: var(--color);
+              color: var(--color,#A7F522);
               border-radius: 64rpx;
               overflow: hidden;
 
