@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
-const { user } = storeToRefs(useUserStore())
+const { user, isLogin } = storeToRefs(useUserStore())
+const { hasGoLogin } = useUserStore()
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig, getConfigInfo } = useDiyStore()
@@ -51,8 +52,6 @@ const updataParams = (data: any) => {
 
   // console.log(detail.value, '123')
 }
-
-const isEmpty = (obj: UserInfo) => Object.keys(obj).length === 0
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.id) {
@@ -87,13 +86,6 @@ onLoad(async (params) => {
     detail.value.alloaction = data.id // 配置单id
     detail.value.name = `配置单${data.id}` // 配置单name
     detail.value.sellPrice = data.sellPrice // 配置单价格
-  }
-
-  if (isEmpty(user.value)) {
-    uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
-    setTimeout(() => {
-      Jump('/pages/me/login')
-    }, 1000)
   }
 })
 
@@ -174,8 +166,9 @@ const hasErrors = (arrayOfObjects: any) => {
 /**
  * 立即购买
  */
-
 const buyNow = async () => {
+  if (hasGoLogin())
+    return
   // 如果通过 检测是否为空
 
   if (isPass()) {
@@ -203,9 +196,8 @@ const buyNow = async () => {
  * 加入购物车
  */
 const addBuyCar = async () => {
-  if (!detail.value) {
+  if (hasGoLogin())
     return
-  }
   if (isPass()) {
     if (!hasErrors(detail.value)) {
       await allocationId()
@@ -214,7 +206,7 @@ const addBuyCar = async () => {
         select: false,
         delete: false,
         ...detail.value,
-      })
+      } as BuyProduct)
       uni.showToast({
         title: '添加成功',
         icon: 'success',
@@ -231,7 +223,7 @@ const addBuyCar = async () => {
 // #ifdef MP
 onShareAppMessage(async () => {
   const params = {} as any
-  if (!isPass()) {
+  if (!isPass() || !isLogin.value) {
     return {
       title: '自由定制',
       path: '/pages/product/diy',

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const { levelall, inviterank, inviteuser } = storeToRefs(useInviteStore())
 const { getInviteall, getInviteRank, becomePromoter, bandInviter } = useInviteStore()
-const { user, shareCode } = storeToRefs(useUserStore())
-const { getUserInfo } = useUserStore()
+const { user, shareCode, isLogin } = storeToRefs(useUserStore())
+const { getUserInfo, hasGoLogin } = useUserStore()
 onShow(async () => {
   await getInviteall()
   await getInviteRank()
@@ -16,6 +16,9 @@ function bandinvite() {
 
 // 成为推广员
 async function become() {
+  if (hasGoLogin()) {
+    return
+  }
   const res = await becomePromoter()
   if (res.code === 200) {
     uni.showToast({
@@ -24,13 +27,6 @@ async function become() {
     })
   }
   else {
-    if (!user.value?.promoter) {
-      uni.showToast({
-        title: '请先登录',
-        icon: 'none',
-      })
-      return
-    }
     uni.showToast({
       title: res.msg,
       icon: 'none',
@@ -60,6 +56,12 @@ async function bindCode(code: string) {
   }
 }
 async function bindShareCode(code: string) {
+  // 没登陆
+  if (!isLogin.value) {
+    // 存储分享者邀请码
+    shareCode.value = code
+    return hasGoLogin()
+  }
   // 登录且没有加入邀请人计划
   if (user.value.phone && user.value.promoterStatus !== 1) {
     await bindCode(code)
@@ -70,19 +72,8 @@ async function bindShareCode(code: string) {
     if (code !== user.value.inviteCode)
       showModel.value = true
   }
-  // 没登陆
-  if (!user.value.phone) {
-    // 存储分享者邀请码
-    shareCode.value = code
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
-    })
-    setTimeout(() => {
-      Jump('/pages/me/login')
-    }, 1000)
-  }
 }
+
 // 换绑分享人的邀请码
 async function ChangeBind() {
   await bindCode(shareCodeInner.value)
@@ -99,12 +90,6 @@ onLoad((params) => {
 
 // #ifdef MP
 onShareAppMessage(() => {
-  if (!user.value.phone) {
-    uni.showToast({
-      title: '请先登录',
-      icon: 'none',
-    })
-  }
   // 如果是邀请人 则分享时携带邀请码
   const params = !user.value.inviteCode ? {} : { inviteCode: user.value.inviteCode }
   return {

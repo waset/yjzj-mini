@@ -18,6 +18,7 @@ export const useUserStore = defineStore('user', {
     shareCode: '',
   }),
   getters: {
+    isLogin: state => !!state.user.phone,
     userDesc: (state) => {
       let rebateType = ''
       if (state.user?.promoter?.rebateType) {
@@ -52,6 +53,16 @@ export const useUserStore = defineStore('user', {
     },
   },
   actions: {
+    hasGoLogin() {
+      if (!this.isLogin) {
+        uni.showToast({ title: '请登录', duration: 1000, icon: 'none' })
+        setTimeout(() => {
+          Jump('/pages/me/login')
+        }, 1000)
+        return true
+      }
+      return false
+    },
     async getUserInfo() {
       const { data, code } = await http.post<UserInfo>('/web/user/info')
       if (code === 200) {
