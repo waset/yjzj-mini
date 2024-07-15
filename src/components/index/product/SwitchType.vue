@@ -86,7 +86,7 @@ function handleClick(id: number) {
           z-index: -2;
           background-color: rgba($color: #A7F522, $alpha: 1);
 
-          transition: opacity 1s ease-in-out;
+          transition: opacity .5s ease-in-out;
         }
 
         &.active::after {
