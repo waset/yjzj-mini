@@ -25,19 +25,21 @@ const cancelbtn = () => {
   <div class="operation">
     <div class="wrap">
       <div class="left">
-        <div class="item" @click="showSelect">
-          <div class="icon">
-            <div class="i-icons-buy" />
-            <template v-if="detail?.perihera && detail.perihera.length > 0">
-              <div class="num">
-                {{ detail.perihera.length }}
-              </div>
-            </template>
+        <template v-if="detail?.perihera && detail.perihera.length > 0">
+          <div class="item" @click="showSelect">
+            <div class="icon">
+              <div class="i-icons-buy" />
+              <template v-if="detail?.perihera && detail.perihera.length > 0">
+                <div class="num">
+                  {{ detail.perihera.length }}
+                </div>
+              </template>
+            </div>
+            <div class="name">
+              已选
+            </div>
           </div>
-          <div class="name">
-            已选
-          </div>
-        </div>
+        </template>
       </div>
       <div class="right">
         <div class="center">
@@ -217,7 +219,7 @@ const cancelbtn = () => {
 
         &::before {
 
-          right: 15rpx;
+          right: 22rpx;
           width: 165rpx;
           height: 80rpx;
           border-radius: 25rpx;
