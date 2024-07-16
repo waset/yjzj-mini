@@ -2,9 +2,11 @@
 const { isRegister } = storeToRefs(useUserStore())
 const { getUserInfo } = useUserStore()
 const { getToken } = useAuthStore()
+
 const agreementChecked = ref(false)
 
 async function gologin() {
+  const route = getCurrentPages()
   uni.login({
     provider: 'weixin', // 使用微信登录
     success: async ({ code }) => {
@@ -14,7 +16,7 @@ async function gologin() {
         Jump('/pages/me/info')
       }
       else {
-        if (useRoute.length > 1) {
+        if (route.length > 1) {
           Back(1)
         }
         else {
