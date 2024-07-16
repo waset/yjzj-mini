@@ -93,7 +93,19 @@ const Processing = () => {
 const closed = () => {
   Processing()
 }
+// 查看配置详情的数据
+const showConfigs = ref<any | null>(null)
+const showConfigsSwitch = ref<boolean>(false)
+const checkInfo = (index: number) => {
+  const info = peripheral.value[index] || null
+  if (!info) {
+    return
+  }
 
+  showConfigs.value = info
+
+  showConfigsSwitch.value = true
+}
 defineExpose({
   openSelect,
   confirmSelect,
@@ -132,7 +144,7 @@ defineExpose({
                   {{ item.description }}
                 </div>
                 <div class="row3">
-                  <div class=" check">
+                  <div class=" check" @click.prevent.stop="checkInfo(index)">
                     查看详情
                     <div class="i-icons-right" />
                   </div>
@@ -174,6 +186,10 @@ defineExpose({
         <product-custom-select-peripheral ref="ProductselectPeripheralItem" />
       </div>
       <div class="" />
+    </common-popup>
+
+    <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+      <buys-show-alloaction :config="showConfigs" />
     </common-popup>
   </div>
 </template>
