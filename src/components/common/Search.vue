@@ -56,29 +56,31 @@ const onKeyInput = (event: any) => {
 </template>
 
 <style lang="scss" scoped>
-  .search {
+.search {
 
-    .box {
-      @apply flex-between;
+  .box {
+    @apply flex-between;
+    font-size: 28rpx;
+    line-height: 40rpx;
+    font-weight: 400;
+    padding: 24rpx;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1rpx solid rgba(167, 245, 34, .6);
+    border-radius: 160rpx;
+
+    .input {
+      flex: 1;
+      height: 40rpx;
+      line-height: 41rpx;
+    }
+
+    .icons {
       font-size: 28rpx;
-      line-height: 40rpx;
-      font-weight: 400;
-      padding: 24rpx;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1rpx solid rgba(167, 245, 34, .6);
-      border-radius: 160rpx;
 
-      .input {
-        flex: 1;
-      }
-
-      .icons {
-        font-size: 28rpx;
-
-        .icon {
-          padding: 0 16rpx;
-        }
+      .icon {
+        padding: 0 16rpx;
       }
     }
   }
+}
 </style>

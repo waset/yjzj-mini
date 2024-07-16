@@ -44,23 +44,6 @@ const isSelect = (id: number) => {
     return true
   }
 }
-
-// 合计
-const totalPrice = computed(() => {
-  let result = 0
-  detail.value?.perihera.forEach((item: any) => {
-    result += (item.number * Number(item.sellPrice))
-  })
-  return result
-})
-// 数量
-const totalNum = computed(() => {
-  let result = 0
-  detail.value?.perihera.forEach((item: any) => {
-    result += item.number
-  })
-  return result
-})
 </script>
 
 <template>
@@ -69,7 +52,12 @@ const totalNum = computed(() => {
       <div class="card mb-4">
         <div class="select">
           <template v-if="isSelect(item.id)">
-            <product-custom-singlebg />
+            <div class="selected">
+              <div class="icon i-icons-correct" />
+            </div>
+            <div class="selectbg">
+              <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
+            </div>
           </template>
           <template v-else>
             <div class="topLine line" />
@@ -118,35 +106,41 @@ const totalNum = computed(() => {
       </div>
     </template>
   </div>
-
-  <div class="bottom">
-    <div>
-      <div class="total">
-        合计<span class="temcolor pricefs">￥{{ totalPrice }}</span>
-      </div>
-      <div class="num">
-        数量<span class="temcolor numser">x{{ totalNum }}</span>
-      </div>
-    </div>
-    <div class="right">
-      <!-- <div class="cancel">
-        取消
-      </div>
-      <div class="confirm" @click="confirm">
-        确定
-        <div class="confirm2" />
-      </div> -->
-    </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
-.temcolor {
-  margin-left: 8rpx;
-  color: #A7F522;
-}
-
 .card {
+  .selected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 69rpx;
+    height: 69rpx;
+    background-color: #A7F522;
+    clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
+    z-index: 3;
+
+    .icon {
+      color: #000;
+    }
+  }
+
+  .selectbg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    z-index: 0;
+
+    .image {
+      border-radius: 16rpx;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   .select {
     position: relative;
     border-radius: 16rpx;
@@ -259,130 +253,6 @@ const totalNum = computed(() => {
         font-size: 24rpx;
       }
     }
-  }
-
-}
-
-.bottom {
-  padding: 32rpx;
-  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(#444444, 0.6);
-  backdrop-filter: blur(48rpx);
-  color: #f5f5f5;
-  z-index: 9;
-  box-shadow: 0px -2rpx 10rpx 0px rgba(0, 0, 0, 0.05);
-  @apply flex-between;
-
-  .total,
-  .num {
-    font-size: 28rpx;
-  }
-
-  .pricefs {
-    font-size: 40rpx;
-    font-weight: 600;
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    color: #000;
-    position: relative;
-    width: 420rpx;
-    height: 80rpx;
-
-    .confirm,
-    .cancel,
-    .confirm2 {
-      position: absolute;
-      right: 32rpx;
-      width: 200rpx;
-      height: 80rpx;
-      line-height: 80rpx;
-      font-size: 28rpx;
-      font-weight: 400;
-      // margin-right: 40rpx;
-      color: #000;
-      text-align: center;
-      z-index: 10;
-      padding-left: 50rpx;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 26rpx;
-        right: 0;
-        bottom: 0;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #A7F522;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-top-left-radius: 20rpx;
-      }
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: -20rpx;
-        width: 162rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #A7F522;
-        z-index: -1;
-
-      }
-
-    }
-
-    .confirm2 {
-      position: absolute;
-      top: 8rpx;
-      left: 8rpx;
-      z-index: -2;
-
-      &::after {
-        background-color: #57683B;
-      }
-
-      &::before {
-        background-color: #57683B;
-      }
-    }
-
-    .cancel {
-      left: 6rpx;
-      padding-left: 46rpx;
-      padding-right: 67rpx;
-
-      &::after {
-        left: 24rpx;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #ffffff;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-bottom-right-radius: 20rpx;
-      }
-
-      &::before {
-
-        right: 21rpx;
-        width: 200rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #ffffff;
-        z-index: -1;
-
-      }
-    }
-
   }
 
 }

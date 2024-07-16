@@ -100,7 +100,10 @@ $sp: space-between;
     align-items: center;
 
     .username {
-
+      max-width: 340rpx;
+      overflow: hidden; //超出隐藏
+      text-overflow: ellipsis; //文本超出时显示省略号
+      white-space: nowrap; //设置文本不换行
       font-size: 32rpx;
       font-weight: 600;
       margin-right: 16rpx;
@@ -171,6 +174,15 @@ $sp: space-between;
     padding-left: 46rpx;
     box-sizing: border-box;
     margin-top: $m16;
+    overflow: hidden; //超出隐藏
+
+    text-overflow: ellipsis; //文本超出时显示省略号
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical; //子元素排列 vertical（竖排）orhorizontal（横排）
+
+    -webkit-line-clamp: 2; //内容限制的行数
 
     span {
       margin-right: $m16;

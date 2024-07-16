@@ -232,7 +232,12 @@ defineExpose({
         <div class="card mb-4">
           <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
             <template v-if="saveId === item.id">
-              <product-custom-singlebg />
+              <div class="selected">
+                <div class="icon i-icons-correct" />
+              </div>
+              <div class="selectbg">
+                <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
+              </div>
             </template>
             <template v-else>
               <div
@@ -284,15 +289,12 @@ defineExpose({
   </common-popup>
   <div class="bottom">
     <div class="center">
-      <div class="left" />
-      <div class="right">
-        <div class="cancel" @click="emit('change', false)">
-          取消
-        </div>
-        <div class="confirm" @click="okfn()">
-          确定
-          <div class="confirm2" />
-        </div>
+      <div class="cancel" @click="emit('change', false)">
+        取消
+      </div>
+      <div class="confirm" @click="okfn()">
+        确定
+        <div class="confirm2" />
       </div>
     </div>
   </div>
@@ -324,6 +326,37 @@ defineExpose({
 }
 
 .card {
+  .selected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 69rpx;
+    height: 69rpx;
+    background-color: #A7F522;
+    clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
+    z-index: 3;
+
+    .icon {
+      color: #000;
+    }
+  }
+
+  .selectbg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    z-index: 0;
+
+    .image {
+      border-radius: 16rpx;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   .select {
     position: relative;
     border-radius: 16rpx;
@@ -439,66 +472,22 @@ defineExpose({
 
   .center {
     position: relative;
-    display: flex;
-    color: #f5f5f5;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 32rpx;
-    box-sizing: border-box;
-  }
-
-  .left {
-    width: 272rpx;
     height: 80rpx;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .number {
-      font-size: 28rpx;
-    }
-
-    .counter {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 196rpx;
-      height: 80rpx;
-      background-color: rgba($color: #fff, $alpha: .2);
-      border-radius: 40rpx;
-      z-index: 99;
-      padding: 28rpx 10rpx;
-      box-sizing: border-box;
-      font-size: 32rpx;
-      margin-left: 16rpx;
-
-      .plus,
-      .reduce {
-        width: 60rpx;
-        height: 60rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-    }
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
     color: #000;
-    position: relative;
-    width: 392rpx;
+    justify-content: center;
+    align-items: center;
+    padding: 0 32rpx;
+    // box-sizing: border-box;
 
     .confirm,
     .cancel,
     .confirm2 {
-      position: absolute;
+      position: relative;
       right: 32rpx;
-      width: 186rpx;
-      height: 64rpx;
-      line-height: 64rpx;
+      width: 256rpx;
+      height: 80rpx;
+      line-height: 80rpx;
       font-size: 28rpx;
       font-weight: 400;
       // margin-right: 40rpx;
@@ -515,7 +504,7 @@ defineExpose({
         right: 0;
         bottom: 0;
         border-radius: 30rpx;
-        height: 64rpx;
+        height: 80rpx;
         background: #A7F522;
         transform: skewX(-30deg);
         z-index: -1;
@@ -528,7 +517,7 @@ defineExpose({
         top: 0;
         right: -20rpx;
         width: 162rpx;
-        height: 64rpx;
+        height: 80rpx;
         border-radius: 25rpx;
         background: #A7F522;
         z-index: -1;
@@ -556,11 +545,12 @@ defineExpose({
       left: 6rpx;
       padding-left: 60rpx;
       padding-right: 50rpx;
+      margin-right: 20rpx;
 
       &::after {
         left: 24rpx;
         border-radius: 30rpx;
-        height: 64rpx;
+        height: 80rpx;
         background: #ffffff;
         transform: skewX(-30deg);
         z-index: -1;
@@ -569,16 +559,16 @@ defineExpose({
 
       &::before {
 
-        right: 21rpx;
+        right: 92rpx;
         width: 162rpx;
-        height: 64rpx;
+        height: 80rpx;
         border-radius: 25rpx;
         background: #ffffff;
         z-index: -1;
 
       }
     }
-
   }
+
 }
 </style>

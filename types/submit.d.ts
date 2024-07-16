@@ -242,7 +242,7 @@ interface orderinfoData {
 interface sDetail {
   createdAt: string
   deletedAt?: null
-  details?: sDetail[]
+  details: sDetail[]
   evaluationReportID: string
   id: number
   inviteUserID: number
@@ -251,7 +251,7 @@ interface sDetail {
   parentNO: string
   payPrice: string
   productConfigID: number
-  productConfigSnapshot?: ProductConfigSnapshot
+  productConfigSnapshot: ProductConfigSnapshot
   productID: number
   productSnapshot: ProductSnapshot
   productTypeID: number

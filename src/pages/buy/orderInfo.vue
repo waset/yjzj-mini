@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 const { orderInfo, continuePay, countdown, cancelPay } = useSubmitOrderStore()
 
-//  是否显示卡片边框
-const showborder = ref<boolean>(false)
 // 当前订单状态  待支付  已取消  支付成功
 const state = ref<'success' | 'fail' | 'waiting'>('waiting')
 // 商品详情
@@ -22,7 +20,7 @@ const status = (key: number) => {
     case 1:
       state.value = 'waiting'
       break
-    case 2 :
+    case 2:
       state.value = 'success'
       break
   }
@@ -76,16 +74,17 @@ onMounted(async () => {
         <buys-address-card :width="558" />
       </div>
     </div>
-
-    <div class="box">
-      <div class="gradient-border gradientbox">
-        <buys-goods-item-card :list="detail.details" :showborder="showborder" />
-        <div class="totalPrice">
-          <span class="textFont">{{ state === 'success' ? '实际支付' : state === 'fail' ? '合计' : '待支付' }}:</span>
-          <span class="priceFont">￥{{ detail.sellPrice }}</span>
+    <template v-if="detail.details">
+      <div class="box">
+        <div class="gradient-border gradientbox">
+          <buys-submit-orderinfo-goods :list="detail.details" />
+          <div class="totalPrice">
+            <span class="textFont">{{ state === 'success' ? '实际支付' : state === 'fail' ? '合计' : '待支付' }}:</span>
+            <span class="priceFont">￥{{ detail.sellPrice }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
 
     <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
   </div>
@@ -126,6 +125,10 @@ $Be: #BEBEBE;
 
   }
 
+  .box {
+    padding: 32rpx;
+  }
+
   .gradient-border {
     position: relative;
   }
@@ -142,17 +145,17 @@ $Be: #BEBEBE;
   }
 
   .gradientbox {
-    width: 686rpx;
-    margin: 0rpx auto 32rpx;
+    // width: 686rpx;
+    // margin: 0rpx auto 32rpx;
     box-sizing: border-box;
-    padding: 32rpx 0;
+    padding: 32rpx;
 
     .totalPrice {
-      height: 80rpx;
+      // height: 80rpx;
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      padding-right: 40rpx;
+      padding: 16rpx 8rpx;
 
       .textFont {
         font-size: 28rpx;
