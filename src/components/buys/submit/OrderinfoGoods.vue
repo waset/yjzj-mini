@@ -7,11 +7,7 @@ const emit = defineEmits<{
 }>()
 
 const isSrc = (Item: any) => {
-  console.log(Item)
-
   const arr = Item.filter((obj: any) => obj.productSnapshot.typeID === 18)
-  console.log(arr[0].productSnapshot.banner[0])
-
   return arr[0].productSnapshot.banner[0]
 }
 </script>
