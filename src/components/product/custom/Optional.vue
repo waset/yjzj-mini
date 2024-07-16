@@ -222,6 +222,7 @@ onMounted(() => {
 })
 defineExpose({
   setId,
+  okfn,
 })
 </script>
 
@@ -287,17 +288,6 @@ defineExpose({
   <common-popup v-model:show="showConfigsSwitch" name="配置详情">
     <buys-show-alloaction :config="showConfigs" />
   </common-popup>
-  <div class="bottom">
-    <div class="center">
-      <div class="cancel" @click="emit('change', false)">
-        取消
-      </div>
-      <div class="confirm" @click="okfn()">
-        确定
-        <div class="confirm2" />
-      </div>
-    </div>
-  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -318,7 +308,7 @@ defineExpose({
 }
 
 .scroll-view {
-  height: 40vh;
+  height: 45vh;
 
   .empty {
     height: 40rpx;
@@ -453,121 +443,6 @@ defineExpose({
       height: 40rpx;
     }
 
-  }
-
-}
-
-.bottom {
-  padding: 32rpx 0;
-  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(#444444, 0.6);
-  backdrop-filter: blur(48rpx);
-  color: #f5f5f5;
-  z-index: 9;
-  box-shadow: 0px -2rpx 10rpx 0px rgba(0, 0, 0, 0.05);
-
-  .center {
-    position: relative;
-    height: 80rpx;
-    display: flex;
-    color: #000;
-    justify-content: center;
-    align-items: center;
-    padding: 0 32rpx;
-    // box-sizing: border-box;
-
-    .confirm,
-    .cancel,
-    .confirm2 {
-      position: relative;
-      right: 32rpx;
-      width: 256rpx;
-      height: 80rpx;
-      line-height: 80rpx;
-      font-size: 28rpx;
-      font-weight: 400;
-      // margin-right: 40rpx;
-      color: #000;
-      text-align: center;
-      z-index: 10;
-      padding-left: 50rpx;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 26rpx;
-        right: 0;
-        bottom: 0;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #A7F522;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-top-left-radius: 20rpx;
-      }
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: -20rpx;
-        width: 162rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #A7F522;
-        z-index: -1;
-
-      }
-
-    }
-
-    .confirm2 {
-      position: absolute;
-      top: 8rpx;
-      left: 8rpx;
-      z-index: -2;
-
-      &::after {
-        background-color: #57683B;
-      }
-
-      &::before {
-        background-color: #57683B;
-      }
-    }
-
-    .cancel {
-      left: 6rpx;
-      padding-left: 60rpx;
-      padding-right: 50rpx;
-      margin-right: 20rpx;
-
-      &::after {
-        left: 24rpx;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #ffffff;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-bottom-right-radius: 20rpx;
-      }
-
-      &::before {
-
-        right: 92rpx;
-        width: 162rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #ffffff;
-        z-index: -1;
-
-      }
-    }
   }
 
 }
