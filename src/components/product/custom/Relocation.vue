@@ -66,11 +66,13 @@ const reachBottom = () => {
 }
 
 const hasShowOptional = ref(false)
-
+const commonsearch = ref<ComponentInstance['CommonSearch']>()
 /**
  * 设置选配类型及获取其列表
  */
 const showOptional = async (id: number, index: number, type: string, paramValue: any) => {
+  commonsearch.value?.clear()
+  getModificationListParams.value.productName = ''
   ProductCustomOptionalRef?.value?.setId(paramValue, index, type)
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
@@ -81,7 +83,7 @@ const showOptional = async (id: number, index: number, type: string, paramValue:
 }
 const changeUpdate = () => {
   hasShowOptional.value = false
-  getModificationListParams.value.productName = ''
+
   emit('updateconfig')
 }
 
@@ -98,13 +100,16 @@ defineExpose({
           page: 1,
           pageSize: 10,
           params: undefined,
+          productName: '',
         } as Modification
+        getModificationListParams.productName = ''
       }"
     >
       <div class="select">
         <div class="header">
           <common-search
-            padding="0 0 32rpx 0" :value="getModificationListParams.productName" is-input @update:value="(val) => {
+            ref="commonsearch" padding="0 0 32rpx 0" :value="getModificationListParams.productName"
+            is-input @update:value="(val) => {
               getModificationListParams.productName = val
               getModificationListParams.page = 0
               getAllocationList()

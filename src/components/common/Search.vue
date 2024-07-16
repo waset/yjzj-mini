@@ -23,6 +23,14 @@ const onKeyInput = (event: any) => {
   text.value = event?.target?.value
   update()
 }
+
+// 清理输入框
+const clear = () => {
+  text.value = ''
+}
+defineExpose({
+  clear,
+})
 </script>
 
 <template>
