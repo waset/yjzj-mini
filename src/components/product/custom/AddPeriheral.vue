@@ -40,14 +40,13 @@ const cancelbtn = () => {
         </div>
       </div>
       <div class="right">
-        <div class="item" @click="cancelbtn">
-          <div class="btn">
+        <div class="center">
+          <div class="cancel" @click="cancelbtn">
             取消
           </div>
-        </div>
-        <div class="item" @click="addPeriheral">
-          <div class="btn">
-            确认选购
+          <div class="confirm" @click="addPeriheral">
+            确定选购
+            <div class="confirm2" />
           </div>
         </div>
       </div>
@@ -75,6 +74,7 @@ const cancelbtn = () => {
 
     .left,
     .right {
+
       height: 100%;
       @apply flex-between;
     }
@@ -83,9 +83,6 @@ const cancelbtn = () => {
       margin-left: -16rpx;
 
       .item {
-        // 清除系统button样式
-        all: unset;
-
         height: 100%;
         padding: 0 24rpx;
         @apply flex-center;
@@ -117,94 +114,116 @@ const cancelbtn = () => {
           line-height: 40rpx;
           font-weight: 400;
         }
+
+        .btn {
+          // 清除系统button样式
+          all: unset;
+          display: inline-block;
+
+          &::after {
+            content: none;
+          }
+        }
       }
 
     }
 
-    .right {
+    .center {
+      position: relative;
+      height: 80rpx;
+      display: flex;
+      color: #000;
       justify-content: center;
+      align-items: center;
+      // box-sizing: border-box;
 
-      .item {
-        color: rgba(19, 17, 18, 1);
-        padding: 10rpx 60rpx;
-        // padding-right: 50rpx;
+      .confirm,
+      .cancel,
+      .confirm2 {
         position: relative;
-        z-index: 0;
-
-        --path: polygon(90.957% 78.538%, 98.117% 39.269%, 98.117% 39.269%, 98.844% 34.141%, 99.226% 28.82%, 99.288% 23.477%, 99.052% 18.285%, 98.544% 13.418%, 97.786% 9.049%, 96.802% 5.349%, 95.616% 2.493%, 94.252% 0.652%, 92.733% 0%, 9.836% 0%, 9.836% 0%, 8.241% 0.491%, 6.727% 1.912%, 4.027% 7.235%, 2.881% 10.983%, 1.898% 15.353%, 1.098% 20.267%, 0.501% 25.647%, 0.129% 31.417%, -0% 37.5%, -0% 62.5%, -0% 62.5%, 0.129% 68.583%, 1.898% 84.647%, 2.881% 89.016%, 4.027% 92.765%, 5.316% 95.814%, 6.727% 98.088%, 8.241% 99.509%, 9.836% 100%, 80.189% 100%, 81.468% 99.762%, 82.723% 99.059%, 83.946% 97.905%, 85.129% 96.318%, 86.265% 94.311%, 87.345% 91.901%, 88.362% 89.103%, 89.309% 85.933%, 90.176% 82.406%, 90.957% 78.538%);
-
-        &::after {
-          content: "";
-          position: absolute;
-          z-index: -1;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          clip-path: var(--path);
-          transform-origin: center center;
-          background-color: #fff;
-        }
+        right: 32rpx;
+        width: 256rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        font-size: 28rpx;
+        font-weight: 400;
+        // margin-right: 40rpx;
+        color: #000;
+        text-align: center;
+        z-index: 10;
+        padding-left: 50rpx;
 
         &::after {
           content: "";
           position: absolute;
-          z-index: -1;
-          left: 0;
           top: 0;
-          width: 100%;
-          height: 100%;
-          clip-path: var(--path);
-          transform-origin: center center;
-          background-color: #fff;
+          left: 26rpx;
+          right: 0;
+          bottom: 0;
+          border-radius: 30rpx;
+          height: 80rpx;
+          background: #A7F522;
+          transform: skewX(-30deg);
+          z-index: -1;
+          border-top-left-radius: 20rpx;
         }
 
-        &:last-child {
-          &::after {
-            background-color: #a7f522;
-            transform: rotate(180deg) translateX(12rpx);
-          }
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: -20rpx;
+          width: 162rpx;
+          height: 80rpx;
+          border-radius: 25rpx;
+          background: #A7F522;
+          z-index: -1;
 
-          &:last-child {
-            &::after {
-              background-color: #a7f522;
-              transform: rotate(180deg) translateX(12rpx);
-            }
-
-            &::before {
-              content: "";
-              position: absolute;
-              z-index: -1;
-              left: 8rpx;
-              top: 8rpx;
-              width: 100%;
-              height: 100%;
-              transform-origin: center center;
-              transform: rotate(180deg) translateX(12rpx);
-              clip-path: var(--path);
-              background-color: rgba($color: #a7f522, $alpha: 0.2);
-            }
-          }
-
-          &::before {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            left: 8rpx;
-            top: 8rpx;
-            width: 100%;
-            height: 100%;
-            transform-origin: center center;
-            transform: rotate(180deg) translateX(12rpx);
-            clip-path: var(--path);
-            background-color: rgba($color: #a7f522, $alpha: 0.2);
-          }
         }
 
-        .btn {
-          font-size: 28rpx;
-          font-weight: 400;
-          line-height: 40rpx;
+      }
+
+      .confirm2 {
+        position: absolute;
+        top: 8rpx;
+        left: 8rpx;
+        z-index: -2;
+
+        &::after {
+          background-color: #57683B;
+        }
+
+        &::before {
+          background-color: #57683B;
+        }
+      }
+
+      .cancel {
+        left: 6rpx;
+        padding-left: 60rpx;
+        padding-right: 50rpx;
+        margin-right: 20rpx;
+        width: 180rpx;
+
+        &::after {
+          left: 85rpx;
+          border-radius: 30rpx;
+          height: 80rpx;
+          background: #ffffff;
+          transform: skewX(-30deg);
+          z-index: -1;
+          border-bottom-right-radius: 20rpx;
+        }
+
+        &::before {
+
+          right: 15rpx;
+          width: 165rpx;
+          height: 80rpx;
+          border-radius: 25rpx;
+          background: #ffffff;
+          z-index: -1;
+
         }
       }
     }
