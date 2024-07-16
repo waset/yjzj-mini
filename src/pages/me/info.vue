@@ -85,9 +85,10 @@ const goRegister = async () => {
       title: `${isRegister ? '更新' : '注册'}成功`,
       icon: 'none',
     })
+    const route = getCurrentPages()
     setTimeout(() => {
       isRegister.value = true
-      Back(2)
+      Back(route.length - 1 || 2)
     }, 1000)
   }
 }

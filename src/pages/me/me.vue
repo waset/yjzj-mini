@@ -196,7 +196,7 @@ const goLogout = () => {
           }"
         >
           <span>全部订单</span>
-          <span v-if="orders" class="num">{{ orders.length }}</span>
+          <span v-if="orders.length" class="num">{{ orders.length }}</span>
           <div class="i-icons-right" />
         </div>
       </div>
