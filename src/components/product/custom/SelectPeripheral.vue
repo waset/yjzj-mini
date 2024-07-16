@@ -174,7 +174,7 @@ const totalNum = computed(() => {
     top: 0;
     left: 0;
     opacity: 0.2;
-    z-index: 1;
+    z-index: 0;
 
     .image {
       border-radius: 16rpx;
