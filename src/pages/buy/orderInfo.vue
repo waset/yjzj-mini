@@ -46,10 +46,11 @@ onLoad((options) => {
   }
 })
 
-onMounted(async () => {
+onShow(async () => {
   // 给请求 添加商品
   detail.value = await orderInfo(orderId.value)
   timeout.value = countdown(detail.value?.createdAt || '')
+  status(detail.value.status || firstStatus.value)
 
   const times = setInterval(async () => {
     async function updateTimes() {
