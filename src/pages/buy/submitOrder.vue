@@ -42,11 +42,14 @@ const couponPrice = ref<string>('')
 // 配置详情展示
 const allocationShow = ref<boolean>(false)
 // 配置详情列表
-const allocationList = ref<checkParam[]>([])
+const allocationList = ref<any[]>([])
+// 配置外设列表
+const nowgoodsPer = ref<any[]>([])
 
 // 查看 配置单
 const checkAllocation = (index: number) => {
   allocationList.value = nowGoods.value[index].params
+  nowgoodsPer.value = nowGoods.value[index].perihera
   allocationShow.value = true
 }
 
@@ -207,9 +210,7 @@ const paym = computed(() => {
 
     <common-popup :show="allocationShow" name="配置详情" @close="allocationShow = false">
       <div>
-        <template v-for="(item, index) in allocationList" :key="index">
-          <buys-submit-allocation-card :params="item" />
-        </template>
+        <buys-submit-allocation-card :nowgoods-per="nowgoodsPer" :allocation-list="allocationList" />
       </div>
     </common-popup>
   </div>

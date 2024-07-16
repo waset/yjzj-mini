@@ -1,34 +1,61 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  params: checkParam
+  // params: checkParam
+  allocationList: any
+  nowgoodsPer: any
 }>()
 </script>
 
 <template>
   <div>
-    <div class="card">
-      <div class="image">
-        <template v-if="props.params?.product">
+    <template v-for="(item, index) in props.allocationList" :key="index">
+      <div class="card">
+        <div class="image">
+          <template v-if="item.product">
+            <product-image
+              :src="ImageUrl(item.product?.banner[0]) || ''" mode="scaleToFill"
+              :background="false" width="100rpx"
+            />
+          </template>
+        </div>
+        <div class="info">
+          <div class="row">
+            <div class="name">
+              {{ item.paramDesc }}
+            </div>
+            <div class="number">
+              x{{ item.number || 1 }}
+            </div>
+          </div>
+          <div class="desc">
+            {{ item.product?.name || item.paramValue }}
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-for="(item, index) in props.nowgoodsPer" :key="index">
+      <div class="card">
+        <div class="image">
           <product-image
-            :src="ImageUrl(props.params?.product?.banner[0]) || ''" mode="scaleToFill" :background="false"
-            width="100rpx"
+            :src="ImageUrl(item?.banner[0]) || ''" mode="scaleToFill"
+            :background="false" width="100rpx"
           />
-        </template>
-      </div>
-      <div class="info">
-        <div class="row">
-          <div class="name">
-            {{ props.params.paramDesc }}
+        </div>
+        <div class="info">
+          <div class="row">
+            <div class="name">
+              {{ item.name }}
+            </div>
+            <div class="number">
+              x{{ item.number }}
+            </div>
           </div>
-          <div class="number">
-            x{{ props.params?.number }}
+          <div class="desc">
+            {{ item.description || item.description }}
           </div>
         </div>
-        <div class="desc">
-          {{ props.params?.product?.name || props.params?.paramValue }}
-        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
