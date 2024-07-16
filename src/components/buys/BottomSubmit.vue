@@ -66,12 +66,13 @@ const submitOrder = () => {
 
   .submitBtn,
   .submitBtnCopy {
+
     position: relative;
     width: 230rpx;
     height: 64rpx;
     line-height: 64rpx;
     font-size: 28rpx;
-    font-weight: 400;
+    font-weight: 600;
     margin-right: 40rpx;
     color: #000;
     text-align: center;
