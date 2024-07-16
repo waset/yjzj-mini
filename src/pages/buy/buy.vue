@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
 const { selectAll, deletes } = useBuyStore()
+const { hasGoLogin } = useUserStore()
 const { changeBuyType } = useSubmitOrderStore()
 // 当前滑块索引
 const slidIdx = ref<number | null>(null)
@@ -48,6 +49,9 @@ function deleteProduct() {
 //  下单
 const submitorder = () => {
   changeBuyType('car')
+  if (hasGoLogin()) {
+    return
+  }
   Jump('/pages/buy/submitOrder')
 }
 
@@ -193,36 +197,49 @@ const infoClick = (product: BuyProduct) => {
 </template>
 
 <style lang="scss" scoped>
-  $top-height: 112rpx;
-  $bottom-height: 156rpx;
+$top-height: 112rpx;
+$bottom-height: 156rpx;
 
-  .buy {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+.buy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
-    .top {
-      padding: 32rpx;
-      padding-bottom: 0;
-      position: fixed;
-      top: var(--navbar-height-all);
-      left: 0;
-      right: 0;
-      height: $top-height;
-      background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
-      backdrop-filter: blur(48rpx);
-      z-index: 1;
+  .top {
+    padding: 32rpx;
+    padding-bottom: 0;
+    position: fixed;
+    top: var(--navbar-height-all);
+    left: 0;
+    right: 0;
+    height: $top-height;
+    background: linear-gradient(180deg, rgba(0, 0, 0, .1) 43%, rgba(19, 19, 19, .1) 100%);
+    backdrop-filter: blur(48rpx);
+    z-index: 1;
 
-      .wrap {
-        padding: 16rpx 32rpx;
-        border-radius: 8rpx;
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.5), rgba(132, 132, 132, 0.5));
+    .wrap {
+      padding: 16rpx 32rpx;
+      border-radius: 8rpx;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.5), rgba(132, 132, 132, 0.5));
 
-        @apply flex-between;
+      @apply flex-between;
 
-        .left {
-          font-weight: 400;
+      .left {
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #FFFFFF;
+        line-height: 40rpx;
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+
+      .right {
+        @apply flex-center;
+
+        .text {
+          font-weight: 500;
           font-size: 28rpx;
           color: #FFFFFF;
           line-height: 40rpx;
@@ -230,178 +247,165 @@ const infoClick = (product: BuyProduct) => {
           font-style: normal;
           text-transform: none;
         }
-
-        .right {
-          @apply flex-center;
-
-          .text {
-            font-weight: 500;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-          }
-        }
       }
     }
+  }
 
-    .body {
-      display: flex;
-      flex-direction: column;
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
+    .top-wrap {
+      height: $top-height;
+    }
+
+    .body-wrap {
       flex: 1;
-      overflow: hidden;
-
-      .top-wrap {
-        height: $top-height;
-      }
-
-      .body-wrap {
-        flex: 1;
-      }
-
-      .bottom-wrap {
-        height: $bottom-height;
-      }
     }
 
-    .bottom {
-      padding: 0 32rpx;
-      position: fixed;
-      bottom: var(--tabbar-height-all);
-      left: 0;
-      right: 0;
-      background: linear-gradient(180deg, rgba(19, 19, 19, .1) 100%, rgba(0, 0, 0, .8) 43%);
-      backdrop-filter: blur(48rpx);
+    .bottom-wrap {
+      height: $bottom-height;
+    }
+  }
 
-      .wrap {
-        flex-wrap: nowrap;
-        @apply flex-between;
+  .bottom {
+    padding: 0 32rpx;
+    position: fixed;
+    bottom: var(--tabbar-height-all);
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(19, 19, 19, .1) 100%, rgba(0, 0, 0, .8) 43%);
+    backdrop-filter: blur(48rpx);
 
-        .selectAll {
+    .wrap {
+      flex-wrap: nowrap;
+      @apply flex-between;
+
+      .selectAll {
+        @apply flex-center;
+        height: $bottom-height;
+
+        .select {
           @apply flex-center;
-          height: $bottom-height;
+          color: #000;
+          font-size: 32rpx;
 
-          .select {
-            @apply flex-center;
-            color: #000;
-            font-size: 32rpx;
+          width: 48rpx;
+          height: 48rpx;
+          border-radius: 50%;
+          border: 2rpx solid #FFFFFF;
 
-            width: 48rpx;
-            height: 48rpx;
-            border-radius: 50%;
-            border: 2rpx solid #FFFFFF;
-
-            &.all {
-              $color: #a7f522;
-              background-color: $color;
-              border-color: $color;
-            }
-          }
-
-          .text {
-            font-weight: 500;
-            font-size: 28rpx;
-            color: #FFFFFF;
-            line-height: 40rpx;
-            text-align: left;
-            font-style: normal;
-            text-transform: none;
-            padding: 0 16rpx;
+          &.all {
+            $color: #a7f522;
+            background-color: $color;
+            border-color: $color;
           }
         }
 
-        .info {
-          flex: 1;
-          text-align: right;
+        .text {
+          font-weight: 500;
+          font-size: 28rpx;
+          color: #FFFFFF;
+          line-height: 40rpx;
+          text-align: left;
+          font-style: normal;
+          text-transform: none;
           padding: 0 16rpx;
+        }
+      }
 
-          .details {
-            font-size: 24rpx;
-            line-height: 40rpx;
-            font-weight: 400;
-            padding-bottom: 8rpx;
-          }
+      .info {
+        flex: 1;
+        text-align: right;
+        padding: 0 16rpx;
 
-          .total {
-            font-size: 28rpx;
-            line-height: 40rpx;
-            font-weight: 600;
-          }
+        .details {
+          font-size: 24rpx;
+          line-height: 40rpx;
+          font-weight: 400;
+          padding-bottom: 8rpx;
         }
 
-        .btns {
-          .btn {
-            padding: 20rpx 68rpx;
-            border-radius: 8rpx;
-            font-size: 32rpx;
-            line-height: 40rpx;
-            font-weight: bold;
-            color: #F5F5F5;
-            background-color: #8D8D8D;
+        .total {
+          font-size: 28rpx;
+          line-height: 40rpx;
+          font-weight: 600;
+        }
+      }
 
-            &.pay.active {
-              color: #333;
-              background-color: #A7F522;
-            }
+      .btns {
+        .btn {
+          padding: 20rpx 68rpx;
+          border-radius: 8rpx;
+          font-size: 32rpx;
+          line-height: 40rpx;
+          font-weight: bold;
+          color: #F5F5F5;
+          background-color: #8D8D8D;
 
-            &.del.active {
-              background-color: #F53F3F;
-            }
+          &.pay.active {
+            color: #333;
+            background-color: #A7F522;
+          }
+
+          &.del.active {
+            background-color: #F53F3F;
           }
         }
       }
     }
   }
+}
 
-  .configs {
-    .wrap {
-      .item {
-        @apply flex-between;
-        background: rgba(132, 132, 132, 0.2);
-        border-radius: 8rpx 8rpx 8rpx 8rpx;
-        margin-bottom: 32rpx;
-        padding: 22rpx 24rpx;
+.configs {
+  .wrap {
+    .item {
+      @apply flex-between;
+      background: rgba(132, 132, 132, 0.2);
+      border-radius: 8rpx 8rpx 8rpx 8rpx;
+      margin-bottom: 32rpx;
+      padding: 22rpx 24rpx;
 
-        .image {
-          margin-right: 20rpx;
-        }
+      .image {
+        margin-right: 20rpx;
+      }
 
-        .info {
-          flex: 1;
+      .info {
+        flex: 1;
 
-          .top {
-            @apply flex-between;
+        .top {
+          @apply flex-between;
 
-            .type {
-              flex: 1;
-              font-size: 32rpx;
-              font-weight: 400;
-              line-height: 40rpx;
-              color: rgba(167, 245, 34, 1);
-            }
-
-            .num {
-              font-family: PingFang SC;
-              font-size: 28rpx;
-              font-weight: 400;
-              line-height: 40rpx;
-              color: rgba(190, 190, 190, 1);
-            }
+          .type {
+            flex: 1;
+            font-size: 32rpx;
+            font-weight: 400;
+            line-height: 40rpx;
+            color: rgba(167, 245, 34, 1);
           }
 
-          .desc {
-            padding-top: 16rpx;
+          .num {
+            font-family: PingFang SC;
             font-size: 28rpx;
             font-weight: 400;
             line-height: 40rpx;
             color: rgba(190, 190, 190, 1);
           }
         }
+
+        .desc {
+          padding-top: 16rpx;
+          font-size: 28rpx;
+          font-weight: 400;
+          line-height: 40rpx;
+          color: rgba(190, 190, 190, 1);
+        }
       }
     }
   }
+}
 </style>
 
 <route lang="json">
