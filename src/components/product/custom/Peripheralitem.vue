@@ -179,7 +179,9 @@ defineExpose({
                       <div class="circlec" @click.stop="setNumber('cut', item.id, index)">
                         <div class="i-icons-minus" />
                       </div>
-                      <div>{{ item.number }}</div>
+                      <div class="number">
+                        {{ item.number }}
+                      </div>
                     </template>
 
                     <template v-if="isSelect(item.id)">
@@ -339,7 +341,11 @@ defineExpose({
           color: #A7F522;
           font-weight: 600;
           display: flex;
-
+          .number {
+            display: flex;
+            justify-content: center;
+            width: 54rpx;
+          }
           .circle {
             @apply flex-center ml-2;
             width: 48rpx;
