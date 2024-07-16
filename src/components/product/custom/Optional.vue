@@ -232,7 +232,12 @@ defineExpose({
         <div class="card mb-4">
           <div :class="[item.errors.length !== 0 ? 'select errcss' : 'select']" @click="selectFn(item)">
             <template v-if="saveId === item.id">
-              <product-custom-singlebg />
+              <div class="selected">
+                <div class="icon i-icons-correct" />
+              </div>
+              <div class="selectbg">
+                <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
+              </div>
             </template>
             <template v-else>
               <div
@@ -324,6 +329,37 @@ defineExpose({
 }
 
 .card {
+  .selected {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 69rpx;
+    height: 69rpx;
+    background-color: #A7F522;
+    clip-path: polygon(0% 98.571%, 98.571% 0%, 22.857% 0%, 22.857% 0%, 19.15% 0.299%, 15.633% 1.165%, 12.353% 2.551%, 9.358% 4.41%, 6.695% 6.695%, 4.41% 9.358%, 2.551% 12.353%, 1.165% 15.633%, 0.299% 19.15%, 0% 22.857%, 0% 98.571%);
+    z-index: 3;
+
+    .icon {
+      color: #000;
+    }
+  }
+
+  .selectbg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    z-index: 1;
+
+    .image {
+      border-radius: 16rpx;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   .select {
     position: relative;
     border-radius: 16rpx;
