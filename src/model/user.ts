@@ -18,11 +18,11 @@ export const useUserStore = defineStore('user', {
     shareCode: '',
   }),
   getters: {
-    isLogin: state => !!state.user.phone,
+    isLogin: state => !!state.user?.phone,
     userDesc: (state) => {
       let rebateType = ''
       if (state.user?.promoter?.rebateType) {
-        switch (state.user.promoter.rebateType) {
+        switch (state.user?.promoter?.rebateType) {
           case 1:
             rebateType = ' 等级'
             break
@@ -44,7 +44,7 @@ export const useUserStore = defineStore('user', {
       }>>{
         ...state.user,
         promoter: {
-          ...state.user.promoter,
+          ...state.user?.promoter,
           rebateTypeDesc: rebateType,
         },
         isSubDesc: state.user?.isSub === 1 ? '已订阅' : '未订阅',
@@ -67,7 +67,7 @@ export const useUserStore = defineStore('user', {
       const { data, code } = await http.post<UserInfo>('/web/user/info')
       if (code === 200) {
         this.user = data
-        this.isRegister = !!data.phone
+        this.isRegister = !!data?.phone
       }
       else {
         this.isRegister = false

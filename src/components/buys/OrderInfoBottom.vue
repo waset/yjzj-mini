@@ -26,7 +26,7 @@ const cancelPay = () => {
       </div>
     </div>
     <div v-else-if="props.status === 'success' || 'fail'" class="Tobepaid">
-      <div class="cancle" @click="Back(1)">
+      <div class="cancle" @click="Jump('/pages/order/list', {}, 1)">
         查看订单
       </div>
       <div class="fastPay" @click="Jump('/pages/menu/menu')">
