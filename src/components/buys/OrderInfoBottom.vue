@@ -49,7 +49,7 @@ const cancelPay = () => {
     padding-bottom: env(safe-area-inset-bottom);
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 
     .cancle {
       width: 192rpx;
@@ -67,7 +67,7 @@ const cancelPay = () => {
       font-size: 28rpx;
       border-radius: 8rpx;
       color: #333333;
-      margin: 0 32rpx 0 16rpx;
+      margin-left: 16rpx;
     }
   }
 }
