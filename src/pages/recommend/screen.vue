@@ -21,6 +21,18 @@ const endPrice = computed((): number => {
   return Math.round((24000 / width.value) * (saveX2.value))
 })
 
+// 获取滑动条的宽度
+const movableWidth = ref()
+onReady(() => {
+  const query = uni.createSelectorQuery().in(getCurrentInstance())
+  query
+    .select('#movable')
+    .fields({ size: true }, (data: any) => {
+      movableWidth.value = data.width
+    })
+    .exec()
+})
+
 // 滑动第一个点
 const startChange = (e: any) => {
   saveX.value = e.detail.x
@@ -60,10 +72,16 @@ const list = ref<pricelist[]>([{
 }])
 
 // 计算中间背景开始的长度
-const bgLeft = computed(() => Math.min(saveX2.value, saveX.value))
+const bgLeft = computed(() => {
+  const ratio = Math.min(saveX2.value, saveX.value) / movableWidth.value
+  return `${(ratio * 100).toFixed(2)}%`
+})
 
 // 中间背景的长度
-const bgWidth = computed(() => Math.abs(saveX2.value - saveX.value))
+const bgWidth = computed(() => {
+  const ratio = Math.abs(saveX2.value - saveX.value) / movableWidth.value
+  return `${(ratio * 100).toFixed(2)}%`
+})
 
 // 计算价格区间
 const sub = (price: number) => {
@@ -98,10 +116,10 @@ const select = ref<'Intel' | 'AMD'>('Intel')
           </div>
 
           <div id="setupbox" class="setupbox">
-            <movable-area class="langLine">
-              <div class="bg" :style="{ left: `${bgLeft * 2}rpx`, width: `${bgWidth * 2}rpx` }" />
+            <movable-area id="movable" class="langLine">
+              <div class="bg" :style="{ left: `${bgLeft}`, width: `${bgWidth}` }" />
               <movable-view
-                :animation="false" :x="x" :y="y" direction="horizontal" class="circle"
+                :animation="false" :x="x" :y="y" direction="horizontal" class="circle flex justify-center"
                 @change="startChange"
               >
                 <div class="text">
@@ -109,7 +127,8 @@ const select = ref<'Intel' | 'AMD'>('Intel')
                 </div>
               </movable-view>
               <movable-view
-                :inertia="true" :animation="false" :x="x1" :y="y1" direction="horizontal" class="circle"
+
+                :inertia="true" :animation="false" :x="x1" :y="y1" direction="horizontal" class="circle flex justify-center"
                 @change="endchange"
               >
                 <div class="text">
