@@ -86,6 +86,9 @@ const setSortGet = async (name: string, value: number) => {
 
 // 筛选
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name, value) => {
+  // 设置 列表返回top 0 顶部
+  ProductPeripheralItem.value?.settop()
+
   switch (name) {
     case 'filte':
       break

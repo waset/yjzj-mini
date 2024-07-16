@@ -124,7 +124,14 @@ const totalNum = computed(() => {
   return result
 })
 
+const totop = ref<number>(0)
+
+const settop = () => {
+  totop.value = 0
+}
+
 defineExpose({
+  settop,
   openSelect,
   confirmSelect,
   Processing,
@@ -134,7 +141,7 @@ defineExpose({
 <template>
   <div>
     <template v-if="peripheral.length !== 0">
-      <scroll-view scroll-y class="scroll" :enable-flex="true" @scrolltolower="reachBottom">
+      <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="reachBottom">
         <div class="scrollpb">
           <template v-for="(item, index) in peripheral" :key="index">
             <div class="card mb-4">
