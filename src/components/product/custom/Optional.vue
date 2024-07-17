@@ -261,7 +261,7 @@ defineExpose({
                 {{ item.description }}
               </div>
               <div class="row3">
-                <div class="fs24 check" @click="checkInfo(item)">
+                <div class="fs24 check" @click.prevent.stop="checkInfo(item)">
                   查看详情
                   <div class="i-icons-right" />
                 </div>
@@ -384,7 +384,7 @@ defineExpose({
       flex: 1;
       height: 100%;
       padding-left: 20rpx;
-
+      z-index: 5;
       .row1 {
         font-weight: 600;
 
