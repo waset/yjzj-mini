@@ -78,14 +78,26 @@ const everyFun = () => {
     return matchedItem ? { ...obj, ...matchedItem } : obj
   })
 }
+const cloneds = ref<any>()
+
+const showEvery = () => {
+  const { cloned } = useCloned(detail.value?.perihera)
+  cloneds.value = cloned.value
+}
+
 // 处理数组
 const Processing = () => {
-  const { cloned } = useCloned(detail.value?.perihera)
-  Preselection.value = cloned.value
+  //   每次请求完数据     把以确定的数值取出  赋值给  预选数组
+  //   这是 之前选中的数据 的预选数组的值 则会被   覆盖
+  // const { cloned } = useCloned(detail.value?.perihera)
+  Preselection.value = cloneds.value
+
   everyFun()
 }
 
 const closed = () => {
+  Preselection.value = []
+  showEvery()
   Processing()
 }
 // 查看配置详情的数据
@@ -120,6 +132,7 @@ const totalNum = computed(() => {
 })
 
 defineExpose({
+  showEvery,
   openSelect,
   confirmSelect,
   Processing,
