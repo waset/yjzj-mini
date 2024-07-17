@@ -51,11 +51,11 @@ const selected = (id: number, index: number | string | null, val: any) => {
     selectRes.value[id] = val
   }
 }
-let res: ProductParm[] = []
+
 // 确定筛选项
 const confirmFn = () => {
   filte.value = false
-  res = []
+  const res: ProductParm[] = []
   Object.keys(selectRes.value).forEach((item: any) => {
     if (selectRes.value[item]) {
       let value: any

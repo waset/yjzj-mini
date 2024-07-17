@@ -19,8 +19,6 @@ const getAllocationList = async () => {
 const getAllocationListByParams = async (data: Modification) => {
   ModificationList.value = []
 
-  console.log(data, 'data')
-
   getModificationListParams.value = data
   getModificationListParams.value.page = 1
   await getModificationList(getModificationListParams.value)
@@ -85,7 +83,6 @@ const showOptional = async (id: number, index: number, type: string, paramValue:
   getAllocationList().then(() => {
     hasShowOptional.value = true
   })
-  console.log('打开选配', getModificationListParams.value)
 }
 const changeUpdate = () => {
   hasShowOptional.value = false
