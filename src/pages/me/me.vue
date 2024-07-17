@@ -35,7 +35,7 @@ const orderTypes = [
     icon: 'i-icons-payment',
     text: '待付款',
     num: () => {
-      return orders.value?.filter(item => item.status === OrderStatus.PaymentSuccessful).length || 0
+      return orders.value?.filter(item => item.status === OrderStatus.Wait).length || 0
     },
     click: () => {
       if (hasGoLogin())
@@ -514,7 +514,7 @@ const goLogout = () => {
                   font-size: 20rpx;
                   width: 36rpx;
                   height: 36rpx;
-                  top: 9rpx;
+                  top: -1rpx;
                   right: -9rpx;
                   border-radius: 50%;
                   border: 4rpx solid #fff;
