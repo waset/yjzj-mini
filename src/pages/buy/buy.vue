@@ -39,6 +39,8 @@ const del_ids = ref<BuyProduct['id'][]>([])
 const del_alloaction = ref<BuyProduct['id'][]>([])
 // 删除弹窗
 function delModel(ids: delobj) {
+  console.log(ids)
+
   del_ids.value = ids.ids
   del_alloaction.value = ids.alls
   showModel.value = true
@@ -51,6 +53,7 @@ function deleteProduct() {
   if (del_ids.value.length > 1 || products.value.length === 0)
     management.value = false
   del_ids.value = []
+  del_alloaction.value = []
 }
 
 //  下单
@@ -160,10 +163,10 @@ const infoClick = (product: BuyProduct) => {
           <template v-else>
             <div
               class="btn del" :class="{
-                active: !!selectedProductIds(management).ids.length,
+                active: selectedNum(true),
               }" @click="() => {
                 const selected = selectedProductIds(management)
-                if (!selected.ids.length) {
+                if ((!selected.ids.length && !selected.alls.length)) {
                   return
                 }
                 delModel(selected)

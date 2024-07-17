@@ -87,6 +87,8 @@ onLoad(async (params) => {
     detail.value.name = `配置单${data.id}` // 配置单name
     detail.value.sellPrice = data.sellPrice // 配置单价格
   }
+
+  console.log(detail.value)
 })
 
 // 是否通过检测
@@ -217,6 +219,7 @@ const addBuyCar = async () => {
         delete: false,
         ...detail.value,
       } as BuyProduct)
+
       uni.showToast({
         title: '添加成功',
         icon: 'success',

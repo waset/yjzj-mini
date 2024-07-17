@@ -37,12 +37,14 @@ function del() {
     ids: [],
     alls: [],
   })
-  if (props.product.id) {
-    obj.value.ids.push(props.product.id)
-  }
-  else {
+
+  if (props.product.alloaction) {
     obj.value.alls.push(props.product.alloaction as number)
   }
+  else {
+    obj.value.ids.push(props.product.id)
+  }
+
   emits('del', obj.value)
 }
 // 功能区
