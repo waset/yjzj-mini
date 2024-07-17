@@ -104,7 +104,6 @@ defineExpose({
     <common-popup
       v-model:show="hasShowOptional"
       :mask-closable="false" name="修改配置" height="80%" @close="() => {
-        console.log('关闭选配', getModificationListParams)
 
         getModificationListParams = {
           page: 1,
