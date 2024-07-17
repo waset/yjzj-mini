@@ -18,6 +18,9 @@ const getAllocationList = async () => {
 
 const getAllocationListByParams = async (data: Modification) => {
   ModificationList.value = []
+
+  console.log(data, 'data')
+
   getModificationListParams.value = data
   getModificationListParams.value.page = 1
   await getModificationList(getModificationListParams.value)
@@ -72,7 +75,9 @@ const commonsearch = ref<ComponentInstance['CommonSearch']>()
  */
 const showOptional = async (id: number, index: number, type: string, paramValue: any) => {
   commonsearch.value?.clear()
+  ProductCustomFilterListRef.value?.clearRes()
   getModificationListParams.value.productName = ''
+  getModificationListParams.value.params = undefined
   ProductCustomOptionalRef?.value?.setId(paramValue, index, type)
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
@@ -80,6 +85,7 @@ const showOptional = async (id: number, index: number, type: string, paramValue:
   getAllocationList().then(() => {
     hasShowOptional.value = true
   })
+  console.log('打开选配', getModificationListParams.value)
 }
 const changeUpdate = () => {
   hasShowOptional.value = false
@@ -99,7 +105,10 @@ defineExpose({
 <template>
   <div class="relocation">
     <common-popup
-      v-model:show="hasShowOptional" name="修改配置" height="80%" @close="() => {
+      v-model:show="hasShowOptional"
+      :mask-closable="false" name="修改配置" height="80%" @close="() => {
+        console.log('关闭选配', getModificationListParams)
+
         getModificationListParams = {
           page: 1,
           pageSize: 10,
@@ -107,6 +116,7 @@ defineExpose({
           productName: '',
         } as Modification
         getModificationListParams.productName = ''
+        getModificationListParams.params = undefined
       }"
     >
       <div class="select">
