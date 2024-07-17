@@ -345,6 +345,7 @@ defineExpose({
             display: flex;
             justify-content: center;
             width: 54rpx;
+            align-items: center;
           }
 
           .circle {

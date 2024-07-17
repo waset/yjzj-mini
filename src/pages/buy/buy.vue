@@ -39,8 +39,6 @@ const del_ids = ref<BuyProduct['id'][]>([])
 const del_alloaction = ref<BuyProduct['id'][]>([])
 // 删除弹窗
 function delModel(ids: delobj) {
-  console.log(ids)
-
   del_ids.value = ids.ids
   del_alloaction.value = ids.alls
   showModel.value = true
