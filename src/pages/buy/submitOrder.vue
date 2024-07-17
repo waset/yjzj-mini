@@ -23,7 +23,7 @@ const submitOrderParams = ref<submitOrderReq>({
   inviteCode: '',
   details: [],
   userTicketID: 0,
-  userAddressID: nowAddress.value.id,
+  userAddressID: 0,
   payType: 'wechat',
   payMethod: 'mp',
   remark: '',
@@ -57,6 +57,15 @@ const checkAllocation = (index: number) => {
 const submitOrderFn = async () => {
   // 提交订单接口
   try {
+    submitOrderParams.value.userAddressID = nowAddress.value.id
+    if (submitOrderParams.value.userAddressID === 0) {
+      uni.showToast({
+        title: '请选择收货地址~',
+        icon: 'error',
+      })
+      return
+    }
+
     await submitOrderReq(submitOrderParams.value)
   }
   catch (error) {
