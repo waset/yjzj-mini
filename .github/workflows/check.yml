@@ -1,4 +1,4 @@
-name: Check
+name: Check Build
 
 on:
   push:
@@ -10,50 +10,8 @@ on:
       - main
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-          cache: pnpm
-
-      - name: Install
-        run: pnpm i
-
-      - name: Reset
-        run: pnpm run reset-manifest
-
-      - name: Lint
-        run: pnpm run lint
-
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-          cache: pnpm
-
-      - name: Install
-        run: pnpm i
-
-      - name: Reset
-        run: pnpm run reset-manifest
-
-      - name: Reset
-        run: pnpm run build:h5
-
-      - name: TypeCheck
-        run: pnpm run type-check
-
-  build:
+  check:
     runs-on: ${{ matrix.os }}
-
     timeout-minutes: 10
 
     strategy:
@@ -79,5 +37,11 @@ jobs:
       - name: Reset
         run: pnpm run reset-manifest
 
+      - name: Lint
+        run: pnpm run lint
+
       - name: Build
         run: pnpm run ${{ matrix.build_cmd }}
+
+      - name: Typecheck
+        run: pnpm run type-check

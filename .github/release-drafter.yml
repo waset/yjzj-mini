@@ -1,0 +1,33 @@
+name-template: 🌈 $RESOLVED_VERSION
+tag-template: $RESOLVED_VERSION
+categories:
+  - title: 🚀 新功能
+    label: feat
+  - title: 🐛 Bug 修复
+    label: fix
+  - title: 📚 文档
+    label: docs
+  - title: 🧰 维护
+    labels:
+      - chore
+      - refactor
+      - style
+      - test
+exclude-labels:
+  - wontfix
+  - duplicate
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+version-resolver:
+  major:
+    labels:
+      - major
+  minor:
+    labels:
+      - minor
+  patch:
+    labels:
+      - patch
+template: |
+  ## 更新内容
+
+  $CHANGES
