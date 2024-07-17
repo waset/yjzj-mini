@@ -21,25 +21,31 @@ const endPrice = computed((): number => {
   return Math.round((24000 / width.value) * (saveX2.value))
 })
 
+const autoStart = ref()
+const autoEnd = ref()
+const isStartauto = ref(false)
+const isEndauto = ref(false)
+
 // 获取滑动条的宽度
-const movableWidth = ref()
 onReady(() => {
   const query = uni.createSelectorQuery().in(getCurrentInstance())
   query
     .select('#movable')
     .fields({ size: true }, (data: any) => {
-      movableWidth.value = data.width
+      width.value = data.width
     })
     .exec()
 })
 
 // 滑动第一个点
 const startChange = (e: any) => {
+  isStartauto.value = false
   saveX.value = e.detail.x
   x.value = saveX.value
 }
 // 滑动第二个点
 const endchange = (e: any) => {
+  isEndauto.value = false
   saveX2.value = e.detail.x
   x1.value = saveX2.value
 }
@@ -73,13 +79,13 @@ const list = ref<pricelist[]>([{
 
 // 计算中间背景开始的长度
 const bgLeft = computed(() => {
-  const ratio = Math.min(saveX2.value, saveX.value) / movableWidth.value
+  const ratio = Math.min(saveX2.value, saveX.value) / width.value
   return `${(ratio * 100).toFixed(2)}%`
 })
 
 // 中间背景的长度
 const bgWidth = computed(() => {
-  const ratio = Math.abs(saveX2.value - saveX.value) / movableWidth.value
+  const ratio = Math.abs(saveX2.value - saveX.value) / width.value
   return `${(ratio * 100).toFixed(2)}%`
 })
 
@@ -89,6 +95,13 @@ const sub = (price: number) => {
 }
 
 const setPrice = (item: pricelist) => {
+  setTimeout(() => {
+    isStartauto.value = true
+    isEndauto.value = true
+  }, 100)
+  autoStart.value = item.start
+  autoEnd.value = item.end
+
   // 点击金额区间 给点1  点2 设置位置
   saveX.value = sub(item.start)
   x.value = saveX.value
@@ -101,6 +114,19 @@ const setPrice = (item: pricelist) => {
   }
   x1.value = saveX2.value
 }
+
+const realStartPrice = computed(() => {
+  const price = isStartauto.value ? autoStart : starPrice.value
+  if (Number(price) > 20000)
+    return '20000'
+  return price
+})
+const realEndPrice = computed(() => {
+  const price = isEndauto.value ? autoEnd.value : endPrice.value
+  if (Number(price) > 20000)
+    return '20000+'
+  return price
+})
 
 const select = ref<'Intel' | 'AMD'>('Intel')
 </script>
@@ -123,16 +149,15 @@ const select = ref<'Intel' | 'AMD'>('Intel')
                 @change="startChange"
               >
                 <div class="text">
-                  {{ starPrice > 20000 ? '20000' : starPrice }}
+                  {{ realStartPrice }}
                 </div>
               </movable-view>
               <movable-view
-
-                :inertia="true" :animation="false" :x="x1" :y="y1" direction="horizontal" class="circle flex justify-center"
-                @change="endchange"
+                :inertia="true" :animation="false" :x="x1" :y="y1" direction="horizontal"
+                class="circle flex justify-center" @change="endchange"
               >
                 <div class="text">
-                  {{ endPrice > 20000 ? '20000+' : endPrice }}
+                  {{ realEndPrice }}
                 </div>
               </movable-view>
             </movable-area>
@@ -189,7 +214,7 @@ const select = ref<'Intel' | 'AMD'>('Intel')
     <div
       class="btn" @click="() => {
 
-        Jump('/pages/recommend/recommendlist', { start: starPrice > 20000 ? 20000 : starPrice, end: endPrice > 20000 ? 99999 : endPrice, cpu: select })
+        Jump('/pages/recommend/recommendlist', { start: realStartPrice, end: realEndPrice, cpu: select })
 
       }"
     >
