@@ -100,7 +100,7 @@ $sp: space-between;
     align-items: center;
 
     .username {
-      max-width: 340rpx;
+      max-width: 218rpx;
       overflow: hidden; //超出隐藏
       text-overflow: ellipsis; //文本超出时显示省略号
       white-space: nowrap; //设置文本不换行

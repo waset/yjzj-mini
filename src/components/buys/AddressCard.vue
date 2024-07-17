@@ -58,7 +58,7 @@ $max-width: 686rpx;
 
   .center_info {
     width: 100%;
-    height: 128rpx;
+    height: 152rpx;
     z-index: 2;
     position: absolute;
     top: 50%;
@@ -98,7 +98,7 @@ $max-width: 686rpx;
         align-items: center;
 
         .username {
-          max-width: 230rpx;
+          max-width: 140rpx;
           overflow: hidden; //超出隐藏
           text-overflow: ellipsis; //文本超出时显示省略号
           display: -webkit-box;
