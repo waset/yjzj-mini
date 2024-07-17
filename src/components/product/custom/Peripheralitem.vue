@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const emits = defineEmits<{
-  loadmore: []
-}>()
 const { detail } = storeToRefs(useProductStore())
 const { peripheral } = storeToRefs(useDiyStore())
 
@@ -64,9 +61,7 @@ const selectshows = ref<boolean>(false)
 const openSelect = () => {
   selectshows.value = true
 }
-const reachBottom = () => {
-  emits('loadmore')
-}
+
 const confirmSelect = () => {
   // 确认选中
   if (!detail.value) {
@@ -124,14 +119,7 @@ const totalNum = computed(() => {
   return result
 })
 
-const totop = ref<number>(0)
-
-const settop = () => {
-  totop.value = 0
-}
-
 defineExpose({
-  settop,
   openSelect,
   confirmSelect,
   Processing,
@@ -141,75 +129,71 @@ defineExpose({
 <template>
   <div>
     <template v-if="peripheral.length !== 0">
-      <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="reachBottom">
-        <div class="scrollpb">
-          <template v-for="(item, index) in peripheral" :key="index">
-            <div class="card mb-4">
-              <div
-                class="select" @click="() => {
-                  if (ProductStatus(item.status)) {
-                    selectFn(item)
-                  }
-                }"
-              >
-                <template v-if="isSelect(item.id) && ProductStatus(item.status)">
-                  <div class="selected">
-                    <div class="icon i-icons-correct" />
-                  </div>
-                  <div class="selectbg">
-                    <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="topLine" :class="[ProductStatus(item.status) ? 'line' : 'line lineGrey']" />
-                  <div class="bottomLine" :class="[ProductStatus(item.status) ? 'line' : 'line lineGrey']" />
-                </template>
-                <div class="goodsImg">
-                  <product-image :src="ImageUrl(item.banner[0])" />
+      <template v-for="(item, index) in peripheral" :key="index">
+        <div class="card mb-4">
+          <div
+            class="select" @click="() => {
+              if (ProductStatus(item.status)) {
+                selectFn(item)
+              }
+            }"
+          >
+            <template v-if="isSelect(item.id) && ProductStatus(item.status)">
+              <div class="selected">
+                <div class="icon i-icons-correct" />
+              </div>
+              <div class="selectbg">
+                <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
+              </div>
+            </template>
+            <template v-else>
+              <div class="topLine" :class="[ProductStatus(item.status) ? 'line' : 'line lineGrey']" />
+              <div class="bottomLine" :class="[ProductStatus(item.status) ? 'line' : 'line lineGrey']" />
+            </template>
+            <div class="goodsImg">
+              <product-image :src="ImageUrl(item.banner[0])" />
+            </div>
+            <div class="goodsInfo">
+              <div class="row1">
+                {{ item.name }}
+              </div>
+              <div class="row2">
+                {{ item.description }}
+              </div>
+              <div class="row3">
+                <div class=" check" @click.prevent.stop="checkInfo(index)">
+                  查看详情
+                  <div class="i-icons-right" />
                 </div>
-                <div class="goodsInfo">
-                  <div class="row1">
-                    {{ item.name }}
-                  </div>
-                  <div class="row2">
-                    {{ item.description }}
-                  </div>
-                  <div class="row3">
-                    <div class=" check" @click.prevent.stop="checkInfo(index)">
-                      查看详情
-                      <div class="i-icons-right" />
+                <div class="price">
+                  <template v-if="item.number < 2 || !item.number">
+                    <div> ￥{{ item.sellPrice }}</div>
+                  </template>
+                  <template v-if="isSelect(item.id) && item?.number > 1">
+                    <div class="circlec" @click.stop="setNumber('cut', item.id, index)">
+                      <div class="i-icons-minus" />
                     </div>
-                    <div class="price">
-                      <template v-if="item.number < 2 || !item.number">
-                        <div> ￥{{ item.sellPrice }}</div>
-                      </template>
-                      <template v-if="isSelect(item.id) && item?.number > 1">
-                        <div class="circlec" @click.stop="setNumber('cut', item.id, index)">
-                          <div class="i-icons-minus" />
-                        </div>
-                        <div class="number">
-                          {{ item.number }}
-                        </div>
-                      </template>
+                    <div class="number">
+                      {{ item.number }}
+                    </div>
+                  </template>
 
-                      <template v-if="isSelect(item.id)">
-                        <div class="circle" @click.stop="setNumber('plus', item.id, index)">
-                          <div class="i-icons-add" />
-                        </div>
-                      </template>
-                    </div>
-                  </div>
                   <template v-if="isSelect(item.id)">
-                    <div class="del" @click.stop="delSelect(item.id)">
-                      <div class="i-icons-del" />
+                    <div class="circle" @click.stop="setNumber('plus', item.id, index)">
+                      <div class="i-icons-add" />
                     </div>
                   </template>
                 </div>
               </div>
+              <template v-if="isSelect(item.id)">
+                <div class="del" @click.stop="delSelect(item.id)">
+                  <div class="i-icons-del" />
+                </div>
+              </template>
             </div>
-          </template>
+          </div>
         </div>
-      </scroll-view>
+      </template>
     </template>
 
     <template v-if="peripheral.length === 0">
@@ -242,15 +226,6 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-.scroll {
-
-  height: 30vh;
-
-  .scrollpb {
-    padding-bottom: 80rpx;
-  }
-}
-
 .card {
   .selected {
     position: absolute;
