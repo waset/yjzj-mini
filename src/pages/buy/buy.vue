@@ -21,10 +21,17 @@ onShow(() => {
 const showConfigs = ref<BuyProduct | null>(null)
 // 是否显示详情
 const showConfigsSwitch = ref(false)
+
+// 配置详情列表
+const allocationList = ref<any[]>([])
+// 配置外设列表
+const nowgoodsPer = ref<any[]>([])
 // 显示详情方法
 function showConfigsFn(product: BuyProduct) {
   showConfigs.value = product
   showConfigsSwitch.value = true
+  allocationList.value = product.params
+  nowgoodsPer.value = product.perihera
 }
 // 是否显示确认框
 const showModel = ref(false)
@@ -76,32 +83,7 @@ const infoClick = (product: BuyProduct) => {
   <common-popup v-model:show="showConfigsSwitch" name="配置详情">
     <div class="configs">
       <div v-if="showConfigs" class="wrap">
-        <template v-for="(item, index) in showConfigs.params" :key="index">
-          <div class="item">
-            <div v-if="product_is_diy(showConfigs) && item.product.banner" class="image">
-              <product-image :src="item.product.banner[0]" :background="false" width="100rpx" height="100rpx" />
-            </div>
-            <div class="info">
-              <div class="top">
-                <div class="type">
-                  {{ item.paramDesc }}
-                </div>
-                <div v-if="item.number" class="num">
-                  <span>x</span>
-                  <span>{{ item.number }}</span>
-                </div>
-              </div>
-              <div class="desc">
-                <template v-if="product_is_diy(showConfigs)">
-                  {{ item.product.name }}
-                </template>
-                <template v-else>
-                  {{ item.name || item.paramValue }}
-                </template>
-              </div>
-            </div>
-          </div>
-        </template>
+        <buys-submit-allocation-card :nowgoods-per="nowgoodsPer" :allocation-list="allocationList" />
       </div>
     </div>
   </common-popup>
