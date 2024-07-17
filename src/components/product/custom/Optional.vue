@@ -334,7 +334,7 @@ defineExpose({
   .selectbg {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 192rpx;
     top: 0;
     left: 0;
     opacity: 0.2;
