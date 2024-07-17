@@ -191,13 +191,11 @@ const cancelbtn = () => {
         left: 8rpx;
         z-index: -2;
 
-        &::after {
-          background-color: #57683B;
-        }
-
+        &::after,
         &::before {
           background-color: #57683B;
         }
+
       }
 
       .cancel {

@@ -12,7 +12,10 @@ onShow(() => {
       <div v-if="nowAddress.username" class="nameMobile">
         <div style="display: flex; align-items: center; gap: 8rpx;">
           <div class="usernameRow">
-            <div class="icon i-icons-address" /> {{ nowAddress.username }}
+            <div class="icon i-icons-address" />
+            <div class="username">
+              {{ nowAddress.username }}
+            </div>
           </div>
           <div style="font-size: 28rpx;">
             {{ nowAddress.phone }}
@@ -28,7 +31,7 @@ onShow(() => {
         <div>收货地址</div>
       </div>
       <div v-if="!nowAddress.provinceCode" class="shadel" />
-      <div v-if="nowAddress.provinceCode" style="font-size: 28rpx;padding-left: 57rpx">
+      <div v-if="nowAddress.provinceCode" style="font-size: 28rpx;padding-left: 57rpx" class="address">
         <span>{{ getPcaDetails([nowAddress.provinceCode, nowAddress.cityCode, nowAddress.countryCode]) }}- {{
           nowAddress.address }}</span>
       </div>
@@ -67,6 +70,14 @@ $max-width: 686rpx;
     justify-content: space-around;
     padding: 0 32rpx;
 
+    .address {
+      overflow: hidden; //超出隐藏
+      text-overflow: ellipsis; //文本超出时显示省略号
+      display: -webkit-box;
+      -webkit-box-orient: vertical; //子元素排列 vertical（竖排）orhorizontal（横排）
+      -webkit-line-clamp: 2; //内容限制的行数
+    }
+
     .addressInfoTips {
       width: 100%;
       font-size: 28rpx;
@@ -85,6 +96,15 @@ $max-width: 686rpx;
       .usernameRow {
         display: flex;
         align-items: center;
+
+        .username {
+          max-width: 230rpx;
+          overflow: hidden; //超出隐藏
+          text-overflow: ellipsis; //文本超出时显示省略号
+          display: -webkit-box;
+          -webkit-box-orient: vertical; //子元素排列 vertical（竖排）orhorizontal（横排）
+          -webkit-line-clamp: 1; //内容限制的行数
+        }
 
       }
 

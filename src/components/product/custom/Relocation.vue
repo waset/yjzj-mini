@@ -18,6 +18,7 @@ const getAllocationList = async () => {
 
 const getAllocationListByParams = async (data: Modification) => {
   ModificationList.value = []
+
   getModificationListParams.value = data
   getModificationListParams.value.page = 1
   await getModificationList(getModificationListParams.value)
@@ -66,11 +67,15 @@ const reachBottom = () => {
 }
 
 const hasShowOptional = ref(false)
-
+const commonsearch = ref<ComponentInstance['CommonSearch']>()
 /**
  * 设置选配类型及获取其列表
  */
 const showOptional = async (id: number, index: number, type: string, paramValue: any) => {
+  commonsearch.value?.clear()
+  ProductCustomFilterListRef.value?.clearRes()
+  getModificationListParams.value.productName = ''
+  getModificationListParams.value.params = undefined
   ProductCustomOptionalRef?.value?.setId(paramValue, index, type)
   getModificationListParams.value.page = 0
   getModificationListParams.value.productTypeID = id
@@ -81,8 +86,12 @@ const showOptional = async (id: number, index: number, type: string, paramValue:
 }
 const changeUpdate = () => {
   hasShowOptional.value = false
-  getModificationListParams.value.productName = ''
+
   emit('updateconfig')
+}
+// 确认改配
+const confirmOk = () => {
+  ProductCustomOptionalRef?.value?.okfn()
 }
 
 defineExpose({
@@ -93,18 +102,24 @@ defineExpose({
 <template>
   <div class="relocation">
     <common-popup
-      v-model:show="hasShowOptional" name="修改配置" height="80%" @close="() => {
+      v-model:show="hasShowOptional"
+      :mask-closable="false" name="修改配置" height="80%" @close="() => {
+
         getModificationListParams = {
           page: 1,
           pageSize: 10,
           params: undefined,
+          productName: '',
         } as Modification
+        getModificationListParams.productName = ''
+        getModificationListParams.params = undefined
       }"
     >
       <div class="select">
         <div class="header">
           <common-search
-            padding="0 0 32rpx 0" :value="getModificationListParams.productName" is-input @update:value="(val) => {
+            ref="commonsearch" padding="0 0 32rpx 0" :value="getModificationListParams.productName"
+            is-input @update:value="(val) => {
               getModificationListParams.productName = val
               getModificationListParams.page = 0
               getAllocationList()
@@ -121,6 +136,20 @@ defineExpose({
           <product-custom-optional ref="ProductCustomOptionalRef" @change="changeUpdate" @loadmore="reachBottom()" />
         </div>
       </div>
+
+      <template #footer>
+        <div class="bottom">
+          <div class="center">
+            <div class="cancel" @click="changeUpdate">
+              取消
+            </div>
+            <div class="confirm" @click="confirmOk">
+              确定
+              <div class="confirm2" />
+            </div>
+          </div>
+        </div>
+      </template>
     </common-popup>
   </div>
 </template>
@@ -230,35 +259,22 @@ defineExpose({
 
     .center {
       position: relative;
+      height: 80rpx;
       display: flex;
-      color: #f5f5f5;
-      justify-content: space-between;
+      color: #000;
+      justify-content: center;
       align-items: center;
       padding: 0 32rpx;
-      box-sizing: border-box;
-    }
-
-    .left {
-      width: 272rpx;
-      height: 80rpx;
-
-    }
-
-    .right {
-      display: flex;
-      align-items: center;
-      color: #000;
-      position: relative;
-      width: 392rpx;
+      // box-sizing: border-box;
 
       .confirm,
       .cancel,
       .confirm2 {
-        position: absolute;
+        position: relative;
         right: 32rpx;
-        width: 186rpx;
-        height: 64rpx;
-        line-height: 64rpx;
+        width: 256rpx;
+        height: 80rpx;
+        line-height: 80rpx;
         font-size: 28rpx;
         font-weight: 400;
         // margin-right: 40rpx;
@@ -275,7 +291,7 @@ defineExpose({
           right: 0;
           bottom: 0;
           border-radius: 30rpx;
-          height: 64rpx;
+          height: 80rpx;
           background: #A7F522;
           transform: skewX(-30deg);
           z-index: -1;
@@ -288,7 +304,7 @@ defineExpose({
           top: 0;
           right: -20rpx;
           width: 162rpx;
-          height: 64rpx;
+          height: 80rpx;
           border-radius: 25rpx;
           background: #A7F522;
           z-index: -1;
@@ -316,11 +332,12 @@ defineExpose({
         left: 6rpx;
         padding-left: 60rpx;
         padding-right: 50rpx;
+        margin-right: 20rpx;
 
         &::after {
           left: 24rpx;
           border-radius: 30rpx;
-          height: 64rpx;
+          height: 80rpx;
           background: #ffffff;
           transform: skewX(-30deg);
           z-index: -1;
@@ -329,17 +346,17 @@ defineExpose({
 
         &::before {
 
-          right: 21rpx;
+          right: 92rpx;
           width: 162rpx;
-          height: 64rpx;
+          height: 80rpx;
           border-radius: 25rpx;
           background: #ffffff;
           z-index: -1;
 
         }
       }
-
     }
+
   }
 }
 </style>

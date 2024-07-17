@@ -83,9 +83,11 @@ const setSortGet = async (name: string, value: number) => {
   await getProducts(listParams.value)
   ProductPeripheralItem.value?.Processing()
 }
-
+const totop = ref<number>(0)
 // 筛选
 const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name, value) => {
+  // 设置 列表返回top 0 顶部
+  totop.value = 0
   switch (name) {
     case 'filte':
       break
@@ -148,17 +150,21 @@ defineExpose({
             </template>
           </div>
         </scroll-view>
-        <common-search
-          padding="48rpx 0rpx" :value="listParams.keywords" is-input @update:value="(val) => {
-            listParams.keywords = val
-            listParams.page = 1
-            getlistFun()
-          }"
-        />
-        <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
       </div>
       <div>
-        <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
+        <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="loadmoreFn">
+          <div class="scrollpb">
+            <common-search
+              padding="48rpx 0rpx" :value="listParams.keywords" is-input @update:value="(val) => {
+                listParams.keywords = val
+                listParams.page = 1
+                getlistFun()
+              }"
+            />
+            <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
+            <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
+          </div>
+        </scroll-view>
       </div>
 
       <div>
@@ -172,6 +178,16 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
+.body {
+  .scroll {
+    height: 50vh;
+
+    .scrollpb {
+      padding-bottom: 80rpx;
+    }
+  }
+}
+
 .scroll-h {
   white-space: nowrap;
   width: 100%;
