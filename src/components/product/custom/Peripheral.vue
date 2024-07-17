@@ -39,6 +39,7 @@ const getlistFun = async () => {
       }
     })
   })
+
   ProductPeripheralItem.value?.Processing()
 }
 // 打开列表
@@ -51,12 +52,14 @@ const setShow = async () => {
   listParams.value.productTypeParentID = categorys.value.peripherals.value
   // 获取列表
   getlistFun()
+  ProductPeripheralItem.value?.showEvery()
 }
 
 const loadmoreFn = async () => {
   listParams.value.page += 1
 
   await getProducts(listParams.value)
+
   ProductPeripheralItem.value?.Processing()
 }
 
@@ -67,6 +70,7 @@ const cancleFn = () => {
 // 设置排序的请求参数
 const setSortGet = async (name: string, value: number) => {
   peripheral.value = []
+  listParams.value.page = 1
   listParams.value.order = name
   if (value === 0) {
     listParams.value.sort = 'asc'
@@ -79,8 +83,9 @@ const setSortGet = async (name: string, value: number) => {
     listParams.value.sort = ''
   }
   listParams.value.page = 1
-
   await getProducts(listParams.value)
+
+  // ProductPeripheralItem.value?.showEvery()
   ProductPeripheralItem.value?.Processing()
 }
 const totop = ref<number>(0)
@@ -106,9 +111,11 @@ const onChange: ComponentInstance['CommonSortFilter']['onChange'] = async (name,
 // 设置当前分类
 const setNowType = async (item: any) => {
   peripheral.value = []
+  listParams.value.page = 1
   nowType.value = item.id
   listParams.value.productTypeID = nowType.value || 0
   await getProducts(listParams.value)
+  ProductPeripheralItem.value?.Processing()
 }
 
 // 确认选购
@@ -131,7 +138,7 @@ defineExpose({
 <template>
   <div class="body">
     <common-popup v-model:show="shows" name="选购外设" height="80%">
-      <div>
+      <div class="tabs">
         <scroll-view scroll-x class="scroll-h">
           <div class="items">
             <template v-for="(item, index) in types" :key="index">
@@ -155,7 +162,7 @@ defineExpose({
         <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="loadmoreFn">
           <div class="scrollpb">
             <common-search
-              padding="48rpx 0rpx" :value="listParams.keywords" is-input @update:value="(val) => {
+              padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
                 listParams.keywords = val
                 listParams.page = 1
                 getlistFun()
@@ -179,6 +186,10 @@ defineExpose({
 
 <style scoped lang="scss">
 .body {
+  .tabs {
+    padding-bottom: 20rpx !important;
+  }
+
   .scroll {
     height: 50vh;
 

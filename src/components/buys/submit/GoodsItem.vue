@@ -3,6 +3,7 @@ const props = defineProps<{
   list?: BuyProduct[]
   showborder: boolean
 }>()
+
 const emit = defineEmits<{
   (e: 'checked', index: number): void
 }>()

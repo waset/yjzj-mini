@@ -167,10 +167,13 @@ const hasErrors = (arrayOfObjects: any) => {
  * 立即购买
  */
 const buyNow = async () => {
-  if (hasGoLogin())
+  if (hasGoLogin()) {
     return
+  }
   // 如果通过 检测是否为空
-
+  if (!detail.value) {
+    return
+  }
   if (isPass()) {
     // 如果没有 错误
     if (!hasErrors(detail.value)) {
@@ -180,6 +183,7 @@ const buyNow = async () => {
       await allocationId()
       // 切换购买状态为 diy页面下单
       changeBuyType('buy')
+      detail.value.sellPrice = showPrice.value.toString()
       // 跳转下单页面
       Jump('/pages/buy/submitOrder', {}, 1)
     }
@@ -196,11 +200,17 @@ const buyNow = async () => {
  * 加入购物车
  */
 const addBuyCar = async () => {
-  if (hasGoLogin())
+  if (hasGoLogin()) {
     return
+  }
+  if (!detail.value) {
+    return
+  }
   if (isPass()) {
     if (!hasErrors(detail.value)) {
       await allocationId()
+
+      detail.value.sellPrice = showPrice.value.toString()
       addProduct({
         quantity: 1,
         select: false,
@@ -271,54 +281,54 @@ onShareAppMessage(async () => {
 </template>
 
 <style scoped lang="scss">
-  .detail {
-    padding: 48rpx 0;
+.detail {
+  padding: 48rpx 0;
 
-    .banner {
-      padding: 0 32rpx;
-    }
-
-    .swiper {
-      padding: 32rpx;
-    }
-
+  .banner {
+    padding: 0 32rpx;
   }
 
-  .select {
-    .commodity_list {
-      padding: 32rpx;
-      padding-bottom: 144rpx;
-    }
-
+  .swiper {
+    padding: 32rpx;
   }
 
-  .showSelected {
-    font-size: 28rpx;
-    padding: 32rpx 32rpx 0 32rpx;
-    box-sizing: border-box;
+}
+
+.select {
+  .commodity_list {
+    padding: 32rpx;
+    padding-bottom: 144rpx;
+  }
+
+}
+
+.showSelected {
+  font-size: 28rpx;
+  padding: 32rpx 32rpx 0 32rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .selectedItem {
+    margin-right: 16rpx;
+    width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    padding: 8rpx 16rpx;
+    background-color: #414141;
+    color: #A7F522;
+    border-radius: 8rpx;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    margin-bottom: 16rpx;
 
-    .selectedItem {
-      margin-right: 16rpx;
-      width: fit-content;
-      width: -webkit-fit-content;
-      width: -moz-fit-content;
-      padding: 8rpx 16rpx;
-      background-color: #414141;
-      color: #A7F522;
-      border-radius: 8rpx;
-      display: flex;
-      align-items: center;
-      margin-bottom: 16rpx;
+    .i-icons-closed {
+      color: #fff;
+      font-size: 24rpx;
+      margin-left: 8rpx;
 
-      .i-icons-closed {
-        color: #fff;
-        font-size: 24rpx;
-        margin-left: 8rpx;
-
-      }
     }
   }
+}
 </style>
