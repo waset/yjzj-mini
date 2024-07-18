@@ -102,7 +102,7 @@ onMounted(async () => {
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id || 0, number: 1, relationType: 1 })
 
-    if (detail.value.typeParentID === 6) {
+    if (isDiyState(detail.value)) {
       submitOrderParams.value.details[0].relationType = 2
       submitOrderParams.value.details[0].id = detail.value.alloaction
     }

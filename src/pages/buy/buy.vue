@@ -65,7 +65,7 @@ const submitorder = () => {
 
 // 跳转商品详情
 const infoClick = (product: BuyProduct) => {
-  if (product.typeParentID === 6) {
+  if (isDiyState(product)) {
     if (product.id) {
       Jump('/pages/product/diy', { id: product.id })
     }

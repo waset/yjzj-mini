@@ -19,7 +19,7 @@ const { detail } = storeToRefs(useProductStore())
         <div class="more">
           <div class="price">
             <span>￥</span>
-            <span>{{ detail?.typeParentID === 6 ? price : detail?.sellPrice }}</span>
+            <span>{{ isDiyState(detail) ? price : detail?.sellPrice }}</span>
           </div>
           <div class="btns">
             <button class="btn" open-type="share">
