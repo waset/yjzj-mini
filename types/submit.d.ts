@@ -222,6 +222,7 @@ interface orderinfoData {
   payMethod?: string
   payPrice?: string
   payType?: string
+  products?: Product[]
   rebateAmount?: string
   refundPrice?: string
   sellPrice?: string
@@ -237,6 +238,10 @@ interface orderinfoData {
   userAddressSnapshot?: UserAddressSnapshot
   userID?: number
   userTicketID?: number
+  /**
+   * 订单备注
+   */
+  remark?: string
 }
 
 interface sDetail {
@@ -251,6 +256,7 @@ interface sDetail {
   parentNO: string
   payPrice: string
   productConfigID: number
+  products: Product[]
   productConfigSnapshot: ProductConfigSnapshot
   productID: number
   productSnapshot: ProductSnapshot

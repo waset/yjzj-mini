@@ -3,6 +3,6 @@
  * @param product
  * @returns boolean
  */
-export function product_is_diy(product: Product): boolean {
-  return product.typeParentID === 6
+export function product_is_diy(product: null | object & { typeParentID: number }): boolean {
+  return product?.typeParentID === 6
 }

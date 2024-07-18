@@ -30,8 +30,7 @@ const props = defineProps<{
           取消支付
         </div>
         <div class="text">
-          由于您未在规定时间内完成付款，订单
-          已取消。期待您的再次选择。
+          由于您未在规定时间内完成付款，订单已取消。期待您的再次选择。
         </div>
       </div>
     </template>
@@ -41,8 +40,7 @@ const props = defineProps<{
           支付成功
         </div>
         <div class="text">
-          您的订单已成功提交，我们将尽快为您
-          发货，请关注物流信息。
+          您的订单已成功提交，我们将尽快为您发货，请关注物流信息。
         </div>
       </div>
     </template>

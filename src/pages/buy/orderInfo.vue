@@ -4,7 +4,7 @@ const { orderInfo, continuePay, countdown, cancelPay } = useSubmitOrderStore()
 // 当前订单状态  待支付  已取消  支付成功
 const state = ref<'success' | 'fail' | 'waiting'>('waiting')
 // 商品详情
-const detail = ref<orderinfoData>({})
+const detail = ref({} as orderinfoData)
 // 倒计时
 const timeout = ref<string>('--:--:--')
 // 订单号
@@ -46,6 +46,20 @@ onLoad((options) => {
   }
 })
 
+const showConfigsSwitch = ref<boolean>(false)
+const showConfigs = ref<any>(null)
+const checkinfo = (index: number) => {
+  const arr = detail.value?.details?.[index].productConfigSnapshot?.params || []
+  arr.forEach((x: any) => {
+    detail.value?.details?.[index].products?.forEach((item) => {
+      if (x.pID === item.id) {
+        item.number = x.num
+      }
+    })
+  })
+  showConfigs.value = detail.value?.details?.[index].products
+  showConfigsSwitch.value = true
+}
 onShow(async () => {
   // 给请求 添加商品
   detail.value = await orderInfo(orderId.value)
@@ -72,13 +86,13 @@ onShow(async () => {
     <div class="status">
       <div class="addressBox">
         <buys-diffents-status :status="state || firstStatus" :timer="timeout" />
-        <buys-address-card :width="558" />
+        <buys-orderinfo-address :address="detail" />
       </div>
     </div>
     <template v-if="detail.details">
       <div class="box">
         <div class="gradient-border gradientbox">
-          <buys-submit-orderinfo-goods :list="detail.details" />
+          <buys-submit-orderinfo-goods :list="detail.details" @check="checkinfo" />
           <div class="totalPrice">
             <span class="textFont">{{ state === 'success' ? '实际支付' : state === 'fail' ? '合计' : '待支付' }}:</span>
             <span class="priceFont">￥{{ detail.sellPrice }}</span>
@@ -87,6 +101,13 @@ onShow(async () => {
       </div>
     </template>
 
+    <div class="info">
+      <!-- 详情 -->
+      <buys-submit-information :info="detail as orderinfoData" />
+    </div>
+    <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+      <buys-submit-order-allocation :allocation-list="showConfigs" />
+    </common-popup>
     <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
   </div>
 </template>
@@ -126,8 +147,51 @@ $Be: #BEBEBE;
 
   }
 
-  .box {
+  .servicebox {
     padding: 32rpx;
+
+    .service {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 32rpx;
+
+      .body {
+        border-radius: 32rpx;
+        background: rgba(0, 0, 0, 0.5);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 32rpx 32rpx;
+
+        .title {
+          font-size: 30rpx;
+          color: #ffffff;
+        }
+
+        .btn {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 4rpx;
+
+          font-size: 28rpx;
+          color: #ffffff;
+        }
+
+      }
+    }
+  }
+
+  .box {
+    padding: 0 32rpx 32rpx 32rpx;
+  }
+
+  .info {
+    padding: 0 32rpx 32rpx 32rpx;
   }
 
   .gradient-border {

@@ -18,9 +18,7 @@ const listParams = ref<listPar>({
   pageSize: 10,
   productTypeParentID: 5,
 })
-const ProductselectPeripheralItem = ref<ComponentInstance['ProductCustomSelectPeripheral']>()
-// 已选外设弹窗
-const selectshows = ref<boolean>(false)
+
 // 列表组do
 const ProductPeripheralItem = ref<ComponentInstance['ProductCustomPeripheralitem']>()
 // 外设列表弹窗
@@ -129,28 +127,7 @@ const addPeriheralsFn = () => {
 // 展示已选
 const showSelectedFn = () => {
   // 点击已选 弹出啊 已选弹窗
-  selectshows.value = true
-}
-
-// 合计
-const totalPrice = computed(() => {
-  let result = 0
-  detail.value?.perihera.forEach((item: any) => {
-    result += (item.number * Number(item.sellPrice))
-  })
-  return result
-})
-// 数量
-const totalNum = computed(() => {
-  let result = 0
-  detail.value?.perihera.forEach((item: any) => {
-    result += item.number
-  })
-  return result
-})
-
-const closedfn = () => {
-  ProductPeripheralItem.value?.closed()
+  ProductPeripheralItem.value?.openSelect()
 }
 
 defineExpose({
@@ -197,32 +174,12 @@ defineExpose({
         </scroll-view>
       </div>
 
-      <template #footer>
-        <div>
-          <product-custom-add-periheral
-            @add-periherals="addPeriheralsFn" @show-selected="showSelectedFn"
-            @cancle="cancleFn"
-          />
-        </div>
-      </template>
-    </common-popup>
-
-    <common-popup v-model:show="selectshows" name="已选外设" height="70%" @close="closedfn">
       <div>
-        <product-custom-select-peripheral ref="ProductselectPeripheralItem" />
+        <product-custom-add-periheral
+          @add-periherals="addPeriheralsFn" @show-selected="showSelectedFn"
+          @cancle="cancleFn"
+        />
       </div>
-      <template #footer>
-        <div class="bottom">
-          <div class="numberbox">
-            <div class="total">
-              合计 <span class="temcolor pricefs">￥{{ totalPrice || 0 }}</span>
-            </div>
-            <div class="num">
-              数量 <span class="temcolor pricefs">x{{ totalNum }}</span>
-            </div>
-          </div>
-        </div>
-      </template>
     </common-popup>
   </div>
 </template>
@@ -276,139 +233,5 @@ defineExpose({
       }
     }
   }
-}
-
-.bottom {
-  padding: 32rpx;
-  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(#444444, 0.6);
-  backdrop-filter: blur(48rpx);
-  color: #f5f5f5;
-  z-index: 9;
-  box-shadow: 0px -2rpx 10rpx 0px rgba(0, 0, 0, 0.05);
-  @apply flex-between;
-
-  .numberbox {
-    width: 100%;
-    @apply flex-between;
-  }
-
-  .total,
-  .num {
-    font-size: 28rpx;
-  }
-
-  .temcolor {
-    margin-left: 8rpx;
-    color: #A7F522;
-  }
-
-  .pricefs {
-    font-size: 40rpx;
-    font-weight: 600;
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    color: #000;
-    position: relative;
-    width: 420rpx;
-    height: 80rpx;
-
-    .confirm,
-    .cancel,
-    .confirm2 {
-      position: absolute;
-      right: 32rpx;
-      width: 200rpx;
-      height: 80rpx;
-      line-height: 80rpx;
-      font-size: 28rpx;
-      font-weight: 400;
-      // margin-right: 40rpx;
-      color: #000;
-      text-align: center;
-      z-index: 10;
-      padding-left: 50rpx;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 26rpx;
-        right: 0;
-        bottom: 0;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #A7F522;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-top-left-radius: 20rpx;
-      }
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: -20rpx;
-        width: 162rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #A7F522;
-        z-index: -1;
-
-      }
-
-    }
-
-    .confirm2 {
-      position: absolute;
-      top: 8rpx;
-      left: 8rpx;
-      z-index: -2;
-
-      &::after {
-        background-color: #57683B;
-      }
-
-      &::before {
-        background-color: #57683B;
-      }
-    }
-
-    .cancel {
-      left: 6rpx;
-      padding-left: 46rpx;
-      padding-right: 67rpx;
-
-      &::after {
-        left: 24rpx;
-        border-radius: 30rpx;
-        height: 80rpx;
-        background: #ffffff;
-        transform: skewX(-30deg);
-        z-index: -1;
-        border-bottom-right-radius: 20rpx;
-      }
-
-      &::before {
-
-        right: 21rpx;
-        width: 200rpx;
-        height: 80rpx;
-        border-radius: 25rpx;
-        background: #ffffff;
-        z-index: -1;
-
-      }
-    }
-
-  }
-
 }
 </style>

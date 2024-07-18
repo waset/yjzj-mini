@@ -28,7 +28,7 @@ const isSrc = (Item: any) => {
               </template>
             </div>
           </div>
-          <div class="goodsOptions">
+          <div class="goodsOptions" @click.prevent.stop="emit('check', index)">
             <div class="goodsTitle">
               <template v-if="item.productTypeName !== '配置单'">
                 {{ item.productSnapshot.name || '自由定制' }}
@@ -37,7 +37,7 @@ const isSrc = (Item: any) => {
                 {{ item.productTypeName + item.productConfigSnapshot.shareCode }}
               </template>
             </div>
-            <div class="options" @click="emit('check', index)">
+            <div class="options">
               配置详情
               <div class="i-icons-right" />
             </div>
@@ -87,6 +87,7 @@ const isSrc = (Item: any) => {
   background: linear-gradient(135deg, rgba(#FFFFFF, 0.8), rgba(#FFFFFF, 0.08), rgba(#FFFFFF, 0.8));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
+  z-index: 0;
 }
 
 .goodsCard {
@@ -138,7 +139,7 @@ const isSrc = (Item: any) => {
       // height: 144rpx;
       flex: 1;
       padding-left: 24rpx;
-
+      z-index: 10;
       .goodsTitle {
         font-weight: 500;
         font-size: 28rpx;
@@ -159,6 +160,7 @@ const isSrc = (Item: any) => {
         margin-bottom: 16rpx;
         display: flex;
         align-items: center;
+        z-index: 9;
       }
 
       .priceAndNum {
