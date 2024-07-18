@@ -19,6 +19,10 @@ const handleClick = (detailProduct: orderDetail) => {
     Jump('/pages/product/detail', { id: detailProduct.productID })
   }
 }
+
+const isSrc = (detail: orderDetail) => {
+  return detail.details.filter(item => item.tagTitle === '机箱')[0]?.productSnapshot.banner[0] || ''
+}
 </script>
 
 <template>
@@ -32,7 +36,7 @@ const handleClick = (detailProduct: orderDetail) => {
               <div class="left">
                 <div class="img" @click="customClick(detail)">
                   <!-- 从机箱中取banner图 -->
-                  <product-image :src="detail.details.filter(item => item.tagTitle.indexOf('机箱') > -1)[0].productSnapshot.banner[0] || ''" width="160rpx" radius="16rpx" />
+                  <product-image :src="isSrc(detail)" width="160rpx" radius="16rpx" />
                 </div>
                 <div class="text">
                   <div class="name">
