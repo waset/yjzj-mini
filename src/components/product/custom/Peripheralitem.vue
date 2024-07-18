@@ -117,7 +117,7 @@ const checkInfo = (index: number) => {
 // 合计
 const totalPrice = computed(() => {
   let result = 0
-  detail.value?.perihera.forEach((item: any) => {
+  detail.value?.perihera?.forEach((item: any) => {
     result += (item.number * Number(item.sellPrice))
   })
   return result

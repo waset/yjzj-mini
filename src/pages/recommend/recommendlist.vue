@@ -53,7 +53,7 @@ onReachBottom(() => {
 
 // 点击跳转商品详情
 const infoClick = (item: Product) => {
-  if (isDiyState(item)) {
+  if (product_is_diy(item)) {
     Jump('/pages/product/diy', { id: item.id })
   }
 }
