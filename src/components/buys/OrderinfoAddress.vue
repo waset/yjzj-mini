@@ -10,7 +10,7 @@ const props = defineProps<{
 <template>
   <div class="addressCard">
     <div class="center_info">
-      <div v-if="props.address?.userAddressSnapshot?.username" class="nameMobile">
+      <div class="nameMobile">
         <div style="display: flex; align-items: center; gap: 8rpx;">
           <div class="usernameRow">
             <div class="icon i-icons-address" />
