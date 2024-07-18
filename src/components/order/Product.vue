@@ -4,20 +4,8 @@ const props = withDefaults(defineProps<{
 }>(), {
 })
 
-// 自定义商品点击跳转
-const customClick = (detailDiy: orderDetail) => {
-  Jump('/pages/product/diy', { config_id: detailDiy.productConfigID })
-}
-
-// 非自定义商品点击跳转
-const handleClick = (detailProduct: orderDetail) => {
-  // 如果是diy商品
-  if (detailProduct.typeParentID === 6) {
-    Jump('/pages/product/diy', { id: detailProduct.productID })
-  }
-  else {
-    Jump('/pages/product/detail', { id: detailProduct.productID })
-  }
+const handleClick = () => {
+  Jump('/pages/buy/orderInfo', { id: props.order.id })
 }
 
 const isSrc = (detail: orderDetail) => {
@@ -27,68 +15,74 @@ const isSrc = (detail: orderDetail) => {
 
 <template>
   <div class="box">
-    <div class="info">
+    <div class="info" @click="handleClick">
       <template v-for="(detail, i) in props.order.details" :key="i">
-        <div v-if="detail.productSnapshot === null" class="custom">
+        <template v-if="detail.productSnapshot === null">
           <!-- 用户自定义商品 -->
-          <div class="proItem">
-            <div class="content">
-              <div class="left">
-                <div class="img" @click="customClick(detail)">
-                  <!-- 从机箱中取banner图 -->
-                  <product-image :src="isSrc(detail)" width="160rpx" radius="16rpx" />
-                </div>
-                <div class="text">
-                  <div class="name">
-                    {{ detail.tagTitle }} ({{ detail.productConfigSnapshot.shareCode }})
+          <div class="custom">
+            <div class="proItem">
+              <div class="content">
+                <div class="left">
+                  <div class="img">
+                    <!-- 从机箱中取banner图 -->
+                    <product-image :src="isSrc(detail)" width="160rpx" radius="16rpx" />
                   </div>
-                  <div v-if="detail.productConfigSnapshot.shareCode" class="desc">
-                    <div class="descText">
-                      <!-- 取出所有配置的名称 -->
-                      {{ `${detail.details.filter(item => item.tagTitle === 'CPU')[0]?.productSnapshot.name}+${detail.details.filter(item => item.tagTitle === 'tagTitle')[0]?.productSnapshot.name}` }}
+                  <div class="text">
+                    <div class="name">
+                      {{ detail.tagTitle }} ({{ detail.productConfigSnapshot.shareCode }})
+                    </div>
+                    <div v-if="detail.productConfigSnapshot.shareCode" class="desc">
+                      <div class="descText">
+                        <!-- 取出所有配置的名称 -->
+                        {{ `${detail.details.filter(item => item.tagTitle === 'CPU')[0]?.productSnapshot.name}+${detail.details.filter(item => item.tagTitle === 'tagTitle')[0]?.productSnapshot.name}` }}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="right">
-                <div class="productPrice">
-                  <span>￥</span>
-                  <span>{{ detail.sellPrice }}</span>
-                </div>
-              </div>
-            </div>
-            <div v-if="i !== props.order.details.length - 1" class="line" />
-          </div>
-        </div>
-        <div v-else class="other">
-          <!-- 非自定义商品 -->
-          <div class="proItem">
-            <div class="content">
-              <div class="left">
-                <div class="img" @click="handleClick(detail)">
-                  <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
-                </div>
-                <div class="text">
-                  <div class="name" @click="handleClick(detail)">
-                    {{ detail.productSnapshot.name }}
+                <div class="right">
+                  <div class="productPrice">
+                    <span>￥</span>
+                    <span>{{ detail.sellPrice }}</span>
                   </div>
-                  <div v-if="detail.productSnapshot.description" class="desc">
-                    <div class="descText">
-                      {{ detail.productSnapshot.description }}
+                </div>
+              </div>
+              <div v-if="i !== props.order.details.length - 1" class="line" />
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="other">
+            <!-- 非自定义商品 -->
+            <div class="proItem">
+              <div class="content">
+                <div class="left">
+                  <div class="img">
+                    <product-image :src="detail.productSnapshot.banner[0]" width="160rpx" radius="16rpx" />
+                  </div>
+                  <div class="text">
+                    <div class="name">
+                      {{ detail.productSnapshot.name }}
+                    </div>
+                    <div v-if="detail.productSnapshot.description" class="desc">
+                      <div class="descText">
+                        {{ detail.productSnapshot.description }}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="right">
-                <div class="productPrice">
-                  <span>￥</span>
-                  <span>{{ detail.productSnapshot.tagPrice }}</span>
+                <div class="right">
+                  <div class="productPrice">
+                    <span>￥</span>
+                    <span>{{ detail.productSnapshot.tagPrice }}</span>
+                  </div>
                 </div>
               </div>
+              <template v-if="i !== props.order.details.length - 1">
+                <div class="line" />
+              </template>
             </div>
-            <div v-if="i !== props.order.details.length - 1" class="line" />
           </div>
-        </div>
+        </template>
       </template>
     </div>
   </div>

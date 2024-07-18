@@ -238,6 +238,10 @@ interface orderinfoData {
   userAddressSnapshot?: UserAddressSnapshot
   userID?: number
   userTicketID?: number
+  /**
+   * 订单备注
+   */
+  remark?: string
 }
 
 interface sDetail {

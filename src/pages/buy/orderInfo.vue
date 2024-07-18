@@ -4,7 +4,7 @@ const { orderInfo, continuePay, countdown, cancelPay } = useSubmitOrderStore()
 // 当前订单状态  待支付  已取消  支付成功
 const state = ref<'success' | 'fail' | 'waiting'>('waiting')
 // 商品详情
-const detail = ref<orderinfoData>({})
+const detail = ref({} as orderinfoData)
 // 倒计时
 const timeout = ref<string>('--:--:--')
 // 订单号
@@ -101,21 +101,9 @@ onShow(async () => {
       </div>
     </template>
 
-    <div class="servicebox">
-      <div class="service">
-        <!-- 服务 -->
-        <div class="body">
-          <div class="title">
-            遇到问题？
-          </div>
-          <div class="btn" @click="contact_customer_service()">
-            <div class="i-icons-service" />
-            <div class="text">
-              联系客服
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="info">
+      <!-- 详情 -->
+      <buys-submit-information :info="detail as orderinfoData" />
     </div>
     <common-popup v-model:show="showConfigsSwitch" name="配置详情">
       <buys-submit-order-allocation :allocation-list="showConfigs" />
@@ -169,7 +157,7 @@ $Be: #BEBEBE;
 
       .body {
         border-radius: 32rpx;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.5);
 
         display: flex;
         flex-direction: row;
@@ -199,6 +187,10 @@ $Be: #BEBEBE;
   }
 
   .box {
+    padding: 0 32rpx 32rpx 32rpx;
+  }
+
+  .info {
     padding: 0 32rpx 32rpx 32rpx;
   }
 
