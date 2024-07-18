@@ -46,6 +46,20 @@ onLoad((options) => {
   }
 })
 
+const showConfigsSwitch = ref<boolean>(false)
+const showConfigs = ref<any>(null)
+const checkinfo = (index: number) => {
+  const arr = detail.value?.details?.[index].productConfigSnapshot?.params || []
+  arr.forEach((x: any) => {
+    detail.value?.details?.[index].products?.forEach((item) => {
+      if (x.pID === item.id) {
+        item.number = x.num
+      }
+    })
+  })
+  showConfigs.value = detail.value?.details?.[index].products
+  showConfigsSwitch.value = true
+}
 onShow(async () => {
   // 给请求 添加商品
   detail.value = await orderInfo(orderId.value)
@@ -78,7 +92,7 @@ onShow(async () => {
     <template v-if="detail.details">
       <div class="box">
         <div class="gradient-border gradientbox">
-          <buys-submit-orderinfo-goods :list="detail.details" />
+          <buys-submit-orderinfo-goods :list="detail.details" @check="checkinfo" />
           <div class="totalPrice">
             <span class="textFont">{{ state === 'success' ? '实际支付' : state === 'fail' ? '合计' : '待支付' }}:</span>
             <span class="priceFont">￥{{ detail.sellPrice }}</span>
@@ -103,7 +117,9 @@ onShow(async () => {
         </div>
       </div>
     </div>
-
+    <common-popup v-model:show="showConfigsSwitch" name="配置详情">
+      <buys-submit-order-allocation :allocation-list="showConfigs" />
+    </common-popup>
     <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
   </div>
 </template>
@@ -183,7 +199,7 @@ $Be: #BEBEBE;
   }
 
   .box {
-    padding:0 32rpx 32rpx 32rpx;
+    padding: 0 32rpx 32rpx 32rpx;
   }
 
   .gradient-border {

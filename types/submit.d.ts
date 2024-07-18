@@ -222,6 +222,7 @@ interface orderinfoData {
   payMethod?: string
   payPrice?: string
   payType?: string
+  products?: Product[]
   rebateAmount?: string
   refundPrice?: string
   sellPrice?: string
@@ -251,6 +252,7 @@ interface sDetail {
   parentNO: string
   payPrice: string
   productConfigID: number
+  products: Product[]
   productConfigSnapshot: ProductConfigSnapshot
   productID: number
   productSnapshot: ProductSnapshot
