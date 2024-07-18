@@ -129,7 +129,7 @@ onMounted(async () => {
         // 产品id 列表 用于提交订单时的参数
         productIDs.value.push(item.id)
 
-        if (!item.id) {
+        if (item.alloaction) {
           arr.value.push({
             id: item.alloaction as number,
             number: (item.quantity | item.number),
