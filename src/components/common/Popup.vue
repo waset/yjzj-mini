@@ -35,13 +35,16 @@ function maskClose() {
 </script>
 
 <template>
-  <!-- 插槽区域要想禁止滚轮穿透滑动，则在使用插槽时添加 @wheel.stop -->
-  <div v-if="props.show" class="popup" @touchmove.prevent.stop @mousemove.prevent.stop>
-    <div v-if="props.mask" class="mask" @click="maskClose" @wheel.stop />
+  <!-- 插槽区域要想禁止滚轮穿透滑动，则在使用插槽时添加 @wheel.stop @touchmove.prevent.stop @mousemove.prevent.stop -->
+  <div v-if="props.show" class="popup">
+    <div
+      v-if="props.mask" class="mask" @click="maskClose" @touchmove.prevent.stop @mousemove.prevent.stop
+      @wheel.stop
+    />
     <div class="wrap" :style="{ width: props.width, height: props.height }">
-      <div class="header" @wheel.stop>
+      <div class="header">
         <slot name="header">
-          <div class="title" @click="close">
+          <div class="title" @click="close" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop>
             <div v-if="props.name" class="name">
               {{ name }}
             </div>
@@ -52,9 +55,7 @@ function maskClose() {
         </slot>
       </div>
       <div class="body">
-        <scroll-view :scroll-y="true" class="scroll-view">
-          <slot />
-        </scroll-view>
+        <slot />
       </div>
       <div class="footer">
         <slot name="footer" />
@@ -128,11 +129,6 @@ function maskClose() {
       overflow: scroll;
       padding: 32rpx 0;
       overscroll-behavior-block: contain;
-
-      .scroll-view {
-        height: 100%;
-        width: 100%;
-      }
     }
   }
 }
