@@ -72,7 +72,7 @@ onShow(async () => {
     <div class="status">
       <div class="addressBox">
         <buys-diffents-status :status="state || firstStatus" :timer="timeout" />
-        <buys-address-card :width="558" />
+        <buys-orderinfo-address :address="detail" />
       </div>
     </div>
     <template v-if="detail.details">
@@ -86,6 +86,23 @@ onShow(async () => {
         </div>
       </div>
     </template>
+
+    <div class="servicebox">
+      <div class="service">
+        <!-- 服务 -->
+        <div class="body">
+          <div class="title">
+            遇到问题？
+          </div>
+          <div class="btn" @click="contact_customer_service()">
+            <div class="i-icons-service" />
+            <div class="text">
+              联系客服
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
   </div>
@@ -126,8 +143,47 @@ $Be: #BEBEBE;
 
   }
 
-  .box {
+  .servicebox {
     padding: 32rpx;
+
+    .service {
+      background-image: linear-gradient(133.06deg, rgba(255, 255, 255, 0.4) 3.56%, rgba(238, 238, 238, 0.06) 99.09%);
+      padding: 2rpx;
+      border-radius: 32rpx;
+
+      .body {
+        border-radius: 32rpx;
+        background: rgba(0, 0, 0, 0.8);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 32rpx 32rpx;
+
+        .title {
+          font-size: 30rpx;
+          color: #ffffff;
+        }
+
+        .btn {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 4rpx;
+
+          font-size: 28rpx;
+          color: #ffffff;
+        }
+
+      }
+    }
+  }
+
+  .box {
+    padding:0 32rpx 32rpx 32rpx;
   }
 
   .gradient-border {
