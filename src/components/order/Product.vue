@@ -40,12 +40,12 @@ const isSrc = (detail: orderDetail) => {
                 </div>
                 <div class="text">
                   <div class="name">
-                    {{ detail.tagTitle }}
+                    {{ detail.tagTitle }} ({{ detail.productConfigSnapshot.shareCode }})
                   </div>
-                  <div v-if="detail.details[0].productSnapshot.name" class="desc">
+                  <div v-if="detail.productConfigSnapshot.shareCode" class="desc">
                     <div class="descText">
                       <!-- 取出所有配置的名称 -->
-                      {{ detail.details.map(item => item.productSnapshot.name).join('；') }}
+                      {{ `${detail.details.filter(item => item.tagTitle === 'CPU')[0]?.productSnapshot.name}+${detail.details.filter(item => item.tagTitle === 'tagTitle')[0]?.productSnapshot.name}` }}
                     </div>
                   </div>
                 </div>
