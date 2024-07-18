@@ -49,8 +49,6 @@ const updataParams = (data: any) => {
       }
     }
   })
-
-  // console.log(detail.value, '123')
 }
 onLoad(async (params) => {
   const req = params as PageReq
@@ -87,8 +85,6 @@ onLoad(async (params) => {
     detail.value.name = `配置单${data.id}` // 配置单name
     detail.value.sellPrice = data.sellPrice // 配置单价格
   }
-
-  console.log(detail.value)
 })
 
 // 是否通过检测
