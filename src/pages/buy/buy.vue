@@ -51,6 +51,7 @@ function deleteProduct() {
   if (del_ids.value.length > 1 || products.value.length === 0)
     management.value = false
   del_ids.value = []
+  del_alloaction.value = []
 }
 
 //  下单
@@ -160,10 +161,10 @@ const infoClick = (product: BuyProduct) => {
           <template v-else>
             <div
               class="btn del" :class="{
-                active: !!selectedProductIds(management).ids.length,
+                active: selectedNum(true),
               }" @click="() => {
                 const selected = selectedProductIds(management)
-                if (!selected.ids.length) {
+                if ((!selected.ids.length && !selected.alls.length)) {
                   return
                 }
                 delModel(selected)

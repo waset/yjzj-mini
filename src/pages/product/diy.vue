@@ -49,8 +49,6 @@ const updataParams = (data: any) => {
       }
     }
   })
-
-  // console.log(detail.value, '123')
 }
 onLoad(async (params) => {
   const req = params as PageReq
@@ -217,6 +215,7 @@ const addBuyCar = async () => {
         delete: false,
         ...detail.value,
       } as BuyProduct)
+
       uni.showToast({
         title: '添加成功',
         icon: 'success',

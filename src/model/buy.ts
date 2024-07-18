@@ -83,13 +83,16 @@ export const useBuyStore = defineStore('buy', {
         // 创建一个新的数组，其中不包含 id 在 ids 数组中或 alloaction 在 alls 数组中的数据
         !(ids.includes(item.id) || (alls.includes(item.alloaction as number) && item.alloaction !== null)),
       )
+      if (this.products.length === 0) {
+        this.selected.alls = []
+        this.selected.ids = []
+      }
     },
 
     // 添加商品
     addProduct(product: BuyProduct) {
-      if (product.id) {
-        // 判断购物车有没有该产品
-        const index = this.products.findIndex(item => item.id === product.id)
+      if (product.alloaction) {
+        const index = this.products.findIndex(item => item.alloaction === product.alloaction)
         if (index === -1) {
           // 没有该产品
           this.products.push(product)
@@ -99,9 +102,9 @@ export const useBuyStore = defineStore('buy', {
           this.products[index].quantity += 1
         }
       }
-
-      if (product.alloaction) {
-        const index = this.products.findIndex(item => item.alloaction === product.alloaction)
+      else {
+        // 判断购物车有没有该产品
+        const index = this.products.findIndex(item => item.id === product.id)
         if (index === -1) {
           // 没有该产品
           this.products.push(product)

@@ -155,6 +155,8 @@ defineExpose({
             </div>
           </template>
         </template>
+      </div>
+      <template #footer>
         <div class="btns">
           <div
             class="btn" @click="() => {
@@ -167,7 +169,7 @@ defineExpose({
             确定
           </div>
         </div>
-      </div>
+      </template>
     </common-popup>
   </div>
 </template>
@@ -239,14 +241,16 @@ defineExpose({
       }
     }
 
-    .btns {
+  }
+}
+.btns {
       @apply flex-around;
       position: fixed;
       bottom: env(safe-area-inset-bottom);
       left: 0;
       width: 100%;
       padding: 32rpx;
-      z-index: 3;
+      z-index: 22;
       background-color: #272727;
 
       .btn {
@@ -264,9 +268,6 @@ defineExpose({
         }
       }
     }
-  }
-}
-
 .selectitembox {
   display: flex;
   flex-direction: column;

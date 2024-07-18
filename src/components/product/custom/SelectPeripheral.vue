@@ -56,7 +56,7 @@ const isSelect = (id: number) => {
               <div class="icon i-icons-correct" />
             </div>
             <div class="selectbg">
-              <image class="image" src="@/assets/svg/compon-select.svg" mode="scaleToFill" />
+              <image class="image" src="@/assets/svg/compon-select.svg" mode="aspectFill" />
             </div>
           </template>
           <template v-else>
