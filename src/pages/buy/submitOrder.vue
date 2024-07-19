@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { nowAddress } = storeToRefs(useAddressStore())
-const { getAddressList } = useAddressStore()
+const { getAddressList, setNowAddress } = useAddressStore()
 const { products } = storeToRefs(useBuyStore())
 const { detail } = storeToRefs(useProductStore())
 const { canUseCouponNum } = storeToRefs(useSubmitOrderStore())
@@ -81,6 +81,7 @@ onLoad(async (options) => {
   }
   if (!nowAddress.value.address) {
     await getAddressList(1, 100)
+    await setNowAddress()
   }
 })
 onShow(async () => {
@@ -101,6 +102,7 @@ onMounted(async () => {
     }
     nowGoods.value.push({ ...detail.value, quantity: 1, delete: false, select: false })
     submitOrderParams.value.details.push({ id: detail.value.id || 0, number: 1, relationType: 1 })
+    submitOrderParams.value.inviteCode = detail.value.inviteCode
 
     if (product_is_diy(detail.value)) {
       submitOrderParams.value.details[0].relationType = 2

@@ -145,7 +145,7 @@ const totalPrice = computed(() => {
 // 数量
 const totalNum = computed(() => {
   let result = 0
-  detail.value?.perihera.forEach((item: any) => {
+  detail.value?.perihera?.forEach((item: any) => {
     result += item.number
   })
   return result

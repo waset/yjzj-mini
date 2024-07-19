@@ -47,7 +47,7 @@ const cancelPay = () => {
   .Tobepaid {
     height: 100%;
     padding-top: 32rpx;
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
     justify-content: center;

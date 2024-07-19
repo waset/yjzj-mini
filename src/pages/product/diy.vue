@@ -2,6 +2,8 @@
 const { detail } = storeToRefs(useProductStore())
 const { user, isLogin } = storeToRefs(useUserStore())
 const { hasGoLogin } = useUserStore()
+const { setNowAddress } = useAddressStore()
+
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig, getConfigInfo } = useDiyStore()
@@ -10,6 +12,7 @@ interface PageReq {
   id: Product['id'] | null
   config_id: Product['id'] | null
   shareCode: Product['shareCode'] | null
+  inviteCode: Product['inviteCode'] | null
 }
 const deatrr = ['CPU', '主板', '显卡', '内存', '硬盘', '机箱', 'CPU散热器', '电源']
 const parr = ref<any[]>([
@@ -26,7 +29,7 @@ const parr = ref<any[]>([
 // 更新配置
 const updataParams = (data: any) => {
   // 分拣配置单  数据
-  data.products.forEach((item: Product, index: number) => {
+  data.products?.forEach((item: Product, index: number) => {
     // 判断 如果是前八个必选参数   放到parr 中
     if (deatrr.includes(item.typeName)) {
       parr.value[index].paramDesc = item.typeName
@@ -78,13 +81,19 @@ onLoad(async (params) => {
     detail.value = {} as Product
     detail.value.typeParentID = 6
     detail.value.params = []
+    detail.value.perihera = []
+
     const data = await getConfigInfo(0, req.shareCode)
-    updataParams(data.products)
+    updataParams(data)
     detail.value.params = parr.value // 配置单params
     detail.value.alloaction = data.id // 配置单id
     detail.value.name = `配置单${data.id}` // 配置单name
     detail.value.sellPrice = data.sellPrice // 配置单价格
   }
+  if (req.inviteCode && detail.value) {
+    detail.value.inviteCode = req.inviteCode
+  }
+  setNowAddress()
 })
 
 // 是否通过检测

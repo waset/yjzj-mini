@@ -21,10 +21,10 @@ const isSrc = (Item: any) => {
             <div class="i-svg-product-bg" />
             <div class="img">
               <template v-if="item.productTypeName !== '配置单'">
-                <product-image :src="item?.productSnapshot?.banner[0] || ''" width="120rpx" height="120rpx" />
+                <product-image :src="item?.productSnapshot?.banner[0] || ''" width="120rpx" height="120rpx" :background="false" />
               </template>
               <template v-else>
-                <product-image :src="isSrc(item?.details) || ''" width="120rpx" height="120rpx" />
+                <product-image :src="isSrc(item?.details) || ''" width="120rpx" height="120rpx" :background="false" />
               </template>
             </div>
           </div>
