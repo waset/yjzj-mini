@@ -75,7 +75,7 @@ onShareAppMessage(async ({ from, target }) => {
 
     return {
       title: `配置单${shareItem?.id}`,
-      path: `/pages/configure/diy?config_id=${shareItem?.id}`,
+      path: `/pages/product/diy?config_id=${shareItem?.id}`,
       imageUrl: banner,
     }
   }
