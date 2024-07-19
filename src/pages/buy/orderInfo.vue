@@ -38,7 +38,6 @@ const cancelPayFn = async () => {
 }
 
 onLoad((options) => {
-  uni.showLoading({ title: '加载中...' })
   if (options?.id) {
     orderId.value = options?.id
   }
@@ -61,6 +60,7 @@ const checkinfo = (index: number) => {
 }
 onShow(async () => {
   // 给请求 添加商品
+  uni.showLoading({ title: '加载中...', mask: true })
   detail.value = await orderInfo(orderId.value)
   uni.hideLoading()
   timeout.value = countdown(detail.value?.createdAt || '')
