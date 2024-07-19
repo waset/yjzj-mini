@@ -32,7 +32,7 @@ const setNowAddress = (index: number) => {
     return
 
   nowAddress.value = props.addressdata[index]
-  Jump('/pages/buy/submitOrder', {}, 1)
+  Back(1)
 }
 
 const isDefault = (item: number) => {
