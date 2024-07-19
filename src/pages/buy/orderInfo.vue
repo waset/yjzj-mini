@@ -4,7 +4,7 @@ const { orderInfo, continuePay, countdown, cancelPay } = useSubmitOrderStore()
 // 当前订单状态  待支付  已取消  支付成功
 const state = ref<'success' | 'fail' | 'waiting'>('waiting')
 // 商品详情
-const detail = ref({} as orderinfoData)
+const detail = ref<orderinfoData>({})
 // 倒计时
 const timeout = ref<string>('--:--:--')
 // 订单号
@@ -63,6 +63,8 @@ onShow(async () => {
   detail.value = await orderInfo(orderId.value)
   timeout.value = countdown(detail.value?.createdAt || '')
   status(detail.value.status || firstStatus.value)
+  if (state.value !== 'waiting')
+    return false
 
   const times = setInterval(async () => {
     async function updateTimes() {
@@ -81,13 +83,14 @@ onShow(async () => {
 <template>
   <navbar-back text="订单详情" />
   <div class="body">
-    <div class="status">
-      <div class="addressBox">
-        <buys-diffents-status :status="state || firstStatus" :timer="timeout" />
-        <buys-orderinfo-address :address="detail" />
+    <template v-if="detail.id">
+      <div class="status">
+        <div class="addressBox">
+          <buys-diffents-status :status="state || firstStatus" :timer="timeout" />
+          <buys-orderinfo-address :address="detail" />
+        </div>
       </div>
-    </div>
-    <template v-if="detail.details">
+
       <div class="box">
         <div class="gradient-border gradientbox">
           <buys-submit-orderinfo-goods :list="detail.details" @check="checkinfo" />
@@ -97,16 +100,17 @@ onShow(async () => {
           </div>
         </div>
       </div>
+      <div class="info">
+        <buys-submit-information :info="detail" />
+      </div>
     </template>
 
-    <div class="info">
-      <!-- 详情 -->
-      <buys-submit-information :info="detail as orderinfoData" />
-    </div>
     <common-popup v-model:show="showConfigsSwitch" name="配置详情">
       <buys-submit-order-allocation :allocation-list="showConfigs" />
     </common-popup>
-    <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
+    <template v-if="detail.id">
+      <buys-order-info-bottom :status="state" @continue="continueFn" @cancel="cancelPayFn" />
+    </template>
   </div>
 </template>
 
