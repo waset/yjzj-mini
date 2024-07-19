@@ -64,6 +64,17 @@ const filterOrder = (status: Order['status']) => {
           </div>
           <div class="func">
             <div class="left">
+              <div class="price">
+                <div class="text">
+                  总计：
+                </div>
+                <div class="totalPrice">
+                  <span>￥</span>
+                  <span>{{ props.order.sellPrice }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="right">
               <div class="action">
                 <template
                   v-if="props.order.status === OrderStatus.Wait || props.order.status === OrderStatus.PaymentSuccessful"
@@ -77,17 +88,6 @@ const filterOrder = (status: Order['status']) => {
                     </order-action>
                   </div>
                 </template>
-              </div>
-            </div>
-            <div class="right">
-              <div class="price">
-                <div class="text">
-                  总计：
-                </div>
-                <div class="totalPrice">
-                  <span>￥</span>
-                  <span>{{ props.order.sellPrice }}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -159,11 +159,9 @@ const filterOrder = (status: Order['status']) => {
       .func {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-end;
 
-        gap: 16rpx;
-
-        .left {
+        .right {
           all: unset;
           display: flex;
           flex-direction: row;
@@ -191,7 +189,7 @@ const filterOrder = (status: Order['status']) => {
 
         }
 
-        .right {
+        .left {
           display: flex;
           flex-direction: row-reverse;
 
