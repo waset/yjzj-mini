@@ -116,7 +116,7 @@ const setPrice = (item: pricelist) => {
 }
 
 const realStartPrice = computed(() => {
-  const price = isStartauto.value ? autoStart : starPrice.value
+  const price = isStartauto.value ? autoStart.value : starPrice.value
   if (Number(price) > 20000)
     return '20000'
   return price
