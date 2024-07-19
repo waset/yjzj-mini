@@ -61,6 +61,11 @@ const refundApply = async () => {
   const code = await refund(props.order.id)
   if (code === 200) {
     emit('updata')
+    uni.showToast({
+      title: '退款已发起，请耐心等待',
+      icon: 'none',
+      duration: 2000,
+    })
   }
   else {
     uni.showToast({
@@ -119,8 +124,10 @@ const refundApply = async () => {
         </div>
       </div>
     </common-popup>
-    <common-model v-model:show="showModel" msg="确认退款吗" icon="i-svg-warn" @ok="refundApply" />
+    <!-- 订单待支付状态，取消订单 -->
     <common-model v-model:show="cancelOrder" msg="取消后订单将无法恢复，确认取消吗？" icon="i-svg-warn" @ok="confirmcancelOrder" />
+    <!-- 订单已支付状态，退款确认弹窗 -->
+    <common-model v-model:show="showModel" msg="退款后，订单将无法恢复，确认退款吗？" icon="i-svg-warn" @ok="refundApply" />
     <div v-if="props.status === OrderStatus.Wait">
       <div class="wait">
         <div class="cancel" @click.stop="cancelConfirm">
@@ -154,6 +161,7 @@ const refundApply = async () => {
 .action {
 
   .express-info {
+    // 物流信息弹窗
 
     .express {
       display: flex;
@@ -354,6 +362,8 @@ const refundApply = async () => {
     align-items: center;
     gap: 16rpx;
 
+    padding-left: 16rpx;
+
     .cancel {
       padding: 12rpx 32rpx;
       font-size: 28rpx;
@@ -372,6 +382,7 @@ const refundApply = async () => {
   }
 
   .ordered {
+    padding-left: 16rpx;
 
     .shipped {
       display: flex;
