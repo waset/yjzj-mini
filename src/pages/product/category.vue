@@ -96,6 +96,7 @@ onReachBottom(async () => {
       typeID: types.value[classIndex.value].id,
       typeParentID: categorys[Params.value.key].value,
       name: searchName.value || undefined,
+      ...sortParams.value,
     }, pages.value, 20, true)
   }
   else {
