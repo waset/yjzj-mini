@@ -2,6 +2,7 @@
 const { products, isSelectedAll, selectedNum, total, selectedProductIds } = storeToRefs(useBuyStore())
 const { selectAll, deletes } = useBuyStore()
 const { hasGoLogin } = useUserStore()
+const { setNowAddress } = useAddressStore()
 const { changeBuyType } = useSubmitOrderStore()
 // 当前滑块索引
 const slidIdx = ref<number | null>(null)
@@ -14,6 +15,7 @@ function managementSwitch() {
 }
 // 页面刷新时
 onShow(() => {
+  setNowAddress()
   management.value = false
   slidIdx.value = null
 })

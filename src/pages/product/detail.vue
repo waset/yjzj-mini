@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { detail } = storeToRefs(useProductStore())
 const { user } = storeToRefs(useUserStore())
+const { setNowAddress } = useAddressStore()
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const productId = ref<Product['id']>()
@@ -51,6 +52,7 @@ const buyNow = () => {
 }
 onShow(async () => {
   await getProductDetail(productId.value)
+  await setNowAddress()
 })
 // #ifdef MP
 onShareAppMessage(() => {

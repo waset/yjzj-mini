@@ -2,6 +2,8 @@
 const { detail } = storeToRefs(useProductStore())
 const { user, isLogin } = storeToRefs(useUserStore())
 const { hasGoLogin } = useUserStore()
+const { setNowAddress } = useAddressStore()
+
 const { getProductDetail } = useProductStore()
 const { changeBuyType } = useSubmitOrderStore()
 const { addConfiguration, collectionConfig, getConfigInfo } = useDiyStore()
@@ -85,6 +87,8 @@ onLoad(async (params) => {
     detail.value.name = `配置单${data.id}` // 配置单name
     detail.value.sellPrice = data.sellPrice // 配置单价格
   }
+
+  setNowAddress()
 })
 
 // 是否通过检测

@@ -24,16 +24,19 @@ export const useAddressStore = defineStore('address', {
 
   },
   actions: {
-    // 获取收获地址列表
-    async getAddressList(page: number, pageSize: number) {
-      const { data, code } = await http.post<addresslist[]>('/web/user/address/list', { page, pageSize }, { auth: true })
-      if (code === 200)
-        this.addressList = data
+    setNowAddress() {
       this.addressList.forEach((item) => {
         if (item.isDefault === 1) {
           this.nowAddress = item
         }
       })
+    },
+    // 获取收获地址列表
+    async getAddressList(page: number, pageSize: number) {
+      const { data, code } = await http.post<addresslist[]>('/web/user/address/list', { page, pageSize }, { auth: true })
+      if (code === 200) {
+        this.addressList = data
+      }
     },
     // 新增收获地址
     async newAddress(params: addressReq) {

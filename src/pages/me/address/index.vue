@@ -131,7 +131,7 @@ const saveAddress = async () => {
       await newAddress(addReqParams.value)
       // 获取地址列表
       AddressshowPop.value = false
-      await getAddressList(page.value, 10)
+      await getAddressList(page.value, 100)
     }
     catch (error) {
       // 捕获并处理任何可能发生的错误
@@ -147,7 +147,7 @@ const saveAddress = async () => {
   const editFn = async () => {
     try {
       await editAddress(addReqParams.value)
-      await getAddressList(page.value, 10)
+      await getAddressList(page.value, 100)
       AddressshowPop.value = false
     }
     catch (error) {
@@ -179,7 +179,7 @@ const deleteAddressFn = async () => {
     }
     else {
       showModel.value = false
-      await getAddressList(page.value, 10)
+      await getAddressList(page.value, 100)
     }
   }
   catch (error) {
@@ -202,7 +202,7 @@ const setDefaultFn = async (item: addresslist, index: number) => {
   if (item.isDefault === 2)
     addressList.value[index].isDefault = 1
   await editAddress(item)
-  await getAddressList(page.value, 10)
+  await getAddressList(page.value, 100)
 }
 // 转换省市区序列号为 index下标
 // 打开 新增地址弹窗
@@ -247,7 +247,7 @@ const editAddressFn = (data: addresslist) => {
 }
 onShow(async () => {
   // 获取地址列表
-  await getAddressList(page.value, 10)
+  await getAddressList(page.value, 100)
 })
 onMounted(() => {
   // 初始化数据
