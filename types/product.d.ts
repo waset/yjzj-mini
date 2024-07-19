@@ -127,6 +127,7 @@ interface Product {
   }[]
 
   color?: string
+  inviteCode?: string
 }
 
 interface Brand {
