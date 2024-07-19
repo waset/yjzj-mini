@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const emits = defineEmits<{
+  checkload: [index: number]
+}>()
 const { detail } = storeToRefs(useProductStore())
 // 预删除外设
 const delSelect = (id: number) => {
@@ -32,6 +35,10 @@ const setNumber = (str: string, id: number) => {
     }
     detail.value.perihera[index].number = num
   }
+}
+
+const checkInfo = (index: number) => {
+  emits('checkload', index)
 }
 
 // 是否选中
@@ -74,7 +81,7 @@ const isSelect = (id: number) => {
               {{ item.description }}
             </div>
             <div class="row3">
-              <div class=" check">
+              <div class=" check" @click="checkInfo(index)">
                 查看详情
                 <div class="i-icons-right" />
               </div>

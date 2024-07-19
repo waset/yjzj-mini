@@ -49,16 +49,14 @@ onLoad((options) => {
 const showConfigsSwitch = ref<boolean>(false)
 const showConfigs = ref<any>(null)
 const checkinfo = (index: number) => {
-  const arr = detail.value?.details?.[index].productConfigSnapshot?.params || []
-  arr.forEach((x: any) => {
-    detail.value?.details?.[index].products?.forEach((item) => {
-      if (x.pID === item.id) {
-        item.number = x.num
-      }
-    })
-  })
-  showConfigs.value = detail.value?.details?.[index].products
-  showConfigsSwitch.value = true
+  const config_id = detail.value?.details?.[index].productConfigID
+  const id = detail.value?.details?.[index].productID
+  if (config_id) {
+    Jump('/pages/product/diy', { config_id })
+  }
+  else {
+    Jump('/pages/product/detail', { id })
+  }
 }
 onShow(async () => {
   // 给请求 添加商品

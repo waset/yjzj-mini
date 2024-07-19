@@ -139,7 +139,7 @@ const isSrc = (Item: any) => {
       // height: 144rpx;
       flex: 1;
       padding-left: 24rpx;
-      z-index: 10;
+      z-index: 2;
       .goodsTitle {
         font-weight: 500;
         font-size: 28rpx;
