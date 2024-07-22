@@ -53,7 +53,10 @@ async function gologin() {
         <div v-if="agreementChecked" class="i-icons-correct" />
       </div>
       <div class="text">
-        授权登录即表明同意《一剑装机服务及隐私条款》
+        <span>授权登录即表明同意一剑装机</span>
+        <span class="text-green" @click.prevent.stop="Jump('/pages/me/terms', { code: 'privacy' })">《隐私政策》</span>
+        <span>及</span>
+        <span class="text-green" @click.prevent.stop="Jump('/pages/me/terms', { code: 'agreement' })">《用户协议》</span>
       </div>
     </div>
   </div>
