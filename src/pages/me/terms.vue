@@ -17,7 +17,7 @@ onLoad(async (options) => {
 
 <template>
   <div class="terms">
-    <navbar-back :text="terms?.name" />
+    <navbar-back :text="terms?.name || ''" />
     <div class="body">
       <rich-text :nodes="terms?.content" />
     </div>
