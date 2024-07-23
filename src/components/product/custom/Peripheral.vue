@@ -188,20 +188,18 @@ defineExpose({
           </div>
         </scroll-view>
       </div>
-      <div>
-        <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="loadmoreFn">
-          <div class="scrollpb">
-            <common-search
-              padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
-                listParams.keywords = val
-                listParams.page = 1
-                getlistFun()
-              }"
-            />
-            <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
-            <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
-          </div>
-        </scroll-view>
+      <div class="scroll">
+        <div class="scrollpb">
+          <common-search
+            padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
+              listParams.keywords = val
+              listParams.page = 1
+              getlistFun()
+            }"
+          />
+          <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
+          <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
+        </div>
       </div>
 
       <div>
@@ -244,6 +242,8 @@ defineExpose({
 
   .scroll {
     height: 50vh;
+    overflow: scroll;
+    overscroll-behavior-block: contain;
 
     .scrollpb {
       padding-bottom: 80rpx;
