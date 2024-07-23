@@ -37,6 +37,17 @@ const filterOrder = (status: Order['status']) => {
   }
   return statusMap[status]
 }
+
+// 快递状态描述
+const expressStatus: {
+  [key in number]: string
+} = {
+  1: '已发货',
+  5: '已完成',
+  7: '已完成',
+}
+
+// 物流快照信息不等于5的时候，属于已发货，但未签收
 </script>
 
 <template>
@@ -54,8 +65,17 @@ const filterOrder = (status: Order['status']) => {
                   | 复制
                 </div>
               </div>
-              <div class="statusDesc" :style="{ color: filterOrder(props.order.status).color }">
-                {{ filterOrder(props.order.status).desc }}
+              <div class="desc" :style="{ color: filterOrder(props.order.status).color }">
+                <template v-if="props.order.status === OrderStatus.PaymentSuccessful && props.order?.express?.status">
+                  <div class="exprssDesc">
+                    {{ expressStatus[props.order?.express?.status] || '已发货' }}
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="statusDesc">
+                    {{ filterOrder(props.order.status).desc }}
+                  </div>
+                </template>
               </div>
             </div>
             <div class="product">
@@ -149,7 +169,7 @@ const filterOrder = (status: Order['status']) => {
             }
           }
 
-          .statusDesc {
+          .desc {
             font-size: 24rpx;
           }
         }
