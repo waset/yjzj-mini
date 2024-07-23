@@ -116,7 +116,7 @@ defineExpose({
       }"
     >
       <div class="select">
-        <div class="header">
+        <div class="header" @touchmove.prevent.stop @mousemove.prevent.stop>
           <common-search
             ref="commonsearch" padding="0 0 32rpx 0" :value="getModificationListParams.productName"
             is-input @update:value="(val) => {
@@ -138,7 +138,7 @@ defineExpose({
       </div>
 
       <template #footer>
-        <div class="bottom">
+        <div class="bottom" @touchmove.prevent.stop @mousemove.prevent.stop>
           <div class="center">
             <div class="cancel" @click="changeUpdate">
               取消

@@ -168,7 +168,7 @@ defineExpose({
 <template>
   <div class="body">
     <common-popup v-model:show="shows" name="选购外设" height="80%">
-      <div class="tabs">
+      <div class="tabs" @touchmove.prevent.stop @mousemove.prevent.stop>
         <scroll-view scroll-x class="scroll-h">
           <div class="items">
             <template v-for="(item, index) in types" :key="index">
@@ -217,7 +217,7 @@ defineExpose({
         <product-custom-select-peripheral ref="ProductselectPeripheralItem" @checkload="checkInfo" />
       </div>
       <template #footer>
-        <div class="bottom">
+        <div class="bottom" @touchmove.prevent.stop @mousemove.prevent.stop>
           <div class="numberbox">
             <div class="total">
               合计 <span class="temcolor pricefs">￥{{ totalPrice || 0 }}</span>

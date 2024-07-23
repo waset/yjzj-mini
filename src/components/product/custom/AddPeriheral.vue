@@ -22,7 +22,7 @@ const cancelbtn = () => {
 </script>
 
 <template>
-  <div class="operation">
+  <div class="operation" @touchmove.prevent.stop @mousemove.prevent.stop>
     <div class="wrap">
       <div class="left">
         <template v-if="detail?.perihera && detail.perihera.length > 0">

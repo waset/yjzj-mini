@@ -82,7 +82,7 @@ const refundApply = async () => {
     <common-popup v-model:show="showExpress" name="物流详情">
       <div class="express-info">
         <div class="express">
-          <div class="head">
+          <div class="head" @touchmove.prevent.stop @mousemove.prevent.stop>
             <div class="bg">
               <div class="company">
                 {{ expressInfo?.companyName }}

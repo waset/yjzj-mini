@@ -102,7 +102,7 @@ onLoad(async (params) => {
 <template>
   <navbar-back :text="isRegister ? '个人资料' : '注册'" />
   <common-popup v-model:show="showAuthentication" name="实名认证" @close="getUserInfo">
-    <div class="authentication">
+    <div class="authentication" @touchmove.prevent.stop @mousemove.prevent.stop>
       <div class="top">
         请填写当前登录微信关联的实名信息
       </div>
