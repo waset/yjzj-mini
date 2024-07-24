@@ -10,6 +10,7 @@
     "build:mp-weixin": "uni build -p mp-weixin",
     "dev:h5": "uni",
     "dev:mp-weixin": "uni -p mp-weixin",
+    "dev:douyin": "uni -p mp-toutiao",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "npx simple-git-hooks",

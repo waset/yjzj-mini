@@ -309,12 +309,15 @@ const checkInfo = (index: number) => {
             font-weight: 600;
             line-height: 46rpx;
             overflow: hidden;
-            white-space: nowrap;
             text-overflow: ellipsis;
             flex: 1 1 50%;
 
             .error {
               color: #F53F3F;
+            }
+
+            .scrolling {
+              white-space: nowrap !important;
             }
           }
 
