@@ -3,6 +3,7 @@ const { banners, hots, pushs } = storeToRefs(useWindowsStore())
 const { getWindows } = useWindowsStore()
 const { getCategorys, getProducts } = useProductStore()
 const { types, products } = storeToRefs(useProductStore())
+const { user } = storeToRefs(useUserStore())
 
 const hots_current = ref(0)
 
@@ -22,6 +23,19 @@ onShow(async () => {
   }
   await getProductsByType(notebook_type.value)
 })
+
+// #ifdef MP
+onShareAppMessage(() => {
+  const params = {} as any
+  params.inviteCode = user.value?.inviteCode
+
+  return {
+    title: '一剑装机',
+    imageUrl: StaticUrl('/images/share.png'),
+    path: UrlAndParams('/pages/index/index', params),
+  }
+})
+// #endif
 </script>
 
 <template>
