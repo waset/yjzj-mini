@@ -94,6 +94,7 @@ onShareAppMessage(() => {
   const params = !user.value.inviteCode ? {} : { inviteCode: user.value.inviteCode }
   return {
     title: '快来加入推广人计划吧！',
+    imageUrl: StaticUrl('/images/share_cover.png'),
     path: UrlAndParams('/pages/popularize/invitetion', params),
   }
 })
