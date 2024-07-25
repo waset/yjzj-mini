@@ -100,9 +100,9 @@ export const useUserStore = defineStore('user', {
       return code === 200
     },
     async register(user: UserInfo) {
-      const { data, code } = await http.post<UserInfo>('/web/user/updata', user)
+      const { code } = await http.post<UserInfo>('/web/user/updata', user)
       if (code === 200) {
-        this.user = data
+        this.user = user
       }
       return code === 200
     },
