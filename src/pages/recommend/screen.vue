@@ -37,17 +37,25 @@ onReady(() => {
     .exec()
 })
 
+const debouncedStart = useDebounceFn((e) => {
+  isStartauto.value = false
+  saveX.value = e
+  x.value = e
+}, 10)
+
+const debouncedEnd = useDebounceFn((e) => {
+  isEndauto.value = false
+  saveX2.value = e
+  x1.value = e
+}, 10)
+
 // 滑动第一个点
 const startChange = (e: any) => {
-  isStartauto.value = false
-  saveX.value = e.detail.x
-  x.value = saveX.value
+  debouncedStart(e.detail.x)
 }
 // 滑动第二个点
 const endchange = (e: any) => {
-  isEndauto.value = false
-  saveX2.value = e.detail.x
-  x1.value = saveX2.value
+  debouncedEnd(e.detail.x)
 }
 interface pricelist {
   start: number
