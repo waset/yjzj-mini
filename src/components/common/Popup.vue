@@ -42,6 +42,7 @@ function maskClose() {
       @wheel.stop
     />
     <div class="wrap" :style="{ width: props.width, height: props.height }">
+      <div class="h-4" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop />
       <div class="header">
         <slot name="header">
           <div class="title" @click="close" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop>
@@ -54,9 +55,11 @@ function maskClose() {
           </div>
         </slot>
       </div>
+      <div class="h-4" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop />
       <div class="body">
         <slot />
       </div>
+      <div class="h-4" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop />
       <div class="footer">
         <slot name="footer" />
       </div>
@@ -92,7 +95,7 @@ function maskClose() {
 
   .wrap {
     background: #272727;
-    padding: 32rpx;
+    padding: 0 32rpx 32rpx 32rpx;
     border-radius: 32rpx 32rpx 0 0;
     display: flex;
     flex-direction: column;
@@ -127,7 +130,6 @@ function maskClose() {
     .body {
       flex: 1;
       overflow: scroll;
-      padding: 32rpx 0;
       overscroll-behavior-block: contain;
     }
   }

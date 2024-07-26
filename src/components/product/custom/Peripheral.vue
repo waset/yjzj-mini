@@ -168,7 +168,7 @@ defineExpose({
 <template>
   <div class="body">
     <common-popup v-model:show="shows" name="选购外设" height="80%">
-      <div class="tabs">
+      <div class="tabs" @touchmove.prevent.stop @mousemove.prevent.stop>
         <scroll-view scroll-x class="scroll-h">
           <div class="items">
             <template v-for="(item, index) in types" :key="index">
@@ -188,20 +188,18 @@ defineExpose({
           </div>
         </scroll-view>
       </div>
-      <div>
-        <scroll-view scroll-y class="scroll" :enable-flex="true" :scroll-top="totop" @scrolltolower="loadmoreFn">
-          <div class="scrollpb">
-            <common-search
-              padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
-                listParams.keywords = val
-                listParams.page = 1
-                getlistFun()
-              }"
-            />
-            <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
-            <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
-          </div>
-        </scroll-view>
+      <div class="scroll">
+        <div class="scrollpb">
+          <common-search
+            padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
+              listParams.keywords = val
+              listParams.page = 1
+              getlistFun()
+            }"
+          />
+          <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
+          <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
+        </div>
       </div>
 
       <div>
@@ -217,7 +215,7 @@ defineExpose({
         <product-custom-select-peripheral ref="ProductselectPeripheralItem" @checkload="checkInfo" />
       </div>
       <template #footer>
-        <div class="bottom">
+        <div class="bottom" @touchmove.prevent.stop @mousemove.prevent.stop>
           <div class="numberbox">
             <div class="total">
               合计 <span class="temcolor pricefs">￥{{ totalPrice || 0 }}</span>
@@ -244,6 +242,8 @@ defineExpose({
 
   .scroll {
     height: 50vh;
+    overflow: scroll;
+    overscroll-behavior-block: contain;
 
     .scrollpb {
       padding-bottom: 80rpx;
