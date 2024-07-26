@@ -41,6 +41,7 @@ export const useAuthStore = defineStore('auth', {
       } as LoginReq, { auth: false })
       if (rescode === 200) {
         this.token = data.token
+        this.pc_key = ''
         this.expire_time = (data.expire_time - 6000) * 1000
       }
     },
