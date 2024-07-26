@@ -17,6 +17,31 @@ export function UrlAndParams(url: string, param: object) {
 }
 
 /**
+ * 获取URL参数
+ *
+ * @param url 请求地址
+ * @returns object
+ */
+export function getQueryParams<T extends { [key in string]?: any }>(url: string | undefined): T {
+  if (!url)
+    return {} as T
+  // 解码URL的查询部分
+  const queryString = decodeURIComponent(url).split('?')[1] || ''
+  if (!queryString)
+    return {} as T
+  // 将查询字符串分割成参数数组
+  const params = queryString.split('&')
+
+  // 将所有参数转换为对象
+  const queryParams = {} as any
+  params.forEach((param) => {
+    const [key, value] = param.split('=')
+    queryParams[key] = decodeURIComponent(value)
+  })
+  return queryParams
+}
+
+/**
  * 将图片地址或者数组转换为分享图片地址
  *
  * @param path 图片地址
