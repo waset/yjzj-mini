@@ -1,7 +1,19 @@
 <script setup lang="ts">
-const { isRegister } = storeToRefs(useUserStore())
+const { isRegister, shareCode } = storeToRefs(useUserStore())
 const { getUserInfo } = useUserStore()
+const { pc_key } = storeToRefs(useAuthStore())
 const { getToken } = useAuthStore()
+
+onLoad((query) => {
+  // 获取到二维码原始链接内容
+  const { inviteCode, loginKey } = getQueryParams(query?.q)
+  // 获取用户扫码时间 UNIX 时间戳
+  // const scancode_time = Number.parseInt(query?.scancode_time)
+  pc_key.value = loginKey
+  if (inviteCode) {
+    shareCode.value = inviteCode
+  }
+})
 
 const agreementChecked = ref(false)
 
@@ -38,8 +50,7 @@ async function gologin() {
       <div
         class="gologin" :class="{
           disable: !agreementChecked,
-        }"
-        @click="gologin"
+        }" @click="gologin"
       >
         点击登录
       </div>

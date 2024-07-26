@@ -4,6 +4,7 @@ export const useAuthStore = defineStore('auth', {
      * 密钥
      */
     key: string
+    pc_key: string
     /**
      * token
      */
@@ -14,6 +15,7 @@ export const useAuthStore = defineStore('auth', {
     expire_time: number
   } => ({
     key: '',
+    pc_key: '',
     token: '',
     expire_time: 0,
   }),
@@ -33,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
       const user = useUserStore()
       const { data, code: rescode } = await http.post<LoginRes>('/web/login', {
         code,
-        loginKey: this.key,
+        loginKey: this.pc_key || this.key,
         type: 'miniPrograms',
         inviteCode: user.shareCode || undefined,
       } as LoginReq, { auth: false })
