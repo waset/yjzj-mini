@@ -86,8 +86,18 @@ export function StaticUrl(path: string) {
 /**
  * 将地址转换为官网地址
  */
-export function DomainUrl(path: string) {
+export function OfficialUrl(path: string) {
   const staticUrl = import.meta.env.VITE_DOMAIN_URL || ''
+  const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
+  const leadingSlash = path.startsWith('/') ? path.slice(1) : path
+  return `${staticUrl}${trailingSlash}${leadingSlash}`
+}
+
+/**
+ * 将地址转换为移动网站地址
+ */
+export function MobilelUrl(path: string) {
+  const staticUrl = import.meta.env.VITE_MOBILE_URL || ''
   const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
   return `${staticUrl}${trailingSlash}${leadingSlash}`

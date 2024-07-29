@@ -56,6 +56,9 @@ export default defineConfig(async ({ mode }) => {
           'uni-app',
           'pinia',
           uniuseAutoImports(),
+          {
+            qrcode: [['*', 'QRCode']],
+          },
         ],
         packagePresets: [
           {
