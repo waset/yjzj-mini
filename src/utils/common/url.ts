@@ -47,12 +47,12 @@ export function getQueryParams<T extends { [key in string]?: any }>(url: string 
  * @param path 图片地址
  * @returns 加工后的图片地址
  */
-export function ShareIamgeUrl(path: string | string[] | undefined | null) {
+export function ShareIamgeUrl(path: string | string[] | undefined | null, random = false) {
   if (!path) {
     return undefined
   }
-  if (typeof (path) == 'object') {
-    path = path.sort(() => Math.random() - 0.5)[0]
+  if (Array.isArray(path)) {
+    path = random ? path.sort(() => Math.random() - 0.5)[0] : path[0]
   }
   return ImageUrl(path)
 }
