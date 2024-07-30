@@ -60,9 +60,9 @@ const messageArray = ref([
   {
     Isvg: 'i-svg-vector',
     title: '邀请链接',
-    value: DomainUrl(`/login?inviteCode=${user.value.inviteCode}`),
+    value: OfficialUrl(`/login?inviteCode=${user.value.inviteCode}`),
     click: () => {
-      copyText(DomainUrl(`/login?inviteCode=${user.value.inviteCode}`))
+      copyText(OfficialUrl(`/login?inviteCode=${user.value.inviteCode}`))
     },
   },
   {

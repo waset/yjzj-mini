@@ -47,12 +47,12 @@ export function getQueryParams<T extends { [key in string]?: any }>(url: string 
  * @param path 图片地址
  * @returns 加工后的图片地址
  */
-export function ShareIamgeUrl(path: string | string[] | undefined | null) {
+export function ShareIamgeUrl(path: string | string[] | undefined | null, random = false) {
   if (!path) {
     return undefined
   }
-  if (typeof (path) == 'object') {
-    path = path.sort(() => Math.random() - 0.5)[0]
+  if (Array.isArray(path)) {
+    path = random ? path.sort(() => Math.random() - 0.5)[0] : path[0]
   }
   return ImageUrl(path)
 }
@@ -86,7 +86,7 @@ export function StaticUrl(path: string) {
 /**
  * 将地址转换为官网地址
  */
-export function DomainUrl(path: string) {
+export function OfficialUrl(path: string) {
   const staticUrl = import.meta.env.VITE_DOMAIN_URL || ''
   const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
@@ -94,9 +94,9 @@ export function DomainUrl(path: string) {
 }
 
 /**
- * 将地址转换为移动端地址
+ * 将地址转换为移动网站地址
  */
-export function MobileUrl(path: string) {
+export function MobilelUrl(path: string) {
   const staticUrl = import.meta.env.VITE_MOBILE_URL || ''
   const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
