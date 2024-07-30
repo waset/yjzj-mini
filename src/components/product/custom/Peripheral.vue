@@ -160,6 +160,7 @@ const checkInfo = (index: number) => {
   showConfigs.value = detail.value?.perihera[index]
   showConfigsSwitch.value = true
 }
+
 defineExpose({
   setShow,
 })
@@ -188,19 +189,19 @@ defineExpose({
           </div>
         </scroll-view>
       </div>
-      <div class="scroll">
+      <scroll-view class="scroll" scroll-y @scrolltolower="loadmoreFn">
         <div class="scrollpb">
           <common-search
-            padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val) => {
+            padding="0 0 32rpx 0" :value="listParams.keywords" is-input @update:value="(val:any) => {
               listParams.keywords = val
               listParams.page = 1
               getlistFun()
             }"
           />
           <common-sort-filter :has-layout="false" padding="0 0 32rpx 0" @change="onChange" />
-          <product-custom-peripheralitem ref="ProductPeripheralItem" @loadmore="loadmoreFn" />
+          <product-custom-peripheralitem ref="ProductPeripheralItem" />
         </div>
-      </div>
+      </scroll-view>
 
       <div>
         <product-custom-add-periheral
