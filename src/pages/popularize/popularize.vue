@@ -57,7 +57,7 @@ onMounted(() => {
   // 获取uQRCode实例
   const qr = new UQRCode()
   // 设置二维码内容
-  const url = MobileUrl('/login?inviteCode=') + user.value.inviteCode
+  const url = MobilelUrl('/login?inviteCode=') + user.value.inviteCode
   qr.data = url
   qr.size = 200
   qr.background = '#ffffff'
