@@ -118,7 +118,7 @@ const activities = () => {
 const promotion = () => {
   if (hasGoLogin())
     return
-  if (!user.value?.promoterStatus) {
+  if (user.value?.promoterStatus !== 1) {
     uni.showToast({
       title: '请先成为推广员',
       icon: 'none',
