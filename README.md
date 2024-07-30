@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://yjzj.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.577025e9.png&w=256&q=75" width="300"/>
+  <img src="https://github.com/user-attachments/assets/f48b46f6-96fc-4ac9-a9a3-b0dc8a4596bd" width="300"/>
 </p>
 
 <p align="center">
