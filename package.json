@@ -64,7 +64,7 @@
     "dayjs": "^1.11.10",
     "eslint": "^9.0.0",
     "lint-staged": "^15.2.0",
-    "pinia": "~2.1.0",
+    "pinia": "~2.2.0",
     "pinia-plugin-persistedstate": "^3.2.1",
     "sass": "^1.75.0",
     "sass-loader": "^15.0.0",
