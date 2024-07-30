@@ -2,7 +2,9 @@
 const props = defineProps<{
   info: Product | null
   price?: number
+  isLogin: boolean
 }>()
+const moduleflag = ref<boolean>(false)
 const { detail } = storeToRefs(useProductStore())
 </script>
 
@@ -22,15 +24,30 @@ const { detail } = storeToRefs(useProductStore())
             <span>{{ product_is_diy(detail) ? price : detail?.sellPrice }}</span>
           </div>
           <div class="btns">
-            <button class="btn" open-type="share">
-              <div class="icon">
-                <div class="i-icons-share" />
+            <template v-if="props.isLogin">
+              <button class="btn" open-type="share">
+                <div class="icon">
+                  <div class="i-icons-share" />
+                </div>
+              </button>
+            </template>
+            <template v-else>
+              <div class="btn" @click="moduleflag = true">
+                <div class="icon">
+                  <div class="i-icons-share" />
+                </div>
               </div>
-            </button>
+            </template>
           </div>
         </div>
       </div>
     </div>
+    <common-model
+      :show="moduleflag" msg="请登录后分享" icon="i-svg-warn" @ok="() => {
+        Jump('/pages/me/login')
+        moduleflag = false
+      }" @cancel="moduleflag = false"
+    />
   </div>
 </template>
 

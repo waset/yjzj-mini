@@ -53,6 +53,11 @@ const updataParams = (data: any) => {
     }
   })
 }
+
+uni.hideShareMenu({
+  hideShareItems: ['shareAppMessage', 'shareTimeline'],
+})
+
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.id) {
@@ -272,7 +277,7 @@ onShareAppMessage(async () => {
     </div>
 
     <div class="top">
-      <product-top :info="detail" :price="showPrice" />
+      <product-top :info="detail" :price="showPrice" :is-login="isLogin" />
     </div>
 
     <div class="info">
@@ -283,7 +288,7 @@ onShareAppMessage(async () => {
       <product-diy-game ref="DiyGameRef" />
     </div>
     <div class="bottom">
-      <product-operation @add-car="addBuyCar" @buy-now="buyNow" />
+      <product-operation :is-login="isLogin" @add-car="addBuyCar" @buy-now="buyNow" />
     </div>
   </div>
 </template>
