@@ -130,7 +130,7 @@ const showPrice = computed(() => {
       result += (Number(item.sellPrice) * item.number)
     })
   }
-  return result
+  return Number.parseFloat(result.toFixed(2))
 })
 
 // 生成配置单id  和收藏配置单

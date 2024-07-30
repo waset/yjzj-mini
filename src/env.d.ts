@@ -18,8 +18,10 @@ interface ImportMetaEnv {
   readonly VITE_IMAGE_URL: string
   // 资源地址
   readonly VITE_STATIC_URL: string
-  // 域名地址
+  // 官网地址
   readonly VITE_DOMAIN_URL: string
+  // 手机网站地址
+  readonly VITE_MOBILE_URL: string
   // 企业微信客服地址
   readonly VITE_CUSTOMER_SERVICE_URL: string
   // 企业微信企业 ID

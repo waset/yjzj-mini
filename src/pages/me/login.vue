@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const { isRegister, shareCode } = storeToRefs(useUserStore())
+const { user, isRegister, shareCode } = storeToRefs(useUserStore())
 const { getUserInfo } = useUserStore()
-const { pc_key } = storeToRefs(useAuthStore())
-const { getToken } = useAuthStore()
+const { pc_key, key } = storeToRefs(useAuthStore())
+const { getKey, getToken, verificationLogin } = useAuthStore()
 
 onLoad((query) => {
   // 获取到二维码原始链接内容
@@ -15,26 +15,61 @@ onLoad((query) => {
   }
 })
 
+const route = getCurrentPages()
 const agreementChecked = ref(false)
 
+const loginOk = async () => {
+  await getUserInfo()
+  if (!isRegister.value) {
+    Jump('/pages/me/info')
+  }
+  else {
+    if (route.length > 1) {
+      Back(1)
+    }
+    else {
+      Jump('/pages/me/me')
+    }
+  }
+}
+
+// #ifdef H5
+const qrcode = ref('')
+const generateQR = async () => {
+  const url = MobilelUrl(UrlAndParams('/login', {
+    inviteCode: user.value.inviteCode,
+    loginKey: key.value,
+  }))
+  qrcode.value = await QRCode.toDataURL(url)
+}
+onShow(async () => {
+  await generateQR()
+})
+const { pause, resume } = useTimeoutPoll(async () => {
+  const res = await verificationLogin()
+  if (res) {
+    await loginOk()
+  }
+}, 1000)
+watch(agreementChecked, async (val) => {
+  if (val) {
+    key.value = ''
+    await getKey()
+    await generateQR()
+    resume()
+  }
+  else {
+    pause()
+  }
+})
+// #endif
+
 async function gologin() {
-  const route = getCurrentPages()
   uni.login({
     provider: 'weixin', // 使用微信登录
     success: async ({ code }) => {
       await getToken(code)
-      await getUserInfo()
-      if (!isRegister.value) {
-        Jump('/pages/me/info')
-      }
-      else {
-        if (route.length > 1) {
-          Back(1)
-        }
-        else {
-          Jump('/pages/me/me')
-        }
-      }
+      await loginOk()
     },
   })
 }
@@ -47,6 +82,7 @@ async function gologin() {
       <div class="i-svg-logo" />
     </div>
     <div class="btn">
+      <!-- #ifdef MP -->
       <div
         class="gologin" :class="{
           disable: !agreementChecked,
@@ -54,6 +90,18 @@ async function gologin() {
       >
         点击登录
       </div>
+
+      <!-- #endif -->
+      <!-- #ifdef H5 -->
+      <div class="qrcode">
+        <image class="image" :src="qrcode" mode="scaleToFill" />
+        <div
+          class="qrcode" :class="{
+            fuzzy: !agreementChecked,
+          }"
+        />
+      </div>
+      <!-- #endif -->
     </div>
     <div
       class="agreement" :class="{
@@ -107,6 +155,24 @@ async function gologin() {
         &.disable {
           @apply bg-[#8D8D8D] text-[#f5f5f5];
           box-shadow: 4px 4px 0px 0px rgba(#8D8D8D, 0.2);
+        }
+      }
+
+      .qrcode {
+        width: 360rpx;
+        height: 360rpx;
+        position: relative;
+        z-index: 1;
+
+        .image {
+          width: 100%;
+          height: 100%;
+        }
+
+        .fuzzy {
+          @apply absolute top-0 left-0 w-full h-full;
+          backdrop-filter: blur(10rpx);
+          z-index: 1;
         }
       }
     }

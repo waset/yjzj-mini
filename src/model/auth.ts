@@ -49,6 +49,15 @@ export const useAuthStore = defineStore('auth', {
       const res = await http.post<LoginRes>('/web/refresh/token', {}, { auth: false, headers: { Authorization: `Bearer ${this.token}` } })
       return res
     },
+    async verificationLogin() {
+      const { code, data } = await http.post<LoginRes>('/web/login/auth', { loginKey: this.key }, { auth: false })
+      if (code === 200) {
+        this.token = data.token
+        this.expire_time = (data.expire_time - 6000) * 1000
+        return true
+      }
+      return false
+    },
   },
   persist: true,
 })
