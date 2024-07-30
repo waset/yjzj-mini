@@ -92,3 +92,13 @@ export function DomainUrl(path: string) {
   const leadingSlash = path.startsWith('/') ? path.slice(1) : path
   return `${staticUrl}${trailingSlash}${leadingSlash}`
 }
+
+/**
+ * 将地址转换为移动端地址
+ */
+export function MobileUrl(path: string) {
+  const staticUrl = import.meta.env.VITE_MOBILE_URL || ''
+  const trailingSlash = staticUrl.endsWith('/') ? '' : '/'
+  const leadingSlash = path.startsWith('/') ? path.slice(1) : path
+  return `${staticUrl}${trailingSlash}${leadingSlash}`
+}
