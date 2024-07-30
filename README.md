@@ -2,21 +2,18 @@
   <img src="https://github.com/user-attachments/assets/f48b46f6-96fc-4ac9-a9a3-b0dc8a4596bd" width="300"/>
 </p>
 
-<center>
-
-[💻 PC 端](https://yjzj.com)
-[📱 手机端](https://m.yjzj.com)
-
-</center>
+<p align="center">
+  <a href="https://yjzj.com">💻 PC 端</a>
+  <a href="https://m.yjzj.com">📱 手机端</a>
+</p>
 
 ## 预览
-<center>
-
-![小程序](https://github.com/user-attachments/assets/4b77d1e8-4519-490f-92c9-65b2821bd15a)
-
-[网页版](https://yjzj-mini.vercel.app)
-
-</center>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4b77d1e8-4519-490f-92c9-65b2821bd15a" />
+</p>
+<p align="center">
+  <a href="https://yjzj-mini.vercel.app">📱 网页版</a>
+</p>
 
 ## 特性
 
