@@ -1,8 +1,5 @@
 <script setup lang="ts">
 const emits = defineEmits(['addCar', 'buyNow'])
-// const props = defineProps<{
-//   isLogin: boolean
-// }>()
 const { isLogin } = storeToRefs(useUserStore())
 const moduleflag = ref<boolean>(false)
 
