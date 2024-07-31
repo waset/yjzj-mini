@@ -31,10 +31,6 @@ const WithInfo = ref([
   },
 ])
 
-function band() {
-  emits('bandinvite')
-}
-
 function withdraw() {
   if (Number.parseFloat(userDesc.value.balanceAmount) < 10) {
     uni.showToast({
@@ -49,6 +45,15 @@ function withdraw() {
 
 // 邀请详情
 const messageArray = ref([
+  {
+    Isvg: 'i-svg-edit-lv',
+    image: user.value.inviteUserInfo?.avatar,
+    title: '邀请人',
+    value: user.value?.inviteUserInfo?.nickname,
+    click: () => {
+      emits('bandinvite')
+    },
+  },
   {
     Isvg: 'i-svg-vector',
     title: '邀请码',
@@ -66,17 +71,9 @@ const messageArray = ref([
     },
   },
   {
-    Isvg: 'i-svg-edit-lv',
-    title: '我的邀请人',
-    value: user.value?.inviteUserInfo?.nickname,
-    click: () => {
-      band()
-    },
-  },
-  {
     Isvg: 'i-svg-downlaod',
-    title: '保存邀请码',
-    value: '--',
+    title: '二维码',
+    value: '点击保存',
     click: () => {
       emits('savecode')
     },
@@ -135,16 +132,16 @@ const balance = ref([
           <div class="title">
             {{ item.title }}
           </div>
-          <div class="flex items-center justify-between flex-1">
+          <div class="flex items-center justify-between flex-1" @click="item.click">
             <div class="flex items-center">
-              <template v-if="index === 2">
-                <avatar :src="user.inviteUserInfo?.avatar" width="40rpx" />
+              <template v-if="item?.image">
+                <avatar :src="item.image" width="40rpx" />
               </template>
               <div class="value ml-1">
                 {{ item.value }}
               </div>
             </div>
-            <div :class="item.Isvg" @click="item.click" />
+            <div :class="item.Isvg" />
           </div>
         </div>
       </template>

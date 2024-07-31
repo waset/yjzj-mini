@@ -38,7 +38,7 @@ const validator = {
     if (sanreComponent) {
       const [sanrenSlot, sanreSize] = getParamsValue(sanreComponent.product.params, ['兼容平台', '水冷类型'])
       if (cpuKW >= 105 && sanreSize < 360) {
-        res.push({ key: 'CPU散热器', message: 'CPU功耗高，请选择360及以上水冷散热器' })
+        // res.push({ key: 'CPU散热器', message: 'CPU功耗高，请选择360及以上水冷散热器' })
       }
       if (!sanrenSlot.includes(cpuSlotType)) {
         res.push({ key: 'CPU散热器', message: 'CPU与CPU散热器插槽类型不兼容' })
@@ -297,7 +297,7 @@ const validator = {
       // cpu验证
       const [cpuSlotType, cpuKW] = getParamsValue(cpuComponent.product.params, ['插槽类型', '基本功耗(W)'])
       if (cpuKW >= 105 && sanreSize < 240) {
-        res.push({ key: 'CPU散热器', message: 'CPU功耗高，请选择240及以上水冷散热器' })
+        // res.push({ key: 'CPU散热器', message: 'CPU功耗高，请选择240及以上水冷散热器' })
       }
       if (sanrenSlot && !sanrenSlot.includes(cpuSlotType)) {
         res.push({ key: 'CPU散热器', message: 'CPU与CPU散热器插槽类型不兼容' })
