@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const emits = defineEmits(['bandinvite', 'openwith'])
+const emits = defineEmits(['bandinvite', 'openwith', 'savecode'])
 
 const { user, userDesc } = storeToRefs(useUserStore())
 
@@ -71,6 +71,14 @@ const messageArray = ref([
     value: user.value?.inviteUserInfo?.nickname,
     click: () => {
       band()
+    },
+  },
+  {
+    Isvg: 'i-svg-downlaod',
+    title: '保存邀请码',
+    value: '--',
+    click: () => {
+      emits('savecode')
     },
   },
 ])
