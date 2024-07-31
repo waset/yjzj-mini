@@ -53,6 +53,11 @@ const updataParams = (data: any) => {
     }
   })
 }
+
+uni.hideShareMenu({
+  hideShareItems: ['shareAppMessage', 'shareTimeline'],
+})
+
 onLoad(async (params) => {
   const req = params as PageReq
   if (req.id) {
