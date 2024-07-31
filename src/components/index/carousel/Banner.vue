@@ -26,6 +26,13 @@ const goJump = (src: string) => {
   }
   Jump(src as any)
 }
+
+onShow(() => {
+  bannerSwiper.value?.swiper.autoplay.start()
+})
+onHide(() => {
+  bannerSwiper.value?.swiper.autoplay.stop()
+})
 </script>
 
 <template>

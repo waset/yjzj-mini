@@ -13,6 +13,13 @@ const { cloned: products } = useCloned(props.list)
 watchEffect(() => {
   products.value = props.list
 })
+
+onShow(() => {
+  pushSwiper.value?.swiper.autoplay.start()
+})
+onHide(() => {
+  pushSwiper.value?.swiper.autoplay.stop()
+})
 </script>
 
 <template>

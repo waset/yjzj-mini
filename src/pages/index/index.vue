@@ -24,6 +24,15 @@ onShow(async () => {
   await getProductsByType(notebook_type.value)
 })
 
+const goProduct = (item: Product) => {
+  if (product_is_diy(item)) {
+    Jump('/pages/product/diy', { id: item.id })
+  }
+  else {
+    Jump('/pages/product/detail', { id: item.id })
+  }
+}
+
 // #ifdef MP
 onShareAppMessage(() => {
   const params = {} as any
@@ -56,7 +65,7 @@ onShareAppMessage(() => {
     </index-product-title>
     <index-carousel-hot
       v-model:current="hots_current" :list="hots"
-      @click="(item) => Jump('/pages/product/detail', { id: item.id })"
+      @click="(item) => goProduct(item)"
     />
     <index-product-title @click="Jump('/pages/product/category', { key: 'diy' })">
       <template #left>
@@ -68,7 +77,7 @@ onShareAppMessage(() => {
         </div>
       </template>
     </index-product-title>
-    <index-carousel-push :list="pushs" @click="(item) => Jump('/pages/product/diy', { id: item.id })" />
+    <index-carousel-push :list="pushs" @click="(item) => goProduct(item)" />
 
     <index-product-switch-type v-model:current="notebook_type" :list="types" @change="(id) => getProductsByType(id)" />
     <index-product-list :list="products" />

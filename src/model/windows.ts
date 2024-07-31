@@ -29,10 +29,13 @@ export const useWindowsStore = defineStore('windows', {
       }, { auth: false })
 
       if (code === 200) {
-        if (this.windows === data) {
+        const res = data.filter(item => item.status === 1)
+
+        if (this.windows.length === res.length && this.windows.every((v, i) => v.id === res[i].id && v.updatedAt === res[i].updatedAt)) {
           return
         }
-        this.windows = data
+
+        this.windows = res
 
         this.banners = this.getWindowsByKeyValue('name', '小程序 banner')?.content.images || []
 

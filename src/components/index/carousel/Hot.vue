@@ -22,6 +22,13 @@ const onChange = () => {
   current.value = hotSwiper.value?.swiper.activeIndex
   emit('update:current', hotSwiper.value?.swiper.realIndex)
 }
+
+// onShow(() => {
+//   hotSwiper.value?.swiper.autoplay.start()
+// })
+// onHide(() => {
+//   hotSwiper.value?.swiper.autoplay.stop()
+// })
 </script>
 
 <template>
