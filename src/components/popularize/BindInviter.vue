@@ -71,7 +71,7 @@ defineExpose({
       </div>
       <div class="body">
         <div class="msg">
-          {{ props.user.promoterStatus === 1 ? '换绑' : '绑定邀请人 ' }}邀请人
+          {{ props.user.inviteUserInfo?.inviteCode ? '换绑' : '绑定邀请人 ' }}邀请人
         </div>
         <div class="codeinp flex-center pt-2">
           <input v-model="code" placeholder="请输入邀请人邀请码" type="text" class="inp mt-1">
