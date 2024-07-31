@@ -2,8 +2,11 @@
 const props = defineProps<{
   info: Product | null
   price?: number
-  isLogin: boolean
+
 }>()
+
+const { isLogin } = storeToRefs(useUserStore())
+
 const moduleflag = ref<boolean>(false)
 const { detail } = storeToRefs(useProductStore())
 </script>
@@ -24,7 +27,7 @@ const { detail } = storeToRefs(useProductStore())
             <span>{{ product_is_diy(detail) ? price : detail?.sellPrice }}</span>
           </div>
           <div class="btns">
-            <template v-if="props.isLogin">
+            <template v-if="isLogin">
               <button class="btn" open-type="share">
                 <div class="icon">
                   <div class="i-icons-share" />

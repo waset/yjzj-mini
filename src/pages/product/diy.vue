@@ -277,7 +277,7 @@ onShareAppMessage(async () => {
     </div>
 
     <div class="top">
-      <product-top :info="detail" :price="showPrice" :is-login="isLogin" />
+      <product-top :info="detail" :price="showPrice" />
     </div>
 
     <div class="info">
@@ -288,7 +288,7 @@ onShareAppMessage(async () => {
       <product-diy-game ref="DiyGameRef" />
     </div>
     <div class="bottom">
-      <product-operation :is-login="isLogin" @add-car="addBuyCar" @buy-now="buyNow" />
+      <product-operation @add-car="addBuyCar" @buy-now="buyNow" />
     </div>
   </div>
 </template>

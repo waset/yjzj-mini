@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  isLogin: boolean
-}>()
 const emits = defineEmits(['addCar', 'buyNow'])
-
+// const props = defineProps<{
+//   isLogin: boolean
+// }>()
+const { isLogin } = storeToRefs(useUserStore())
 const moduleflag = ref<boolean>(false)
 
 const { products } = storeToRefs(useBuyStore())
@@ -23,7 +23,7 @@ const buyNow = () => {
       <div class="wrap">
         <div class="left">
           <div class="item">
-            <template v-if="props.isLogin">
+            <template v-if="isLogin">
               <button class="btn" open-type="share">
                 <div class="icon">
                   <div class="i-icons-share" />
