@@ -2,7 +2,7 @@
 const props = defineProps<{
   user: UserInfo
 }>()
-const emits = defineEmits(['bandinvite', 'become'])
+const emits = defineEmits(['bandinvite', 'become', 'openshare'])
 
 const { hasGoLogin } = useUserStore()
 function band() {
@@ -14,6 +14,9 @@ function band() {
 function become() {
   emits('become')
 }
+function share() {
+  emits('openshare')
+}
 const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.inviteUserInfo?.inviteCode : '---')
 </script>
 
@@ -24,7 +27,7 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
         <image class="icon1 mt-20" :src="StaticUrl('/svg/invite-icon1.svg')" mode="widthFix" />
         <image class="icon2" :src="StaticUrl('/svg/invite-icon2.svg')" mode="widthFix" />
       </div>
-      <div class="flex-center mt-10 ml-6 mr-6">
+      <div class="flex justify-center items-center mt-10 ml-6 mr-6">
         <span class="my-inviter">我的邀请人：{{ inviterText }}</span>
         <span class="btn-inviter" @click="band">{{ props.user.inviteUserInfo?.inviteCode ? '换绑' : '绑定邀请人 ' }}</span>
       </div>
@@ -33,9 +36,7 @@ const inviterText = computed(() => props.user?.inviteUserInfo ? props.user.invit
           <image style="width: 90%;" src="@/assets/background/invite-btn.svg" mode="widthFix" @click="become" />
         </template>
         <template v-else>
-          <button class="sharebtn" open-type="share">
-            <image class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" />
-          </button>
+          <image class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix" @click="share" />
         </template>
       </div>
     </div>
