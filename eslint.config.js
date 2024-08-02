@@ -15,6 +15,7 @@ export default uni(
       'curly': 'off',
       'antfu/top-level-function': 'off',
       'unocss/order-attributify': 'off',
+      'yml/plain-scalar': 'off',
     },
   },
 )
