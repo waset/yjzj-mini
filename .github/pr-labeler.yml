@@ -18,15 +18,13 @@ label-mapping:
   # 修复
   bugfix: [fix, bug]
   # 维护
-  maintenance: [chore, perf, refactor, style]
+  maintenance: [chore, perf, refactor, security, style]
   # 文档
   documentation: [docs]
   # 依赖/构建
-  configuration: [config, build, ci]
+  configuration: [config, deps, build, ci]
   # 测试
   test: [test]
-  # 安全
-  security: [security]
   # 其他
   other:
     - other
