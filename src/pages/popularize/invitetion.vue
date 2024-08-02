@@ -168,11 +168,11 @@ async function drawPoster() {
 
   // 海报添加文字
   ctx.fillStyle = '#ffffff'
-  ctx.font = 'bold 18px Arial'
-  ctx.fillText(user.value.nickname, 90, 60)
+  ctx.font = '20px Arial'
+  ctx.fillText(user.value.nickname, 92, 60)
   ctx.fillStyle = '#ffffff'
   ctx.font = 'italic bold 18px Arial'
-  ctx.fillText('扫一扫注册下单,优惠商品畅想不停', 27, 110)
+  ctx.fillText('扫一扫注册下单,优惠商品畅享不停。', 27, 110)
   // 把二维码添加到海报上
   uni.canvasToTempFilePath({
     canvasId: 'qrcode',
@@ -258,12 +258,10 @@ onReady(async () => {
           <image style="width: 90%;" src="@/assets/background/invite-btn.svg" mode="widthFix" @click="become" />
         </template>
         <template v-else>
-          <!-- <button class="sharebtn" open-type="share"> -->
           <image
             class="mt-4" style="width: 90%;" src="@/assets/background/invite-btned.svg" mode="widthFix"
             @click="shareModel = true"
           />
-          <!-- </button> -->
         </template>
       </div>
     </div>
