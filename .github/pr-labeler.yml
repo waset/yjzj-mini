@@ -10,12 +10,27 @@ include-commits: true
 # 添加标签时考虑公关标题
 include-title: true
 # 当消息具有破坏性更改语法时使用标签'!:'，例如：'feat!:'
-label-for-breaking-changes: breaking
+label-for-breaking-changes: '!break!'
 # 标签到类型数组以进行映射
 label-mapping:
-  feature: [feat, feature]
+  # 增强
+  enhancement: [feat, feature]
+  # 修复
   bugfix: [fix, bug]
-  configuration: [build, ci]
+  # 维护
+  maintenance: [chore, perf, refactor, style]
+  # 文档
   documentation: [docs]
-  misc: [chore, performance, refactor, style]
+  # 依赖/构建
+  configuration: [config, build, ci]
+  # 测试
   test: [test]
+  # 安全
+  security: [security]
+  # 其他
+  other:
+    - other
+    - misc
+    - types
+    - release
+    - revert

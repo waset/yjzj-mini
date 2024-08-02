@@ -3,120 +3,24 @@ tag-template: v$RESOLVED_VERSION
 categories:
   - title: 🚀 新增
     labels:
-      - feat
       - enhancement
   - title: 🐛 问题
     labels:
-      - fix
       - bugfix
-      - bug
   - title: 🧰 维护
     labels:
-      - chore
-      - refactor
-      - perf
-  - title: 🎨 样式
-    labels:
-      - style
-      - lint
-      - formatting
+      - maintenance
+      - security
   - title: 📝 文档
     labels:
-      - docs
       - documentation
   - title: 📦 依赖/构建
     labels:
-      - build
-      - package
-      - ci
+      - configuration
   - title: 🚧 其他
     labels:
-      - security
       - test
-      - types
-      - release
       - other
-autolabeler:
-  - label: feat
-    title:
-      - '/feat:*'
-  - label: enhancement
-    title:
-      - '/feat\(.*\):*'
-  - label: fix
-    title:
-      - '/fix:*'
-  - label: bugfix
-    title:
-      - '/fix\(.*\):*'
-  - label: chore
-    title:
-      - '/chore:*'
-      - '/chore\(.*\):*'
-  - label: refactor
-    title:
-      - '/refactor:*'
-      - '/refactor\(.*\):*'
-  - label: perf
-    title:
-      - '/perf:*'
-      - '/perf\(.*\):*'
-  - label: style
-    title:
-      - '/style:*'
-      - '/style\(.*\):*'
-  - label: lint
-    title:
-      - '/lint:*'
-      - '/lint\(.*\):*'
-  - label: formatting
-    title:
-      - '/formatting:*'
-      - '/formatting\(.*\):*'
-  - label: build
-    title:
-      - '/build:*'
-      - '/build\(.*\):*'
-  - label: package
-    title:
-      - '/package:*'
-      - '/package\(.*\):*'
-  - label: ci
-    title:
-      - '/ci:*'
-      - '/ci\(.*\):*'
-  - label: docs
-    title:
-      - '/docs:*'
-      - '/docs\(.*\):*'
-      - '/documentation:*'
-      - '/documentation\(.*\):*'
-  - label: documentation
-    title:
-      - '/docs:*'
-      - '/docs\(.*\):*'
-      - '/documentation:*'
-      - '/documentation\(.*\):*'
-  - label: security
-    title:
-      - '/security:*'
-      - '/security\(.*\):*'
-  - label: test
-    title:
-      - '/test:*'
-      - '/test\(.*\):*'
-  - label: types
-    title:
-      - '/types:*'
-      - '/types\(.*\):*'
-  - label: release
-    title:
-      - '/release:*'
-      - '/release\(.*\):*'
-  - label: other
-    title:
-      - '/other:*'
-      - '/other\(.*\):*'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
