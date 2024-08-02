@@ -270,14 +270,14 @@ onReady(async () => {
     <common-model v-model:show="shareModel" msg="邀请好友加入" @ok="ChangeBind">
       <template #footer>
         <div class="flex-around w-[80%] pb-[50rpx]">
-          <button class="sharebtn" open-type="share">
-            <div class="py-[12rpx] px-[60rpx] bg-[#fff] color-[#000] rounded-[8rpx]" @click="shareModel = false">
-              分享
-            </div>
-          </button>
-          <div class="py-[12rpx] px-[30rpx] bg-[rgba(167,245,34,1)] color-[#000] rounded-[8rpx]" @click="saveCode">
+          <div class="py-[12rpx] px-[20rpx] bg-[rgba(167,245,34,1)] color-[#000] rounded-[8rpx]" @click="saveCode">
             保存邀请码
           </div>
+          <button class="sharebtn" open-type="share">
+            <div class="py-[12rpx] px-[20rpx] bg-[#fff] color-[#000] rounded-[8rpx]" @click="shareModel = false">
+              分享小程序
+            </div>
+          </button>
         </div>
       </template>
     </common-model>
