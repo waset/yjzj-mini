@@ -33,7 +33,7 @@ const setTab = (index: number) => {
       <scroll-view scroll-y class="scroll" :scroll-top="totop" scroll-with-animation>
         <div class="title-tip">
           <div class="titlebox">
-            <image class="titleicon" src="@/assets/sun/s_fastbuy.svg" mode="scaleToFill" />
+            <!-- <image class="titleicon" src="@/assets/sun/s_fastbuy.svg" mode="scaleToFill" /> -->
             <div class="timetxt">
               <div>限时抢购</div>
               <div>2021-123-123145</div>
@@ -44,7 +44,7 @@ const setTab = (index: number) => {
         <activity-fastbuy />
         <div class="title-tip">
           <div class="titlebox">
-            <image class="titleicon" src="@/assets/sun/s_prize.svg" mode="scaleToFill" />
+            <!-- <image class="titleicon" src="@/assets/sun/s_prize.svg" mode="scaleToFill" /> -->
             <div class="timetxt">
               <div>抽奖</div>
               <div>2021-123-123145</div>
@@ -54,7 +54,7 @@ const setTab = (index: number) => {
 
         <div class="title-tip">
           <div class="titlebox">
-            <image class="titleicon" src="@/assets/sun/s_task.svg" mode="scaleToFill" />
+            <!-- <image class="titleicon" src="@/assets/sun/s_task.svg" mode="scaleToFill" /> -->
             <div class="timetxt">
               <div>活动任务周期</div>
               <div>2021-123-123145</div>
@@ -80,7 +80,7 @@ const setTab = (index: number) => {
         </div>
         <div class="title-tip">
           <div class="titlebox">
-            <image class="titleicon" src="@/assets/sun/s_rule.svg" mode="scaleToFill" />
+            <!-- <image class="titleicon" src="@/assets/sun/s_rule.svg" mode="scaleToFill" /> -->
             <div class="timetxt">
               <div>活动规则详情</div>
               <div>2021-123-123145</div>
@@ -89,11 +89,11 @@ const setTab = (index: number) => {
         </div>
 
         <div class="rules">
-          <image class="rulesimg" src="@/assets/sun/s_rules.svg" mode="scaleToFill" />
+          <!-- <image class="rulesimg" src="@/assets/sun/s_rules.svg" mode="scaleToFill" /> -->
         </div>
 
         <div class="s_title">
-          <image src="@/assets/sun/s_title.svg" mode="scaleToFill" />
+          <!-- <image src="@/assets/sun/s_title.svg" mode="scaleToFill" /> -->
         </div>
       </scroll-view>
     </div>

@@ -33,7 +33,7 @@ onHide(() => {
     >
       <z-swiper-item v-for="(item, index) in bannerImages" :key="index">
         <div class="goods">
-          <image class="box" src="@/assets/sun/s_boxtitle.svg" mode="scaleToFill" />
+          <!-- <image class="box" src="@/assets/sun/s_boxtitle.svg" mode="scaleToFill" /> -->
           <div class="goodsboxwhite">
             <div class="number">
               <div>限购</div>
