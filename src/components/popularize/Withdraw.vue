@@ -16,7 +16,6 @@ const amount = ref()
 
 // 全部提现
 function allWithdraw() {
-  showModel.value = true
   amount.value = user.value.balanceAmount
 }
 
@@ -72,165 +71,76 @@ function InpAmount(e: any) {
 </script>
 
 <template>
-  <!-- 提现成功提醒 -->
-  <common-model v-model:show="showModel" msg="零钱提现已发起，请耐心等待。" icon="i-svg-success" @ok="showModel = false" />
-  <!-- 提现弹窗 -->
-  <div class="money_view_popup">
-    <div class="icon i-svg-product-bg " />
-    <div class="money_text">
-      可提现金额（元）
+  <div>
+    <!-- 提现成功提醒 -->
+    <common-model v-model:show="showModel" msg="零钱提现已发起，请耐心等待。" icon="i-svg-success" @ok="showModel = false" />
+    <!-- 提现弹窗 -->
+    <div class="money_view_popup">
+      <div class="icon i-svg-product-bg " />
+      <div class="money_text">
+        可提现金额（元）
+      </div>
+      <div class="money">
+        <div class="money_one">
+          ￥
+        </div>
+        <div class="money_two">
+          {{ user.balanceAmount }}
+        </div>
+      </div>
+      <div class="money_way">
+        到账方式
+        <div class="i-svg-weixin-icon money_way_svg" />
+        微信零钱
+      </div>
     </div>
-    <div class="money">
-      <div class="money_one">
+    <div class="ensure_view">
+      <div class="ensure_style">
+        <div class="i-icons-authentication money_way_svg" />
+        实名认证
+      </div>
+      <div class="ensure_style" @click="user.realName || Jump('/pages/me/info', { type: 'authentication' })">
+        {{ user.realName ? '已认证' : '未认证' }}
+        <template v-if="!user.realName">
+          <div class="i-icons-right money_way_svg" />
+        </template>
+      </div>
+    </div>
+    <div class="popup_text">
+      提现金额
+    </div>
+    <div class="input_view">
+      <input v-model="amount" type="number" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
+      <div class="money_icon">
         ￥
       </div>
-      <div class="money_two">
-        {{ user.balanceAmount }}
+      <div class="sum_all" @click="allWithdraw">
+        全部提现
       </div>
     </div>
-    <div class="money_way">
-      到账方式
-      <div class="i-svg-weixin-icon money_way_svg" />
-      微信零钱
+    <!-- 渐变底线 -->
+    <div class="gradient-line" />
+    <template v-if="realAmount">
+      <div class="reality_sum">
+        实际到账金额 {{ realAmount }}
+      </div>
+    </template>
+    <div class="withdraw_explain" style="margin-top: 60rpx;">
+      <div class="icon i-icons-info" style="margin-right: 6.66rpx;" /> 提现说明
+    </div>
+    <div v-for="(item, index) in explainArray" :key="index" class="withdraw_explain">
+      {{ item }}
+    </div>
+    <div class="button_style" @click="withdrawEvent">
+      立即提现
     </div>
   </div>
-  <div class="ensure_view">
-    <div class="ensure_style">
-      <div class="i-icons-authentication money_way_svg" />
-      实名认证
-    </div>
-    <div class="ensure_style" @click="user.realName || Jump('/pages/me/info', { type: 'authentication' })">
-      {{ user.realName ? '已认证' : '未认证' }}
-      <template v-if="!user.realName">
-        <div class="i-icons-right money_way_svg" />
-      </template>
-    </div>
-  </div>
-  <div class="popup_text">
-    提现金额
-  </div>
-  <div class="input_view">
-    <input v-model="amount" type="number" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
-    <div class="money_icon">
-      ￥
-    </div>
-    <div class="sum_all" @click="allWithdraw">
-      全部提现
-    </div>
-  </div>
-  <!-- 渐变底线 -->
-  <div class="gradient-line" />
-  <template v-if="realAmount">
-    <div class="reality_sum">
-      实际到账金额 {{ realAmount }}
-    </div>
-  </template>
-  <div class="withdraw_explain" style="margin-top: 60rpx;">
-    <div class="icon i-icons-info" style="margin-right: 6.66rpx;" /> 提现说明
-  </div>
-  <div v-for="(item, index) in explainArray" :key="index" class="withdraw_explain">
-    {{ item }}
-  </div>
-  <div class="button_style" @click="withdrawEvent">
-    立即提现
-  </div>
+  <div class="safe fixed left-0 right-0 bottom-0 bg-[#272727]" />
 </template>
 
 <style lang="scss" scoped>
-// 推广信息
-.popu_user {
-  width: calc(100% - 64rpx);
-  height: 300rpx;
-  margin: 0 auto;
-  margin-top: 119rpx;
-  border-radius: 32rpx;
-  overflow: hidden;
-  padding: 0px 0px 32rpx 0px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(132, 132, 132, 0.2), rgba(132, 132, 132, 0.2));
-
-  .user {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    height: 80rpx;
-    padding: 0rpx 32rpx;
-    box-sizing: border-box;
-    line-height: 80rpx;
-    overflow: hidden;
-    background: linear-gradient(90deg, rgba(109, 109, 109, 0) 1.52%, rgba(202, 202, 202, 0.5) 53.11%, rgba(109, 109, 109, 0) 98.86%);
-
-    .grade {
-      font-size: 25rpx;
-      line-height: 80rpx;
-    }
-
-    .popu_svg_medal {
-      width: 38.78rpx;
-      height: 31.46rpx;
-    }
-
-    .integral_right {
-      line-height: 80rpx;
-      font-size: 24rpx;
-      font-weight: 500;
-      color: rgba(255, 223, 109, 1);
-    }
-  }
-
-  .money_view {
-    height: 220rpx;
-    overflow: hidden;
-
-    .wrap {
-      margin-top: 32rpx;
-      @apply flex-around;
-
-      .money_details {
-        text-align: center;
-
-        .money_title {
-          font-family: PingFang SC;
-          font-size: 24rpx;
-          font-weight: 400;
-          line-height: 40rpx;
-          text-align: center;
-          margin-bottom: 8rpx;
-        }
-
-        .subhead {
-          font-family: PingFang SC;
-          font-size: 32rpx;
-          font-weight: 600;
-          line-height: 40rpx;
-          text-align: center;
-          color: #a7f522;
-        }
-      }
-    }
-
-    .subheads {
-      font-family: PingFang SC;
-      font-size: 28rpx;
-      text-align: center;
-      color: #a7f522;
-      text-align: right;
-      margin-top: 24rpx;
-      padding-right: 60rpx;
-      box-sizing: border-box;
-      @apply underline underline-offset-3;
-    }
-
-    .withdraw {
-      @apply underline underline-offset-3;
-      font-size: 28rpx;
-      text-align: right;
-      margin-top: 24rpx;
-      padding-right: 60rpx;
-      box-sizing: border-box;
-      color: #8d8d8d;
-    }
-  }
+.safe {
+  height: calc(32rpx + env(safe-area-inset-bottom));
 }
 
 .money_view_popup {
@@ -239,6 +149,7 @@ function InpAmount(e: any) {
   border-radius: 36rpx;
   overflow: hidden;
   position: relative;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
   background: linear-gradient(277.69deg, rgba(21, 21, 21, 0.9) 39.19%, rgba(74, 74, 74, 0.9) 94.91%);
 
   .icon {

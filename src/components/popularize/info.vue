@@ -158,7 +158,7 @@ const balance = ref([
                 class="flex items-center mt-2"
                 :style="{ color: item.icon && Number.parseFloat(item.value) > 10 ? '#A7F522' : '#FFF' }"
               >
-                <div class="value mr2">
+                <div class="value mr-2">
                   {{ item.value }}
                 </div>
                 <i :class="item.icon" @click="withdraw" />
