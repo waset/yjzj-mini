@@ -1,0 +1,21 @@
+#
+# @see https://github.com/grafana/pr-labeler-action
+#
+# 是否将缺失的标签添加到存储库
+add-missing-labels: true
+# 是否从PR中删除先前存在的标签以支持生成的标签
+clear-prexisting: true
+# 添加标签时考虑PR提交消息
+include-commits: true
+# 添加标签时考虑公关标题
+include-title: true
+# 当消息具有破坏性更改语法时使用标签'!:'，例如：'feat!:'
+label-for-breaking-changes: breaking
+# 标签到类型数组以进行映射
+label-mapping:
+  feature: [feat, feature]
+  bugfix: [fix, bug]
+  configuration: [build, ci]
+  documentation: [docs]
+  misc: [chore, performance, refactor, style]
+  test: [test]
