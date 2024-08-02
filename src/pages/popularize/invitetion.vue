@@ -109,8 +109,18 @@ function openshare() {
 }
 // 海报生成完成了吗
 const isDraw = ref(false)
-
+const disab = ref(true)
 function saveCode() {
+  // 避免重复点击
+  if (!disab.value)
+    return
+  disab.value = false
+  // 生成海报
+  drawPoster().then(() => {
+    isDraw.value = true
+    disab.value = true
+  })
+
   if (!isDraw.value) {
     uni.showToast({
       title: '生成中，请重新点击保存',
@@ -133,6 +143,7 @@ function saveCode() {
           filePath: res.tempFilePath,
           success: () => {
             shareModel.value = false
+            disab.value = true
             uni.hideLoading()
             uni.showToast({
               title: '保存成功',
@@ -142,6 +153,7 @@ function saveCode() {
           },
           fail: () => {
             uni.hideLoading()
+            disab.value = true
             uni.showToast({
               title: '保存失败',
               icon: 'error',
@@ -270,11 +282,11 @@ onReady(async () => {
     <common-model v-model:show="shareModel" msg="邀请好友加入" @ok="ChangeBind">
       <template #footer>
         <div class="flex-around w-[80%] pb-[50rpx]">
-          <div class="py-[12rpx] px-[20rpx] bg-[rgba(167,245,34,1)] color-[#000] rounded-[8rpx]" @click="saveCode">
+          <div class="py-[12rpx] px-[20rpx]  bg-[#fff] color-[#000] rounded-[8rpx]" @click="saveCode">
             保存邀请码
           </div>
           <button class="sharebtn" open-type="share">
-            <div class="py-[12rpx] px-[20rpx] bg-[#fff] color-[#000] rounded-[8rpx]" @click="shareModel = false">
+            <div class="py-[12rpx] px-[20rpx] bg-[rgba(167,245,34,1)] color-[#000] rounded-[8rpx]" @click="shareModel = false">
               分享小程序
             </div>
           </button>
