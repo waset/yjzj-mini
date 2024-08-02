@@ -1,58 +1,43 @@
-name-template: 🏷 v$RESOLVED_VERSION
-tag-template: v$RESOLVED_VERSION
+name-template: '🏷 v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
 categories:
-  - title: 🚀 新功能
+  - title: '🚀 新功能'
     labels:
-      - feature
-      - feat
-      - enhancement
-  - title: 🐛 修复
+      - 'feat'
+  - title: '🐛 问题修复'
     labels:
-      - fix
-      - bugfix
-      - bug
-  - title: 🧰 维护
+      - 'fix'
+      - 'bug'
+  - title: '🧰 维护'
     labels:
-      - chore
-      - refactor
-      - perf
-  - title: 📝 文档
+      - 'chore'
+      - 'refactor'
+      - 'perf'
+  - title: '📝 文档'
     labels:
-      - docs
-      - documentation
-  - title: 🎨 样式
+      - 'docs'
+  - title: '🎨 样式'
     labels:
-      - style
-      - formatting
-  - title: 📦 打包
+      - 'style'
+  - title: '🚧 其他'
     labels:
-      - build
-      - package
-  - title: 🚧 其他
-    labels:
-      - other
-      - misc
-      - test
-      - ci
-      - security
-      - typescript
-      - types
-      - lint
-      - release
+      - 'ci'
+      - 'build'
+      - 'test'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
-change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+change-title-escapes: '\<*_&'
 version-resolver:
   major:
     labels:
-      - major
+      - 'major'
   minor:
     labels:
-      - minor
+      - 'minor'
   patch:
     labels:
-      - patch
+      - 'patch'
   default: patch
 template: |
-  ## 更新内容
+  ## 变化
 
   $CHANGES
