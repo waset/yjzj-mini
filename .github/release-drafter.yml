@@ -1,10 +1,10 @@
 name-template: 🏷 v$RESOLVED_VERSION
 tag-template: v$RESOLVED_VERSION
 categories:
-  - title: 🚀 新增
+  - title: 🚀 新特性
     labels:
       - enhancement
-  - title: 🐛 问题
+  - title: 🐛 修复
     labels:
       - bugfix
   - title: 🧰 维护
@@ -14,7 +14,7 @@ categories:
   - title: 📝 文档
     labels:
       - documentation
-  - title: 📦 依赖/构建
+  - title: 📦 构建
     labels:
       - configuration
   - title: 🚧 其他
@@ -35,6 +35,10 @@ version-resolver:
       - patch
   default: patch
 template: |
-  ## 更新内容
+  ## 更新日志
 
   $CHANGES
+
+  ## 贡献者
+
+  $CONTRIBUTORS
