@@ -281,7 +281,7 @@ onReady(async () => {
     <common-model v-model:show="showModel" msg="确认邀请人换绑为该分享者" icon="i-svg-warn" @ok="ChangeBind" />
     <common-model v-model:show="shareModel" msg="邀请好友加入" @ok="ChangeBind">
       <template #footer>
-        <div class="flex-around w-[80%] pb-[50rpx]">
+        <div class="flex-around w-[68%] pb-[50rpx]">
           <div class="py-[12rpx] px-[20rpx]  bg-[#fff] color-[#000] rounded-[8rpx]" @click="saveCode">
             保存邀请码
           </div>
