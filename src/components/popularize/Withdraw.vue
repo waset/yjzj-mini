@@ -28,7 +28,7 @@ async function withdrawEvent() {
     return
   }
 
-  if (user.value.realName) {
+  if (!user.value?.IDCard) {
     uni.showToast({ title: '请先实名认证', icon: 'none' })
     return
   }
@@ -110,7 +110,7 @@ function InpAmount(e: any) {
       提现金额
     </div>
     <div class="input_view">
-      <input v-model="amount" type="number" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
+      <input v-model="amount" type="digit" class="sum_input" placeholder="输入您想提现的金额" @input="InpAmount">
       <div class="money_icon">
         ￥
       </div>
