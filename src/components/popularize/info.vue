@@ -32,6 +32,9 @@ const WithInfo = ref([
 ])
 
 function withdraw() {
+  if (Number.parseFloat(userDesc.value.balanceAmount) <= 0) {
+    return
+  }
   if (Number.parseFloat(userDesc.value.balanceAmount) < 10) {
     uni.showToast({
       title: '最低提现金额为10元',
