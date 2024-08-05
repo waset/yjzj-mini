@@ -7,10 +7,11 @@
   "license": "MIT",
   "scripts": {
     "build:h5": "uni build",
+    "build:mp-toutiao": "uni build -p mp-toutiao",
     "build:mp-weixin": "uni build -p mp-weixin",
-    "dev:douyin": "uni -p mp-toutiao",
     "dev:h5": "uni",
     "dev:mp-weixin": "uni -p mp-weixin",
+    "dev:toutiao": "uni -p mp-toutiao",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "npx simple-git-hooks",
