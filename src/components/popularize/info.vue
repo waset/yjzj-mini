@@ -40,6 +40,14 @@ function withdraw() {
     })
     return
   }
+  if (user.value.canWithdraw !== 1) {
+    uni.showToast({
+      title: '暂不可申请提现，请联系客服处理',
+      icon: 'none',
+      duration: 2000,
+    })
+    return
+  }
   emits('openwith')
 }
 
