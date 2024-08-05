@@ -24,7 +24,7 @@
 
     @apply fixed left-0 top-0 w-full z-100;
 
-    padding: var(--navbar-top) var(--navbar-padding-left) var(--navbar-padding-bottom) var(--navbar-padding-right);
+    padding: var(--navbar-top) var(--navbar-padding-right) var(--navbar-padding-bottom) var(--navbar-padding-left);
 
     .box {
       @apply flex items-center justify-between;
@@ -33,6 +33,10 @@
 
       .left {
         min-width: var(--navbar-width);
+
+        /* #ifdef MP-TOUTIAO */
+        padding-left: 68rpx;
+        /* #endif */
       }
 
       .center {
