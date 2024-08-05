@@ -89,6 +89,7 @@ $sp: space-between;
 
 .addressCard {
   position: relative;
+  z-index: 0;
   margin: 0 auto;
   width: 686rpx;
   box-sizing: border-box;

@@ -47,6 +47,7 @@ $max-width: 686rpx;
   width: 100%;
   height: 192rpx;
   position: relative;
+  z-index: 0;
   margin: 0 auto;
   border-radius: 8rpx;
   overflow: hidden;
