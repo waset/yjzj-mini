@@ -16,8 +16,8 @@ interface serviceParams {
  * @param params 小程序参数
  */
 export const contact_customer_service = (params?: serviceParams) => {
-  // #ifdef MP-WEIXIN
   const url = import.meta.env.VITE_CUSTOMER_SERVICE_URL
+  // #ifdef MP-WEIXIN
   const corpId = import.meta.env.VITE_CORP_ID
   if (!url || !corpId) {
     return
@@ -32,5 +32,9 @@ export const contact_customer_service = (params?: serviceParams) => {
     showMessageCard: !!params,
     ...params,
   })
+  // #endif
+  // #ifdef H5
+  window.location.href = url
+  // window.open(url, '_blank');
   // #endif
 }
