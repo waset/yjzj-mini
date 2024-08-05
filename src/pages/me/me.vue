@@ -259,7 +259,7 @@ const goLogout = () => {
               <div class="item">
                 <div class="number">
                   <span v-if="0" class="units">￥</span>
-                  <span>{{ user?.promoter?.cycleOrderAmount || 0 }}</span>
+                  <span>{{ user?.balanceAmount || 0 }}</span>
                 </div>
                 <div class="text">
                   账户余额
