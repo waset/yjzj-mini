@@ -168,9 +168,6 @@ importers:
       unplugin-auto-import:
         specifier: ^0.18.0
         version: 0.18.0(@vueuse/core@10.9.0(vue@3.4.25(typescript@5.4.5)))(rollup@4.16.4)
-      uview-plus:
-        specifier: ^3.2.14
-        version: 3.2.14
       vite:
         specifier: ^5.2.8
         version: 5.2.8(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4)
@@ -5458,10 +5455,6 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
-
-  uview-plus@3.2.14:
-    resolution: {integrity: sha512-OXrEph+VwjishWDF64hfzWJdcKKC+oDob0X4WLReEtC15u3MtTIzXlQsAi+NXZrg07Epk4FkfyPYi8Dkt4JFPA==}
-    engines: {HBuilderX: ^3.1.0}
 
   v8-to-istanbul@8.1.1:
     resolution: {integrity: sha512-FGtKtv3xIpR6BYhvgH8MI/y78oT7d8Au3ww4QIxymrCtZEh5b8gCw2siywE+puhEmuWKDtmfrvF5UlB298ut3w==}
@@ -12941,11 +12934,6 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   utils-merge@1.0.1: {}
-
-  uview-plus@3.2.14:
-    dependencies:
-      clipboard: 2.0.11
-      dayjs: 1.11.10
 
   v8-to-istanbul@8.1.1:
     dependencies:
