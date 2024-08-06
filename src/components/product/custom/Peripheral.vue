@@ -172,26 +172,28 @@ defineExpose({
 <template>
   <div class="body">
     <common-popup v-model:show="shows" name="选购外设" height="80%">
-      <div class="tabs" @touchmove.prevent.stop @mousemove.prevent.stop>
-        <scroll-view scroll-x class="scroll-h">
-          <div class="items">
-            <template v-for="(item, index) in types" :key="index">
-              <div
-                class="item" :class="{
-                  active: listParams.productTypeID === item.id,
-                }" @click="setNowType(item)"
-              >
-                <div class="logo">
-                  <product-image :src="item.logo" width="160rpx" :background="nowType === item.id" />
+      <template #top>
+        <div class="tabs" @touchmove.prevent.stop @mousemove.prevent.stop>
+          <scroll-view scroll-x class="scroll-h">
+            <div class="items">
+              <template v-for="(item, index) in types" :key="index">
+                <div
+                  class="item" :class="{
+                    active: listParams.productTypeID === item.id,
+                  }" @click="setNowType(item)"
+                >
+                  <div class="logo">
+                    <product-image :src="item.logo" width="160rpx" :background="nowType === item.id" />
+                  </div>
+                  <div class="name">
+                    {{ item.name }}
+                  </div>
                 </div>
-                <div class="name">
-                  {{ item.name }}
-                </div>
-              </div>
-            </template>
-          </div>
-        </scroll-view>
-      </div>
+              </template>
+            </div>
+          </scroll-view>
+        </div>
+      </template>
       <scroll-view
         class="scroll" scroll-y :scroll-top="listTop" enable-flex @scrolltolower="loadmoreFn" @scroll="({ scrollTop }:any) => {
           listTop = scrollTop
@@ -249,7 +251,6 @@ defineExpose({
   }
 
   .scroll {
-    height: 50vh;
     overflow: scroll;
     overscroll-behavior-block: contain;
 

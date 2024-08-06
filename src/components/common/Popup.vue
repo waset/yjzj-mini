@@ -56,6 +56,8 @@ function maskClose() {
         </slot>
       </div>
       <div class="h-4" @touchmove.prevent.stop @mousemove.prevent.stop @wheel.stop />
+      <!-- 不随主体内容滚动位置插槽 -->
+      <slot name="top" />
       <div class="body">
         <slot />
       </div>
