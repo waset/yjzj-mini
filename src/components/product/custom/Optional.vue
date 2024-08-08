@@ -308,8 +308,7 @@ defineExpose({
 }
 
 .scroll-view {
-  height: 45vh;
-
+  padding-bottom:22rpx;
   .empty {
     height: 40rpx;
   }

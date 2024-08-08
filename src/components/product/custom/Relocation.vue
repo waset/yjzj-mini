@@ -115,8 +115,8 @@ defineExpose({
         getModificationListParams.params = undefined
       }"
     >
-      <div class="select">
-        <div class="header" @touchmove.prevent.stop @mousemove.prevent.stop>
+      <template #top>
+        <div @touchmove.prevent.stop @mousemove.prevent.stop>
           <common-search
             ref="commonsearch" padding="0 0 32rpx 0" :value="getModificationListParams.productName"
             is-input @update:value="(val:any) => {
@@ -127,6 +127,8 @@ defineExpose({
           />
           <common-sort-filter :has-layout="false" :has-filter="true" padding="0 0 32rpx 0" @change="onChange" />
         </div>
+      </template>
+      <div class="select">
         <product-custom-filter-list
           ref="ProductCustomFilterListRef" v-model:value="getModificationListParams" @change="(data:any) => {
             getAllocationListByParams(data)
