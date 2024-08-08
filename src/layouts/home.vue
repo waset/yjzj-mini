@@ -1,9 +1,10 @@
 <script setup lang="ts">
 // 获取当前路由
 const currentUrl = ref('')
-// 刷新路由变化
-onShow(() => {
-  currentUrl.value = useRouter().currentUrl.value
+
+watchEffect(() => {
+  const pages = getCurrentPages()
+  currentUrl.value = pages[pages.length - 1]?.route || ''
 })
 </script>
 

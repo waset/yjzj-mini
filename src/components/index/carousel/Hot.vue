@@ -19,8 +19,15 @@ watchEffect(() => {
 
 const current = ref(0)
 const onChange = () => {
-  current.value = hotSwiper.value?.swiper.activeIndex
-  emit('update:current', hotSwiper.value?.swiper.realIndex)
+  hotSwiper.value?.swiper.on('slideChange', (swiper: any) => {
+    // swiper?.autoplay?.stop()
+    hotSwiper.value.swiper = swiper
+    current.value = swiper?.realIndex || 0
+    emit('update:current', current.value)
+    // setTimeout(() => {
+    //   swiper?.autoplay?.start()
+    // }, 2000)
+  })
 }
 
 // onShow(() => {
@@ -35,13 +42,13 @@ const onChange = () => {
   <div class="hots">
     <z-swiper
       ref="hotSwiper" v-model="products" :options="{
-        loop: true,
+        // loop: true,
         effect: 'cards',
         // autoplay: true,
         navigation: {
           slot: true,
         },
-      }" @slide-change="onChange"
+      }" @swiper="onChange"
     >
       <z-swiper-item v-for="(item, index) in products" :key="index">
         <div

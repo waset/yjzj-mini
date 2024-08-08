@@ -11,7 +11,14 @@ watchEffect(() => {
 const bannerSwiper = ref()
 const current = ref(0)
 const onChange = () => {
-  current.value = bannerSwiper.value?.swiper.realIndex
+  bannerSwiper.value?.swiper?.on('slideChange', (swiper: any) => {
+    swiper?.autoplay?.stop()
+    bannerSwiper.value.swiper = swiper
+    current.value = swiper?.realIndex || 0
+    setTimeout(() => {
+      swiper?.autoplay?.start()
+    }, 2000)
+  })
 }
 const changSwiper = (index: number) => {
   bannerSwiper.value?.swiper.slideToLoop(index)
@@ -45,7 +52,7 @@ onHide(() => {
       ref="bannerSwiper" v-model="bannerImages" :options="{
         loop: true,
         autoplay: true,
-      }" @slide-change="onChange"
+      }" @swiper="onChange"
     >
       <z-swiper-item v-for="(item, index) in bannerImages" :key="index">
         <image class="image" :src="ImageUrl(item.imageUrl)" mode="aspectFill" @click="goJump(item.src)" />

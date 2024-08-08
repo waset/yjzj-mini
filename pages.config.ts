@@ -32,9 +32,6 @@ export default defineUniPages({
   easycom: {
     autoscan: true,
     custom: {
-      '^u--(.*)': 'uview-plus/components/u-$1/u-$1.vue',
-      '^up-(.*)': 'uview-plus/components/u-$1/u-$1.vue',
-      '^u-([^-].*)': 'uview-plus/components/u-$1/u-$1.vue',
       '^z-(.*)': '@zebra-ui/swiper/components/z-$1/z-$1.vue',
     },
   },

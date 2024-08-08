@@ -75,6 +75,7 @@ export default defineManifestConfig({
   },
   'mp-baidu': {
     usingComponents: true,
+    appid: 'tt350243bfaa35cdec01',
   },
   'mp-toutiao': {
     usingComponents: true,

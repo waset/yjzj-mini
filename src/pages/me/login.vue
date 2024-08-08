@@ -94,19 +94,22 @@ async function gologin() {
       <!-- #endif -->
       <!-- #ifdef H5 -->
       <div class="qrcode">
-        <image class="image" :src="qrcode" mode="scaleToFill" />
         <div
-          class="qrcode" :class="{
+          class="mask" :class="{
             fuzzy: !agreementChecked,
           }"
         />
+        <image class="image" :src="qrcode" mode="scaleToFill" />
+      </div>
+      <div class="py-[32rpx] text-[28rpx]">
+        请使用微信/抖音扫一扫登录
       </div>
       <!-- #endif -->
     </div>
     <div
       class="agreement" :class="{
         selected: agreementChecked,
-      }" @click="agreementChecked = !agreementChecked"
+      }" @click.prevent.stop="agreementChecked = !agreementChecked"
     >
       <div class="check" value="cb" checked="true">
         <div v-if="agreementChecked" class="i-icons-correct" />
@@ -146,7 +149,7 @@ async function gologin() {
     }
 
     .btn {
-      @apply flex-center;
+      @apply flex-center flex-col;
 
       .gologin {
         @apply px-[160rpx] py-[32rpx] bg-green c-black rounded-[32rpx];
@@ -164,15 +167,17 @@ async function gologin() {
         position: relative;
         z-index: 1;
 
+        .mask {
+          &.fuzzy {
+            @apply absolute top-0 left-0 w-full h-full;
+            backdrop-filter: blur(10rpx);
+            z-index: 1;
+          }
+        }
+
         .image {
           width: 100%;
           height: 100%;
-        }
-
-        .fuzzy {
-          @apply absolute top-0 left-0 w-full h-full;
-          backdrop-filter: blur(10rpx);
-          z-index: 1;
         }
       }
     }

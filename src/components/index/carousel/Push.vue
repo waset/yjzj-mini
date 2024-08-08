@@ -20,6 +20,16 @@ onShow(() => {
 onHide(() => {
   pushSwiper.value?.swiper.autoplay.stop()
 })
+
+const onChange = () => {
+  pushSwiper.value?.swiper.on('slideChange', (swiper: any) => {
+    swiper?.autoplay?.stop()
+    pushSwiper.value.swiper = swiper
+    setTimeout(() => {
+      swiper?.autoplay?.start()
+    }, 2000)
+  })
+}
 </script>
 
 <template>
@@ -30,12 +40,13 @@ onHide(() => {
         autoplay: true,
         slidesPerView: 'auto',
         centeredSlides: true,
-        spaceBetween: 14,
-      }"
+        centeredSlidesBounds: true,
+        spaceBetween: 16,
+      }" @swiper="onChange"
     >
       <z-swiper-item
         v-for="(item, index) in products" :key="index" :custom-style="{
-          width: '80%',
+          width: '80vw',
         }"
       >
         <div
@@ -104,6 +115,7 @@ onHide(() => {
           --border-radius: 64rpx;
           border-radius: var(--border-radius);
           background-color: #272727;
+          width: 100%;
 
           position: relative;
           height: 100%;
@@ -123,7 +135,7 @@ onHide(() => {
               z-index: 0;
               width: 100%;
               height: 100%;
-              color: var(--color,#A7F522);
+              color: var(--color, #A7F522);
               border-radius: 64rpx;
               overflow: hidden;
 
